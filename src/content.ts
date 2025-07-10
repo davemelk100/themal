@@ -32,9 +32,10 @@ export const content = {
         id: "career",
         text: "Career",
       },
+
       {
-        id: "design-system",
-        text: "Design System",
+        id: "figma-hotkeys",
+        text: "Figma Hotkeys",
       },
     ],
     social: {
@@ -51,21 +52,21 @@ export const content = {
 
   work: {
     title: "Design Work",
+    subtitle: "There's so much more I'm not able to show, sadly.",
     projects: [
       {
         title: "Delta Dental Member Portal",
         description:
           "Led user interface design implementation of a SaaS provider portal using HTML/CSS/Angular. Created accessible components following WCAG guidelines and implemented responsive design patterns for optimal user experience across all devices.",
-        categories: "UI/UX Design, Accessibility, Front End Development",
+        categories: "",
         image: "/img/delta-portal-sq.png",
         alt: "Delta Dental Member Portal",
       },
       {
-        title:
-          "Desktop view of the home page of a remote interpretation SaaS application",
+        title: "Remote interpretation SaaS application",
         description:
           "Implemented a design in conjunction with marketing that overhauled the entire look and feel of the application. Mapped out and defined the user experience, and did front end development implementing the design.",
-        categories: "UI/UX Design, Design Systems, Front End Development",
+        categories: "Design Systems",
         image: "/img/on-demand-int.png",
         alt: "Modern UI Design System",
       },
@@ -73,8 +74,7 @@ export const content = {
         title: "Delta Dental Individual Insurance Registration",
         description:
           "Madlibs-style search for Saas individual insurance registration application.",
-        categories:
-          "UI/UX Design, Insurance, Accessibility, Front End Development",
+        categories: "Insurance",
         image: "/img/delta-search.png",
         alt: "Delta Dental Individual Insurance Registration",
       },
@@ -91,7 +91,7 @@ export const content = {
         description: "Card design for a mushroom tour app.",
         image: "/img/shroom-cards.png",
         alt: "Card design for a mushroom tour app.",
-        categories: "Mobile App, UI/UX Design, Photography",
+        categories: "Mobile App, Photography",
       },
       {
         title: "Hex Code Pop Art",
@@ -102,25 +102,38 @@ export const content = {
         alt: "Hex Code Pop Art",
       },
       {
-        title: "Vintage Contact Form",
-        description: "Retro-inspired contact form with modern functionality.",
-        categories: "UI Design, Graphic Design",
-        image: "/img/vintage-wp.png",
-        alt: "Vintage Contact Form",
-      },
-      {
         title: "Mobile App Design",
         description:
           "User interface design for a productivity mobile application.",
-        categories: "UI/UX Design, Mobile",
+        categories: "Mobile",
         image: "/img/design-panes.png",
         alt: "Mobile App Design",
+      },
+      {
+        title: "NFL-Themed Logos for Sports Podcast",
+        description:
+          "Custom logo designs for a sports podcast with NFL team-inspired branding.",
+        categories: "Logo Design, Branding, Sports",
+        image: "/img/nfl-logos.png",
+        alt: "NFL-Themed Logos for Sports Podcast",
+        url: "https://dribbble.com/shots/25274995-NFL-Themed-Logos-for-Sports-Podcast",
+      },
+      {
+        title: "7-inch Record Picture Disc Concept",
+        description:
+          "Conceptual design for a 7-inch vinyl record with integrated picture disc artwork.",
+        categories: "Product Design, Music, Vinyl",
+        image: "/img/record-disc.png",
+        alt: "7-inch Record Picture Disc Concept",
+        url: "https://dribbble.com/shots/20590753-7-inch-record-picture-disc-concept",
       },
     ],
   },
 
   testimonials: {
     title: "Kudos",
+    subtitle:
+      "Thank you to all who've said such kind things about me. I feel like Sally Field on Oscar night.",
     items: [
       {
         quote:
@@ -175,13 +188,14 @@ export const content = {
 
   career: {
     title: "Career Journey",
+    subtitle: "Organizations that helped me make a living. Appreciate y'all.",
     positions: [
       {
         title: "Senior Product Designer",
         company: "Powerley",
         period: "January 2025 - Present",
         description:
-          "Leading design system initiatives and dashboard redesigns. Creating engaging user experiences through thoughtful onboarding flows and real-time interactions.",
+          "Contributing to design system initiatives and dashboard redesigns. Creating engaging user experiences through thoughtful onboarding flows and real-time interactions.",
       },
       {
         title: "Principal UX Designer",
@@ -221,99 +235,295 @@ export const content = {
     ],
   },
 
-  currentProjects: {
-    title: "Lab Experiments",
-    projects: [
+  figmaHotkeys: {
+    title: "Figma Hotkeys",
+    description: "Essential keyboard shortcuts to speed up your Figma workflow",
+    shortcuts: [
       {
-        title: "Design Principles",
-        description:
-          "Samples of various design principles with an OpenAI integration to learn about the principle.",
-        technologies: ["React", "Vite", "Tailwind"],
-        demo: "https://jazzy-platypus-e0858d.netlify.app/",
-        image: "/img/design-principle.png",
+        category: "Navigation",
+        shortcuts: [
+          { key: "Space", description: "Pan tool" },
+          { key: "Z", description: "Zoom tool" },
+          { key: "Shift + 1", description: "Zoom to fit" },
+          { key: "Shift + 2", description: "Zoom to selection" },
+          { key: "Shift + 3", description: "Zoom to 100%" },
+          { key: "Shift + 4", description: "Zoom to 200%" },
+        ],
       },
       {
-        title: "Illustrator Profile and CMS",
+        category: "Selection & Tools",
+        shortcuts: [
+          { key: "V", description: "Move tool" },
+          { key: "K", description: "Scale tool" },
+          { key: "R", description: "Rectangle tool" },
+          { key: "O", description: "Ellipse tool" },
+          { key: "T", description: "Text tool" },
+          { key: "P", description: "Pen tool" },
+          { key: "L", description: "Line tool" },
+          { key: "F", description: "Frame tool" },
+          { key: "A", description: "Auto layout" },
+        ],
+      },
+      {
+        category: "Editing",
+        shortcuts: [
+          { key: "Ctrl/Cmd + D", description: "Duplicate" },
+          { key: "Ctrl/Cmd + C", description: "Copy" },
+          { key: "Ctrl/Cmd + V", description: "Paste" },
+          { key: "Ctrl/Cmd + X", description: "Cut" },
+          { key: "Delete", description: "Delete selection" },
+          { key: "Ctrl/Cmd + Z", description: "Undo" },
+          { key: "Ctrl/Cmd + Shift + Z", description: "Redo" },
+          { key: "Ctrl/Cmd + G", description: "Group" },
+          { key: "Ctrl/Cmd + Shift + G", description: "Ungroup" },
+        ],
+      },
+      {
+        category: "Alignment & Distribution",
+        shortcuts: [
+          { key: "Ctrl/Cmd + Alt + A", description: "Align left" },
+          { key: "Ctrl/Cmd + Alt + C", description: "Align center" },
+          { key: "Ctrl/Cmd + Alt + R", description: "Align right" },
+          { key: "Ctrl/Cmd + Alt + T", description: "Align top" },
+          { key: "Ctrl/Cmd + Alt + M", description: "Align middle" },
+          { key: "Ctrl/Cmd + Alt + B", description: "Align bottom" },
+          { key: "Ctrl/Cmd + Alt + H", description: "Distribute horizontally" },
+          { key: "Ctrl/Cmd + Alt + V", description: "Distribute vertically" },
+        ],
+      },
+      {
+        category: "Layers & Organization",
+        shortcuts: [
+          { key: "Ctrl/Cmd + Shift + K", description: "Create component" },
+          {
+            key: "Ctrl/Cmd + Alt + K",
+            description: "Create component instance",
+          },
+          { key: "Ctrl/Cmd + Shift + L", description: "Create frame" },
+          { key: "Ctrl/Cmd + Shift + A", description: "Select all" },
+          { key: "Ctrl/Cmd + Shift + D", description: "Deselect all" },
+          { key: "Ctrl/Cmd + Shift + H", description: "Hide/show layers" },
+          { key: "Ctrl/Cmd + Shift + L", description: "Lock/unlock layers" },
+        ],
+      },
+      {
+        category: "Typography",
+        shortcuts: [
+          { key: "Ctrl/Cmd + B", description: "Bold" },
+          { key: "Ctrl/Cmd + I", description: "Italic" },
+          { key: "Ctrl/Cmd + U", description: "Underline" },
+          { key: "Ctrl/Cmd + Shift + K", description: "Strikethrough" },
+          { key: "Ctrl/Cmd + Shift + >", description: "Increase font size" },
+          { key: "Ctrl/Cmd + Shift + <", description: "Decrease font size" },
+        ],
+      },
+      {
+        category: "Prototyping",
+        shortcuts: [
+          { key: "Ctrl/Cmd + Enter", description: "Enter prototype mode" },
+          {
+            key: "Ctrl/Cmd + Shift + Enter",
+            description: "Exit prototype mode",
+          },
+          { key: "Ctrl/Cmd + Shift + R", description: "Record prototype" },
+        ],
+      },
+      {
+        category: "Developer Handoff",
+        shortcuts: [
+          { key: "Ctrl/Cmd + Shift + E", description: "Export selection" },
+          { key: "Ctrl/Cmd + Alt + E", description: "Export for 2x" },
+          { key: "Ctrl/Cmd + Shift + C", description: "Copy CSS" },
+        ],
+      },
+    ],
+  },
+
+  currentProjects: {
+    title: "Lab",
+    subtitle: "Where we cook",
+    projects: [
+      {
+        title: "Chatbots",
         description:
-          "World class illustrator profile and CMS built as promotional tool.",
-        technologies: ["React", "Vite", "AI", "Tailwind", "Figma"],
-        demo: "https://effervescent-duckanoo-3cafae.netlify.app/",
-        image: "/img/holloway.png",
+          "Interactive chatbot experiments exploring conversational UI patterns and AI integration.",
+        technologies: ["React", "OpenAI API", "Tailwind", "Node.js"],
+        demo: "https://chatbot-samples.netlify.app/",
+        image: "/img/ai-user-research.png",
+      },
+      {
+        title: "Old Portfolio",
+        description:
+          "Previous portfolio design showcasing earlier work and design evolution.",
+        technologies: ["HTML", "CSS", "JavaScript"],
+        demo: "https://rococo-paprenjak-da1be1.netlify.app/",
+        image: "/img/old-portfolio.png",
+      },
+      {
+        title: "Design Panes",
+        description:
+          "Spotlights design principles and the designers who put them into practice.",
+        technologies: ["React", "TypeScript", "Tailwind", "Figma API"],
+        demo: "https://designpanes.com/",
+        image: "/img/design-panes.png",
+      },
+      {
+        title: "AI NUI",
+        description:
+          "We're all building the same AI UI. Lets innovate.",
+        technologies: ["React", "AI", "UI/UX", "Design Systems"],
+        demo: "https://aiuinui.netlify.app/",
+        image: "/img/ai-user-research.png",
       },
     ],
   },
 
   articles: {
     title: "Articles",
+    subtitle:
+      "As an English major, I felt this wasn't a big stretch to start cranking these out.",
     items: [
+      {
+        title: "When Good UX Isn't Good Business",
+        description:
+          "Why UX professionals need to understand the financial implications of their design decisions.",
+        url: "when-good-ux-isnt-good-business",
+        content: `<h1>When Good UX Isn't Good Business</h1>
+
+<h2>The UX Professional's Blind Spot</h2>
+
+<p>We UX professionals are trained to think about user needs, accessibility, and intuitive interactions. We pride ourselves on creating experiences that feel natural and helpful. But there's a critical gap in our education and practice: we rarely consider the financial implications of our design decisions.</p>
+
+<p>Here's the uncomfortable truth: sometimes what feels like "good UX" to us isn't actually good for the business. And when we don't understand the financial impact of our decisions, we're not serving our users as well as we think we are.</p>
+
+<h2>The Hidden Costs of "Intuitive" Design</h2>
+
+<p>Consider a common scenario: you design a checkout flow that's so streamlined, users can complete a purchase in three clicks. It feels great, it's accessible, it follows all the UX best practices. But what if that streamlined flow actually reduces the average order value by 15%?</p>
+
+<p>Or take another example: you create a beautiful, distraction-free reading experience that removes all navigation elements. Users can focus entirely on the content. But what if that same design reduces page views by 30% and cuts ad revenue in half?</p>
+
+<p>These aren't hypothetical situations - they're real trade-offs that happen every day in product design. The problem is that most UX professionals don't have the data or the financial literacy to understand these implications.</p>
+
+<h2>Why Traditional UX Thinking Falls Short</h2>
+
+<p>Our traditional UX education teaches us to optimize for user satisfaction, task completion, and accessibility. These are all important, but they're not the whole picture. We're missing a crucial piece: understanding how our design decisions impact the business metrics that keep the product alive.</p>
+
+<p>When we design without considering financial implications, we're essentially working in a vacuum. We might create the most beautiful, accessible interface in the world, but if it doesn't support the business model, it won't last long enough to help anyone.</p>
+
+<p>Think about it: if your product can't sustain itself financially, it won't exist to serve users at all. The most user-friendly design in the world is worthless if the company goes out of business.</p>
+
+<h2>The Financial Literacy Gap</h2>
+
+<p>Most UX professionals don't have a background in business or finance. We don't understand concepts like customer lifetime value, conversion rates, or revenue per user. We don't know how to read a P&L statement or understand what metrics actually matter to the business.</p>
+
+<p>This gap creates a dangerous disconnect. We make design decisions based on what feels right, while the business makes decisions based on what drives revenue. When these two perspectives don't align, everyone loses.</p>
+
+<p>The solution isn't to abandon user-centered design principles. It's to expand our understanding to include business metrics alongside user metrics. We need to become bilingual - fluent in both UX and business language.</p>
+
+<h2>When "Bad UX" Might Be Good Business</h2>
+
+<p>Here's where it gets really uncomfortable: sometimes what we consider "bad UX" might actually be good for the business. A slightly longer checkout process might increase order value. A few more clicks might lead to better user education and higher satisfaction in the long run.</p>
+
+<p>This doesn't mean we should abandon our principles and create intentionally frustrating experiences. It means we need to understand the full context of our decisions and find ways to balance user needs with business needs.</p>
+
+<p>The key is to move beyond binary thinking. It's not "good UX vs. bad UX" - it's "what serves both the user and the business in the long term?"</p>
+
+<h2>Building Financial Awareness</h2>
+
+<p>So how do we bridge this gap? Start by asking questions:</p>
+
+<ul>
+<li>What are the key business metrics for this product?</li>
+<li>How do our design decisions impact those metrics?</li>
+<li>What's the cost of implementing this feature vs. the potential revenue impact?</li>
+<li>Are we optimizing for short-term user satisfaction at the expense of long-term business health?</li>
+</ul>
+
+<p>Learn to speak the language of business. Understand basic financial concepts. Ask to see the data that drives business decisions. Collaborate with product managers and business analysts to understand the full picture.</p>
+
+<p>Most importantly, recognize that serving users well means ensuring the product can continue to serve them. That requires understanding how your design decisions impact the business model.</p>
+
+<h2>The Path Forward</h2>
+
+<p>This isn't about selling out or abandoning user-centered design. It's about expanding our definition of what it means to serve users well. The best UX professionals understand that they're not just designing interfaces - they're designing business models.</p>
+
+<p>When we understand the financial implications of our decisions, we can make better choices. We can design experiences that serve users while also supporting the business that makes those experiences possible.</p>
+
+<p>It's time for UX professionals to become financially literate. Our users deserve nothing less.</p>
+
+<p class="article-date">Draft - January 2025</p>`,
+        image: "/img/analytics-desktop.svg",
+        date: "Draft - January 2025",
+        tags: ["UX Design", "Business", "Product Strategy"],
+      },
       {
         title: "Seven Interviews?",
         description:
           "Examining modern hiring practices and their impact on both candidates and organizations.",
-        content: `Seven Interviews?
+        url: "seven-interviews",
+        content: `<h1>Seven Interviews?</h1>
 
-## The Interview Process
+<h2>The Interview Process</h2>
 
-Extended interview processes have become the norm: multiple rounds, repeated discussions, and lengthy timelines. While thorough evaluation is important, the current approach often prioritizes procedure over meaningful assessment. How many times should a candidate have to answer "tell me about yourself" before someone takes notes?
+<p>Extended interview processes have become the norm: multiple rounds, repeated discussions, and lengthy timelines. While thorough evaluation is important, the current approach often prioritizes procedure over meaningful assessment. How many times should a candidate have to answer "tell me about yourself" before someone takes notes?</p>
 
-After experiencing seven rounds of interviews for a single position, the question becomes clear: what value does each additional interview add? Thankfully, I didn't have to endure this process myself - I've heard enough horror stories from colleagues and friends to know it's a widespread issue that needs addressing.
+<p>After experiencing seven rounds of interviews for a single position, the question becomes clear: what value does each additional interview add? Thankfully, I didn't have to endure this process myself - I've heard enough horror stories from colleagues and friends to know it's a widespread issue that needs addressing.</p>
 
-## A More Efficient Approach
+<h2>A More Efficient Approach</h2>
 
-What if the hiring process was reimagined with respect for everyone's time? What if organizations:
+<p>What if the hiring process was reimagined with respect for everyone's time? What if organizations:</p>
 
-- Conducted thorough research before interviews
+<ul>
+<li>Conducted thorough research before interviews</li>
+<li>Made decisions promptly</li>
+<li>Provided meaningful feedback</li>
+<li>Clearly defined requirements upfront</li>
+</ul>
 
-- Made decisions promptly
+<p>Research suggests that most hiring decisions are made within the first 15 minutes of the initial interview. The subsequent rounds often serve more as validation than discovery.</p>
 
-- Provided meaningful feedback
+<h2>The Cost of Ineffective Hiring</h2>
 
-- Clearly defined requirements upfront
+<p>Poor hiring decisions are expensive. Beyond the interview process, organizations face significant costs when a candidate is hired but later terminated due to skill mismatches: onboarding expenses, lost productivity, and the cost of starting the recruitment process again.</p>
 
-Research suggests that most hiring decisions are made within the first 15 minutes of the initial interview. The subsequent rounds often serve more as validation than discovery.
+<p>For hiring managers, consider:</p>
 
-## The Cost of Ineffective Hiring
+<ul>
+<li>Would you want to experience this process?</li>
+<li>What insights are gained from each interview?</li>
+<li>Could decisions be made faster?</li>
+<li>Are candidates being treated with respect?</li>
+</ul>
 
-Poor hiring decisions are expensive. Beyond the interview process, organizations face significant costs when a candidate is hired but later terminated due to skill mismatches: onboarding expenses, lost productivity, and the cost of starting the recruitment process again.
+<p>The best hiring processes are those that efficiently identify the right candidate while treating everyone involved with dignity and respect.</p>
 
-For hiring managers, consider: 
-
-- Would you want to experience this process? 
-
-- What insights are gained from each interview? 
-
-- Could decisions be made faster? 
-
-- Are candidates being treated with respect?
-
-The best hiring processes are those that efficiently identify the right candidate while treating everyone involved with dignity and respect.
-
-June 7, 2024`,
-        image: "/img/hiring-process.png",
+<p class="article-date">June 7, 2024</p>`,
+        image: "/img/hide-harold.png",
         date: "June 7, 2024",
         tags: ["Career", "Hiring", "Workplace Culture"],
       },
       {
         title: "Vibe Coding vs Vibe Engineering",
         description:
-          "The subtle art of making things work right, not just feel right.",
-        content: `Vibe Coding vs Vibe Engineering
+          "The subtle art of making things work right, not just feel right.🎧 💻",
+        url: "vibe-coding-vs-vibe-engineering",
+        content: `<h1>Vibe Coding vs Vibe Engineering</h1>
 
-## The Vibe Check
+<h2>The Vibe Check</h2>
 
-The word "vibe" might make you cringe, but there's something important about how things feel when you use them. Vibe engineering isn't another buzzword - it's the difference between making something feel right and making it work right. Every interaction is a chance to build trust with users.
+<p>The word "vibe" might make you cringe, but there's something important about how things feel when you use them. Vibe engineering isn't another buzzword - it's the difference between making something feel right and making it work right. Every interaction is a chance to build trust with users.</p>
 
-THINK of vibe coding like telling a robot "make this room cozier" instead of understanding what makes a space feel warm. The robot might add throw pillows and dim the lights, but it won't understand that the real issue might be the harsh lighting or cold furniture.
+<p><strong>THINK</strong> of vibe coding like telling a robot "make this room cozier" instead of understanding what makes a space feel warm. The robot might add throw pillows and dim the lights, but it won't understand that the real issue might be the harsh lighting or cold furniture.</p>
 
-## The Real Difference
+<h2>The Real Difference</h2>
 
-When working with AI, this distinction is crucial. If you don't specify the right constraints upfront, you'll end up with technically correct but fundamentally flawed solutions. It's like telling AI to "make it look better" versus explaining exactly how the user should feel.
+<p>When working with AI, this distinction is crucial. If you don't specify the right constraints upfront, you'll end up with technically correct but fundamentally flawed solutions. It's the difference between asking AI to "make it look better" and telling it exactly what emotional response you want to evoke in users.</p>
 
-This is where real UI development experience pays off. You can tell AI to "add a 2px border with rounded corners" instead of just saying "make it pop." This precision saves time and leads to better results.
+<p>This is where real UI development experience pays off. You can tell AI to "add a 2px border with rounded corners" instead of just saying "make it pop." This precision saves time and leads to better results.</p>
 
-Vibe engineering solves real problems while feeling natural. Vibe coding makes things feel right but might miss the underlying issues. Next time you're building something, ask yourself: am I engineering the vibe, or am I just coding it?
+<p>Vibe engineering solves real problems while feeling natural. Vibe coding makes things feel right but might miss the underlying issues. Next time you're building something, ask yourself: am I engineering the vibe, or am I just coding it?</p>
 
-June 8, 2024`,
+<p class="article-date">June 8, 2024</p>`,
         image: "/img/vibe-engineering.png",
         date: "June 8, 2024",
         tags: ["UX Design", "Development", "Product Design"],
@@ -322,99 +532,64 @@ June 8, 2024`,
         title: "AI Hallucination Prevention",
         description:
           "How to spot, handle, and stop the AI needle from skipping.",
-        content: `AI Hallucination Prevention
+        url: "ai-hallucination-prevention",
+        content: `
 
-## The AI Confidence Trap
+<h2>The AI Confidence Trap</h2>
 
-You know that feeling when your AI assistant sounds super confident about something, but you're pretty sure it's making it up? That's a hallucination - when AI confidently presents false information as fact. It's like that friend who always has an answer, even when they're completely wrong.
+<p>When your AI assistant sounds super confident about something, but you're pretty sure it's making it up - that's a hallucination. It's when AI confidently presents false information as fact. It's like that friend who always has an answer, even when they're completely wrong.</p>
 
-When you catch an AI hallucinating, call it out directly: "I think you might be hallucinating here." Ask for sources or citations, break the problem into smaller pieces, give it more context. If all else fails, start fresh with a new conversation.
+<p>When you catch an AI hallucinating, call it out directly: "I think you might be hallucinating here." Ask for sources or citations, break the problem into smaller pieces, give it more context. If all else fails, start fresh with a new conversation.</p>
 
-## The Practical Guide
+<h2>The Practical Guide</h2>
 
-The best way to prevent hallucinations is to be specific about what you need, provide relevant context, ask for step-by-step reasoning, request sources or citations upfront, and use follow-up questions to verify information.
+<p>The best way to prevent hallucinations is to be specific about what you need, provide relevant context, ask for step-by-step reasoning, request sources or citations upfront, and use follow-up questions to verify information.</p>
 
-Remember, it's not just what you ask - it's how you ask it. Telling AI to "create a login form" might get you something that looks right but doesn't actually work. Instead, try "create a login form with email validation, password requirements, and error handling for invalid credentials." The more specific your request, the less room there is for the AI to fill in the gaps with made-up details. It's like the difference between asking someone to "make it look nice" versus "use a 16px font size with 1.5 line height and 24px margins."
+<p>Remember, it's not just what you ask - it's how you ask it. Telling AI to "create a login form" might get you something that looks right but doesn't actually work. Instead, try "create a login form with email validation, password requirements, and error handling for invalid credentials." The more specific your request, the less room there is for the AI to fill in the gaps with made-up details. It's like the difference between asking someone to "make it look nice" versus "use a 16px font size with 1.5 line height and 24px margins."</p>
 
-Here's a hard truth: even when AI gives you exactly what you asked for, you still need to test it. Every time. I've seen AI-generated code that looked perfect but broke existing functionality. That's why regression testing is non-negotiable - especially when working with AI. It's not about distrusting the AI; it's about respecting the complexity of the systems we're building.
+<p>Here's a hard truth: even when AI gives you exactly what you asked for, you still need to test it. Every time. I've seen AI-generated code that looked perfect but broke existing functionality. That's why regression testing is non-negotiable - especially when working with AI. It's not about distrusting the AI; it's about respecting the complexity of the systems we're building.</p>
 
-One of the trickiest parts of working with AI is knowing when to be specific and when to be vague. Need a specific implementation? Be precise with your requirements. Looking for creative solutions? Leave some room for the AI to surprise you. It's like the difference between asking for "a blue button" versus "something that draws attention to this action." Sometimes the AI's interpretation is better than what you had in mind.
+<p>One of the trickiest parts of working with AI is knowing when to be specific and when to be vague. Need a specific implementation? Be precise with your requirements. Looking for creative solutions? Leave some room for the AI to surprise you. It's like the difference between asking for "a blue button" versus "something that draws attention to this action." Sometimes the AI's interpretation is better than what you had in mind.</p>
 
-Here's something I've learned the hard way: multi-step changes are risky. When you ask AI to make several changes at once, it's like playing a game of telephone - each step can introduce new errors or misunderstandings. Instead, break complex changes into single, focused steps. Test each step before moving to the next. It might feel slower, but it's much faster than fixing a cascade of issues later.
+<p>Here's something I've learned the hard way: multi-step changes are risky. When you ask AI to make several changes at once, it's like playing a game of telephone - each step can introduce new errors or misunderstandings. Instead, break complex changes into single, focused steps. Test each step before moving to the next. It might feel slower, but it's much faster than fixing a cascade of issues later.</p>
 
-## Moving Forward
+<h2>Moving Forward</h2>
 
-Hallucinations aren't going away anytime soon. They're part of how these models work. The key is to develop a healthy skepticism and know how to work around them. THINK of it like proofreading - you don't trust spell check completely, you use it as a tool.
+<p>Hallucinations aren't going away anytime soon. They're part of how these models work. The key is to develop a healthy skepticism and know how to work around them. <strong>THINK</strong> of it like proofreading - you don't trust spell check completely, you use it as a tool.</p>
 
-May 30, 2024`,
+<p class="article-date">May 30, 2024</p>`,
         image: "/img/ai-hallucination.png",
+        cardImage: "/img/lebow-ball.png",
         date: "May 30, 2024",
         tags: ["AI", "Productivity", "Best Practices"],
       },
+
       {
-        title: "Users Don't Ask Much of Us",
-        description: "Successful design is often less complex than we think.",
-        content: `Users Don't Ask Much of Us
-
-## The Bare Minimum
-
-Users don't ask for much. They just want to get their stuff done without thinking about it. No one wakes up thinking, "I can't wait to use that new app today!" They wake up thinking, "I need to get this thing done, and hopefully it won't be a pain in the ass."
-
-## What Users Actually Want
-
-Let's be real - users want:
-
-- Stuff that works
-
-- Stuff that's fast
-
-- Stuff that doesn't make them feel stupid
-
-That's it. That's the list. They don't care about your fancy animations, your clever micro-interactions, or your beautiful typography. They care about getting from point A to point B without getting lost or frustrated.
-
-## The Great Disconnect
-
-We spend hours debating button colors, animation timings, and interaction patterns. Meanwhile, users are just trying to find the "submit" button. We obsess over the perfect shade of blue, while they're wondering why the form keeps resetting when they hit back.
-
-## The Real Challenge
-
-The hardest part of design isn't making things beautiful - it's making them invisible. The best interfaces are the ones users don't even notice. They just work, and that's all anyone really wants.
-
-## A Modest Proposal
-
-Maybe instead of trying to wow users with our design skills, we should focus on not making them think. Stop trying to be clever. Stop trying to be different. Just be clear, be fast, and be reliable.
-
-That's not to say we shouldn't care about aesthetics. But let's get the basics right first. Make it work. Make it fast. Make it obvious. Then, if you must, make it pretty.
-
-June 4, 2024`,
-        image: "/img/user-expectations.png",
-        date: "June 4, 2024",
-        tags: ["UX Design", "User Experience", "Design Philosophy"],
-      },
-      {
-        title: "bolt.new: The Leader in the Rapid Prototyping Clubhouse",
+        title: "Bolt.new: The Leader in the Rapid Prototyping Clubhouse",
         description:
-          "For my money, bolt.new and its ecosystem is the leader in the AI-assisted development and design space.",
-        content: `bolt.new: The Leader in the Rapid Prototyping Clubhouse
+          "Bolt.new and its ecosystem is the leader in the AI-assisted development and design space.",
+        url: "bolt-new-rapid-prototyping",
+        content: `<h1>bolt.new: The Leader in the Rapid Prototyping Clubhouse</h1>
 
-## The Speed of Thought
+<h2>The Speed of Thought</h2>
 
-You know that feeling when you have a great idea, but getting it into something you can actually show people takes forever? Bolt.new is like having a superpower for turning ideas into real things, fast.
+<p>When you have a great idea, but getting it into something you can actually show people takes forever - bolt.new is like having a superpower for turning ideas into real things, fast.</p>
 
-The interface is slick, everything moves smoothly, and it looks good while being quick. Sure, it can get a bit sluggish when you're pushing it hard - we're talking about AI here - but that's a small price to pay for what it gives you in return.
+<p>The interface is slick, everything moves smoothly, and it looks good while being quick. Sure, it can get a bit sluggish when you're pushing it hard - we're talking about AI here - but that's a small price to pay for what it gives you in return.</p>
 
-## The Real Magic
+<h2>The Real Magic</h2>
 
-The best part about bolt.new isn't the tech - it's how it changes the way you talk about ideas. Instead of trying to explain what you're thinking, you can just show it. That changes everything about how you get feedback and make things better.
+<p>The best part about bolt.new isn't the tech - it's how it changes the way you talk about ideas. Instead of trying to explain what you're thinking, you can just show it. That changes everything about how you get feedback and make things better.</p>
 
-## Looking Forward
+<h2>Looking Forward</h2>
 
-Tools like bolt.new aren't just about speed - they're about making better stuff. When you can focus on solving problems instead of fighting with your tools, that's when the real magic happens.
+<p>Tools like bolt.new aren't just about speed - they're about making better stuff. When you can focus on solving problems instead of fighting with your tools, that's when the real magic happens.</p>
 
-And the best part? This is just the start. As bolt.new keeps getting better, we're seeing a future where the line between design and development gets blurrier - and that's exactly what we need.
+<p>And the best part? This is just the start. As bolt.new keeps getting better, we're seeing a future where the line between design and development gets blurrier - and that's exactly what we need.</p>
 
-June 1, 2024`,
+<p class="article-date">June 1, 2024</p>`,
         image: "/img/bolt-new.png",
+        cardImage: "/img/bolt-new.png",
         date: "June 1, 2024",
         tags: ["Design Tools", "Prototyping", "UX Design"],
       },
@@ -422,194 +597,170 @@ June 1, 2024`,
         title: "Information Architecture Is Not Sacred",
         description:
           "Your IA should evolve with your users, not stay set in stone.",
-        content: `Information Architecture Is Not Sacred
+        content: `<h1>Information Architecture Is Not Sacred</h1>
 
-## Your IA Shouldn't Be Set in Stone
+<h2>Your IA Shouldn't Be Set in Stone</h2>
 
-The UX process is iterative by nature. You design something, test it, learn from it, and then do it all over again. It's not a straight path, and your information architecture shouldn't be either. When real feedback shows that people are missing something, you move it. When analytics show that users are skipping entire sections, you streamline. The structure should serve the user, not hold them back.
+<p>The UX process is iterative by nature. You design something, test it, learn from it, and then do it all over again. It's not a straight path, and your information architecture shouldn't be either. When real feedback shows that people are missing something, you move it. When analytics show that users are skipping entire sections, you streamline. The structure should serve the user, not hold them back.</p>
 
-## Investing in User Testing
+<h2>Investing in User Testing</h2>
 
-A user testing platform subscription costs less than your office snacks budget, yet provides invaluable insights into how users navigate your information architecture. It's a small investment that helps prevent the much larger cost of losing potential customers due to poor content organization.
+<p>A user testing platform subscription costs less than your office snacks budget, yet provides invaluable insights into how users navigate your information architecture. It's a small investment that helps prevent the much larger cost of losing potential customers due to poor content organization.</p>
 
-Your users aren't just numbers in a database, they're partners in your product's journey. Their navigation patterns, content discovery struggles, and information-seeking behaviors should directly inform your IA decisions.
+<p>Your users aren't just numbers in a database, they're partners in your product's journey. Their navigation patterns, content discovery struggles, and information-seeking behaviors should directly inform your IA decisions.</p>
 
-The real question isn't what your users are worth to you - it's what you're willing to invest to truly understand how they think about and organize your content.
+<p>The real question isn't what your users are worth to you - it's what you're willing to invest to truly understand how they think about and organize your content.</p>
 
-Cutting corners on IA doesn't just affect numbers on a dashboard. You're losing real people. THINK about it: if your product has 10,000 users and each one takes just 10 seconds to decide they can't find what they're looking for, that's 10,000 potential customers walking away. What's that worth to you?
+<p>Cutting corners on IA doesn't just affect numbers on a dashboard. You're losing real people. <strong>THINK</strong> about it: if your product has 10,000 users and each one takes just 10 seconds to decide they can't find what they're looking for, that's 10,000 potential customers walking away. What's that worth to you?</p>
 
-## Beyond the Bottom Line
+<h2>Beyond the Bottom Line</h2>
 
-Yes, business needs to make money. And the best businesses understand that user value and business value aren't mutually exclusive. In fact, they're deeply connected. When you invest in understanding and serving your users better, you're not just doing the right thing - you're making a smart business decision.
+<p>Yes, business needs to make money. And the best businesses understand that user value and business value aren't mutually exclusive. In fact, they're deeply connected. When you invest in understanding and serving your users better, you're not just doing the right thing - you're making a smart business decision.</p>
 
-Every interaction with your product is an opportunity to build or break trust. When users feel understood and valued, they become your biggest advocates. They'll stick with you through rough patches and bring others along. That kind of loyalty is priceless.
+<p>Every interaction with your product is an opportunity to build or break trust. When users feel understood and valued, they become your biggest advocates. They'll stick with you through rough patches and bring others along. That kind of loyalty is priceless.</p>
 
-## Build for Real Behavior
+<h2>Build for Real Behavior</h2>
 
-The best organizations don't let ego or outdated documents dictate the user experience. They know great UX means anticipating what the user needs - sometimes before they even know it themselves - and meeting them there.
+<p>The best organizations don't let ego or outdated documents dictate the user experience. They know great UX means anticipating what the user needs - sometimes before they even know it themselves - and meeting them there.</p>
 
-So go ahead: break your own architecture if it makes the experience better. That's not sloppy - it's smart. It's a living system that should evolve with your users. Keep it flexible. Keep it human.
+<p>So go ahead: break your own architecture if it makes the experience better. That's not sloppy - it's smart. It's a living system that should evolve with your users. Keep it flexible. Keep it human.</p>
 
-March 19, 2024`,
-        url: "#",
+<p class="article-date">March 19, 2024</p>`,
+        url: "information-architecture-not-sacred",
         image: "/img/ia-flexible.png",
         tags: ["Information Architecture", "UX Design", "User Experience"],
         date: "March 19, 2024",
       },
+
       {
-        title: "Design Genres",
-        description:
-          "When your users want AC/DC, don't give them King Crimson.",
-        content: `Design Genres
+        title: "The 5 Design Genres",
+        description: "Naming things is fun, as previously discussed.",
+        url: "five-design-genres",
+        content: `<p>This was fun the first time around, so let's go ahead and run it back, this time with more details. And more guitars.</p>
 
-When your product performs, who is watching? And why are they there in the first place? 
+<p>Why do we need utilitarian names for types of design? Because we don't have any yet. At least none that are any fun. So let's make some up.</p>
 
-Design, like music, has its genres. And just like you wouldn't play death metal at a jazz club, you need to match your design to your audience's expectations. 
+<div class="w-full mb-8 aspect-video overflow-hidden rounded-lg">
+  <img src="/img/vinyl-bob.jpg" alt="Robert Pollard standing in front of his vast record collection" class="w-full h-full object-cover" title="Robert Pollard - The prolific frontman of Guided By Voices, shown here looking through records at a small record store. With over 300 records to his name spanning nearly every genre imaginable, Pollard embodies the spirit of artistic exploration and genre-defying creativity." />
+  <p class="text-sm text-gray-600 dark:text-gray-400 mt-2 text-center italic">Design genres, like musical genres, help us understand and communicate different approaches to creating user experiences.</p>
+</div>
 
-Unless you're Jackson Pollock or Andy Warhol, users aren't there to see your personal creative endeavors. They have something they need done, and likely don't even feel like doing it.
+<h2>1. Dense</h2>
 
-Artists get into trouble when they make art to impress other artists. Designers get into trouble when they make products to impress other designers.
+<p>Users expect power, control, and maximum information density through heavy, complex interfaces with dense information, dark themes, high contrast, and industrial aesthetics.</p>
 
+<p><strong>THINK:</strong> Bloomberg Terminal, Trading Platforms</p>
 
-Don't get me wrong - make sure my tombstone text is Helvetica, but if my user wants Comic Sans, I'm going to give them all the Comic Sans they can handle.
+<p><strong>SAY:</strong> "The admin panel is getting too Dense - maybe we should split these controls into separate views?"</p>
 
-## The Power of Genre Awareness
+<p><strong>LISTEN:</strong> Prog (Mahavishnu Orchestra, Yes, King Crimson) - complex, intense, and information-rich</p>
 
-Having a niche audience is a gift. You know exactly who your users are and what they expect. This deep understanding creates natural empathy - your users can feel when you truly get them.
+<h2>2. Routine</h2>
 
-Shoe-horning in your personal creative signature can damage your product in ways that aren't even tangible. Most users don't want King Crimson. They might tolerate Radiohead, but they really just want AC/DC. And if we don't give them AC/DC, then shame on us.
+<p>Users expect speed, clarity, and getting things done through simple, straightforward, and functional designs featuring neutral colors, clear typography, and minimal decoration.</p>
 
-This isn't selling out or pandering - you have been blessed with an audience and they have expectations. Our product needs to map to their expectations. The genre isn't one of our choosing; it's a hand we've been fortunate enough to have been dealt.
+<p><strong>THINK:</strong> Google Search, Wikipedia, Craigslist, Microsoft Office</p>
 
-May 27, 2024`,
-        image: "/img/art-music.png",
-        date: "May 27, 2024",
-        tags: ["Design", "UX Design", "User Experience"],
-      },
-      {
-        title: "The 5 Design Genres (DRISS)",
-        description: "Naming things is fun. Naming things well? Goated.",
-        content: `
+<p><strong>SAY:</strong> "The settings page needs to be more Routine - users just want to change their preferences and move on."</p>
 
-This was fun the first time around, so let's go ahead and run it back, this time with more details.
-And an acronym. And more guitars.
+<p><strong>LISTEN:</strong> Noise (Shellac, Helmet, Neu!) - brutish, authentic, and purposeful</p>
 
-Why do we need utilitarian names for types of design? Because we don't have any yet. At least none that are any fun. So let's make some up.
+<h2>3. Immersive</h2>
 
-## 1. DENSE
+<p>Users expect excitement, community, and visual impact through bold, energetic, and immersive designs featuring dark themes, neon accents, and dynamic elements.</p>
 
-Users expect power, control, and maximum information density through heavy, complex interfaces with dense information, dark themes, high contrast, and industrial aesthetics.
+<p><strong>THINK:</strong> Discord, Steam, Twitch</p>
 
-THINK: Bloomberg Terminal, Trading Platforms
+<p><strong>SAY:</strong> "Let's commit to being more Immerse - can we add spatial audio?"</p>
 
-SAY: "The admin panel is getting too Dense - maybe we should split these controls into separate views?"
+<p><strong>LISTEN:</strong> Big Indie (The Flaming Lips, Turnstile, Broken Social Scene) - energetic, engaging, and delightful</p>
 
-LISTEN: Prog (Mahavishnu Orchestra, Yes, King Crimson) - complex, intense, and information-rich
+<h2>4. Suite</h2>
 
-## 2. ROUTINE
+<p>Users expect innovation, personality, and modern features through bold, playful, and slightly experimental designs featuring bright colors, custom illustrations, and micro-interactions.</p>
 
-Users expect speed, clarity, and getting things done through simple, straightforward, and functional designs featuring neutral colors, clear typography, and minimal decoration.
+<p><strong>THINK:</strong> Slack, Notion, Figma</p>
 
-THINK: Google Search, Wikipedia, Craigslist, Microsoft Office
+<p><strong>SAY:</strong> "The empty states could use some Suite intuition - let's try more predicitive micro-interactions."</p>
 
-SAY: "The settings page needs to be more Routine - users just want to change their preferences and move on."
+<p><strong>LISTEN:</strong> Experimental Indie (Guided By Voices, Deerhunter, Neutral Milk Hotel) - creative, unique, but still approachable</p>
 
-LISTEN: Noise (Shellac, Helmet, Neu!) - brutish, authentic, and purposeful
+<h2>5. Stripped</h2>
 
-## 3. IMMERSE
+<p>Users expect quality, exclusivity, and attention to detail through minimal, sophisticated, and carefully crafted designs featuring monochromatic color schemes, ample whitespace, and subtle animations.</p>
 
-Users expect excitement, community, and visual impact through bold, energetic, and immersive designs featuring dark themes, neon accents, and dynamic elements.
+<p><strong>THINK:</strong> Apple, Bang & Olufsen</p>
 
-THINK: Discord, Steam, Twitch
+<p><strong>SAY:</strong> "The product page feels cluttered - let's go more Stripped for the next iteration."</p>
 
-SAY: "Let's commit to being more Immerse - can we add spatial audio?"
+<p><strong>LISTEN:</strong> Post Rock (Radiohead, Tortoise, Slint) - sophisticated, nuanced, and refined</p>
 
-LISTEN: Big Indie (The Flaming Lips, Turnstile, Broken Social Scene) - energetic, engaging, and delightful
+<h2>Do Genres Matter?</h2>
 
-## 4. SUITE
+<p>These design genres aren't just fancy labels - they're a powerful shared language that helps teams make better decisions. When someone says "this interface needs to be more familiar and reliable" or "let's make this experience more playful and experimental," they're not just talking about colors and fonts. They're communicating a complete vision of how the product should feel and function.</p>
 
-Users expect innovation, personality, and modern features through bold, playful, and slightly experimental designs featuring bright colors, custom illustrations, and micro-interactions.
+<p>Think of it like a movie soundtrack. The right music doesn't just play in the background - it shapes how you experience the entire film. In the same way, choosing the right design genre shapes how users experience your product. It's about creating harmony between what users expect, what your business needs, and how people feel when they use your product.</p>
 
-THINK: Slack, Notion, Figma
-
-SAY: "The empty states could use some Suite intuition - let's try more predicitive micro-interactions."
-
-LISTEN: Experimental Indie (Guided By Voices, Deerhunter, Neutral Milk Hotel) - creative, unique, but still approachable
-
-## 5. STRIPPED
-
-Users expect quality, exclusivity, and attention to detail through minimal, sophisticated, and carefully crafted designs featuring monochromatic color schemes, ample whitespace, and subtle animations.
-
-THINK: Apple, Bang & Olufsen
-
-SAY: "The product page feels cluttered - let's go more Stripped for the next iteration."
-
-LISTEN: Post Rock (Radiohead, Tortoise, Slint) - sophisticated, nuanced, and refined
-
-## Do Genres Matter?
-
-These design genres aren't just fancy labels - they're a powerful shared language that helps teams make better decisions. When someone says "this interface needs to be more familiar and reliable" or "let's make this experience more playful and experimental," they're not just talking about colors and fonts. They're communicating a complete vision of how the product should feel and function.
-
-Think of it like a movie soundtrack. The right music doesn't just play in the background - it shapes how you experience the entire film. In the same way, choosing the right design genre shapes how users experience your product. It's about creating harmony between what users expect, what your business needs, and how people feel when they use your product.
-
-June 15, 2024`,
-        image: "/img/design-genres-2.png",
+<p class="article-date">June 15, 2024</p>`,
+        image: "",
+        cardImage: "/img/genres.png",
         date: "June 15, 2024",
         tags: ["Design", "UX Design", "User Experience", "Design Systems"],
       },
       {
         title: "API Tokens: The Digital Arcade",
         description:
-          "How the concept of tokens in modern API usage echoes the arcade culture of the 1980s.",
-        content: `## The Token Economy
+          "How the concept of tokens in modern API usage echoes the arcade culture of the 1980s. 🪙 🪙",
+        url: "api-tokens-digital-arcade",
+        content: `<h1>API Tokens: The Digital Arcade</h1>
 
-Remember walking into an arcade with a pocket full of quarters, ready to exchange them for tokens? That familiar clink of metal against metal, the anticipation of gameplay ahead. Fast forward to today, and we're still using tokens - just in a different form. API tokens have become the digital equivalent of those arcade tokens, and the parallels are striking.
+<h2>The Token Economy</h2>
 
-## The Arcade Experience
+<p>Remember walking into an arcade with a pocket full of quarters, ready to exchange them for tokens? That familiar clink of metal against metal, the anticipation of gameplay ahead. Fast forward to today, and we're still using tokens - just in a different form. API tokens have become the digital equivalent of those arcade tokens, and the parallels are striking.</p>
 
-In the 1980s, arcades were temples of gaming. You'd walk in with cash, exchange it for tokens, and each token represented a chance to play. One token, one game. It was simple, it was fair, and it was universal. Whether you were playing Galaga or Pole Position, the token system was the same.
+<h2>The Arcade Experience</h2>
 
-## The Modern Digital Arcade
+<p>In the 1980s, arcades were temples of gaming. You'd walk in with cash, exchange it for tokens, and each token represented a chance to play. One token, one game. It was simple, it was fair, and it was universal. Whether you were playing Galaga or Pole Position, the token system was the same.</p>
 
-Today's API tokens work in much the same way. Instead of physical tokens, we have digital ones. Instead of games, we're accessing services. But the fundamental concept remains:
+<h2>The Modern Digital Arcade</h2>
 
-- One token, one request
+<p>Today's API tokens work in much the same way. Instead of physical tokens, we have digital ones. Instead of games, we're accessing services. But the fundamental concept remains:</p>
 
-- Limited supply (rate limits)
+<ul>
+<li>One token, one request</li>
+<li>Limited supply (rate limits)</li>
+<li>Universal currency (standardized authentication)</li>
+<li>Clear value exchange</li>
+</ul>
 
-- Universal currency (standardized authentication)
+<h2>The Psychology of Tokens</h2>
 
-- Clear value exchange
+<p>What's fascinating is how both systems tap into the same psychological principles. Physical tokens made the cost of play visible, just as API tokens make the cost of service usage visible. Arcades used tokens to manage access to games, while APIs use tokens to manage access to services. Whether you were in New York or Los Angeles, arcade tokens worked the same way, and API tokens work the same way across different services.</p>
 
-## The Psychology of Tokens
+<h2>The Evolution of Token Systems</h2>
 
-What's fascinating is how both systems tap into the same psychological principles. Physical tokens made the cost of play visible, just as API tokens make the cost of service usage visible. Arcades used tokens to manage access to games, while APIs use tokens to manage access to services. Whether you were in New York or Los Angeles, arcade tokens worked the same way, and API tokens work the same way across different services.
+<p>The arcade token system evolved from simple mechanical devices to sophisticated electronic systems. Similarly, API tokens have evolved from basic authentication to complex systems with:</p>
 
-## The Evolution of Token Systems
+<ul>
+<li>Rate limiting</li>
+<li>Usage tracking</li>
+<li>Permission scoping</li>
+<li>Expiration dates</li>
+</ul>
 
-The arcade token system evolved from simple mechanical devices to sophisticated electronic systems. Similarly, API tokens have evolved from basic authentication to complex systems with:
+<h2>Lessons from the Arcade</h2>
 
-- Rate limiting
+<p>The arcade token system taught us valuable lessons about user experience. The system had to be immediately understandable, with everyone playing by the same rules. You always knew how many tokens you had left, and you knew instantly if your token was accepted. The limited supply meant you had to use your tokens wisely, and there was always a clear value exchange - you knew exactly what you were getting for your tokens.</p>
 
-- Usage tracking
+<p>These same principles apply to modern API token systems. The best API implementations maintain this simplicity while adding necessary security and control.</p>
 
-- Permission scoping
+<h2>The Future of Tokens</h2>
 
-- Expiration dates
+<p>Just as arcade tokens evolved into digital gaming currencies, API tokens are evolving into more sophisticated systems. But the core concept remains the same: a simple, universal way to exchange value for service.</p>
 
-## Lessons from the Arcade
+<p>The next time you're implementing an API token system, remember the arcade. Sometimes the best solutions are the ones that have stood the test of time, just dressed in digital clothes.</p>
 
-The arcade token system taught us valuable lessons about user experience. The system had to be immediately understandable, with everyone playing by the same rules. You always knew how many tokens you had left, and you knew instantly if your token was accepted. The limited supply meant you had to use your tokens wisely, and there was always a clear value exchange - you knew exactly what you were getting for your tokens.
-
-These same principles apply to modern API token systems. The best API implementations maintain this simplicity while adding necessary security and control.
-
-## The Future of Tokens
-
-Just as arcade tokens evolved into digital gaming currencies, API tokens are evolving into more sophisticated systems. But the core concept remains the same: a simple, universal way to exchange value for service.
-
-The next time you're implementing an API token system, remember the arcade. Sometimes the best solutions are the ones that have stood the test of time, just dressed in digital clothes.
-
-June 14, 2024`,
+<p class="article-date">June 14, 2024</p>`,
         image: "/img/tokens.png",
         date: "June 14, 2024",
         tags: ["Development", "API Design", "User Experience"],
@@ -618,52 +769,281 @@ June 14, 2024`,
         title: "The 5 Design Anti-Patterns",
         description:
           "Accidental and intentional anti-patterns that make users insane.",
-        content: `## The 5 Design Anti-Patterns
+        url: "five-design-anti-patterns",
+        content: `<h1>The 5 Design Anti-Patterns</h1>
 
-Let's just make this clear right away - these aren't just bad designs, they're anti-patterns: common mistakes that actively work against good user experience. This is the definitive list of design anti-patterns, according to me.
+<p>Let's just make this clear right away - these aren't just bad designs, they're anti-patterns: common mistakes that actively work against good user experience. This is the definitive list of design anti-patterns, according to me.</p>
 
-## 1. NAVBLINDING
+<h2>1. Navblinding</h2>
 
-Users shouldn't need Waze to use your app. When your navigation is more of a puzzle than a tool, you're not paying attention to your users. Let's not kid ourselves; icons are great, but words are better. Or use both. Go nuts.
+<p>Users shouldn't need Waze to use your app. When your navigation is more of a puzzle than a tool, you're not paying attention to your users. Let's not kid ourselves; icons are great, but words are better. Or use both. Go nuts.</p>
 
-## 2. UPSHELLING
+<h2>2. Upshelling</h2>
 
-You're reading an article, watching a video, or trying to use a feature - next thing you know, you just got horse-collared by a paywall. Every interaction is another chance to bully you into a paid tier. But sometimes that's the point. Based? Yes. Annoying? Absolutely.
+<p>You're reading an article, watching a video, or trying to use a feature - next thing you know, you just got horse-collared by a paywall. Every interaction is another chance to bully you into a paid tier. But sometimes that's the point. Based? Yes. Annoying? Absolutely.</p>
 
-## 3. XHUNTING
+<h2>3. Xhunting</h2>
 
-The modern equivalent of desktop pop-up infection, but on a phone we've learned to tolerate it. Each modal more important and elusive than the last, suddenly you're tapping microscopic X's in order to hide an ad, simply to see the caption on a Reel.
+<p>The modern equivalent of desktop pop-up infection, but on a phone we've learned to tolerate it. Each modal more important and elusive than the last, suddenly you're tapping microscopic X's in order to hide an ad, simply to see the caption on a Reel.</p>
 
-## 4. PAGEJACKING
+<h2>4. Pagejacking</h2>
 
-When you click something and... nothing happens. No loading indicator, no feedback, just a blank stare from your screen. Not even a "thanks for coming". Oh and what about onboarding tutorials? We all love those, right? When your pages don't respond to user actions, your user wants to jump out a window. 
+<p>When you click something and... nothing happens. No loading indicator, no feedback, just a blank stare from your screen. Not even a "thanks for coming". Oh and what about onboarding tutorials? We all love those, right? When your pages don't respond to user actions, your user wants to jump out a window.</p>
 
-## 5. FORMLOCKING
+<h2>5. Formlocking</h2>
 
-When there's no way to track progress or retrieve previous data, well, it's super annoying. When your signup form is more complicated than your actual product, you're ignoring decades of UX research on form usability.
+<p>When there's no way to track progress or retrieve previous data, well, it's super annoying. When your signup form is more complicated than your actual product, you're ignoring decades of UX research on form usability.</p>
 
-## In Conclusion
+<h2>In Conclusion</h2>
 
-That's it. That's the article.`,
+<p>That's it. That's the article.</p>
+
+<p class="article-date">June 10, 2024</p>`,
         image: "/img/anti-patterns.png",
-        date: "June 16, 2024",
+        date: "June 10, 2024",
         tags: ["UX Design", "User Experience", "Design Patterns"],
       },
       {
         title: "Commit Message Fatigue",
-        description:
-          "Do this and never write another one again.",
-        content: `## My Goodness There's Got to Be a Better Way
+        description: "Do this and never write another one again 💎💎",
+        url: "commit-message-fatigue",
+        content: `<h1>Commit Message Fatigue</h1>
 
-Friday 4:45 PM. Your last 19 commits of the day have been up-arrow + tab + tab + enter + enter.
+<h2>My Goodness There's Got to Be a Better Way</h2>
 
-## The Solution
+<p>Friday 4:45 PM. Your last 19 commits of the day have been up-arrow + tab + tab + enter + enter.</p>
 
-Use AI to write your commit messages. Cursor's AI commit message feature can analyze your changes and generate meaningful commit messages automatically. Go here: https://docs.cursor.com/more/ai-commit-message, or just click on those diamond icons in the Source Control input field and experience the magic.
-`,
+<h2>The Solution</h2>
+
+<p>Use AI to write your commit messages. Cursor's AI commit message feature can analyze your changes and generate meaningful commit messages automatically. Go here: <a href="https://docs.cursor.com/more/ai-commit-message">https://docs.cursor.com/more/ai-commit-message</a>, or just click on those diamond icons in the Source Control input field and experience the magic.</p>
+
+<p class="article-date">June 11, 2024</p>`,
         image: "/img/commit-fatigue.png",
-        date: "June 16, 2024",
+        date: "June 11, 2024",
         tags: ["Git", "Development", "Best Practices", "Productivity"],
+      },
+      {
+        title: "Text Tunneling? Ok, NOW We're Talking!",
+        description:
+          "Candor and brevity can turn casual users into engaged users.",
+        url: "text-Tunneling",
+        content: `<h1>Text Tunneling: Make It Make Sense</h1>
+
+<p>"Please review the following information" isn't all that catchy anymore. Text Tunneling starts with clear, direct language that users actually want to read. It's about leading with what matters and building from there.</p>
+
+<h2>Be Blatant and See ROI</h2>
+
+<p>It worked for newpapers for centuries. We bury the lede based on real or imagined user expectations. Be candid - throw together a 1.5 second elevator pitch for your title tag. If we want to guide users to an action that will save them money, make it very evident that there's a reason to focus here.</p>
+
+<p>Being conservative looks a bit like "Check out more ways to save". Being candid looks more like "Save $122.45 today by switching to our new plan". Hell, go crazy and underline it. However you design it, make it obvious. You aren't going to hurt the user's feelings by handing them a key to 122 bucks.</p>
+
+<p>Does it feel sales-y? Well, it is. We are proud of a product and we want you to feel at-ease when using it. They took the time to look, and we want to make it worth their while. Every time someone uses the product, they have thousands of other sites with which to compare. Keep that in mind as attention spans are on a steep decline.</p>
+
+<h2>The Engagement Pattern</h2>
+
+<ul>
+<li>Say what you mean, e.g., FREE MONEY</li>
+<li>Keep it short and sweet (see #1)</li>
+<li>Make it easy to dive deeper if they want to</li>
+</ul>
+
+<h2>The Art of the Reveal</h2>
+
+<p>The real magic happens when you smoothly transition from "Hey, check this out" to "Whoa - I actually got my solution already" It's like telling a story - you don't slam a reader into the ending, you logically build up to it, with a smooth completion. The key is making that journey feel natural, rapid, not like you're routinely rerouting or detouring.</p>
+
+<h2>IRL</h2>
+
+<p>Instead of telling developers:<br>
+"README.md file has installation instructions"</p>
+
+<p>Try something like:<br>
+"Use the {some-sort-of-AI-driven-repo-installation-instructions-scanner} tool to validate the installation instructions. Update the README.md file with the new instructions."</p>
+
+<p>What about a Wordpress or Shopify site?<br>
+"Product filtering plugins are on the Plugins page."</p>
+
+<p>Sure, I guess that's sorta helpful. Maybe let's try:<br>
+"Your store's payment tier is best suited for the {filtering-plugin-name} plugin. It's free."</p>
+
+<h2>Wrapping It Up</h2>
+
+<p>Text Tunneling isn't just about making things sound casual - it's about respecting your users' time and attention. When done right, it's leads to deeper understanding without adding any overhead, or increased cognitive load. I guess, in essence, stop beating around the bush.</p>
+
+<p class="article-date">June 16, 2024</p>`,
+        image: "/img/text-funnel.png",
+        cardImage: "/img/text-funnel.png",
+        date: "June 16, 2024",
+        tags: [
+          "User Experience",
+          "Content Strategy",
+          "Product Design",
+          "User Interface",
+        ],
+      },
+      {
+        title: "AI is hydrated with user research data",
+        description:
+          "How every interaction with an LLM is training data that makes it smarter.",
+        url: "ai-hydrated-user-research",
+        content: `<h1>AI is hydrated with user research data</h1>
+
+<p>Every time you interact with an AI, you're participating in the world's largest user testing session. Think about it - every prompt, every response, every correction you make is data that helps the model understand what works and what doesn't.</p>
+
+<h2>The Feedback Loop</h2>
+
+<p>When you ask an AI to write code and then tell it "that's not quite right," you're doing the same thing we do in user testing. You're providing feedback that shapes future behavior. The difference is that with AI, this feedback happens in real-time and affects millions of future interactions.</p>
+
+<h2>The Training Data</h2>
+
+<p>Every conversation with an AI becomes training data. Your corrections, your preferences, your "actually, I meant..." moments are all teaching the model to be better. It's like having a user testing session where every participant's feedback immediately improves the product for everyone else.</p>
+
+<h2>The Parallel</h2>
+
+<p>In user testing, we watch how people interact with our products and use that data to make improvements. With AI, the interaction itself is the data. Every time you refine a prompt or correct an output, you're essentially saying "this is how I want this to work."</p>
+
+<h2>The Scale</h2>
+
+<p>The fascinating part is the scale. Traditional user testing might involve 10-20 people. AI user testing involves millions of people simultaneously, all contributing to the same feedback loop. It's user testing at internet scale.</p>
+
+<h2>The Implications</h2>
+
+<p>This means that every interaction with AI is both a test and a training session. When you get frustrated with an AI's response and try a different approach, you're not just solving your immediate problem - you're helping train the model to be better for everyone.</p>
+
+<h2>The Responsibility</h2>
+
+<p>Understanding this changes how we should think about AI interactions. Every prompt is a teaching moment. Every correction is an opportunity to improve the system. We're not just users - we're participants in the largest user research project ever conducted.</p>
+
+<h2>Best Practices Baked In</h2>
+
+<p>AI coding co-pilots come with objective best practices built right into their underlying models. Whether it's called an LLM (Large Language Model) or something else, these systems have been trained on vast amounts of high-quality code and documentation. That means when you ask for help, you're not just getting a random suggestion—you're tapping into a collective knowledge base of industry standards, proven patterns, and up-to-date best practices, all ready to guide your next line of code.</p>
+
+<h2>Live Prototyping: Closing the Feedback Loop</h2>
+
+<p>One powerful extension of this idea is live prototyping—building and refining features in real time, directly in front of users. Instead of waiting for feedback cycles, you can watch users interact with new features as you create them, making adjustments on the spot. This approach not only accelerates learning but also ensures that the product evolves in direct response to real user needs. With AI and collaborative tools, live prototyping is more accessible than ever, turning every session into an opportunity for immediate, actionable insight.</p>
+
+<h2>Search Results as User Artifacts</h2>
+
+<p>Every search result you see isn't just a random entry—it's an artifact, a piece of data that a real user submitted at some point. Each result represents a question, a need, or a solution that someone else contributed to the system. When you interact with search, you're not just finding information; you're tapping into a living archive of user-generated knowledge, shaped and refined by countless individual contributions.</p>
+
+<p class="article-date">December 19, 2024</p>`,
+
+        image: "/img/ai-user-research.png",
+        cardImage: "/img/ai-hydrated.png",
+
+        date: "June 19, 2024",
+        tags: [
+          "AI",
+          "User Experience",
+          "Machine Learning",
+          "Product Development",
+        ],
+      },
+      {
+        title: "Can Bad (or Good) Prompts Make AI Dumber (or Smarter)?",
+        description:
+          "A point-counterpoint article, rife with hypotheticals and indecision.",
+        url: "bad-good-prompts-ai-dumber-smarter",
+        content: `<h2>The Problem with Vague Prompts (Maybe)</h2>
+
+<div class="point-section">
+  <h3><strong>Point:</strong></h3>
+  <p>Vague prompts create uncertainty. When you ask AI to "make it better," "fix this," or "add something interesting," you're forcing it to guess your intent. Without clear direction, you get generic responses that rarely solve your specific problem. This could create a feedback loop where mediocre outputs become the norm.</p>
+</div>
+
+<div class="counter-point-section">
+  <h3><strong>Counter-Point:</strong></h3>
+  <p>On the other hand, some argue that AI models are actually quite good at inferring intent from context, even with vague prompts. The "make it better" approach might work well when the AI has enough surrounding context to understand what "better" means in that specific situation.</p>
+</div>
+
+<h2>Why This May (or May Not) Matter Technically</h2>
+
+<div class="point-section">
+  <h3><strong>Point:</strong></h3>
+  <p>Large language models respond based on patterns found in their training data and the ways users interact with them after deployment. When vague prompts are commonly used and their results are accepted without refinement, this feedback might become part of the model's broader usage signal. As a result, future versions could optimize for these lower-effort patterns, reinforcing shallow responses.</p>
+</div>
+
+<div class="counter-point-section">
+  <h3><strong>Counter-Point:</strong></h3>
+  <p>However, there's limited evidence that user feedback actually influences model training in the way described. Most major models are trained on curated datasets, not real-time user interactions. The feedback loop theory might be more speculation than fact.</p>
+</div>
+
+<h2>How to (Potentially) Improve Results</h2>
+
+<div class="point-section">
+  <h3><strong>Point:</strong></h3>
+  <p>Clear, specific prompts might lead to more relevant, higher-quality outputs. Instead of making general requests, you could include:</p>
+  <ul>
+    <li>What needs to change</li>
+    <li>Who the audience is</li>
+    <li>Any constraints or goals</li>
+    <li>What success looks like</li>
+  </ul>
+  <p>Examples:</p>
+  <ul>
+    <li>"Increase contrast between headings and body text."</li>
+    <li>"Add hover effects with a 0.2s ease-in-out transition."</li>
+    <li>"Show an error message when the email format is invalid."</li>
+  </ul>
+</div>
+
+<div class="counter-point-section">
+  <h3><strong>Counter-Point:</strong></h3>
+  <p>Over-specification can backfire. Constraints might limit the AI's creativity or cause it to miss unexpected but valuable solutions. Sometimes a simple "make it better" with good context works just fine.</p>
+</div>
+
+<h2>Best Practices for Prompting (If They Work)</h2>
+
+<div class="point-section">
+  <h3><strong>Point:</strong></h3>
+  <ul>
+    <li>Be specific – Say exactly what you want changed or created.</li>
+    <li>Add context – Explain the background, use case, or goals.</li>
+    <li>Set constraints – Define limits, formats, or requirements.</li>
+    <li>Request reasoning – Ask the AI to explain its choices, if helpful.</li>
+    <li>Refine – Don't settle for the first response; adjust and try again.</li>
+  </ul>
+</div>
+
+<div class="counter-point-section">
+  <h3><strong>Counter-Point:</strong></h3>
+  <p>Still, some users report that following rigid prompting frameworks actually makes their interactions more mechanical and less natural. The best approach might be to develop an intuitive feel for what works in each specific context.</p>
+</div>
+
+<h2>The Uncertain Takeaway</h2>
+
+<div class="point-section">
+  <h3><strong>Point:</strong></h3>
+  <p>Better prompts might lead to better results, but the evidence is mixed. Being specific and intentional could improve your own outcomes and potentially encourage models to return higher-quality responses over time. Then again, maybe the AI is smarter than we give it credit for, and our attempts to "optimize" our prompts are just adding unnecessary complexity.</p>
+</div>
+
+<div class="counter-point-section">
+  <h3><strong>Counter-Point:</strong></h3>
+  <p>The truth is, we're still figuring out how AI really learns from our interactions. What seems like a clear cause-and-effect relationship might be more nuanced than we think. Perhaps the best approach is to experiment and see what works for your specific use case, rather than following rigid rules that may or may not apply.</p>
+</div>
+
+<h2>The Real Question: Are We Getting Dumber?</h2>
+
+<div class="point-section">
+  <h3><strong>Point:</strong></h3>
+  <p>Maybe the real concern isn't whether we're making AI dumber, but whether our reliance on AI is making us dumber. When we outsource our thinking to AI for every decision, we risk losing the ability to think critically, solve problems independently, and develop our own creative solutions. It's like having a calculator for everything - convenient, but potentially atrophying our mental muscles.</p>
+</div>
+
+<div class="counter-point-section">
+  <h3><strong>Counter-Point:</strong></h3>
+  <p>On the other hand, AI might be making us smarter by handling routine tasks and freeing up mental bandwidth for more complex, creative thinking. Just as calculators didn't make us worse at math but better at advanced mathematics, AI could be elevating our cognitive capabilities rather than diminishing them.</p>
+</div>
+
+<p class="article-date">July 6, 2024</p>`,
+        image: "/img/lazy-ai.png",
+        cardImage: "/img/all-dumber.png",
+        date: "July 6, 2024",
+        tags: [
+          "AI",
+          "Prompt Engineering",
+          "Best Practices",
+          "Productivity",
+          "Quality",
+        ],
       },
     ],
   },

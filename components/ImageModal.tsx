@@ -12,6 +12,18 @@ const ImageModal: React.FC<ImageModalProps> = ({ imageUrl, onClose }) => {
     return () => console.log("Modal unmounted");
   }, []);
 
+  // Add escape key functionality
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [onClose]);
+
   return (
     <>
       {/* Close button */}
@@ -20,16 +32,16 @@ const ImageModal: React.FC<ImageModalProps> = ({ imageUrl, onClose }) => {
           e.stopPropagation();
           onClose();
         }}
-        className="flex h-12 w-12 items-center justify-center rounded-full bg-white p-2 text-black shadow-lg hover:bg-gray-100 fixed top-8 right-8"
-        style={{ zIndex: 9999 }}
+        className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 hover:bg-white text-black shadow-lg hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 fixed top-8 right-8 z-[9999]"
+        aria-label="Close modal"
       >
-        <X className="h-10 w-10" />
+        <X className="h-6 w-6" />
       </button>
 
       <div className="fixed inset-0 z-[9000]">
         {/* Scrim overlay */}
         <div
-          className="fixed inset-0 bg-black/85"
+          className="fixed inset-0 bg-black/85 cursor-pointer"
           onClick={onClose}
           style={{
             backgroundColor: "rgba(0, 0, 0, 0.85)",

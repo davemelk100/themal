@@ -1,6 +1,7 @@
 import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ShareWidget from "./ShareWidget";
+import { useEffect } from "react";
 
 interface ArticleModalProps {
   title: string;
@@ -17,6 +18,18 @@ export default function ArticleModal({
   date = "March 19, 2024",
   onClose,
 }: ArticleModalProps) {
+  // Add escape key functionality
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [onClose]);
+
   const renderContent = (text: string) => {
     return text.split("\n\n").map((paragraph, index) => {
       if (paragraph.startsWith("## ")) {
@@ -100,25 +113,28 @@ export default function ArticleModal({
         >
           <div className="p-8">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-3xl font-bold dark:text-white">{title}</h2>
+              <h2 className="text-4xl sm:text-5xl font-bold dark:text-white">
+                {title}
+              </h2>
               <button
                 onClick={onClose}
-                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                aria-label="Close modal"
               >
-                <X className="h-6 w-6" />
+                <X className="h-5 w-5" />
               </button>
             </div>
-            <div className="flex items-center gap-4 mb-6 text-sm text-gray-600 dark:text-gray-400">
+            <div className="flex items-center gap-4 mb-6 text-nav text-gray-600 dark:text-gray-400">
               <span>Dave Melkonian</span>
               <span>•</span>
               <span>{date}</span>
             </div>
             {image && (
-              <div className="float-right ml-8 mb-4 w-1/2 aspect-video overflow-hidden rounded-lg shadow-md">
+              <div className="float-right ml-8 mb-4 w-1/2 aspect-video overflow-hidden rounded-lg">
                 <img
                   src={image}
                   alt={title}
-                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                  className="w-full h-full object-cover"
                 />
               </div>
             )}

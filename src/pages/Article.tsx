@@ -42,7 +42,7 @@ export default function Article() {
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Articles
           </Link>
-          <h1 className="text-3xl font-bold dark:text-white mb-4">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold dark:text-white mb-6 font-card">
             Article Not Found
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
@@ -54,12 +54,30 @@ export default function Article() {
   }
 
   const renderContent = (text: string) => {
+    // Remove h1 tags from content since title is already displayed
+    const contentWithoutH1 = text.replace(/<h1[^>]*>.*?<\/h1>/gs, "");
+
+    // Check if content contains HTML
+    if (
+      contentWithoutH1.includes("<div") ||
+      contentWithoutH1.includes("<p") ||
+      contentWithoutH1.includes("<span")
+    ) {
+      return (
+        <div
+          className="article-content"
+          dangerouslySetInnerHTML={{ __html: contentWithoutH1 }}
+        />
+      );
+    }
+
+    // Fallback to original text parsing
     return text.split("\n\n").map((paragraph, index) => {
       if (paragraph.startsWith("##")) {
         return (
           <h2
             key={`heading-${index}`}
-            className="text-2xl font-bold mt-8 mb-4 dark:text-white"
+            className="text-xl font-bold mt-8 mb-4 dark:text-white"
           >
             {paragraph.replace("##", "").trim()}
           </h2>
@@ -129,26 +147,34 @@ export default function Article() {
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Articles
         </Link>
-        <h1 className="text-3xl font-bold dark:text-white mb-4">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold dark:text-white mb-6 font-card">
           {article.title}
         </h1>
-        <div className="flex items-center gap-4 mb-6 text-sm text-gray-600 dark:text-gray-400">
-          <span>Dave Melkonian</span>
-          <span>•</span>
-          <span>{article.date}</span>
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-4 text-nav text-gray-600 dark:text-gray-400">
+            <span>Dave Melkonian</span>
+            <span>•</span>
+            <span>{article.date}</span>
+          </div>
+          <ShareWidget url={window.location.href} />
         </div>
         {article.image && (
-          <div className="float-right ml-8 mb-4 w-1/2 aspect-video overflow-hidden rounded-lg shadow-md">
-            <img
-              src={article.image}
-              alt={article.title}
-              className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-            />
+          <div className="flex justify-center mb-8">
+            <div className="w-2/3 rounded-lg">
+              <img
+                src={article.image}
+                alt={article.title}
+                className={`w-full rounded-lg ${
+                  article.title === "AI Hallucination Prevention"
+                    ? "h-64 object-cover"
+                    : "h-auto"
+                }`}
+              />
+            </div>
           </div>
         )}
-        <div className="prose prose-lg dark:prose-invert max-w-none">
-          {renderContent(article.content)}
-        </div>
+        <div>{renderContent(article.content)}</div>
+
         <div className="relative mt-12">
           <ShareWidget url={window.location.href} />
         </div>

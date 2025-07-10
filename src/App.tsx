@@ -5,10 +5,10 @@ import {
   BookOpen,
   Beaker,
   Palette,
-  Layers,
   Briefcase,
   Quote,
   ArrowUp,
+  Keyboard,
 } from "lucide-react";
 import { LinkedInLogoIcon } from "@radix-ui/react-icons";
 import { useState, useEffect } from "react";
@@ -28,19 +28,51 @@ import {
   useNavigate,
 } from "react-router-dom";
 import Article from "./pages/Article";
+import Archive from "./pages/Archive";
+import DesignArchive from "./pages/DesignArchive";
+import Admin from "./pages/Admin";
+import AdminLogin from "./pages/AdminLogin";
 import { slugify } from "./utils/slugify";
+import { getVisibleArticles } from "./utils/articleVisibility";
+import { getVisibleDesignWork } from "./utils/designWorkVisibility";
+import { getVisibleTestimonials } from "./utils/testimonialVisibility";
+import { getVisibleLabProjects } from "./utils/labProjectVisibility";
+import { isSectionVisible } from "./utils/contentVisibility";
+import { checkAdminAuth } from "./utils/adminAuth";
 
 // Add SectionHeader component
 const SectionHeader = ({
   title,
+  subtitle,
   className = "",
+  showArchiveLink = false,
 }: {
   title: string;
+  subtitle?: string;
   className?: string;
+  showArchiveLink?: boolean;
 }) => {
   return (
-    <div className={`flex items-center justify-between ${className}`}>
-      <h2 className="text-3xl sm:text-4xl font-bold">{title}</h2>
+    <div className={`${className}`}>
+      <div className="flex items-center justify-between mb-2">
+        <h2
+          className="text-[clamp(1.25rem,3vw,2.5rem)] font-bold title-font leading-tight"
+          style={{ letterSpacing: "-1.5px" }}
+        >
+          {title}
+        </h2>
+        {showArchiveLink && (
+          <Link
+            to="/archive"
+            className="text-nav text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
+          >
+            View Archive
+          </Link>
+        )}
+      </div>
+      {subtitle && (
+        <p className="text-base text-muted-foreground">{subtitle}</p>
+      )}
     </div>
   );
 };
@@ -54,6 +86,9 @@ function App() {
     image?: string;
     date?: string;
   } | null>(null);
+  const [isHoveringNav, setIsHoveringNav] = useState(false);
+  const [navMousePosition, setNavMousePosition] = useState({ x: 0, y: 0 });
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -66,6 +101,24 @@ function App() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Scroll to top on route change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
+  // Check admin authentication status
+  useEffect(() => {
+    setIsAdminLoggedIn(checkAdminAuth());
+  }, [location.pathname]);
+
+  const handleNavMouseMove = (e: React.MouseEvent) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setNavMousePosition({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
   const handleNavClick = (id: string) => {
     if (location.pathname !== "/") {
       // If we're not on the main page, navigate to main page first
@@ -74,56 +127,246 @@ function App() {
       setTimeout(() => {
         const element = document.getElementById(id);
         if (element) {
-          element.scrollIntoView({ behavior: "smooth" });
+          const headerHeight = 64; // Approximate header height
+          const elementPosition = element.offsetTop - headerHeight;
+          window.scrollTo({
+            top: elementPosition,
+            behavior: "smooth",
+          });
         }
       }, 100);
     } else {
       // If we're already on the main page, just scroll
       const element = document.getElementById(id);
       if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
+        const headerHeight = 64; // Approximate header height
+        const elementPosition = element.offsetTop - headerHeight;
+        window.scrollTo({
+          top: elementPosition,
+          behavior: "smooth",
+        });
       }
     }
   };
 
-  const projects = [
-    {
-      title: "Design Panes",
-      description:
-        "Various design ideas, principles, concepts, and philosophies with an OpenAI integration.",
-      technologies: ["React", "Vite", "Tailwind"],
-      demo: "https://designpanes.com",
-      image: "/img/design-panes.png",
-    },
-    {
-      title: "Chatbot Samples",
-      description:
-        "Collection of chatbot interface designs and interaction patterns showcasing various conversational UI approaches.",
-      technologies: ["React", "AI", "UI/UX Design"],
-      demo: "https://chatbot-samples.netlify.app/",
-      image: "/img/agent-ui.png",
-    },
-    {
-      title: "Portfolio",
-      description:
-        "Previous portfolio with OpenAI and Figma Design Token integrations.",
-      technologies: ["Figma", "OpenAI", "React", "Tailwind"],
-      demo: "https://rococo-paprenjak-da1be1.netlify.app/",
-      image: "/img/old-portfolio.png",
-    },
-  ];
+  const handleAdminAction = () => {
+    if (isAdminLoggedIn) {
+      navigate("/admin");
+    } else {
+      navigate("/admin-login");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white text-gray-900 transition-colors duration-300 dark:bg-gray-900 dark:text-gray-100">
-      <ThemeToggle />
       <SparklingBackground />
+
+      {/* Header Navigation */}
+      <div className="fixed top-0 left-0 right-0 z-20">
+        <div className="bg-gradient-to-r from-gray-500 to-black px-6 py-2 flex items-center justify-between">
+          {/* Logo/Title Section */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="flex items-center gap-2"
+          >
+            <motion.button
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+            >
+              <motion.div
+                animate={{
+                  scale: [1, 1.1, 1],
+                  rotate: [0, 5, -5, 0],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  repeatDelay: 5,
+                }}
+              >
+                <CircleDot className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+              </motion.div>
+              <span className="text-base font-medium text-white">
+                {content.siteInfo.title}
+              </span>
+            </motion.button>
+          </motion.div>
+
+          {/* Desktop Navigation */}
+          <motion.nav
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="hidden sm:block relative"
+            onMouseEnter={() => setIsHoveringNav(true)}
+            onMouseLeave={() => setIsHoveringNav(false)}
+            onMouseMove={handleNavMouseMove}
+          >
+            {/* Sliding background that follows cursor */}
+            {isHoveringNav && (
+              <motion.div
+                className="absolute w-16 h-8 bg-white/20 backdrop-blur-sm rounded-lg pointer-events-none"
+                style={{
+                  left: navMousePosition.x - 32,
+                  top: navMousePosition.y - 16,
+                }}
+                transition={{
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 20,
+                }}
+              />
+            )}
+            <ul className="flex items-center gap-4 sm:gap-6 md:gap-8 relative z-10">
+              {content.navigation.links.map((item) => (
+                <motion.li
+                  key={item.id}
+                  whileHover={{ scale: 1.05 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 10,
+                  }}
+                >
+                  <button
+                    onClick={() => handleNavClick(item.id)}
+                    className="text-xs sm:text-sm text-white px-3 py-2 rounded-lg transition-all duration-200 relative z-10"
+                  >
+                    {item.text}
+                  </button>
+                </motion.li>
+              ))}
+              <li
+                className="h-4 w-px bg-gray-600 mx-1 sm:mx-2"
+                aria-hidden="true"
+              />
+              <motion.li whileHover={{ scale: 1.05 }}>
+                <a
+                  href={content.navigation.social.linkedin.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-lg transition-all duration-200 text-white relative z-10"
+                  aria-label="LinkedIn"
+                >
+                  <LinkedInLogoIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+                </a>
+              </motion.li>
+              <motion.li whileHover={{ scale: 1.05 }}>
+                <a
+                  href={content.navigation.social.dribbble.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-lg transition-all duration-200 text-white relative z-10"
+                  aria-label="Dribbble"
+                >
+                  <Dribbble className="h-4 w-4 sm:h-5 sm:w-5" />
+                </a>
+              </motion.li>
+              <motion.li whileHover={{ scale: 1.05 }}>
+                <button
+                  onClick={handleAdminAction}
+                  className="p-2 rounded-lg transition-all duration-200 text-white relative z-10 hover:bg-white/10"
+                  aria-label={isAdminLoggedIn ? "Admin Panel" : "Admin Login"}
+                >
+                  <Keyboard className="h-4 w-4 sm:h-5 sm:w-5" />
+                </button>
+              </motion.li>
+              <li
+                className="h-4 w-px bg-gray-600 mx-1 sm:mx-2"
+                aria-hidden="true"
+              />
+              <motion.li whileHover={{ scale: 1.05 }}>
+                <ThemeToggle />
+              </motion.li>
+            </ul>
+          </motion.nav>
+
+          {/* Mobile Navigation */}
+          <motion.nav
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="sm:hidden"
+          >
+            <ul className="flex items-center gap-6">
+              <motion.li whileHover={{ scale: 1.05 }}>
+                <button
+                  onClick={() => handleNavClick("articles")}
+                  className="text-white hover:opacity-70 transition-opacity"
+                  aria-label="Articles"
+                >
+                  <BookOpen className="h-5 w-5" />
+                </button>
+              </motion.li>
+              <motion.li whileHover={{ scale: 1.05 }}>
+                <button
+                  onClick={() => handleNavClick("current-projects")}
+                  className="text-white hover:opacity-70 transition-opacity"
+                  aria-label="Lab"
+                >
+                  <Beaker className="h-5 w-5" />
+                </button>
+              </motion.li>
+              <motion.li whileHover={{ scale: 1.05 }}>
+                <button
+                  onClick={() => handleNavClick("work")}
+                  className="text-white hover:opacity-70 transition-opacity"
+                  aria-label="Design"
+                >
+                  <Palette className="h-5 w-5" />
+                </button>
+              </motion.li>
+              <motion.li whileHover={{ scale: 1.05 }}>
+                <button
+                  onClick={() => handleNavClick("testimonials")}
+                  className="text-white hover:opacity-70 transition-opacity"
+                  aria-label="Testimonials"
+                >
+                  <Quote className="h-5 w-5" />
+                </button>
+              </motion.li>
+              <motion.li whileHover={{ scale: 1.05 }}>
+                <button
+                  onClick={() => handleNavClick("career")}
+                  className="text-white hover:opacity-70 transition-opacity"
+                  aria-label="Career"
+                >
+                  <Briefcase className="h-5 w-5" />
+                </button>
+              </motion.li>
+
+              <motion.li whileHover={{ scale: 1.05 }}>
+                <button
+                  onClick={() => handleNavClick("figma-hotkeys")}
+                  className="text-white hover:opacity-70 transition-opacity"
+                  aria-label="Figma Hotkeys"
+                >
+                  <Keyboard className="h-5 w-5" />
+                </button>
+              </motion.li>
+              <motion.li whileHover={{ scale: 1.05 }}>
+                <button
+                  onClick={handleAdminAction}
+                  className="text-white hover:opacity-70 transition-opacity"
+                  aria-label={isAdminLoggedIn ? "Admin Panel" : "Admin Login"}
+                >
+                  <Keyboard className="h-5 w-5" />
+                </button>
+              </motion.li>
+            </ul>
+          </motion.nav>
+        </div>
+      </div>
+
       <Routes>
         <Route
           path="/"
           element={
             <>
               {/* Hero Section */}
-              <section className="relative h-screen flex items-center">
+              <section className="relative h-[60vh] flex items-center">
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -157,32 +400,14 @@ function App() {
                           },
                         },
                       }}
-                      className="text-4xl sm:text-5xl md:text-7xl font-bold leading-tight mb-6"
+                      className="text-[clamp(2rem,6vw,4rem)] font-bold mb-6 title-font leading-none"
+                      style={{ letterSpacing: "-1.5px" }}
                     >
                       {content.siteInfo.subtitle}
                     </motion.h1>
-                    <motion.p
-                      variants={{
-                        hidden: { opacity: 0, y: 30 },
-                        visible: {
-                          opacity: 1,
-                          y: 0,
-                          transition: {
-                            duration: 0.6,
-                            ease: "easeOut",
-                          },
-                        },
-                      }}
-                      className="text-lg sm:text-xl text-muted-foreground max-w-2xl"
-                    >
-                      {content.siteInfo.description}
-                    </motion.p>
                   </motion.div>
 
                   {/* Color Palette */}
-                  <p className="mt-16 text-xs text-gray-400 font-semibold uppercase">
-                    Figma Design Token Integration
-                  </p>
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -208,18 +433,18 @@ function App() {
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            className="relative w-16 h-16 rounded-full shadow-sm"
+                            className="relative w-16 h-16 rounded-full shadow-lg"
                             style={{ backgroundColor: color.value }}
                           >
                             <span
-                              className={`absolute inset-0 flex items-center justify-center text-[10px] font-medium ${getTextColor(
+                              className={`absolute inset-0 flex items-center justify-center text-[12px] font-medium ${getTextColor(
                                 color.value
                               )}`}
                             >
                               {color.value}
                             </span>
                           </motion.div>
-                          <span className="text-xs text-muted-foreground">
+                          <span className="text-caption text-muted-foreground">
                             {color.name}
                           </span>
                         </div>
@@ -230,97 +455,126 @@ function App() {
               </section>
 
               {/* Articles Section */}
-              <section id="articles" className="py-12 sm:py-20">
-                <div className="container mx-auto px-4 sm:px-8">
-                  <SectionHeader
-                    title="Articles"
-                    className="mb-12 text-center"
-                  />
-                  <div className="grid gap-8">
-                    {[...content.articles.items]
-                      .sort(
-                        (a, b) =>
-                          new Date(b.date).getTime() -
-                          new Date(a.date).getTime()
-                      )
-                      .map((article, index) => (
-                        <div
-                          key={index}
-                          className="group relative overflow-hidden rounded-lg bg-gray-100/80 p-6 transition-all duration-300 hover:bg-gray-200/80"
-                        >
-                          <div className="grid md:grid-cols-2 gap-8 items-center">
-                            <div className="mb-4 md:mb-0 aspect-video overflow-hidden rounded-lg">
-                              <img
-                                src={article.image}
-                                alt={article.title}
-                                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                              />
-                            </div>
-                            <div>
-                              <h3 className="mb-2 text-2xl font-semibold dark:text-black">
-                                {article.title}
-                              </h3>
-                              <div className="flex items-center gap-4 mb-4 text-sm text-gray-600">
-                                <span>Dave Melkonian</span>
-                                <span>•</span>
-                                <span>{article.date}</span>
+              {isSectionVisible("articles") && (
+                <section id="articles" className="py-2 sm:py-4">
+                  <div className="container mx-auto px-4 sm:px-8">
+                    <SectionHeader
+                      title="Articles"
+                      subtitle={content.articles.subtitle}
+                      className="mb-12"
+                      showArchiveLink={false}
+                    />
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                      {getVisibleArticles(content.articles.items)
+                        .filter(
+                          (article) =>
+                            article.title !==
+                              "API Tokens: The Digital Arcade" &&
+                            article.title !== "Commit Message Fatigue" &&
+                            article.title !== "The 5 Design Anti-Patterns" &&
+                            article.title !==
+                              "Vibe Coding vs Vibe Engineering" &&
+                            article.title !==
+                              "Information Architecture Is Not Sacred" &&
+                            article.title !==
+                              "AI is hydrated with user research data"
+                        )
+                        .sort(
+                          (a, b) =>
+                            new Date(b.date).getTime() -
+                            new Date(a.date).getTime()
+                        )
+                        .map((article, index) => (
+                          <div
+                            key={index}
+                            className="group relative overflow-hidden rounded-lg bg-gray-100/80 p-4 flex flex-col"
+                          >
+                            <div className="flex flex-col gap-3 flex-1">
+                              <div>
+                                <h3
+                                  className="text-[20px] font-semibold mb-2 dark:text-black title-font"
+                                  style={{ letterSpacing: "-0.75px" }}
+                                >
+                                  {article.title}
+                                </h3>
                               </div>
-                              <p className="text-gray-600 dark:text-gray-400 mb-4">
-                                {article.description}
-                              </p>
+                              <div className="aspect-[2/1] overflow-hidden rounded-lg">
+                                <img
+                                  src={
+                                    (article as any).cardImage || article.image
+                                  }
+                                  alt={article.title}
+                                  className="h-full w-full object-contain"
+                                />
+                              </div>
+                              <div className="flex-1 flex flex-col">
+                                <div className="flex items-center gap-4 mb-2 text-nav text-gray-600">
+                                  <span>{article.date}</span>
+                                </div>
+                                <p className="text-gray-600 dark:text-gray-400 mb-3 text-card-body flex-1">
+                                  {article.description}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="mt-auto pt-3">
                               <Link
                                 to={`/article/${slugify(article.title)}`}
-                                className="inline-flex items-center text-black hover:text-gray-600 dark:text-black dark:hover:text-gray-700 underline"
+                                className="inline-flex items-center text-black hover:text-gray-600 dark:text-black dark:hover:text-gray-700 underline text-nav"
                               >
                                 Read Article
                               </Link>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                    </div>
+                    <div className="mt-8">
+                      <Link
+                        to="/archive"
+                        className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
+                      >
+                        View Archive
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              </section>
+                </section>
+              )}
 
               {/* Current Projects Section */}
-              <section id="current-projects" className="py-12 sm:py-20">
+              <section id="current-projects" className="py-8 sm:py-12">
                 <div className="container mx-auto px-4 sm:px-8">
-                  <SectionHeader title="Lab" className="mb-12 text-center" />
-                  <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                    {projects.map((project, index) => (
+                  <SectionHeader
+                    title={content.currentProjects.title}
+                    subtitle={content.currentProjects.subtitle}
+                    className="mb-12"
+                  />
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {getVisibleLabProjects(
+                      content.currentProjects.projects
+                    ).map((project, index) => (
                       <a
                         key={index}
                         href={project.demo}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group relative overflow-hidden rounded-lg bg-gray-100/80 p-6 transition-all duration-300 hover:bg-gray-200/80 block"
+                        className="group relative overflow-hidden rounded-lg bg-gray-100/80 p-4 block flex flex-col"
                       >
-                        <div className="mb-4 aspect-video overflow-hidden rounded-lg cursor-pointer">
-                          <img
-                            src={project.image}
-                            alt={project.title}
-                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                          />
-                        </div>
-                        <h3 className="mb-2 text-xl font-semibold dark:text-black">
-                          {project.title}
-                        </h3>
-                        <p className="mb-4 text-black dark:text-black">
-                          {project.description}
-                        </p>
-                        <div className="mb-4 flex flex-wrap gap-2">
-                          {project.technologies.map((tech, techIndex) => (
-                            <span
-                              key={techIndex}
-                              className="rounded-full bg-white px-3 py-1 text-sm dark:text-black"
+                        <div className="flex flex-col gap-3 flex-1">
+                          <div className="flex-1 flex flex-col">
+                            <h3
+                              className="text-[20px] font-semibold mb-2 dark:text-black title-font"
+                              style={{ letterSpacing: "-0.75px" }}
                             >
-                              {tech}
-                            </span>
-                          ))}
+                              {project.title}
+                            </h3>
+                            <p className="mb-3 text-black dark:text-black text-card-body flex-1">
+                              {project.description}
+                            </p>
+                          </div>
                         </div>
-                        <div className="inline-flex items-center text-black hover:text-gray-600 dark:text-black dark:hover:text-gray-700 underline">
-                          View App
-                          <ArrowUp className="ml-1 h-4 w-4" />
+                        <div className="mt-auto pt-3">
+                          <div className="inline-flex items-center text-black hover:text-gray-600 dark:text-black dark:hover:text-gray-700 underline text-nav">
+                            View App
+                          </div>
                         </div>
                       </a>
                     ))}
@@ -329,97 +583,122 @@ function App() {
               </section>
 
               {/* Work Section */}
-              <section id="work" className="py-12 sm:py-20">
+              <section id="work" className="py-8 sm:py-12">
                 <div className="container mx-auto px-4 sm:px-8">
                   <SectionHeader
-                    title={content.work.title}
-                    className="mb-8 sm:mb-16"
+                    title="Design"
+                    subtitle={content.work.subtitle}
+                    className="mb-12"
+                    showArchiveLink={false}
                   />
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-                    {content.work.projects.map((project, index) => (
-                      <motion.div
-                        key={project.title}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{
-                          duration: 0.6,
-                          delay: (index % 2) * 0.2,
-                        }}
-                        className="group relative border border-gray-200/50 rounded-lg overflow-hidden p-4 bg-gray-100/80"
-                      >
-                        <div
-                          className="overflow-hidden cursor-pointer"
-                          onClick={() => setSelectedImage(project.image)}
-                        >
-                          <img
-                            src={project.image}
-                            alt={project.alt}
-                            className="w-full h-[300px] sm:h-[400px] object-cover transition-transform duration-500 group-hover:scale-105"
-                          />
-                        </div>
-                        <div className="mt-4 flex justify-between items-center">
-                          <div>
-                            <h3 className="text-xl font-semibold mb-2 dark:text-black">
-                              {project.title}
-                            </h3>
-                            {project.description && (
-                              <p className="text-black mb-4 dark:text-black">
-                                {project.description}
-                              </p>
-                            )}
-                            <p className="text-sm text-black dark:text-black">
-                              {project.categories}
-                            </p>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {getVisibleDesignWork(content.work.projects)
+                      .filter(
+                        (project: any) =>
+                          project.title !== "3D Conversion UX Plan"
+                      )
+                      .map((project: any, index) => {
+                        const ProjectCard = (
+                          <div className="flex flex-col gap-3">
+                            <div className="aspect-[2/1] overflow-hidden rounded-lg">
+                              <img
+                                src={project.image}
+                                alt={project.alt || project.title}
+                                className="h-full w-full object-contain"
+                              />
+                            </div>
+                            <div>
+                              <h3
+                                className="text-[20px] font-semibold mb-2 dark:text-black title-font"
+                                style={{ letterSpacing: "-0.75px" }}
+                              >
+                                {project.title}
+                              </h3>
+                              {project.description && (
+                                <p className="text-black mb-3 dark:text-black text-card-body">
+                                  {project.description}
+                                </p>
+                              )}
+                            </div>
                           </div>
-                          <ArrowUp className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                        </div>
-                      </motion.div>
-                    ))}
+                        );
+
+                        return project.url ? (
+                          <a
+                            key={index}
+                            href={project.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group relative overflow-hidden rounded-lg bg-gray-100/80 p-4 cursor-pointer"
+                          >
+                            {ProjectCard}
+                          </a>
+                        ) : (
+                          <div
+                            key={index}
+                            className="group relative overflow-hidden rounded-lg bg-gray-100/80 p-4"
+                          >
+                            {ProjectCard}
+                          </div>
+                        );
+                      })}
+                  </div>
+                  <div className="mt-8">
+                    <Link
+                      to="/design-archive"
+                      className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
+                    >
+                      View Design Archive
+                    </Link>
                   </div>
                 </div>
               </section>
 
               {/* Testimonials Section */}
-              <section id="testimonials" className="py-12 sm:py-20">
+              <section id="testimonials" className="py-8 sm:py-12">
                 <div className="container mx-auto px-4 sm:px-8">
                   <SectionHeader
                     title={content.testimonials.title}
-                    className="mb-8 sm:mb-16 text-center"
+                    subtitle={content.testimonials.subtitle}
+                    className="mb-8 sm:mb-16"
                   />
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-                    {content.testimonials.items.map((testimonial, index) => (
-                      <motion.div
-                        key={testimonial.author}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: index * 0.2 }}
-                        className="bg-gray-100/80 p-6 sm:p-8 rounded-lg shadow-lg relative"
-                      >
-                        <Quote className="h-6 w-6 sm:h-8 sm:w-8 text-primary/20 dark:text-white/20 absolute -top-3 -left-3 sm:-top-4 sm:-left-4" />
-                        <p className="text-base sm:text-lg mb-6 dark:text-black">
-                          {testimonial.quote}
-                        </p>
-                        <div>
-                          <p className="font-medium dark:text-black">
-                            {testimonial.author}
+                    {getVisibleTestimonials(content.testimonials.items).map(
+                      (testimonial, index) => (
+                        <motion.div
+                          key={testimonial.author}
+                          initial={{ opacity: 0, y: 20 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.6, delay: index * 0.2 }}
+                          className="bg-gray-100/80 p-6 sm:p-8 rounded-lg shadow-lg relative"
+                        >
+                          <Quote className="h-6 w-6 sm:h-8 sm:w-8 text-primary/20 dark:text-white/20 absolute -top-3 -left-3 sm:-top-4 sm:-left-4" />
+                          <p className="text-base mb-6 dark:text-black">
+                            {testimonial.quote}
                           </p>
-                          <p className="text-sm text-muted-foreground dark:text-black">
-                            {testimonial.role}
-                          </p>
-                        </div>
-                      </motion.div>
-                    ))}
+                          <div>
+                            <p className="font-semibold text-nav dark:text-black">
+                              {testimonial.author}
+                            </p>
+                            <p className="text-caption text-muted-foreground dark:text-black">
+                              {testimonial.role}
+                            </p>
+                          </div>
+                        </motion.div>
+                      )
+                    )}
                   </div>
                 </div>
               </section>
 
               {/* Career Timeline Section */}
-              <section id="career" className="py-12 sm:py-20">
+              <section id="career" className="py-8 sm:py-12">
                 <div className="container mx-auto px-4 sm:px-8">
                   <SectionHeader
                     title={content.career.title}
+                    subtitle={content.career.subtitle}
                     className="mb-8 sm:mb-16"
                   />
                   <div className="relative">
@@ -450,13 +729,13 @@ function App() {
                                 <div className="absolute right-[-9px] md:right-auto md:left-[calc(50%-9px)] top-0">
                                   <div className="w-[18px] h-[18px] rounded-full bg-primary" />
                                 </div>
-                                <h3 className="text-lg sm:text-xl font-semibold mb-2">
+                                <h3 className="text-[20px] font-semibold mb-2">
                                   {position.title}
                                 </h3>
-                                <p className="text-muted-foreground mb-2">
+                                <p className="text-nav text-muted-foreground mb-1">
                                   {position.company}
                                 </p>
-                                <p className="text-sm text-muted-foreground">
+                                <p className="text-caption text-muted-foreground">
                                   {position.period}
                                 </p>
                               </>
@@ -476,13 +755,13 @@ function App() {
                                 <div className="absolute right-[-9px] md:right-auto md:left-[calc(50%-9px)] top-0">
                                   <div className="w-[18px] h-[18px] rounded-full bg-primary" />
                                 </div>
-                                <h3 className="text-lg sm:text-xl font-semibold mb-2">
+                                <h3 className="text-[20px] font-semibold mb-2">
                                   {position.title}
                                 </h3>
-                                <p className="text-muted-foreground mb-2">
+                                <p className="text-nav text-muted-foreground mb-1">
                                   {position.company}
                                 </p>
-                                <p className="text-sm text-muted-foreground">
+                                <p className="text-caption text-muted-foreground">
                                   {position.period}
                                 </p>
                               </>
@@ -499,201 +778,46 @@ function App() {
                 </div>
               </section>
 
-              {/* Design System Section */}
-              <section id="design-system" className="py-12 sm:py-20">
+              {/* Figma Hotkeys Section */}
+              <section id="figma-hotkeys" className="py-8 sm:py-12">
                 <div className="container mx-auto px-4 sm:px-8">
                   <SectionHeader
-                    title="Design System"
-                    className="mb-4 dark:text-white"
+                    title={content.figmaHotkeys.title}
+                    className="mb-4"
                   />
-                  <p className="text-lg text-muted-foreground mb-12 dark:text-white">
-                    Integrated with Figma Design Tokens, automatically syncing
-                    colors, typography, and spacing across design and code.
+                  <p className="text-base text-muted-foreground mb-12 dark:text-white">
+                    I selfishly made this for myself when I forget 'em.
                   </p>
-
-                  {/* Color Palette - Design System */}
-                  <div className="mb-12">
-                    <h3 className="text-2xl font-semibold mb-6 dark:text-white">
-                      Color Palette
-                    </h3>
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 1, delay: 1.2 }}
-                      className="flex flex-wrap gap-3"
-                    >
-                      {designTokens.colors.map((color) => {
-                        const getTextColor = (hexColor: string) => {
-                          const r = parseInt(hexColor.slice(1, 3), 16);
-                          const g = parseInt(hexColor.slice(3, 5), 16);
-                          const b = parseInt(hexColor.slice(5, 7), 16);
-                          const brightness =
-                            (r * 299 + g * 587 + b * 114) / 1000;
-                          return brightness > 128 ? "text-black" : "text-white";
-                        };
-
-                        return (
-                          <div
-                            key={color.name}
-                            className="flex flex-col items-center gap-2"
-                          >
-                            <motion.div
-                              initial={{ opacity: 0, y: 20 }}
-                              whileInView={{ opacity: 1, y: 0 }}
-                              viewport={{ once: true }}
-                              className="relative w-16 h-16 rounded-full shadow-sm"
-                              style={{ backgroundColor: color.value }}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {content.figmaHotkeys.shortcuts.map((category, index) => (
+                      <motion.div
+                        key={category.category}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: index * 0.1 }}
+                        className="bg-gray-100/80 p-6 rounded-lg"
+                      >
+                        <h3 className="text-[20px] font-semibold mb-4 dark:text-black">
+                          {category.category}
+                        </h3>
+                        <div className="space-y-3">
+                          {category.shortcuts.map((shortcut, shortcutIndex) => (
+                            <div
+                              key={shortcutIndex}
+                              className="flex justify-between items-center"
                             >
-                              <span
-                                className={`absolute inset-0 flex items-center justify-center text-[10px] font-medium ${getTextColor(
-                                  color.value
-                                )}`}
-                              >
-                                {color.value}
+                              <span className="text-nav dark:text-black">
+                                {shortcut.description}
                               </span>
-                            </motion.div>
-                            <span className="text-xs text-muted-foreground">
-                              {color.name}
-                            </span>
-                          </div>
-                        );
-                      })}
-                    </motion.div>
-                    <p className="mt-4 text-xs text-gray-400 font-semibold uppercase">
-                      Figma Design Token Integration
-                    </p>
-                  </div>
-
-                  {/* Typography */}
-                  <div className="mb-12">
-                    <h3 className="text-2xl font-semibold mb-6 dark:text-white">
-                      Typography
-                    </h3>
-                    <div className="space-y-6">
-                      {designTokens.typography.map((type) => (
-                        <motion.div
-                          key={type.name}
-                          initial={{ opacity: 0, x: -20 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          viewport={{ once: true }}
-                          className="bg-white rounded-lg p-6 shadow-sm"
-                        >
-                          <p
-                            style={{
-                              fontFamily: type.fontFamily,
-                              fontSize: type.fontSize,
-                              lineHeight: type.lineHeight,
-                              fontWeight: type.fontWeight,
-                            }}
-                            className="dark:text-black"
-                          >
-                            The quick brown fox jumps over the lazy dog
-                          </p>
-                          <div className="mt-3 pt-3 border-t">
-                            <p className="text-sm font-medium dark:text-black">
-                              {type.name}
-                            </p>
-                            <p className="text-xs text-gray-500 dark:text-black">
-                              {type.fontSize} / {type.lineHeight} /{" "}
-                              {type.fontWeight}
-                            </p>
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Spacing */}
-                  <div>
-                    <h3 className="text-2xl font-semibold mb-6 dark:text-white">
-                      Spacing Scale
-                    </h3>
-                    <div className="space-y-4">
-                      {designTokens.spacing.map((space) => (
-                        <motion.div
-                          key={space.name}
-                          initial={{ opacity: 0, x: -20 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          viewport={{ once: true }}
-                          className="flex items-center bg-white rounded-lg p-4 shadow-sm"
-                        >
-                          <div
-                            className="bg-primary/20 mr-4"
-                            style={{
-                              width: space.value,
-                              height: space.value,
-                            }}
-                          />
-                          <div>
-                            <p className="font-medium text-sm dark:text-black">
-                              {space.name}
-                            </p>
-                            <p className="text-sm text-gray-500 dark:text-black">
-                              {space.value}
-                            </p>
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Buttons */}
-                  <div className="mt-12">
-                    <h3 className="text-2xl font-semibold mb-6 dark:text-white">
-                      Buttons
-                    </h3>
-                    <div className="space-y-8">
-                      {/* Variants */}
-                      <div>
-                        <h4 className="text-lg font-medium mb-4 dark:text-white">
-                          Variants
-                        </h4>
-                        <div className="flex flex-wrap gap-4">
-                          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-white hover:bg-primary/90 h-10 px-4 py-2">
-                            Default
-                          </button>
-                          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-destructive text-[#EF4444] hover:bg-destructive/90 h-10 px-4 py-2">
-                            Destructive
-                          </button>
-                          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-white text-gray-900 hover:bg-gray-100 h-10 px-4 py-2">
-                            Outline
-                          </button>
-                          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-white hover:bg-secondary/80 h-10 px-4 py-2">
-                            Secondary
-                          </button>
-                          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-[#9CA3AF] text-white hover:bg-[#9CA3AF]/80 h-10 px-4 py-2">
-                            Tertiary
-                          </button>
-                          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 h-10 px-4 py-2">
-                            Ghost
-                          </button>
-                          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-primary underline-offset-4 hover:underline h-10 px-4 py-2">
-                            Link
-                          </button>
+                              <kbd className="px-2 py-1 text-caption font-semibold text-gray-800 bg-white border border-gray-300 rounded dark:text-black">
+                                {shortcut.key}
+                              </kbd>
+                            </div>
+                          ))}
                         </div>
-                      </div>
-
-                      {/* Sizes */}
-                      <div>
-                        <h4 className="text-lg font-medium mb-4 dark:text-white">
-                          Sizes
-                        </h4>
-                        <div className="flex flex-wrap items-center gap-4">
-                          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-white hover:bg-primary/90 h-9 rounded-md px-3">
-                            Small
-                          </button>
-                          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-white hover:bg-primary/90 h-10 px-4 py-2">
-                            Default
-                          </button>
-                          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-white hover:bg-primary/90 h-11 rounded-md px-8">
-                            Large
-                          </button>
-                          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-white hover:bg-primary/90 h-10 w-10">
-                            Icon
-                          </button>
-                        </div>
-                      </div>
-                    </div>
+                      </motion.div>
+                    ))}
                   </div>
                 </div>
               </section>
@@ -701,6 +825,10 @@ function App() {
           }
         />
         <Route path="/article/:slug" element={<Article />} />
+        <Route path="/archive" element={<Archive />} />
+        <Route path="/design-archive" element={<DesignArchive />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
 
       {selectedArticle && (
@@ -734,161 +862,6 @@ function App() {
       >
         <ArrowUp className="h-6 w-6" />
       </motion.button>
-
-      {/* Bottom Navigation Container */}
-      <div className="fixed bottom-0 left-0 right-0 z-10">
-        <div className="bg-black px-8 py-4 flex items-center justify-between">
-          {/* Logo/Title Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="flex items-center gap-2"
-          >
-            <motion.button
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-            >
-              <motion.div
-                animate={{
-                  scale: [1, 1.1, 1],
-                  rotate: [0, 5, -5, 0],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  repeatDelay: 5,
-                }}
-              >
-                <CircleDot className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-              </motion.div>
-              <span className="text-base sm:text-lg font-medium text-white">
-                {content.siteInfo.title}
-              </span>
-            </motion.button>
-          </motion.div>
-
-          {/* Desktop Navigation */}
-          <motion.nav
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="hidden sm:block"
-          >
-            <ul className="flex items-center gap-4 sm:gap-6 md:gap-8">
-              {content.navigation.links.map((item) => (
-                <motion.li
-                  key={item.id}
-                  whileHover={{ scale: 1.05 }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 400,
-                    damping: 10,
-                  }}
-                >
-                  <button
-                    onClick={() => handleNavClick(item.id)}
-                    className="text-sm sm:text-base text-white hover:opacity-70 transition-opacity"
-                  >
-                    {item.text}
-                  </button>
-                </motion.li>
-              ))}
-              <li
-                className="h-4 w-px bg-gray-600 mx-1 sm:mx-2"
-                aria-hidden="true"
-              />
-              <motion.li whileHover={{ scale: 1.05 }}>
-                <a
-                  href={content.navigation.social.linkedin.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:opacity-70 transition-opacity text-white"
-                  aria-label="LinkedIn"
-                >
-                  <LinkedInLogoIcon className="h-5 w-5 sm:h-6 sm:w-6" />
-                </a>
-              </motion.li>
-              <motion.li whileHover={{ scale: 1.05 }}>
-                <a
-                  href={content.navigation.social.dribbble.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:opacity-70 transition-opacity text-white"
-                  aria-label="Dribbble"
-                >
-                  <Dribbble className="h-5 w-5 sm:h-6 sm:w-6" />
-                </a>
-              </motion.li>
-            </ul>
-          </motion.nav>
-
-          {/* Mobile Navigation */}
-          <motion.nav
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="sm:hidden"
-          >
-            <ul className="flex items-center gap-6">
-              <motion.li whileHover={{ scale: 1.05 }}>
-                <button
-                  onClick={() => handleNavClick("articles")}
-                  className="text-white hover:opacity-70 transition-opacity"
-                  aria-label="Articles"
-                >
-                  <BookOpen className="h-6 w-6" />
-                </button>
-              </motion.li>
-              <motion.li whileHover={{ scale: 1.05 }}>
-                <button
-                  onClick={() => handleNavClick("current-projects")}
-                  className="text-white hover:opacity-70 transition-opacity"
-                  aria-label="Lab"
-                >
-                  <Beaker className="h-6 w-6" />
-                </button>
-              </motion.li>
-              <motion.li whileHover={{ scale: 1.05 }}>
-                <button
-                  onClick={() => handleNavClick("work")}
-                  className="text-white hover:opacity-70 transition-opacity"
-                  aria-label="Design"
-                >
-                  <Palette className="h-6 w-6" />
-                </button>
-              </motion.li>
-              <motion.li whileHover={{ scale: 1.05 }}>
-                <button
-                  onClick={() => handleNavClick("testimonials")}
-                  className="text-white hover:opacity-70 transition-opacity"
-                  aria-label="Testimonials"
-                >
-                  <Quote className="h-6 w-6" />
-                </button>
-              </motion.li>
-              <motion.li whileHover={{ scale: 1.05 }}>
-                <button
-                  onClick={() => handleNavClick("career")}
-                  className="text-white hover:opacity-70 transition-opacity"
-                  aria-label="Career"
-                >
-                  <Briefcase className="h-6 w-6" />
-                </button>
-              </motion.li>
-              <motion.li whileHover={{ scale: 1.05 }}>
-                <button
-                  onClick={() => handleNavClick("design-system")}
-                  className="text-white hover:opacity-70 transition-opacity"
-                  aria-label="Design System"
-                >
-                  <Layers className="h-6 w-6" />
-                </button>
-              </motion.li>
-            </ul>
-          </motion.nav>
-        </div>
-      </div>
     </div>
   );
 }

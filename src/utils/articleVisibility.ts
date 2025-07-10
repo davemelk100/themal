@@ -1,0 +1,28 @@
+export const isArticleVisible = (articleTitle: string, type: 'mainPage' | 'archive' = 'mainPage'): boolean => {
+  try {
+    const savedVisibility = localStorage.getItem("articleVisibility");
+    if (savedVisibility) {
+      const visibilitySettings = JSON.parse(savedVisibility);
+      const articleSettings = visibilitySettings[articleTitle];
+      
+      // Handle legacy format (boolean) and new format (object)
+      if (typeof articleSettings === 'boolean') {
+        return articleSettings;
+      }
+      
+      if (articleSettings && typeof articleSettings === 'object') {
+        return articleSettings[type] !== false; // Default to true if not explicitly set to false
+      }
+      
+      return true; // Default to visible if not found
+    }
+    return true; // Default to visible if no settings exist
+  } catch (error) {
+    console.error("Error checking article visibility:", error);
+    return true; // Default to visible on error
+  }
+};
+
+export const getVisibleArticles = (articles: readonly any[], type: 'mainPage' | 'archive' = 'mainPage') => {
+  return articles.filter((article) => isArticleVisible(article.title, type));
+};
