@@ -61,6 +61,7 @@ export const content = {
         categories: "",
         image: "/img/delta-portal-sq.png",
         alt: "Delta Dental Member Portal",
+        url: "https://www.memberportal.com/mp/delta/",
       },
       {
         title: "Remote interpretation SaaS application",

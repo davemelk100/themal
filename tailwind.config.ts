@@ -6,7 +6,16 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["DM Sans", "Helvetica", "Arial", "sans-serif"],
+        sans: [
+          "DM Sans",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "Segoe UI",
+          "Helvetica Neue",
+          "Helvetica",
+          "Arial",
+          "sans-serif",
+        ],
         title: ["Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
         card: ["Space Grotesk", "Helvetica", "Arial", "sans-serif"],
       },
