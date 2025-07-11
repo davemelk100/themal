@@ -129,11 +129,7 @@
     <circle cx="25" cy="65" r="4" fill="#CBD5E0" class="micro-scale"/>
   </g>
   
-  <!-- Macro Scale Elements (Could be containers or small objects) -->
-  <g class="scale-group">
-    <rect x="35" y="35" width="20" height="20" rx="3" fill="#4A5568" opacity="0.7" class="macro-scale"/>
-    <rect x="37" y="37" width="16" height="16" rx="2" fill="#718096" opacity="0.5"/>
-  </g>
+
   
   <!-- Nested Scale Elements (Multiple interpretations) -->
   <g class="scale-group">

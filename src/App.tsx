@@ -57,10 +57,7 @@ const SectionHeader = ({
   return (
     <div className={`${className}`}>
       <div className="flex items-center justify-between mb-2">
-        <h2
-          className="text-[clamp(1.25rem,3vw,2.5rem)] font-bold title-font leading-tight"
-          style={{ letterSpacing: "-1.5px" }}
-        >
+        <h2 className="text-[clamp(1.25rem,3vw,2.5rem)] font-bold title-font leading-tight">
           {title}
         </h2>
         {showArchiveLink && (
@@ -402,7 +399,7 @@ function App() {
                         },
                       }}
                       className="text-[clamp(2rem,6vw,4rem)] font-bold mb-1 title-font leading-none"
-                      style={{ letterSpacing: "-4.5px" }}
+                      style={{ textShadow: "1px 1px 2px rgba(0,0,0,0.15)" }}
                     >
                       {content.siteInfo.subtitle}
                     </motion.h1>
@@ -558,10 +555,7 @@ function App() {
                             </div>
                             <div className="p-3 flex flex-col gap-2 flex-1">
                               <div>
-                                <h3
-                                  className="text-[20px] font-semibold mb-1 dark:text-black title-font"
-                                  style={{ letterSpacing: "-0.75px" }}
-                                >
+                                <h3 className="text-[20px] font-semibold mb-1 dark:text-black title-font">
                                   {article.title}
                                 </h3>
                               </div>
@@ -616,10 +610,7 @@ function App() {
                           const ProjectCard = (
                             <div className="flex flex-col gap-2 flex-1">
                               <div>
-                                <h3
-                                  className="text-[20px] font-semibold mb-1 dark:text-black title-font"
-                                  style={{ letterSpacing: "-0.75px" }}
-                                >
+                                <h3 className="text-[20px] font-semibold mb-1 dark:text-black title-font">
                                   {project.title}
                                 </h3>
                                 {project.description && (
