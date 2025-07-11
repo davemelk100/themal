@@ -369,8 +369,7 @@ export const content = {
       },
       {
         title: "AI NUI",
-        description:
-          "We're all building the same AI UI. Lets innovate.",
+        description: "We're all building the same AI UI. Lets innovate.",
         technologies: ["React", "AI", "UI/UX", "Design Systems"],
         demo: "https://aiuinui.netlify.app/",
         image: "/img/ai-user-research.png",
@@ -451,7 +450,7 @@ export const content = {
 
 <p>It's time for UX professionals to become financially literate. Our users deserve nothing less.</p>
 
-<p class="article-date">Draft - January 2025</p>`,
+`,
         image: "/img/analytics-desktop.svg",
         date: "Draft - January 2025",
         tags: ["UX Design", "Business", "Product Strategy"],
@@ -497,7 +496,7 @@ export const content = {
 
 <p>The best hiring processes are those that efficiently identify the right candidate while treating everyone involved with dignity and respect.</p>
 
-<p class="article-date">June 7, 2024</p>`,
+`,
         image: "/img/hide-harold.png",
         date: "June 7, 2024",
         tags: ["Career", "Hiring", "Workplace Culture"],
@@ -523,7 +522,7 @@ export const content = {
 
 <p>Vibe engineering solves real problems while feeling natural. Vibe coding makes things feel right but might miss the underlying issues. Next time you're building something, ask yourself: am I engineering the vibe, or am I just coding it?</p>
 
-<p class="article-date">June 8, 2024</p>`,
+`,
         image: "/img/vibe-engineering.png",
         date: "June 8, 2024",
         tags: ["UX Design", "Development", "Product Design"],
@@ -557,7 +556,7 @@ export const content = {
 
 <p>Hallucinations aren't going away anytime soon. They're part of how these models work. The key is to develop a healthy skepticism and know how to work around them. <strong>THINK</strong> of it like proofreading - you don't trust spell check completely, you use it as a tool.</p>
 
-<p class="article-date">May 30, 2024</p>`,
+`,
         image: "/img/ai-hallucination.png",
         cardImage: "/img/lebow-ball.png",
         date: "May 30, 2024",
@@ -569,7 +568,7 @@ export const content = {
         description:
           "Bolt.new and its ecosystem is the leader in the AI-assisted development and design space.",
         url: "bolt-new-rapid-prototyping",
-        content: `<h1>bolt.new: The Leader in the Rapid Prototyping Clubhouse</h1>
+        content: `<h1>Bolt.new: Leader in the Rapid Prototyping Clubhouse</h1>
 
 <h2>The Speed of Thought</h2>
 
@@ -587,7 +586,7 @@ export const content = {
 
 <p>And the best part? This is just the start. As bolt.new keeps getting better, we're seeing a future where the line between design and development gets blurrier - and that's exactly what we need.</p>
 
-<p class="article-date">June 1, 2024</p>`,
+`,
         image: "/img/bolt-new.png",
         cardImage: "/img/bolt-new.png",
         date: "June 1, 2024",
@@ -625,7 +624,7 @@ export const content = {
 
 <p>So go ahead: break your own architecture if it makes the experience better. That's not sloppy - it's smart. It's a living system that should evolve with your users. Keep it flexible. Keep it human.</p>
 
-<p class="article-date">March 19, 2024</p>`,
+`,
         url: "information-architecture-not-sacred",
         image: "/img/ia-flexible.png",
         tags: ["Information Architecture", "UX Design", "User Experience"],
@@ -701,7 +700,7 @@ export const content = {
 
 <p>Think of it like a movie soundtrack. The right music doesn't just play in the background - it shapes how you experience the entire film. In the same way, choosing the right design genre shapes how users experience your product. It's about creating harmony between what users expect, what your business needs, and how people feel when they use your product.</p>
 
-<p class="article-date">June 15, 2024</p>`,
+`,
         image: "",
         cardImage: "/img/genres.png",
         date: "June 15, 2024",
@@ -760,7 +759,7 @@ export const content = {
 
 <p>The next time you're implementing an API token system, remember the arcade. Sometimes the best solutions are the ones that have stood the test of time, just dressed in digital clothes.</p>
 
-<p class="article-date">June 14, 2024</p>`,
+`,
         image: "/img/tokens.png",
         date: "June 14, 2024",
         tags: ["Development", "API Design", "User Experience"],
@@ -798,7 +797,7 @@ export const content = {
 
 <p>That's it. That's the article.</p>
 
-<p class="article-date">June 10, 2024</p>`,
+`,
         image: "/img/anti-patterns.png",
         date: "June 10, 2024",
         tags: ["UX Design", "User Experience", "Design Patterns"],
@@ -817,7 +816,7 @@ export const content = {
 
 <p>Use AI to write your commit messages. Cursor's AI commit message feature can analyze your changes and generate meaningful commit messages automatically. Go here: <a href="https://docs.cursor.com/more/ai-commit-message">https://docs.cursor.com/more/ai-commit-message</a>, or just click on those diamond icons in the Source Control input field and experience the magic.</p>
 
-<p class="article-date">June 11, 2024</p>`,
+`,
         image: "/img/commit-fatigue.png",
         date: "June 11, 2024",
         tags: ["Git", "Development", "Best Practices", "Productivity"],
@@ -869,7 +868,7 @@ export const content = {
 
 <p>Text Tunneling isn't just about making things sound casual - it's about respecting your users' time and attention. When done right, it's leads to deeper understanding without adding any overhead, or increased cognitive load. I guess, in essence, stop beating around the bush.</p>
 
-<p class="article-date">June 16, 2024</p>`,
+`,
         image: "/img/text-funnel.png",
         cardImage: "/img/text-funnel.png",
         date: "June 16, 2024",
@@ -925,7 +924,7 @@ export const content = {
 
 <p>Every search result you see isn't just a random entry—it's an artifact, a piece of data that a real user submitted at some point. Each result represents a question, a need, or a solution that someone else contributed to the system. When you interact with search, you're not just finding information; you're tapping into a living archive of user-generated knowledge, shaped and refined by countless individual contributions.</p>
 
-<p class="article-date">December 19, 2024</p>`,
+`,
 
         image: "/img/ai-user-research.png",
         cardImage: "/img/ai-hydrated.png",
@@ -1033,7 +1032,7 @@ export const content = {
   <p>On the other hand, AI might be making us smarter by handling routine tasks and freeing up mental bandwidth for more complex, creative thinking. Just as calculators didn't make us worse at math but better at advanced mathematics, AI could be elevating our cognitive capabilities rather than diminishing them.</p>
 </div>
 
-<p class="article-date">July 6, 2024</p>`,
+`,
         image: "/img/lazy-ai.png",
         cardImage: "/img/all-dumber.png",
         date: "July 6, 2024",

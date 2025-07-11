@@ -32,6 +32,8 @@ import Archive from "./pages/Archive";
 import DesignArchive from "./pages/DesignArchive";
 import Admin from "./pages/Admin";
 import AdminLogin from "./pages/AdminLogin";
+import AdminMusic from "./pages/AdminMusic";
+import MusicPlayer from "./pages/MusicPlayer";
 import { slugify } from "./utils/slugify";
 import { getVisibleArticles } from "./utils/articleVisibility";
 import { getVisibleDesignWork } from "./utils/designWorkVisibility";
@@ -162,7 +164,7 @@ function App() {
       <SparklingBackground />
 
       {/* Header Navigation */}
-      <div className="fixed top-0 left-0 right-0 z-20">
+      <div className="relative z-20">
         <div className="bg-gradient-to-r from-gray-500 to-black px-6 py-2 flex items-center justify-between">
           {/* Logo/Title Section */}
           <motion.div
@@ -401,7 +403,7 @@ function App() {
                         },
                       }}
                       className="text-[clamp(2rem,6vw,4rem)] font-bold mb-6 title-font leading-none"
-                      style={{ letterSpacing: "-1.5px" }}
+                      style={{ letterSpacing: "-4.5px" }}
                     >
                       {content.siteInfo.subtitle}
                     </motion.h1>
@@ -829,6 +831,8 @@ function App() {
         <Route path="/design-archive" element={<DesignArchive />} />
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/admin-music" element={<AdminMusic />} />
+        <Route path="/music-player" element={<MusicPlayer />} />
       </Routes>
 
       {selectedArticle && (

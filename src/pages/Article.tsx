@@ -150,8 +150,8 @@ export default function Article() {
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold dark:text-white mb-6 font-card">
           {article.title}
         </h1>
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-4 text-nav text-gray-600 dark:text-gray-400">
+        <div className="mb-6">
+          <div className="flex items-center gap-4 text-nav text-gray-600 dark:text-gray-400 mb-3">
             <span>Dave Melkonian</span>
             <span>•</span>
             <span>{article.date}</span>
@@ -175,8 +175,16 @@ export default function Article() {
         )}
         <div>{renderContent(article.content)}</div>
 
-        <div className="relative mt-12">
-          <ShareWidget url={window.location.href} />
+        {/* Back to Site Link */}
+        <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+          <Link
+            to="/"
+            onClick={handleBackClick}
+            className="inline-flex items-center text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Site
+          </Link>
         </div>
       </div>
     </div>
