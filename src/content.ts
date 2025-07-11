@@ -828,7 +828,7 @@ export const content = {
         tags: ["Git", "Development", "Best Practices", "Productivity"],
       },
       {
-        title: "Text Tunneling? Ok, NOW We're Talking!",
+        title: "Text Tunneling: The Art of Getting to the Point",
         description:
           "Candor and brevity can turn casual users into engaged users.",
         url: "text-Tunneling",
@@ -852,11 +852,9 @@ export const content = {
 
 <h2>Be Blatant and See ROI</h2>
 
-<p>It worked for newpapers for centuries. We bury the lede based on real or imagined user expectations. Be candid - throw together a 1.5 second elevator pitch for your title tag. If we want to guide users to an action that will save them money, make it very evident that there's a reason to focus here.</p>
+<p>Newspapers have done this for centuries. Instead of burying the lede, be candid about the value. If users can save money, tell them exactly how much: "Save $122.45 today by switching to our new plan" beats "Check out more ways to save" every time.</p>
 
-<p>Being conservative looks a bit like "Check out more ways to save". Being candid looks more like "Save $122.45 today by switching to our new plan". Hell, go crazy and underline it. However you design it, make it obvious. You aren't going to hurt the user's feelings by handing them a key to 122 bucks.</p>
-
-<p>Does it feel sales-y? Well, it is. We are proud of a product and we want you to feel at-ease when using it. They took the time to look, and we want to make it worth their while. Every time someone uses the product, they have thousands of other sites with which to compare. Keep that in mind as attention spans are on a steep decline.</p>
+<p>Yes, it feels sales-y. That's the point. Users have thousands of competing options and shrinking attention spans. Make the value obvious - you won't hurt their feelings by being direct about what they'll gain.</p>
 
 <h2>The Engagement Pattern</h2>
 
