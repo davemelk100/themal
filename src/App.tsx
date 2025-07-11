@@ -473,48 +473,48 @@ function App() {
                           href={project.demo}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="group relative overflow-hidden rounded-lg bg-gray-100/80 p-4 block flex flex-col"
+                          className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col"
                         >
                           <div className="absolute top-3 right-3 text-gray-400 group-hover:text-gray-600 transition-colors">
                             <ArrowUp className="h-4 w-4 rotate-45" />
                           </div>
-                          <div className="flex items-start gap-4">
-                            <div className="flex-shrink-0">
-                              <img
-                                src={
-                                  project.title === "Chatbots"
-                                    ? `/img/color-theory-animation.svg?v=${Date.now()}`
-                                    : project.title === "Design Panes"
-                                    ? `/img/ambiguous-scale-animation.svg?v=${Date.now()}`
-                                    : project.title === "AI NUI"
-                                    ? `/img/progressive-disclosure-animation.svg?v=${Date.now()}`
-                                    : `/img/lab.svg?v=${Date.now()}`
-                                }
-                                alt={
-                                  project.title === "Chatbots"
-                                    ? "Robot Chatbot"
-                                    : project.title === "Design Panes"
-                                    ? "Design Panes"
-                                    : project.title === "AI NUI"
-                                    ? "Progressive Disclosure"
-                                    : "Lab"
-                                }
-                                className="h-[180px] w-[180px] object-contain"
-                              />
+                          <div className="p-3 flex flex-col gap-2 flex-1">
+                            <div>
+                              <h3
+                                className="text-[20px] font-semibold mb-1 dark:text-black title-font"
+                                style={{ letterSpacing: "-0.75px" }}
+                              >
+                                {project.title}
+                              </h3>
                             </div>
-                            <div className="flex flex-col gap-3 flex-1">
-                              <div className="flex-1 flex flex-col">
-                                <h3
-                                  className="text-[20px] font-semibold mb-2 dark:text-black title-font"
-                                  style={{ letterSpacing: "-0.75px" }}
-                                >
-                                  {project.title}
-                                </h3>
-                                <p className="mb-3 text-black dark:text-black text-card-body flex-1">
-                                  {project.description}
-                                </p>
-                              </div>
+                            <div className="flex-1 flex flex-col">
+                              <p className="text-black mb-2 dark:text-black text-card-body flex-1">
+                                {project.description}
+                              </p>
                             </div>
+                          </div>
+                          <div className="aspect-[3/2] overflow-hidden -mx-3">
+                            <img
+                              src={
+                                project.title === "Chatbots"
+                                  ? `/img/color-theory-animation.svg?v=${Date.now()}`
+                                  : project.title === "Design Panes"
+                                  ? `/img/ambiguous-scale-animation.svg?v=${Date.now()}`
+                                  : project.title === "AI NUI"
+                                  ? `/img/progressive-disclosure-animation.svg?v=${Date.now()}`
+                                  : `/img/lab.svg?v=${Date.now()}`
+                              }
+                              alt={
+                                project.title === "Chatbots"
+                                  ? "Robot Chatbot"
+                                  : project.title === "Design Panes"
+                                  ? "Design Panes"
+                                  : project.title === "AI NUI"
+                                  ? "Progressive Disclosure"
+                                  : "Lab"
+                              }
+                              className="h-full w-full object-contain"
+                            />
                           </div>
                         </a>
                       ))}
