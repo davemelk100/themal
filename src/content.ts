@@ -638,13 +638,13 @@ export const content = {
 
       {
         id: "five-design-genres",
-        title: "There are 5 Design Genres",
+        title: "There are Five Design Genres",
         description:
           "After years of research, five design genres have been defined (by me ).",
         url: "five-design-genres",
         content: `
 
-<p>Why do we need utilitarian names for types of design? Because we don't have any yet. At least none that are any fun. So I made some up.</p>
+<p>Why do we need simple names for types of modern digital design? Because we all secretly want (and deserve) them.</p>
 
 <div class="flex justify-center mb-8">
   <div class="w-3/4 max-w-2xl aspect-video overflow-hidden rounded-lg relative group">
@@ -657,7 +657,7 @@ export const content = {
     </div>
   </div>
 </div>
-<p class="text-sm text-gray-600 dark:text-gray-400 mb-8 text-center italic">Design genres, like musical genres, help us understand and communicate different approaches to creating user experiences.</p>
+<p class="text-sm text-gray-600 dark:text-gray-400 mb-8 text-center italic">Design genres, like musical genres, get us directly into the ballpark without guessing as to whether its a SaaS, IAaaS, or some other aaS. Embrace simplicity!</p>
 
 <h2>1. Dense</h2>
 
