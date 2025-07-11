@@ -840,6 +840,16 @@ export const content = {
 
 <p>Think of it as the opposite of "burying the lede" - you're not hiding the most important information, you're making it impossible to miss. When users have thousands of competing options and declining attention spans, Text Tunneling respects their time by getting to the heart of what matters most.</p>
 
+<h3>Text Tunneling vs SEO Funneling</h3>
+
+<p>While <strong>SEO Funneling</strong> focuses on optimizing content to rank higher in search results and guide users through a conversion funnel, <strong>Text Tunneling</strong> operates at the micro-interaction level within your product or interface. Here's the key difference:</p>
+
+<p><strong>SEO Funneling</strong> asks: "How do we get more people to find and click through to our content?"</p>
+
+<p><strong>Text Tunneling</strong> asks: "Once users are here, how do we get them to the most valuable information or action in the fewest possible words?"</p>
+
+<p>SEO Funneling is about the journey to your content. Text Tunneling is about the journey through your content. It's the difference between optimizing for search engines versus optimizing for human cognition and decision-making.</p>
+
 <h2>Be Blatant and See ROI</h2>
 
 <p>It worked for newpapers for centuries. We bury the lede based on real or imagined user expectations. Be candid - throw together a 1.5 second elevator pitch for your title tag. If we want to guide users to an action that will save them money, make it very evident that there's a reason to focus here.</p>
