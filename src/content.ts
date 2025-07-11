@@ -102,6 +102,7 @@ export const content = {
         categories: "Graphic Design, CSS",
         image: "/img/hex-orange.png",
         alt: "Hex Code Pop Art",
+        url: "https://dribbble.com/shots/25891436-Hex-code-gradient-endpoints-in-pop-art-style",
       },
       {
         title: "Design Panes",
