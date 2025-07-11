@@ -572,9 +572,6 @@ function App() {
                                 </h3>
                               </div>
                               <div className="flex-1 flex flex-col">
-                                <div className="flex items-center gap-4 mb-1 text-nav text-gray-600">
-                                  <span>{article.date}</span>
-                                </div>
                                 <p className="text-gray-600 dark:text-gray-400 mb-2 text-card-body flex-1">
                                   {article.description}
                                 </p>
