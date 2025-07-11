@@ -13,6 +13,7 @@ import {
 interface Track {
   id: number;
   title: string;
+  artist: string;
   url: string;
   duration: string;
 }
@@ -33,20 +34,30 @@ const MusicPlayer: React.FC = () => {
     {
       id: 1,
       title: "Mash - Motorhead v Notorious B.I.G. v Pink Floyd",
+      artist: "BALM",
       url: "/audio/motorbeatv2.mp3",
       duration: "1:26",
     },
     {
       id: 2,
       title: "Mash - Alice In Chains x Fiend",
+      artist: "BALM",
       url: "/audio/aic-fiend.mp3",
       duration: "0:38",
     },
     {
       id: 3,
       title: "Mash - Slayer x Congas",
+      artist: "BALM",
       url: "/audio/slayer-congas.mp3",
       duration: "2:15",
+    },
+    {
+      id: 4,
+      title: "Nibbler",
+      artist: "BALM",
+      url: "/audio/nibbler.mp3",
+      duration: "0:00",
     },
   ];
 
@@ -178,10 +189,13 @@ const MusicPlayer: React.FC = () => {
           </h1> */}
 
           {/* Current Track Info */}
-          <div className="text-center mb-8">
+          <div className="text-left mb-8">
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
               {tracks[currentTrack]?.title}
             </h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 mt-1">
+              {tracks[currentTrack]?.artist}
+            </p>
           </div>
 
           {/* Audio Element */}

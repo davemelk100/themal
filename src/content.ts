@@ -456,9 +456,9 @@ export const content = {
         tags: ["UX Design", "Business", "Product Strategy"],
       },
       {
-        title: "Seven Interviews?",
+        title: "Seven Interviews? Some folks that say that's excessive.",
         description:
-          "Examining modern hiring practices and their impact on both candidates and organizations.",
+          "That's because it is. What's the incentive for recruiters? Volume? Baffling.",
         url: "seven-interviews",
         content: `<h1>Seven Interviews?</h1>
 
@@ -632,7 +632,7 @@ export const content = {
       },
 
       {
-        title: "The 5 Design Genres",
+        title: "I Just Created 5 Design Genres and I'm Hear To Tell You About It",
         description: "Naming things is fun, as previously discussed.",
         url: "five-design-genres",
         content: `<p>This was fun the first time around, so let's go ahead and run it back, this time with more details. And more guitars.</p>
@@ -827,8 +827,6 @@ export const content = {
           "Candor and brevity can turn casual users into engaged users.",
         url: "text-Tunneling",
         content: `<h1>Text Tunneling: Make It Make Sense</h1>
-
-<p>"Please review the following information" isn't all that catchy anymore. Text Tunneling starts with clear, direct language that users actually want to read. It's about leading with what matters and building from there.</p>
 
 <h2>Be Blatant and See ROI</h2>
 
