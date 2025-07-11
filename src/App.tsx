@@ -3,7 +3,7 @@ import {
   CircleDot,
   Dribbble,
   BookOpen,
-  Beaker,
+  FlaskConical,
   Palette,
   Briefcase,
   Quote,
@@ -308,7 +308,7 @@ function App() {
                   className="text-white hover:opacity-70 transition-opacity"
                   aria-label="Lab"
                 >
-                  <Beaker className="h-5 w-5" />
+                  <FlaskConical className="h-5 w-5" />
                 </button>
               </motion.li>
               <motion.li whileHover={{ scale: 1.05 }}>
@@ -542,158 +542,169 @@ function App() {
               )}
 
               {/* Current Projects Section */}
-              <section id="current-projects" className="py-8 sm:py-12">
-                <div className="container mx-auto px-4 sm:px-8">
-                  <SectionHeader
-                    title={content.currentProjects.title}
-                    subtitle={content.currentProjects.subtitle}
-                    className="mb-12"
-                  />
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {getVisibleLabProjects(
-                      content.currentProjects.projects
-                    ).map((project, index) => (
-                      <a
-                        key={index}
-                        href={project.demo}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group relative overflow-hidden rounded-lg bg-gray-100/80 p-4 block flex flex-col"
-                      >
-                        <div className="flex flex-col gap-3 flex-1">
-                          <div className="flex-1 flex flex-col">
-                            <h3
-                              className="text-[20px] font-semibold mb-2 dark:text-black title-font"
-                              style={{ letterSpacing: "-0.75px" }}
-                            >
-                              {project.title}
-                            </h3>
-                            <p className="mb-3 text-black dark:text-black text-card-body flex-1">
-                              {project.description}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="mt-auto pt-3">
-                          <div className="inline-flex items-center text-black hover:text-gray-600 dark:text-black dark:hover:text-gray-700 underline text-nav">
-                            View App
-                          </div>
-                        </div>
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              </section>
-
-              {/* Work Section */}
-              <section id="work" className="py-8 sm:py-12">
-                <div className="container mx-auto px-4 sm:px-8">
-                  <SectionHeader
-                    title="Design"
-                    subtitle={content.work.subtitle}
-                    className="mb-12"
-                    showArchiveLink={false}
-                  />
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {getVisibleDesignWork(content.work.projects)
-                      .filter(
-                        (project: any) =>
-                          project.title !== "3D Conversion UX Plan"
-                      )
-                      .map((project: any, index) => {
-                        const ProjectCard = (
-                          <div className="flex flex-col gap-3">
-                            <div className="aspect-[2/1] overflow-hidden rounded-lg">
-                              <img
-                                src={project.image}
-                                alt={project.alt || project.title}
-                                className="h-full w-full object-contain"
-                              />
+              {isSectionVisible("lab") && (
+                <section id="current-projects" className="py-8 sm:py-12">
+                  <div className="container mx-auto px-4 sm:px-8">
+                    <SectionHeader
+                      title={content.currentProjects.title}
+                      subtitle={content.currentProjects.subtitle}
+                      className="mb-12"
+                    />
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                      {getVisibleLabProjects(
+                        content.currentProjects.projects
+                      ).map((project, index) => (
+                        <a
+                          key={index}
+                          href={project.demo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group relative overflow-hidden rounded-lg bg-gray-100/80 p-4 block flex flex-col"
+                        >
+                          <div className="flex items-start gap-4">
+                            <div className="flex-shrink-0">
+                              <FlaskConical className="h-12 w-12 text-blue-600 dark:text-blue-400" />
                             </div>
-                            <div>
-                              <h3
-                                className="text-[20px] font-semibold mb-2 dark:text-black title-font"
-                                style={{ letterSpacing: "-0.75px" }}
-                              >
-                                {project.title}
-                              </h3>
-                              {project.description && (
-                                <p className="text-black mb-3 dark:text-black text-card-body">
+                            <div className="flex flex-col gap-3 flex-1">
+                              <div className="flex-1 flex flex-col">
+                                <h3
+                                  className="text-[20px] font-semibold mb-2 dark:text-black title-font"
+                                  style={{ letterSpacing: "-0.75px" }}
+                                >
+                                  {project.title}
+                                </h3>
+                                <p className="mb-3 text-black dark:text-black text-card-body flex-1">
                                   {project.description}
                                 </p>
-                              )}
+                              </div>
                             </div>
                           </div>
-                        );
-
-                        return project.url ? (
-                          <a
-                            key={index}
-                            href={project.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="group relative overflow-hidden rounded-lg bg-gray-100/80 p-4 cursor-pointer"
-                          >
-                            {ProjectCard}
-                          </a>
-                        ) : (
-                          <div
-                            key={index}
-                            className="group relative overflow-hidden rounded-lg bg-gray-100/80 p-4"
-                          >
-                            {ProjectCard}
+                          <div className="mt-auto pt-3">
+                            <div className="inline-flex items-center text-black hover:text-gray-600 dark:text-black dark:hover:text-gray-700 underline text-nav">
+                              View App
+                            </div>
                           </div>
-                        );
-                      })}
+                        </a>
+                      ))}
+                    </div>
                   </div>
-                  <div className="mt-8">
-                    <Link
-                      to="/design-archive"
-                      className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
-                    >
-                      View Design Archive
-                    </Link>
+                </section>
+              )}
+
+              {/* Work Section */}
+              {isSectionVisible("designWork") && (
+                <section id="work" className="py-8 sm:py-12">
+                  <div className="container mx-auto px-4 sm:px-8">
+                    <SectionHeader
+                      title="Design"
+                      subtitle={content.work.subtitle}
+                      className="mb-12"
+                      showArchiveLink={false}
+                    />
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                      {getVisibleDesignWork(content.work.projects)
+                        .filter(
+                          (project: any) =>
+                            project.title !== "3D Conversion UX Plan"
+                        )
+                        .map((project: any, index) => {
+                          const ProjectCard = (
+                            <div className="flex flex-col gap-3">
+                              <div className="aspect-[2/1] overflow-hidden rounded-lg">
+                                <img
+                                  src={project.image}
+                                  alt={project.alt || project.title}
+                                  className="h-full w-full object-contain"
+                                />
+                              </div>
+                              <div>
+                                <h3
+                                  className="text-[20px] font-semibold mb-2 dark:text-black title-font"
+                                  style={{ letterSpacing: "-0.75px" }}
+                                >
+                                  {project.title}
+                                </h3>
+                                {project.description && (
+                                  <p className="text-black mb-3 dark:text-black text-card-body">
+                                    {project.description}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          );
+
+                          return project.url ? (
+                            <a
+                              key={index}
+                              href={project.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="group relative overflow-hidden rounded-lg bg-gray-100/80 p-4 cursor-pointer"
+                            >
+                              {ProjectCard}
+                            </a>
+                          ) : (
+                            <div
+                              key={index}
+                              className="group relative overflow-hidden rounded-lg bg-gray-100/80 p-4"
+                            >
+                              {ProjectCard}
+                            </div>
+                          );
+                        })}
+                    </div>
+                    <div className="mt-8">
+                      <Link
+                        to="/design-archive"
+                        className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
+                      >
+                        View Design Archive
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              </section>
+                </section>
+              )}
 
               {/* Testimonials Section */}
-              <section id="testimonials" className="py-8 sm:py-12">
-                <div className="container mx-auto px-4 sm:px-8">
-                  <SectionHeader
-                    title={content.testimonials.title}
-                    subtitle={content.testimonials.subtitle}
-                    className="mb-8 sm:mb-16"
-                  />
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-                    {getVisibleTestimonials(content.testimonials.items).map(
-                      (testimonial, index) => (
-                        <motion.div
-                          key={testimonial.author}
-                          initial={{ opacity: 0, y: 20 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 0.6, delay: index * 0.2 }}
-                          className="bg-gray-100/80 p-6 sm:p-8 rounded-lg shadow-lg relative"
-                        >
-                          <Quote className="h-6 w-6 sm:h-8 sm:w-8 text-primary/20 dark:text-white/20 absolute -top-3 -left-3 sm:-top-4 sm:-left-4" />
-                          <p className="text-base mb-6 dark:text-black">
-                            {testimonial.quote}
-                          </p>
-                          <div>
-                            <p className="font-semibold text-nav dark:text-black">
-                              {testimonial.author}
+              {isSectionVisible("testimonials") && (
+                <section id="testimonials" className="py-8 sm:py-12">
+                  <div className="container mx-auto px-4 sm:px-8">
+                    <SectionHeader
+                      title={content.testimonials.title}
+                      subtitle={content.testimonials.subtitle}
+                      className="mb-8 sm:mb-16"
+                    />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+                      {getVisibleTestimonials(content.testimonials.items).map(
+                        (testimonial, index) => (
+                          <motion.div
+                            key={testimonial.author}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: index * 0.2 }}
+                            className="bg-gray-100/80 p-6 sm:p-8 rounded-lg shadow-lg relative"
+                          >
+                            <Quote className="h-6 w-6 sm:h-8 sm:w-8 text-primary/20 dark:text-white/20 absolute -top-3 -left-3 sm:-top-4 sm:-left-4" />
+                            <p className="text-base mb-6 dark:text-black">
+                              {testimonial.quote}
                             </p>
-                            <p className="text-caption text-muted-foreground dark:text-black">
-                              {testimonial.role}
-                            </p>
-                          </div>
-                        </motion.div>
-                      )
-                    )}
+                            <div>
+                              <p className="font-semibold text-nav dark:text-black">
+                                {testimonial.author}
+                              </p>
+                              <p className="text-caption text-muted-foreground dark:text-black">
+                                {testimonial.role}
+                              </p>
+                            </div>
+                          </motion.div>
+                        )
+                      )}
+                    </div>
                   </div>
-                </div>
-              </section>
+                </section>
+              )}
 
               {/* Career Timeline Section */}
               <section id="career" className="py-8 sm:py-12">

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Play,
@@ -50,6 +50,21 @@ const MusicPlayer: React.FC = () => {
     },
   ];
 
+  // Preload all MP3 files when component mounts
+  useEffect(() => {
+    tracks.forEach((track) => {
+      const audio = new Audio();
+      audio.src = track.url;
+      audio.preload = "auto";
+    });
+
+    // Initialize the audio element with the first track
+    if (audioRef.current) {
+      audioRef.current.src = tracks[0].url;
+      audioRef.current.load();
+    }
+  }, []);
+
   const togglePlay = () => {
     if (audioRef.current) {
       if (isPlaying) {
@@ -65,12 +80,14 @@ const MusicPlayer: React.FC = () => {
   };
 
   const playTrack = (index: number) => {
+    console.log("playTrack called with index:", index);
     setCurrentTrack(index);
-    setIsPlaying(false);
     setLoading(true);
+    setPendingPlay(true);
     if (audioRef.current) {
       audioRef.current.src = tracks[index].url;
       audioRef.current.load();
+      console.log("Audio src set to:", tracks[index].url);
     }
   };
 
@@ -91,8 +108,22 @@ const MusicPlayer: React.FC = () => {
     }
   };
 
+  const [pendingPlay, setPendingPlay] = useState(false);
+
   const handleCanPlay = () => {
     setLoading(false);
+    if (pendingPlay && audioRef.current) {
+      audioRef.current
+        .play()
+        .then(() => {
+          setIsPlaying(true);
+          setPendingPlay(false);
+        })
+        .catch((error) => {
+          console.error("Error playing track:", error);
+          setPendingPlay(false);
+        });
+    }
   };
 
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -160,6 +191,7 @@ const MusicPlayer: React.FC = () => {
             onEnded={nextTrack}
             onLoadedMetadata={handleTimeUpdate}
             onCanPlay={handleCanPlay}
+            preload="auto"
           />
 
           {/* Progress Bar */}

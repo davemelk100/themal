@@ -1,14 +1,9 @@
 export const isArticleVisible = (articleTitle: string, type: 'mainPage' | 'archive' = 'mainPage'): boolean => {
   try {
-    const savedVisibility = localStorage.getItem("articleVisibility");
+    const savedVisibility = localStorage.getItem("contentVisibility");
     if (savedVisibility) {
       const visibilitySettings = JSON.parse(savedVisibility);
-      const articleSettings = visibilitySettings[articleTitle];
-      
-      // Handle legacy format (boolean) and new format (object)
-      if (typeof articleSettings === 'boolean') {
-        return articleSettings;
-      }
+      const articleSettings = visibilitySettings.articles?.[articleTitle];
       
       if (articleSettings && typeof articleSettings === 'object') {
         return articleSettings[type] !== false; // Default to true if not explicitly set to false
