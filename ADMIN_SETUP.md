@@ -75,3 +75,57 @@ npm run dev
 ## Security Note
 
 **Important:** Set up your own secure password immediately after installation!
+
+Here’s how you can set your admin password:
+
+1. **Choose your password** (for example: `admin123`).
+2. I generated the hash for `admin123` for you:
+
+```
+Password: admin123
+Hash: 240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9
+
+Add this to your .env.local file:
+<code_block_to_apply_changes_from>
+```
+
+3. **Create a file called `.env.local` in your project root** (if it doesn’t exist).
+4. **Paste this line into `.env.local`:**
+
+```
+VITE_ADMIN_PASSWORD_HASH=240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9
+```
+
+5. **Restart your dev server** (`npm run dev`).
+
+Now your admin password is `admin123`.  
+If you want a different password, just tell me what you want and I’ll generate the hash for you!
+
+If you’re seeing an error after setting up your admin password, please provide the exact error message or describe what’s happening (e.g., “login fails,” “server won’t start,” etc.).
+
+**Common issues and quick checks:**
+
+1. **.env.local file location:**  
+   Make sure `.env.local` is in your project root (same level as `package.json`).
+
+2. **No extra spaces:**  
+   The line in `.env.local` should be:
+
+   ```
+   VITE_ADMIN_PASSWORD_HASH=240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9
+   ```
+
+   (No quotes, no extra spaces.)
+
+3. **Restart dev server:**  
+   After editing `.env.local`, you must restart your dev server (`npm run dev`).
+
+4. **Login with the correct password:**  
+   The password is `admin123` (unless you changed it).
+
+5. **Vite environment variable prefix:**  
+   The variable must start with `VITE_` for Vite to expose it to the frontend.
+
+---
+
+**If you provide the error message or describe what you see, I can give you a precise fix!**
