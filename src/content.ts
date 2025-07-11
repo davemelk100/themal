@@ -343,7 +343,7 @@ export const content = {
 
   currentProjects: {
     title: "Lab",
-    subtitle: "Where we cook",
+    subtitle: "Where I cook",
     projects: [
       {
         title: "Chatbots",
