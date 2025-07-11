@@ -563,7 +563,11 @@ function App() {
                         >
                           <div className="flex items-start gap-4">
                             <div className="flex-shrink-0">
-                              <FlaskConical className="h-12 w-12 text-blue-600 dark:text-blue-400" />
+                              <img
+                                src="/img/lab.svg"
+                                alt="Lab"
+                                className="h-[90px] w-[90px] object-contain"
+                              />
                             </div>
                             <div className="flex flex-col gap-3 flex-1">
                               <div className="flex-1 flex flex-col">

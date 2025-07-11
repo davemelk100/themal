@@ -346,7 +346,7 @@ export const content = {
       {
         title: "Chatbots",
         description:
-          "Interactive chatbot experiments exploring conversational UI patterns and AI integration.",
+          "Interactive chatbot experiments",
         technologies: ["React", "OpenAI API", "Tailwind", "Node.js"],
         demo: "https://chatbot-samples.netlify.app/",
         image: "/img/ai-user-research.png",
@@ -354,7 +354,7 @@ export const content = {
       {
         title: "Old Portfolio",
         description:
-          "Previous portfolio design showcasing earlier work and design evolution.",
+          "Previous portfolio design",
         technologies: ["HTML", "CSS", "JavaScript"],
         demo: "https://rococo-paprenjak-da1be1.netlify.app/",
         image: "/img/old-portfolio.png",
@@ -362,14 +362,14 @@ export const content = {
       {
         title: "Design Panes",
         description:
-          "Spotlights design principles and the designers who put them into practice.",
+          "Design, designs, and designers",
         technologies: ["React", "TypeScript", "Tailwind", "Figma API"],
         demo: "https://designpanes.com/",
         image: "/img/design-panes.png",
       },
       {
         title: "AI NUI",
-        description: "We're all building the same AI UI. Lets innovate.",
+        description: "Let's make the AI UI better",
         technologies: ["React", "AI", "UI/UX", "Design Systems"],
         demo: "https://aiuinui.netlify.app/",
         image: "/img/ai-user-research.png",
@@ -383,6 +383,7 @@ export const content = {
       "As an English major, I felt this wasn't a big stretch to start cranking these out.",
     items: [
       {
+        id: "ux-business-financial-implications",
         title: "When Good UX Isn't Good Business",
         description:
           "Why UX professionals need to understand the financial implications of their design decisions.",
@@ -456,6 +457,7 @@ export const content = {
         tags: ["UX Design", "Business", "Product Strategy"],
       },
       {
+        id: "seven-interviews-excessive",
         title: "Seven Interviews? Some folks say that's excessive.",
         description:
           "That's because it is. What's the incentive for recruiters? Volume? Baffling.",
@@ -502,6 +504,7 @@ export const content = {
         tags: ["Career", "Hiring", "Workplace Culture"],
       },
       {
+        id: "vibe-coding-vs-vibe-engineering",
         title: "Vibe Coding vs Vibe Engineering",
         description:
           "The subtle art of making things work right, not just feel right.🎧 💻",
@@ -528,6 +531,7 @@ export const content = {
         tags: ["UX Design", "Development", "Product Design"],
       },
       {
+        id: "ai-hallucination-prevention",
         title: "AI Hallucination Prevention",
         description:
           "How to spot, handle, and stop the AI needle from skipping.",
@@ -564,6 +568,7 @@ export const content = {
       },
 
       {
+        id: "bolt-new-rapid-prototyping",
         title: "Bolt.new: The Leader in the Rapid Prototyping Clubhouse",
         description:
           "Bolt.new and its ecosystem is the leader in the AI-assisted development and design space.",
@@ -593,6 +598,7 @@ export const content = {
         tags: ["Design Tools", "Prototyping", "UX Design"],
       },
       {
+        id: "information-architecture-not-sacred",
         title: "Information Architecture Is Not Sacred",
         description:
           "Your IA should evolve with your users, not stay set in stone.",
@@ -632,23 +638,27 @@ export const content = {
       },
 
       {
-        title: "I Created 5 Design Genres and I'm Hear To Tell You About 'Em",
-        description: "Naming things is fun, as previously discussed.",
+        id: "five-design-genres",
+        title: "These are the 5 Design Genres",
+        description:
+          "After years of research, five design genres have been defined (by me ).",
         url: "five-design-genres",
-        content: `<p>This was fun the first time around, so let's go ahead and run it back, this time with more details. And more guitars.</p>
+        content: `
 
 <p>Why do we need utilitarian names for types of design? Because we don't have any yet. At least none that are any fun. So let's make some up.</p>
 
-<div class="w-full mb-8 aspect-video overflow-hidden rounded-lg relative group">
-  <img src="/img/vinyl-bob.jpg" alt="Robert Pollard" class="w-full h-full object-cover cursor-help" />
-  <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
-    <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg max-w-xs mx-4 text-center transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-      <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Robert Pollard</h4>
-      <p class="text-sm text-gray-700 dark:text-gray-300">The prolific frontman of Guided By Voices, shown here looking through records at a small record store. With over 300 records to his name spanning nearly every genre imaginable, Pollard embodies the spirit of artistic exploration and genre-defying creativity.</p>
+<div class="flex justify-center mb-8">
+  <div class="w-3/4 max-w-2xl aspect-video overflow-hidden rounded-lg relative group">
+    <img src="/img/vinyl-bob.jpg" alt="Robert Pollard" class="w-full h-full object-cover cursor-help" />
+    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+      <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg max-w-xs mx-4 text-center transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+        <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Robert Pollard</h4>
+        <p class="text-sm text-gray-700 dark:text-gray-300">The prolific frontman of Guided By Voices, shown here looking through records at a small record store. With over 300 records to his name spanning nearly every genre imaginable, Pollard embodies the spirit of artistic exploration and genre-defying creativity.</p>
+      </div>
     </div>
   </div>
-  <p class="text-sm text-gray-600 dark:text-gray-400 mt-2 text-center italic">Design genres, like musical genres, help us understand and communicate different approaches to creating user experiences.</p>
 </div>
+<p class="text-sm text-gray-600 dark:text-gray-400 mb-8 text-center italic">Design genres, like musical genres, help us understand and communicate different approaches to creating user experiences.</p>
 
 <h2>1. Dense</h2>
 
@@ -713,6 +723,7 @@ export const content = {
         tags: ["Design", "UX Design", "User Experience", "Design Systems"],
       },
       {
+        id: "api-tokens-digital-arcade",
         title: "API Tokens: The Digital Arcade",
         description:
           "How the concept of tokens in modern API usage echoes the arcade culture of the 1980s. 🪙 🪙",
@@ -771,6 +782,7 @@ export const content = {
         tags: ["Development", "API Design", "User Experience"],
       },
       {
+        id: "five-design-anti-patterns",
         title: "The 5 Design Anti-Patterns",
         description:
           "Accidental and intentional anti-patterns that make users insane.",
@@ -809,6 +821,7 @@ export const content = {
         tags: ["UX Design", "User Experience", "Design Patterns"],
       },
       {
+        id: "commit-message-fatigue",
         title: "Commit Message Fatigue",
         description: "Do this and never write another one again 💎💎",
         url: "commit-message-fatigue",
@@ -828,6 +841,7 @@ export const content = {
         tags: ["Git", "Development", "Best Practices", "Productivity"],
       },
       {
+        id: "text-tunneling",
         title: "Text Tunneling: The Art of Getting to the Point",
         description:
           "Candor and brevity can turn casual users into engaged users.",
@@ -852,17 +866,17 @@ export const content = {
 
 <h2>Be Blatant and See ROI</h2>
 
-<p>Newspapers have done this for centuries. Instead of burying the lede, be candid about the value. If users can save money, tell them exactly how much: "Save $122.45 today by switching to our new plan" beats "Check out more ways to save" every time.</p>
+<p>Instead of burying the proverbial lede, be candid about the value. If users can save money, tell them exactly how much: "Save $122.45 today by switching to our new plan" beats "Check out more ways to save" every time.</p>
 
 <p>Yes, it feels sales-y. That's the point. Users have thousands of competing options and shrinking attention spans. Make the value obvious - you won't hurt their feelings by being direct about what they'll gain.</p>
 
 <h2>The Engagement Pattern</h2>
 
-<ul>
+<ol>
 <li>Say what you mean, e.g., FREE MONEY</li>
 <li>Keep it short and sweet (see #1)</li>
 <li>Make it easy to dive deeper if they want to</li>
-</ul>
+</ol>
 
 <h2>The Art of the Reveal</h2>
 
@@ -898,6 +912,7 @@ export const content = {
         ],
       },
       {
+        id: "ai-hydrated-user-research",
         title: "AI is hydrated with user research data",
         description:
           "How every interaction with an LLM is training data that makes it smarter.",
@@ -956,6 +971,7 @@ export const content = {
         ],
       },
       {
+        id: "bad-good-prompts-ai-dumber-smarter",
         title: "Can Bad (or Good) Prompts Make AI Dumber (or Smarter)?",
         description:
           "A point-counterpoint article, rife with hypotheticals and indecision.",
