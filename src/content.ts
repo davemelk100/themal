@@ -456,7 +456,7 @@ export const content = {
         tags: ["UX Design", "Business", "Product Strategy"],
       },
       {
-        title: "Seven Interviews? Some folks that say that's excessive.",
+        title: "Seven Interviews? Some folks say that's excessive.",
         description:
           "That's because it is. What's the incentive for recruiters? Volume? Baffling.",
         url: "seven-interviews",
