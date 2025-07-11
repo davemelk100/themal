@@ -586,7 +586,7 @@ function App() {
                                   (article as any).cardImage || article.image
                                 }?v=${Date.now()}`}
                                 alt={article.title}
-                                className="h-full w-full object-cover"
+                                className="h-full w-full object-contain"
                               />
                             </div>
                           </Link>
@@ -623,28 +623,31 @@ function App() {
                         )
                         .map((project: any, index) => {
                           const ProjectCard = (
-                            <div className="flex flex-col gap-3">
-                              <div className="aspect-[3/2] overflow-hidden rounded-lg">
-                                <img
-                                  src={`${project.image}?v=${Date.now()}`}
-                                  alt={project.alt || project.title}
-                                  className="h-full w-full object-contain rounded-lg"
-                                  loading="lazy"
-                                />
-                              </div>
+                            <div className="flex flex-col gap-2 flex-1">
                               <div>
                                 <h3
-                                  className="text-[20px] font-semibold mb-2 dark:text-black title-font"
+                                  className="text-[20px] font-semibold mb-1 dark:text-black title-font"
                                   style={{ letterSpacing: "-0.75px" }}
                                 >
                                   {project.title}
                                 </h3>
                                 {project.description && (
-                                  <p className="text-black mb-3 dark:text-black text-card-body">
+                                  <p className="text-black mb-2 dark:text-black text-card-body">
                                     {project.description}
                                   </p>
                                 )}
                               </div>
+                            </div>
+                          );
+
+                          const ProjectImage = (
+                            <div className="aspect-[3/2] overflow-hidden">
+                              <img
+                                src={`${project.image}?v=${Date.now()}`}
+                                alt={project.alt || project.title}
+                                className="h-full w-full object-contain"
+                                loading="lazy"
+                              />
                             </div>
                           );
 
@@ -654,16 +657,22 @@ function App() {
                               href={project.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="group relative overflow-hidden rounded-lg bg-gray-100/80 p-4 cursor-pointer"
+                              className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col"
                             >
-                              {ProjectCard}
+                              <div className="p-3 flex flex-col gap-2 flex-1">
+                                {ProjectCard}
+                              </div>
+                              {ProjectImage}
                             </a>
                           ) : (
                             <div
                               key={index}
-                              className="group relative overflow-hidden rounded-lg bg-gray-100/80 p-4"
+                              className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col"
                             >
-                              {ProjectCard}
+                              <div className="p-3 flex flex-col gap-2 flex-1">
+                                {ProjectCard}
+                              </div>
+                              {ProjectImage}
                             </div>
                           );
                         })}
