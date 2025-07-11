@@ -500,52 +500,7 @@ export default function Admin() {
           </div>
         </div>
 
-        {/* Music Management Section */}
-        <div className="bg-pink-50 dark:bg-pink-900/20 border border-pink-200 dark:border-pink-800 rounded-lg p-6 mt-8">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h2 className="text-xl font-semibold text-pink-900 dark:text-pink-100">
-                Music Player Management
-              </h2>
-              <p className="text-pink-700 dark:text-pink-300">
-                Access the admin-only music player and management tools.
-              </p>
-            </div>
-            <Music className="h-8 w-8 text-pink-600 dark:text-pink-400" />
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-white dark:bg-gray-700 rounded-lg p-4">
-              <h3 className="font-medium text-pink-900 dark:text-pink-100 mb-2">
-                Music Player
-              </h3>
-              <p className="text-sm text-pink-700 dark:text-pink-300 mb-4">
-                Full-featured MP3 player with playlist management and controls.
-              </p>
-              <button
-                onClick={() => navigate("/music-player")}
-                className="px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded-lg transition-colors text-sm"
-              >
-                Launch Player
-              </button>
-            </div>
-
-            <div className="bg-white dark:bg-gray-700 rounded-lg p-4">
-              <h3 className="font-medium text-pink-900 dark:text-pink-100 mb-2">
-                Management Panel
-              </h3>
-              <p className="text-sm text-pink-700 dark:text-pink-300 mb-4">
-                Advanced music management tools and settings.
-              </p>
-              <button
-                onClick={() => navigate("/admin-music")}
-                className="px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded-lg transition-colors text-sm"
-              >
-                Open Management
-              </button>
-            </div>
-          </div>
-        </div>
 
         {/* Status Information */}
         <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mt-8">
