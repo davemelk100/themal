@@ -311,24 +311,6 @@ const MusicPlayer: React.FC = () => {
               </motion.div>
             ))}
           </div>
-
-          {/* Instructions */}
-          <div className="mt-8 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-            <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
-              Setup Instructions:
-            </h4>
-            <ol className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
-              <li>
-                1. Create a folder called "audio" in your public directory
-              </li>
-              <li>2. Add your MP3 files to the public/audio folder</li>
-              <li>3. Update the tracks array above with your file names</li>
-              <li>
-                4. Make sure your MP3 files are properly formatted and
-                accessible
-              </li>
-            </ol>
-          </div>
         </motion.div>
       </div>
     </div>

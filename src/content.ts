@@ -647,10 +647,10 @@ export const content = {
 <div class="flex justify-center mb-8">
   <div class="w-3/4 max-w-2xl aspect-video overflow-hidden rounded-lg relative group">
     <img src="/img/vinyl-bob.jpg" alt="Robert Pollard" class="w-full h-full object-cover cursor-help" />
-    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
-      <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg max-w-xs mx-4 text-center transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-        <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Robert Pollard</h4>
-        <p class="text-sm text-gray-700 dark:text-gray-300">The prolific frontman of Guided By Voices, shown here looking through records at a small record store. With over 300 records to his name spanning nearly every genre imaginable, Pollard embodies the spirit of artistic exploration and genre-defying creativity.</p>
+    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300">
+      <div class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white dark:bg-gray-800 p-3 rounded-lg shadow-lg max-w-[200px] text-right transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+        <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-1">Robert Pollard</h4>
+        <p class="text-xs text-gray-700 dark:text-gray-300">The prolific frontman of Guided By Voices, shown here looking through records at a small record store. With over 300 records to his name spanning nearly every genre imaginable, Pollard embodies the spirit of artistic exploration and genre-defying creativity.</p>
       </div>
     </div>
   </div>
