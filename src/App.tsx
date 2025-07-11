@@ -499,7 +499,7 @@ function App() {
                                     ? "Progressive Disclosure"
                                     : "Lab"
                                 }
-                                className="h-[90px] w-[90px] object-contain"
+                                className="h-[180px] w-[180px] object-contain"
                               />
                             </div>
                             <div className="flex flex-col gap-3 flex-1">
@@ -638,7 +638,7 @@ function App() {
                           );
 
                           const ProjectImage = (
-                            <div className="aspect-[3/2] overflow-hidden -mx-3 -mb-3">
+                            <div className="aspect-[3/2] overflow-hidden -mx-3 -mb-6">
                               <img
                                 src={`${project.image}?v=${Date.now()}`}
                                 alt={project.alt || project.title}
