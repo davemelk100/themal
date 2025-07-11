@@ -401,7 +401,7 @@ function App() {
                           },
                         },
                       }}
-                      className="text-[clamp(2rem,6vw,4rem)] font-bold mb-6 title-font leading-none"
+                      className="text-[clamp(2rem,6vw,4rem)] font-bold mb-1 title-font leading-none"
                       style={{ letterSpacing: "-4.5px" }}
                     >
                       {content.siteInfo.subtitle}
@@ -413,7 +413,7 @@ function App() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 1, delay: 1.2 }}
-                    className="mt-4 flex flex-wrap gap-3"
+                    className="mt-6 flex flex-wrap gap-3"
                   >
                     {designTokens.colors.map((color) => {
                       // Function to determine if text should be light or dark based on background color
@@ -434,20 +434,14 @@ function App() {
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            className="relative w-16 h-16 rounded-full shadow-lg"
-                            style={{ backgroundColor: color.value }}
-                          >
-                            <span
-                              className={`absolute inset-0 flex items-center justify-center text-[12px] font-medium ${getTextColor(
-                                color.value
-                              )}`}
-                            >
-                              {color.value}
-                            </span>
-                          </motion.div>
-                          <span className="text-xs text-muted-foreground">
-                            {color.name}
-                          </span>
+                            className="relative w-12 h-12 rounded-full"
+                            style={{
+                              backgroundColor: color.value,
+                              boxShadow:
+                                "2px 2px 4px rgba(0,0,0,0.2), -2px -2px 4px rgba(255,255,255,0.3)",
+                              background: `radial-gradient(circle at 70% 70%, ${color.value} 0%, ${color.value} 60%, ${color.value}dd 100%)`,
+                            }}
+                          />
                         </div>
                       );
                     })}
