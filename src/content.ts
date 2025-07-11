@@ -643,7 +643,7 @@ export const content = {
         url: "five-design-genres",
         content: `
 
-<p>Why do we need simple names for types of modern digital design? Because we all secretly want (and deserve) them. This <a href="https://open.spotify.com/playlist/5dFyK5eLx9jg5VZl3tZXai?si=8LxH6gHuTXKxI-2tgiZzkQ" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline">Spotify playlist</a> will better illustrate each genre's musical doppelganger.</p>
+<p>Why do we need simple names for types of modern digital design? Because we all secretly want (and deserve) them. This <a href="https://open.spotify.com/playlist/5dFyK5eLx9jg5VZl3tZXai?si=8LxH6gHuTXKxI-2tgiZzkQ" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline">beautifully curated Spotify playlist</a> will better illustrate each design's musical doppelganger.</p>
 
 <div class="flex justify-center mb-8">
   <div class="w-3/4 max-w-2xl aspect-video overflow-hidden rounded-lg relative group">
