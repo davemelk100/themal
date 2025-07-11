@@ -72,9 +72,9 @@ export const content = {
         alt: "Modern UI Design System",
       },
       {
-        title: "Delta Dental Individual Insurance Registration",
+        title: "Delta Dental Insurance Registration",
         description:
-          "Madlibs-style search for Saas individual insurance registration application.",
+          "Image for Saas individual insurance registration application.",
         categories: "Insurance",
         image: "/img/delta-search.png",
         alt: "Delta Dental Individual Insurance Registration",
