@@ -464,7 +464,7 @@ function App() {
                           href={project.demo}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col"
+                          className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md"
                         >
                           <div className="absolute top-3 right-3 text-gray-400 group-hover:text-gray-600 transition-colors">
                             <ArrowUp className="h-4 w-4 rotate-45" />
@@ -548,7 +548,7 @@ function App() {
                           <Link
                             key={index}
                             to={`/article/${slugify(article.title)}`}
-                            className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col"
+                            className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md"
                           >
                             <div className="absolute top-3 right-3 text-gray-400 group-hover:text-gray-600 transition-colors">
                               <ArrowUp className="h-4 w-4 rotate-45" />
@@ -639,7 +639,7 @@ function App() {
                               href={project.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col"
+                              className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md"
                             >
                               <div className="p-3 flex flex-col gap-2 flex-1">
                                 {ProjectCard}
@@ -649,7 +649,7 @@ function App() {
                           ) : (
                             <div
                               key={index}
-                              className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col"
+                              className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md"
                             >
                               <div className="p-3 flex flex-col gap-2 flex-1">
                                 {ProjectCard}
@@ -814,7 +814,7 @@ function App() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: index * 0.1 }}
-                        className="bg-gray-100/80 p-6 rounded-lg"
+                        className="bg-gray-100/80 p-6 rounded-lg shadow-md"
                       >
                         <h3 className="text-[20px] font-semibold mb-4 dark:text-black">
                           {category.category}

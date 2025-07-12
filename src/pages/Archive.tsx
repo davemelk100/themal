@@ -85,7 +85,7 @@ export default function Archive() {
           {filteredArticles.map((article, index) => (
             <div
               key={index}
-              className="group relative overflow-hidden rounded-lg bg-gray-100/80 p-6 transition-all duration-300 hover:bg-gray-200/80 dark:bg-gray-800/80 dark:hover:bg-gray-700/80"
+              className="group relative overflow-hidden rounded-lg bg-gray-100/80 p-6 transition-all duration-300 hover:bg-gray-200/80 dark:bg-gray-800/80 dark:hover:bg-gray-700/80 shadow-md"
             >
               <div className="grid md:grid-cols-3 gap-8 items-center">
                 {/* Image */}
