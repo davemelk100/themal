@@ -147,7 +147,7 @@ function App() {
 
                 <div className="container mx-auto px-4 sm:px-8 pt-8">
                   {/* Top Navigation and Title Row */}
-                  <div className="flex items-center justify-between mb-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
                     <motion.div
                       initial="hidden"
                       animate="visible"
@@ -188,35 +188,41 @@ function App() {
                       initial={{ opacity: 0, y: -20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.8, delay: 0.1 }}
+                      className="w-full sm:w-auto"
                     >
-                      <div className="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 flex items-center gap-3">
+                      <div className="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 flex items-center justify-start gap-3">
                         <button
                           onClick={() => handleNavClick("current-projects")}
                           className="text-black hover:text-gray-600 transition-colors text-sm font-medium"
+                          style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
                         >
                           Lab
                         </button>
                         <button
                           onClick={() => handleNavClick("stories")}
                           className="text-black hover:text-gray-600 transition-colors text-sm font-medium"
+                          style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
                         >
                           Stories
                         </button>
                         <button
                           onClick={() => handleNavClick("articles")}
                           className="text-black hover:text-gray-600 transition-colors text-sm font-medium"
+                          style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
                         >
                           Articles
                         </button>
                         <button
                           onClick={() => handleNavClick("work")}
                           className="text-black hover:text-gray-600 transition-colors text-sm font-medium"
+                          style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
                         >
                           Design
                         </button>
                         <button
                           onClick={() => handleNavClick("career")}
                           className="text-black hover:text-gray-600 transition-colors text-sm font-medium"
+                          style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
                         >
                           Career
                         </button>
