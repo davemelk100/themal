@@ -6,7 +6,6 @@ interface ArticleModalProps {
   title: string;
   content: string;
   image?: string;
-  date?: string;
   onClose: () => void;
 }
 
@@ -14,7 +13,6 @@ export default function ArticleModal({
   title,
   content,
   image,
-  date = "March 19, 2024",
   onClose,
 }: ArticleModalProps) {
   // Add escape key functionality
@@ -122,11 +120,6 @@ export default function ArticleModal({
               >
                 <X className="h-5 w-5" />
               </button>
-            </div>
-            <div className="flex items-center gap-4 mb-6 text-nav text-gray-600 dark:text-gray-400">
-              <span>Dave Melkonian</span>
-              <span>•</span>
-              <span>{date}</span>
             </div>
             {image && (
               <div className="float-right ml-8 mb-4 w-1/2 aspect-video overflow-hidden rounded-lg">

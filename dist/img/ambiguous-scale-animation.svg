@@ -6,15 +6,15 @@
       }
       
       .micro-scale {
-        animation: microPulse 16s ease-in-out infinite;
+        animation: microPulse 32s ease-in-out infinite;
       }
       
       .macro-scale {
-        animation: macroPulse 20s ease-in-out infinite;
+        animation: macroPulse 40s ease-in-out infinite;
       }
       
       .nested-scale {
-        animation: nestedScale 24s ease-in-out infinite;
+        animation: nestedScale 48s ease-in-out infinite;
       }
       
       @keyframes microPulse {
@@ -55,15 +55,15 @@
       }
       
       .floating-scale {
-        animation: floatScale 30s ease-in-out infinite;
+        animation: floatScale 60s ease-in-out infinite;
       }
       
       .floating-scale:nth-child(2) {
-        animation-delay: 8s;
+        animation-delay: 16s;
       }
       
       .floating-scale:nth-child(3) {
-        animation-delay: 16s;
+        animation-delay: 32s;
       }
       
       @keyframes floatScale {
@@ -86,7 +86,7 @@
       }
       
       .perspective-shift {
-        animation: perspectiveShift 36s ease-in-out infinite;
+        animation: perspectiveShift 72s ease-in-out infinite;
       }
       
       @keyframes perspectiveShift {
@@ -129,11 +129,7 @@
     <circle cx="25" cy="65" r="4" fill="#CBD5E0" class="micro-scale"/>
   </g>
   
-  <!-- Macro Scale Elements (Could be containers or small objects) -->
-  <g class="scale-group">
-    <rect x="35" y="35" width="20" height="20" rx="3" fill="#4A5568" opacity="0.7" class="macro-scale"/>
-    <rect x="37" y="37" width="16" height="16" rx="2" fill="#718096" opacity="0.5"/>
-  </g>
+
   
   <!-- Nested Scale Elements (Multiple interpretations) -->
   <g class="scale-group">

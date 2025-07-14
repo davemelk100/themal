@@ -32,10 +32,9 @@ export const content = {
         id: "career",
         text: "Career",
       },
-
       {
-        id: "figma-hotkeys",
-        text: "Figma Hotkeys",
+        id: "stories",
+        text: "Stories",
       },
     ],
     social: {
@@ -57,7 +56,7 @@ export const content = {
       {
         title: "Delta Dental Member Portal",
         description:
-          "Led UI design implementation for a SaaS provider portal using HTML/CSS/Angular with accessible components and responsive design patterns.",
+          "Led UI design implementation for a SaaS provider portal",
         categories: "",
         image: "/img/delta-portal-sq.png",
         alt: "Delta Dental Member Portal",
@@ -238,106 +237,45 @@ export const content = {
     ],
   },
 
-  figmaHotkeys: {
-    title: "Figma Hotkeys",
-    description: "Essential keyboard shortcuts to speed up your Figma workflow",
-    shortcuts: [
+  stories: {
+    title: "Stories",
+    subtitle: "Examples of how I approach problem-solving and solutioning",
+    items: [
       {
-        category: "Navigation",
-        shortcuts: [
-          { key: "Space", description: "Pan tool" },
-          { key: "Z", description: "Zoom tool" },
-          { key: "Shift + 1", description: "Zoom to fit" },
-          { key: "Shift + 2", description: "Zoom to selection" },
-          { key: "Shift + 3", description: "Zoom to 100%" },
-          { key: "Shift + 4", description: "Zoom to 200%" },
-        ],
+        title: "Delta Dental of Michigan",
+        subtitle:
+          "How I created an accessibility discipline within a development and design organization",
+        description: "",
+        category: "UX Strategy",
+        image: "/img/delta-story.png",
+        content:
+          "At Dewpoint Inc., I led efforts to embed accessibility into the foundation of our design and development practices. Initially, accessibility compliance was treated as a checklist item. I recognized the need for a more sustainable and integrated approach, especially as I supported enterprise clients like Delta Dental of Michigan.\n\nI began by conducting usability evaluations and accessibility audits across several of their internal applications. Through screen reader testing, keyboard navigation reviews, and WCAG/Section 508 audits, I identified critical barriers to access, particularly in areas involving form-heavy workflows and administrative tools.\n\nRather than only reporting issues, I built an accessibility support model that included reusable code snippets (HTML, CSS, JS/TS), component-level guidelines, and Figma pattern documentation. I worked closely with developers and business analysts to bake accessibility into the design system and into Agile sprints, ensuring each scrum team had a shared understanding of what accessible implementation looked like.\n\nI formalized these practices into enterprise-wide standards, which included ADA, WCAG, and Section 508 compliance. I created internal documentation and training workshops to scale adoption. I also integrated storytelling techniques into design prototypes, helping stakeholders visualize the impact of inclusive design and making accessibility a shared responsibility across design, development, and QA.\n\nAs a result, we shifted from reactive compliance to proactive inclusion, setting a scalable precedent for accessible design that aligned with business goals and regulatory requirements.",
+        date: "2024",
+        hasModal: true,
       },
       {
-        category: "Selection & Tools",
-        shortcuts: [
-          { key: "V", description: "Move tool" },
-          { key: "K", description: "Scale tool" },
-          { key: "R", description: "Rectangle tool" },
-          { key: "O", description: "Ellipse tool" },
-          { key: "T", description: "Text tool" },
-          { key: "P", description: "Pen tool" },
-          { key: "L", description: "Line tool" },
-          { key: "F", description: "Frame tool" },
-          { key: "A", description: "Auto layout" },
-        ],
+        title: "Propio",
+        subtitle:
+          "How I negotiated, researched, and designed an AI-driven design feature request across organizations",
+        description: "",
+        category: "AI Design",
+        image: "/img/propio-story.png",
+        content:
+          "The integration of OpenAI into Propio's live transcription feature was driven by a focus on improving interpretation quality, as we sought to enhance the accuracy and clarity of interpretation amid growing user demands. Leadership saw OpenAI's AI capabilities as a way to elevate our offering and stand out in the market.\n\nThe business team envisioned a product exceeding basic transcription, featuring real-time language translation, customizable industry-specific vocabulary, and seamless integration with existing communication platforms. They sought a user-friendly, accurate solution to enhance adoption, meet diverse client needs, and bolster our competitive edge. I led the UX effort, starting with user flows and wireframes, followed by interactive prototypes to gather stakeholder and user feedback. I then built a React and TypeScript front-end prototype to showcase the UI and OpenAI integration's potential.\n\nWe used Optimizely for A/B tests to refine the design, collecting qualitative data to ensure intuitiveness and effective AI use. I was involved in the project from concept to production, prioritizing accessibility and scalability. The result was a seamless, impactful transcription tool that became a key business differentiator.",
+        date: "2024",
+        hasModal: true,
       },
       {
-        category: "Editing",
-        shortcuts: [
-          { key: "Ctrl/Cmd + D", description: "Duplicate" },
-          { key: "Ctrl/Cmd + C", description: "Copy" },
-          { key: "Ctrl/Cmd + V", description: "Paste" },
-          { key: "Ctrl/Cmd + X", description: "Cut" },
-          { key: "Delete", description: "Delete selection" },
-          { key: "Ctrl/Cmd + Z", description: "Undo" },
-          { key: "Ctrl/Cmd + Shift + Z", description: "Redo" },
-          { key: "Ctrl/Cmd + G", description: "Group" },
-          { key: "Ctrl/Cmd + Shift + G", description: "Ungroup" },
-        ],
-      },
-      {
-        category: "Alignment & Distribution",
-        shortcuts: [
-          { key: "Ctrl/Cmd + Alt + A", description: "Align left" },
-          { key: "Ctrl/Cmd + Alt + C", description: "Align center" },
-          { key: "Ctrl/Cmd + Alt + R", description: "Align right" },
-          { key: "Ctrl/Cmd + Alt + T", description: "Align top" },
-          { key: "Ctrl/Cmd + Alt + M", description: "Align middle" },
-          { key: "Ctrl/Cmd + Alt + B", description: "Align bottom" },
-          { key: "Ctrl/Cmd + Alt + H", description: "Distribute horizontally" },
-          { key: "Ctrl/Cmd + Alt + V", description: "Distribute vertically" },
-        ],
-      },
-      {
-        category: "Layers & Organization",
-        shortcuts: [
-          { key: "Ctrl/Cmd + Shift + K", description: "Create component" },
-          {
-            key: "Ctrl/Cmd + Alt + K",
-            description: "Create component instance",
-          },
-          { key: "Ctrl/Cmd + Shift + L", description: "Create frame" },
-          { key: "Ctrl/Cmd + Shift + A", description: "Select all" },
-          { key: "Ctrl/Cmd + Shift + D", description: "Deselect all" },
-          { key: "Ctrl/Cmd + Shift + H", description: "Hide/show layers" },
-          { key: "Ctrl/Cmd + Shift + L", description: "Lock/unlock layers" },
-        ],
-      },
-      {
-        category: "Typography",
-        shortcuts: [
-          { key: "Ctrl/Cmd + B", description: "Bold" },
-          { key: "Ctrl/Cmd + I", description: "Italic" },
-          { key: "Ctrl/Cmd + U", description: "Underline" },
-          { key: "Ctrl/Cmd + Shift + K", description: "Strikethrough" },
-          { key: "Ctrl/Cmd + Shift + >", description: "Increase font size" },
-          { key: "Ctrl/Cmd + Shift + <", description: "Decrease font size" },
-        ],
-      },
-      {
-        category: "Prototyping",
-        shortcuts: [
-          { key: "Ctrl/Cmd + Enter", description: "Enter prototype mode" },
-          {
-            key: "Ctrl/Cmd + Shift + Enter",
-            description: "Exit prototype mode",
-          },
-          { key: "Ctrl/Cmd + Shift + R", description: "Record prototype" },
-        ],
-      },
-      {
-        category: "Developer Handoff",
-        shortcuts: [
-          { key: "Ctrl/Cmd + Shift + E", description: "Export selection" },
-          { key: "Ctrl/Cmd + Alt + E", description: "Export for 2x" },
-          { key: "Ctrl/Cmd + Shift + C", description: "Copy CSS" },
-        ],
+        title: "Meridian Health",
+        subtitle:
+          "How I proposed and implemented new efficiencies and opportunities to a development and design organization",
+        description: "",
+        category: "Process Improvement",
+        image: "/img/meridian-story.png",
+        content:
+          "At Meridian Health, I identified opportunities to streamline our development and design processes while creating new growth opportunities for the team. The organization was experiencing bottlenecks in project delivery and team members were looking for ways to expand their skills and responsibilities.\n\nI began by conducting a comprehensive analysis of our current workflows, identifying pain points in project handoffs, design reviews, and development cycles. I also surveyed team members to understand their career aspirations and areas where they wanted to grow.\n\nBased on my findings, I proposed several efficiency improvements including standardized design systems, automated testing protocols, and cross-functional training programs. I created detailed implementation plans that included timelines, resource requirements, and success metrics.\n\nI worked closely with leadership to gain buy-in and secure the necessary resources. I then led the implementation of these improvements, starting with the most impactful changes first. This included establishing a design system that reduced design-to-development handoff time by 40%, implementing automated testing that caught 60% more bugs before production, and creating mentorship programs that helped junior team members advance their careers.\n\nThe result was a more efficient, engaged team that delivered projects 25% faster while providing new growth opportunities for team members. Several team members were promoted to new roles, and the organization saw improved retention rates and higher job satisfaction scores.",
+        date: "2024",
+        hasModal: true,
       },
     ],
   },
@@ -493,7 +431,7 @@ export const content = {
 <p>The best hiring processes are those that efficiently identify the right candidate while treating everyone involved with dignity and respect.</p>
 
 `,
-        image: "/img/hide-harold.png",
+        image: "/img/seven-interviews-article.png",
         date: "June 7, 2024",
         tags: ["Career", "Hiring", "Workplace Culture"],
       },
@@ -707,8 +645,8 @@ export const content = {
 <p>Not really, but they serve as a shared language. When someone says "this interface needs to be more familiar and reliable" or "let's make this experience more playful and experimental," it's not just talking about colors and fonts. It's about creating harmony between what users expect, what your business needs, and how people feel when they use your product.</p>
 
 `,
-        image: "",
-        cardImage: "/img/genres.png",
+        image: "/img/genres-article.png",
+        cardImage: "/img/genres-article.png",
         date: "June 15, 2024",
         tags: ["Design", "UX Design", "User Experience", "Design Systems"],
       },
@@ -891,8 +829,8 @@ export const content = {
 <p>Text Tunneling isn't just about making things sound casual - it's about respecting your users' time and attention. When done right, it's leads to deeper understanding without adding any overhead, or increased cognitive load. I guess, in essence, stop beating around the bush.</p>
 
 `,
-        image: "/img/text-funnel.png",
-        cardImage: "/img/text-funnel.png",
+        image: "/img/tunnel-article.png",
+        cardImage: "/img/tunnel-article.png",
         date: "June 16, 2024",
         tags: [
           "User Experience",
