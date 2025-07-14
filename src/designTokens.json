@@ -1,54 +1,34 @@
 {
   "colors": [
     {
-      "name": "Primary",
-      "value": "#000000",
-      "description": "Main brand color"
+      "name": "Muted Orange",
+      "value": "#D2691E",
+      "description": "Muted orange color"
     },
     {
-      "name": "Secondary",
-      "value": "#4B5563",
-      "description": "Secondary brand color"
+      "name": "Warm Gray Light",
+      "value": "#C4A484",
+      "description": "Light warm gray"
     },
     {
-      "name": "Tertiary",
-      "value": "#9CA3AF",
-      "description": "Tertiary brand color"
+      "name": "Teal",
+      "value": "#20B2AA",
+      "description": "Teal color"
     },
     {
-      "name": "Background",
-      "value": "#FFFFFF",
-      "description": "Main background color"
+      "name": "Warm Gray Medium",
+      "value": "#A67C52",
+      "description": "Medium warm gray"
     },
     {
-      "name": "Surface",
-      "value": "#F3F4F6",
-      "description": "Surface color for cards and components"
+      "name": "Teal Light",
+      "value": "#48D1CC",
+      "description": "Light teal color"
     },
     {
-      "name": "Muted",
-      "value": "#6B7280",
-      "description": "Muted text and icon color"
-    },
-    {
-      "name": "Accent",
-      "value": "#3B82F6",
-      "description": "Accent color for interactive elements"
-    },
-    {
-      "name": "Success",
-      "value": "#10B981",
-      "description": "Success state color"
-    },
-    {
-      "name": "Warning",
-      "value": "#F59E0B",
-      "description": "Warning state color"
-    },
-    {
-      "name": "Error",
-      "value": "#EF4444",
-      "description": "Error state color"
+      "name": "Warm Gray Dark",
+      "value": "#8B7355",
+      "description": "Dark warm gray"
     }
   ],
 
