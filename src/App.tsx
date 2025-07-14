@@ -1,16 +1,5 @@
 import { motion } from "framer-motion";
-import {
-  CircleDot,
-  Dribbble,
-  BookOpen,
-  FlaskConical,
-  Palette,
-  Briefcase,
-  Quote,
-  ArrowUp,
-  Keyboard,
-  Eye,
-} from "lucide-react";
+import { Dribbble, ArrowUp, Eye } from "lucide-react";
 import { LinkedInLogoIcon } from "@radix-ui/react-icons";
 import { useState, useEffect } from "react";
 import { content } from "./content";
@@ -41,7 +30,6 @@ import { getVisibleDesignWork } from "./utils/designWorkVisibility";
 
 import { getVisibleLabProjects } from "./utils/labProjectVisibility";
 import { isSectionVisible } from "./utils/contentVisibility";
-import { checkAdminAuth } from "./utils/adminAuth";
 
 // Add SectionHeader component
 const SectionHeader = ({
@@ -91,9 +79,7 @@ function App() {
     content: string;
     subtitle?: string;
   } | null>(null);
-  const [isHoveringNav, setIsHoveringNav] = useState(false);
-  const [navMousePosition, setNavMousePosition] = useState({ x: 0, y: 0 });
-  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -110,19 +96,6 @@ function App() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
-
-  // Check admin authentication status
-  useEffect(() => {
-    setIsAdminLoggedIn(checkAdminAuth());
-  }, [location.pathname]);
-
-  const handleNavMouseMove = (e: React.MouseEvent) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setNavMousePosition({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
-  };
 
   const handleNavClick = (id: string) => {
     if (location.pathname !== "/") {
@@ -151,14 +124,6 @@ function App() {
           behavior: "smooth",
         });
       }
-    }
-  };
-
-  const handleAdminAction = () => {
-    if (isAdminLoggedIn) {
-      navigate("/admin");
-    } else {
-      navigate("/admin-login");
     }
   };
 
@@ -427,7 +392,7 @@ function App() {
                               </p>
                             </div>
                           </div>
-                          <div className="aspect-[3/2] overflow-hidden -mx-3">
+                          <div className="aspect-[3/2] overflow-visible -mx-3">
                             <img
                               src={
                                 project.title === "Chatbots"
@@ -518,7 +483,7 @@ function App() {
                                 )}
                               </div>
                             </div>
-                            <div className="aspect-[3/2] overflow-hidden -mx-3">
+                            <div className="aspect-[3/2] overflow-visible -mx-3">
                               <img
                                 src={`${
                                   (article as any).cardImage || article.image
@@ -577,11 +542,7 @@ function App() {
 
                           const ProjectImage = (
                             <div
-                              className={`aspect-[3/2] overflow-hidden -mx-3 -mb-6 ${
-                                project.title === "Hex Code Pop Art"
-                                  ? "overflow-visible"
-                                  : ""
-                              }`}
+                              className={`aspect-[3/2] overflow-visible -mx-3 -mb-6`}
                             >
                               <img
                                 src={`${project.image}?v=${Date.now()}`}

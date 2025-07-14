@@ -71,7 +71,7 @@ export const content = {
         alt: "Modern UI Design System",
       },
       {
-        title: "Delta Dental Insurance Registration",
+        title: "Delta Dental Registration",
         description:
           "Image for Saas individual insurance registration application.",
         categories: "Insurance",
@@ -121,7 +121,7 @@ export const content = {
         url: "https://dribbble.com/shots/25274995-NFL-Themed-Logos-for-Sports-Podcast",
       },
       {
-        title: "7-inch Record Picture Disc Concept",
+        title: "Picture Disc Concept",
         description:
           "Conceptual design for a 7-inch vinyl record with integrated picture disc artwork.",
         categories: "Product Design, Music, Vinyl",
