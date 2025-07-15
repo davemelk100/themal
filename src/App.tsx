@@ -194,41 +194,41 @@ function App() {
                       initial={{ opacity: 0, y: -20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.8, delay: 0.1 }}
-                      className="flex flex-col sm:flex-row sm:items-center gap-4"
+                      className="flex flex-row items-center gap-4"
                     >
                       {/* Navigation Links */}
-                      <div className="bg-white/10 backdrop-blur-sm rounded-lg px-6 py-3 flex items-center justify-start gap-8">
+                      <div className="bg-white/10 backdrop-blur-sm rounded-lg px-4 sm:px-6 py-3 flex items-center justify-start gap-4 sm:gap-8">
                         <button
                           onClick={() => handleNavClick("current-projects")}
-                          className="text-black hover:text-gray-600 transition-colors text-base font-medium"
+                          className="text-black hover:text-gray-600 transition-colors text-sm sm:text-base font-medium"
                           style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
                         >
                           Lab
                         </button>
                         <button
                           onClick={() => handleNavClick("stories")}
-                          className="text-black hover:text-gray-600 transition-colors text-base font-medium"
+                          className="text-black hover:text-gray-600 transition-colors text-sm sm:text-base font-medium"
                           style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
                         >
                           Stories
                         </button>
                         <button
                           onClick={() => handleNavClick("articles")}
-                          className="text-black hover:text-gray-600 transition-colors text-base font-medium"
+                          className="text-black hover:text-gray-600 transition-colors text-sm sm:text-base font-medium"
                           style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
                         >
                           Articles
                         </button>
                         <button
                           onClick={() => handleNavClick("work")}
-                          className="text-black hover:text-gray-600 transition-colors text-base font-medium"
+                          className="text-black hover:text-gray-600 transition-colors text-sm sm:text-base font-medium"
                           style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
                         >
                           Design
                         </button>
                         <button
                           onClick={() => handleNavClick("career")}
-                          className="text-black hover:text-gray-600 transition-colors text-base font-medium"
+                          className="text-black hover:text-gray-600 transition-colors text-sm sm:text-base font-medium"
                           style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
                         >
                           Career
@@ -236,7 +236,7 @@ function App() {
                       </div>
 
                       {/* Icons */}
-                      <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-2 sm:gap-4">
                         <a
                           href={content.navigation.social.linkedin.url}
                           target="_blank"
