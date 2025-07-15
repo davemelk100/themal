@@ -260,7 +260,7 @@ function App() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 1, delay: 1.2 }}
-                    className="mt-6 mb-12 hidden sm:flex flex-wrap justify-center sm:justify-start gap-3"
+                    className="mt-6 mb-16 hidden sm:flex flex-wrap justify-center sm:justify-start gap-3"
                   >
                     {designTokens.colors.map((color) => {
                       return (
@@ -383,7 +383,7 @@ function App() {
                           whileInView={{ opacity: 1, y: 0 }}
                           viewport={{ once: true }}
                           transition={{ duration: 0.6, delay: index * 0.1 }}
-                          className="group relative overflow-visible rounded-lg bg-gray-100/80 shadow-md aspect-[3/2]"
+                          className="group relative overflow-visible rounded-lg bg-gray-100/80 shadow-md aspect-[6/5]"
                         >
                           <div className="absolute top-3 right-3 z-20">
                             <a
@@ -557,7 +557,7 @@ function App() {
 
                           const ProjectImage = (
                             <div
-                              className={`relative aspect-[3/2] overflow-visible -mx-3 -mb-3`}
+                              className={`relative aspect-[5/3] overflow-visible -mx-3 -mb-3`}
                             >
                               <img
                                 src={`${project.image}?v=${Date.now()}`}

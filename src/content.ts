@@ -112,7 +112,7 @@ export const content = {
         url: "https://designpanes.com/",
       },
       {
-        title: "NFL-Themed Logos for Sports Podcast",
+        title: "Logos for Sports Podcast",
         description:
           "Custom logo designs for a sports podcast with NFL team-inspired branding.",
         categories: "Logo Design, Branding, Sports",
