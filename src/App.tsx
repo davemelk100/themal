@@ -286,6 +286,79 @@ function App() {
                 </div>
               </section>
 
+              {/* Current Projects Section */}
+              {isSectionVisible("lab") && (
+                <section id="current-projects" className="py-8 sm:py-12">
+                  <div className="container mx-auto px-4 sm:px-8">
+                    <SectionHeader
+                      title={content.currentProjects.title}
+                      subtitle={content.currentProjects.subtitle}
+                      className="mb-8"
+                    />
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {getVisibleLabProjects(
+                        content.currentProjects.projects
+                      ).map((project, index) => (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, y: 20 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.6, delay: index * 0.1 }}
+                          className="group relative overflow-visible rounded-lg bg-gray-100/80 shadow-md aspect-[6/5]"
+                        >
+                          <div className="absolute top-3 right-3 z-20">
+                            <a
+                              href={project.demo}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center relative z-20"
+                            >
+                              <Eye className="h-5 w-5 text-gray-600" />
+                            </a>
+                          </div>
+                          <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
+                            <div className="pr-12">
+                              <h3 className="text-[20px] font-semibold mb-1 dark:text-black title-font">
+                                {project.title}
+                              </h3>
+                            </div>
+                            <div className="flex-1 flex flex-col">
+                              <p className="text-sm text-gray-600 dark:text-gray-600 mb-2 flex-1">
+                                {project.description}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="absolute inset-0 overflow-visible z-0">
+                            <img
+                              src={
+                                project.title === "Chatbots"
+                                  ? `/img/chatbot-animation.svg?v=${Date.now()}`
+                                  : project.title === "Design Panes"
+                                  ? `/img/design-panes-slow.svg?v=${Date.now()}`
+                                  : project.title === "AI NUI"
+                                  ? `/img/interwoven-space-animation.svg?v=${Date.now()}`
+                                  : `/img/lab.svg?v=${Date.now()}`
+                              }
+                              alt={
+                                project.title === "Chatbots"
+                                  ? "Robot Chatbot"
+                                  : project.title === "Design Panes"
+                                  ? "Design Panes"
+                                  : project.title === "AI NUI"
+                                  ? "Interwoven Space"
+                                  : "Lab"
+                              }
+                              className="absolute inset-0 h-full w-full object-cover"
+                            />
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+              )}
+
               {/* Stories Section */}
               <section id="stories" className="py-8 sm:py-12">
                 <div className="container mx-auto px-4 sm:px-8">
@@ -363,79 +436,6 @@ function App() {
                   </div>
                 </div>
               </section>
-
-              {/* Current Projects Section */}
-              {isSectionVisible("lab") && (
-                <section id="current-projects" className="py-8 sm:py-12">
-                  <div className="container mx-auto px-4 sm:px-8">
-                    <SectionHeader
-                      title={content.currentProjects.title}
-                      subtitle={content.currentProjects.subtitle}
-                      className="mb-8"
-                    />
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {getVisibleLabProjects(
-                        content.currentProjects.projects
-                      ).map((project, index) => (
-                        <motion.div
-                          key={index}
-                          initial={{ opacity: 0, y: 20 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 0.6, delay: index * 0.1 }}
-                          className="group relative overflow-visible rounded-lg bg-gray-100/80 shadow-md aspect-[6/5]"
-                        >
-                          <div className="absolute top-3 right-3 z-20">
-                            <a
-                              href={project.demo}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center relative z-20"
-                            >
-                              <Eye className="h-5 w-5 text-gray-600" />
-                            </a>
-                          </div>
-                          <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
-                            <div className="pr-12">
-                              <h3 className="text-[20px] font-semibold mb-1 dark:text-black title-font">
-                                {project.title}
-                              </h3>
-                            </div>
-                            <div className="flex-1 flex flex-col">
-                              <p className="text-sm text-gray-600 dark:text-gray-600 mb-2 flex-1">
-                                {project.description}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="absolute inset-0 overflow-visible z-0">
-                            <img
-                              src={
-                                project.title === "Chatbots"
-                                  ? `/img/chatbot-animation.svg?v=${Date.now()}`
-                                  : project.title === "Design Panes"
-                                  ? `/img/design-panes-slow.svg?v=${Date.now()}`
-                                  : project.title === "AI NUI"
-                                  ? `/img/interwoven-space-animation.svg?v=${Date.now()}`
-                                  : `/img/lab.svg?v=${Date.now()}`
-                              }
-                              alt={
-                                project.title === "Chatbots"
-                                  ? "Robot Chatbot"
-                                  : project.title === "Design Panes"
-                                  ? "Design Panes"
-                                  : project.title === "AI NUI"
-                                  ? "Interwoven Space"
-                                  : "Lab"
-                              }
-                              className="absolute inset-0 h-full w-full object-cover"
-                            />
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
-                </section>
-              )}
 
               {/* Articles Section */}
               {isSectionVisible("articles") && (
