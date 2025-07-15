@@ -277,7 +277,7 @@ function App() {
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            className="relative w-4 h-4 sm:w-6 sm:h-6 rounded-full"
+                            className="relative w-2 h-2 sm:w-3 sm:h-3 rounded-full"
                             style={{
                               backgroundColor: color.value,
                               background: `radial-gradient(circle at 70% 70%, ${color.value} 0%, ${color.value} 60%, ${color.value}dd 100%)`,
