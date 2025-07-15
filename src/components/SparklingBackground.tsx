@@ -35,8 +35,8 @@ export default function SparklingBackground() {
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         size: Math.random() * 2 + 1,
-        speedX: Math.random() * 0.5 - 0.25,
-        speedY: Math.random() * 0.5 - 0.25,
+        speedX: (Math.random() * 0.25 - 0.125) * 0.5, // Slowed down by 50%
+        speedY: (Math.random() * 0.25 - 0.125) * 0.5, // Slowed down by 50%
         opacity: Math.random() * 0.5 + 0.1,
       });
     }

@@ -3,6 +3,7 @@ import { Dribbble, ArrowUp, Eye } from "lucide-react";
 import { LinkedInLogoIcon } from "@radix-ui/react-icons";
 import { useState, useEffect } from "react";
 import { content } from "./content";
+import Preloader from "./components/Preloader";
 
 import { BrowserRouter as Router } from "react-router-dom";
 import ImageModal from "../components/ImageModal";
@@ -88,6 +89,7 @@ function App() {
     content: string;
     subtitle?: string;
   } | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -135,6 +137,10 @@ function App() {
       }
     }
   };
+
+  if (isLoading) {
+    return <Preloader onComplete={() => setIsLoading(false)} />;
+  }
 
   return (
     <div className="min-h-screen bg-white text-gray-900 transition-colors duration-300 dark:bg-gray-900 dark:text-gray-100">
@@ -346,7 +352,11 @@ function App() {
                               </p>
                             </div>
                           </div>
-                          <div className="absolute inset-0 overflow-visible z-0">
+                          <div
+                            className={`absolute inset-0 overflow-visible z-0 ${
+                              project.title === "Chatbots" ? "scale-150" : ""
+                            }`}
+                          >
                             <img
                               src={
                                 project.title === "Chatbots"
@@ -366,7 +376,11 @@ function App() {
                                   ? "Interwoven Space"
                                   : "Lab"
                               }
-                              className="absolute inset-0 h-full w-full object-cover"
+                              className={`absolute inset-0 h-full w-full ${
+                                project.title === "Chatbots"
+                                  ? "object-contain"
+                                  : "object-cover"
+                              }`}
                             />
                           </div>
                         </motion.div>
