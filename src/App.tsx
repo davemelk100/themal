@@ -336,20 +336,22 @@ function App() {
                             )}
                           </div>
                           <div className="flex-1 flex flex-col">
-                            <p className="text-black mb-2 dark:text-black text-card-body flex-1">
-                              {story.description || "No description available."}
-                            </p>
+                            {story.description && (
+                              <p className="text-black mb-2 dark:text-black text-card-body flex-1">
+                                {story.description}
+                              </p>
+                            )}
                           </div>
                         </div>
-                        <div className="aspect-[3/2] overflow-hidden -mx-3 -mb-3">
+                        <div className="relative aspect-[3/2] overflow-visible -mx-3 -mb-3">
                           {story.image ? (
                             <img
                               src={`${story.image}?v=${Date.now()}`}
                               alt={story.title}
-                              className="h-full w-full object-cover"
+                              className="absolute inset-0 h-full w-full object-cover"
                             />
                           ) : (
-                            <div className="h-full w-full bg-gray-200/50 flex items-center justify-center">
+                            <div className="absolute inset-0 h-full w-full bg-gray-200/50 flex items-center justify-center">
                               <div className="text-gray-400 text-sm">
                                 No image
                               </div>
@@ -381,7 +383,7 @@ function App() {
                           whileInView={{ opacity: 1, y: 0 }}
                           viewport={{ once: true }}
                           transition={{ duration: 0.6, delay: index * 0.1 }}
-                          className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md"
+                          className="group relative overflow-visible rounded-lg bg-gray-100/80 flex flex-col shadow-md"
                         >
                           <div className="absolute top-3 right-3">
                             <a
@@ -405,7 +407,7 @@ function App() {
                               </p>
                             </div>
                           </div>
-                          <div className="aspect-[3/2] overflow-visible -mx-3 -mb-3">
+                          <div className="relative aspect-[3/2] overflow-visible -mx-3 -mb-3">
                             <img
                               src={
                                 project.title === "Chatbots"
@@ -425,7 +427,7 @@ function App() {
                                   ? "Interwoven Space"
                                   : "Lab"
                               }
-                              className="h-full w-full object-cover"
+                              className="absolute inset-0 h-full w-full object-cover"
                             />
                           </div>
                         </motion.div>
@@ -496,13 +498,13 @@ function App() {
                                 )}
                               </div>
                             </div>
-                            <div className="aspect-[3/2] overflow-visible -mx-3 -mb-3">
+                            <div className="relative aspect-[3/2] overflow-visible -mx-3 -mb-3">
                               <img
                                 src={`${
                                   (article as any).cardImage || article.image
                                 }?v=${Date.now()}`}
                                 alt={article.title}
-                                className="h-full w-full object-cover"
+                                className="absolute inset-0 h-full w-full object-cover"
                               />
                             </div>
                           </motion.div>
@@ -555,12 +557,12 @@ function App() {
 
                           const ProjectImage = (
                             <div
-                              className={`aspect-[3/2] overflow-visible -mx-3 -mb-3`}
+                              className={`relative aspect-[3/2] overflow-visible -mx-3 -mb-3`}
                             >
                               <img
                                 src={`${project.image}?v=${Date.now()}`}
                                 alt={project.alt || project.title}
-                                className={`h-full w-full ${
+                                className={`absolute inset-0 h-full w-full ${
                                   project.title === "Hex Code Pop Art"
                                     ? "object-cover scale-102"
                                     : "object-contain"
