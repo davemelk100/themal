@@ -242,7 +242,7 @@ export const content = {
     subtitle: "Examples of how I approach problem-solving and solutioning",
     items: [
       {
-        title: "Delta Dental of Michigan",
+        title: "Selling Accessibility",
         subtitle:
           "How I created an accessibility discipline within a development and design organization",
         description: "",
@@ -266,7 +266,7 @@ export const content = {
         hasModal: true,
       },
       {
-        title: "Meridian Health",
+        title: "Design Management",
         subtitle:
           "How I proposed and implemented new efficiencies and opportunities to a development and design organization",
         description: "",
