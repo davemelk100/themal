@@ -164,11 +164,7 @@ export default function Article() {
               <img
                 src={article.image}
                 alt={article.title}
-                className={`w-full rounded-lg ${
-                  article.title === "AI Hallucination Prevention"
-                    ? "h-64 object-cover"
-                    : "h-auto"
-                }`}
+                className="w-full rounded-lg h-auto"
               />
             </div>
           </div>

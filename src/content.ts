@@ -53,15 +53,15 @@ export const content = {
     title: "Design Work",
     subtitle: "There's so much more I'm not able to show, sadly.",
     projects: [
-      {
-        title: "Delta Dental Member Portal",
-        description:
-          "Led UI design implementation for a SaaS product",
-        categories: "",
-        image: "/img/delta-portal-sq.png",
-        alt: "Delta Dental Member Portal",
-        url: "https://www.memberportal.com/mp/delta/",
-      },
+      // Temporarily hidden until admin panel is fully operational
+      // {
+      //   title: "Delta Dental Member Portal",
+      //   description: "Led UI design implementation for a SaaS product",
+      //   categories: "",
+      //   image: "/img/delta-portal-sq.png",
+      //   alt: "Delta Dental Member Portal",
+      //   url: "https://www.memberportal.com/mp/delta/",
+      // },
       {
         title: "Remote interpretation SaaS application",
         description:
@@ -72,8 +72,7 @@ export const content = {
       },
       {
         title: "Delta Dental Registration",
-        description:
-          "Individual insurance registration application.",
+        description: "Individual insurance registration application.",
         categories: "Insurance",
         image: "/img/delta-search.png",
         alt: "Delta Dental Individual Insurance Registration",
@@ -87,17 +86,17 @@ export const content = {
         image: "/img/onuog.png",
         alt: "3D Conversion UX Plan",
       },
-      {
-        title: "Mushroom Tour Cards",
-        description: "Card design for a mushroom tour app.",
-        image: "/img/shroom-cards.png",
-        alt: "Card design for a mushroom tour app.",
-        categories: "Mobile App, Photography",
-      },
+      // Temporarily hidden until admin panel is fully operational
+      // {
+      //   title: "Mushroom Tour Cards",
+      //   description: "Card design for a mushroom tour app.",
+      //   image: "/img/shroom-cards.png",
+      //   alt: "Card design for a mushroom tour app.",
+      //   categories: "Mobile App, Photography",
+      // },
       {
         title: "Hex Code Pop Art",
-        description:
-          "Digital art piece with hex codes",
+        description: "Digital art piece with hex codes",
         categories: "Graphic Design, CSS",
         image: "/img/hex-orange.png",
         alt: "Hex Code Pop Art",
@@ -277,6 +276,18 @@ export const content = {
         date: "2024",
         hasModal: true,
       },
+      {
+        title: "CMS Portfolio",
+        subtitle:
+          "How I built a simple portfolio to be a multi-purpose career portal",
+        description: "",
+        category: "Portfolio Development",
+        image: "/img/port-story.png",
+        content:
+          "What started as a simple portfolio site evolved into a comprehensive career portal that demonstrates both technical skills and content management capabilities. The journey began with a basic React/TypeScript application showcasing design work and career history.\n\nThe initial challenge was creating a portfolio that could adapt to different audiences and purposes. Rather than building separate sites for different use cases, I designed a single application with sophisticated content management capabilities. This approach allowed the same codebase to serve as a portfolio, writing platform, and demonstration of technical skills.\n\nThe technical implementation focused on creating a flexible content system. I built a comprehensive admin panel with granular visibility controls for all content types - articles, design work, lab projects, and testimonials. The system includes persistent storage with export/import functionality, session management, and backup/restore capabilities.\n\nKey features include a music player showcasing creative interests, a writing gallery with card-based layout for content management, and sophisticated storage system with migration capabilities. The admin panel allows real-time content management without requiring code changes, making it easy to update the portfolio for different opportunities.\n\nThe result is a portfolio that serves multiple purposes: it demonstrates technical skills through its implementation, showcases design work through its presentation, and provides a platform for sharing insights through articles and writing samples. The content management system itself becomes a demonstration of understanding user needs and creating efficient workflows.\n\nThis approach has proven valuable for career opportunities where technical skills, design thinking, and content management abilities are all relevant. The portfolio demonstrates not just what I've done, but how I think about solving problems and creating systems that scale.",
+        date: "2025",
+        hasModal: true,
+      },
     ],
   },
 
@@ -314,85 +325,85 @@ export const content = {
     subtitle:
       "As an English major, I felt this wasn't a big stretch to start cranking these out.",
     items: [
-      {
-        id: "ux-business-financial-implications",
-        title: "When Good UX Isn't Good Business",
-        description:
-          "Why UX professionals need to understand the financial implications of their design decisions.",
-        url: "when-good-ux-isnt-good-business",
-        content: `<h1>When Good UX Isn't Good Business</h1>
-
-<h2>The UX Professional's Blind Spot</h2>
-
-<p>We UX professionals are trained to think about user needs, accessibility, and intuitive interactions. We pride ourselves on creating experiences that feel natural and helpful. But there's a critical gap in our education and practice: we rarely consider the financial implications of our design decisions.</p>
-
-<p>Here's the uncomfortable truth: sometimes what feels like "good UX" to us isn't actually good for the business. And when we don't understand the financial impact of our decisions, we're not serving our users as well as we think we are.</p>
-
-<h2>The Hidden Costs of "Intuitive" Design</h2>
-
-<p>Consider a common scenario: you design a checkout flow that's so streamlined, users can complete a purchase in three clicks. It feels great, it's accessible, it follows all the UX best practices. But what if that streamlined flow actually reduces the average order value by 15%?</p>
-
-<p>Or take another example: you create a beautiful, distraction-free reading experience that removes all navigation elements. Users can focus entirely on the content. But what if that same design reduces page views by 30% and cuts ad revenue in half?</p>
-
-<p>These aren't hypothetical situations - they're real trade-offs that happen every day in product design. The problem is that most UX professionals don't have the data or the financial literacy to understand these implications.</p>
-
-<h2>Why Traditional UX Thinking Falls Short</h2>
-
-<p>Our traditional UX education teaches us to optimize for user satisfaction, task completion, and accessibility. These are all important, but they're not the whole picture. We're missing a crucial piece: understanding how our design decisions impact the business metrics that keep the product alive.</p>
-
-<p>When we design without considering financial implications, we're essentially working in a vacuum. We might create the most beautiful, accessible interface in the world, but if it doesn't support the business model, it won't last long enough to help anyone.</p>
-
-<p>Think about it: if your product can't sustain itself financially, it won't exist to serve users at all. The most user-friendly design in the world is worthless if the company goes out of business.</p>
-
-<h2>The Financial Literacy Gap</h2>
-
-<p>Most UX professionals don't have a background in business or finance. We don't understand concepts like customer lifetime value, conversion rates, or revenue per user. We don't know how to read a P&L statement or understand what metrics actually matter to the business.</p>
-
-<p>This gap creates a dangerous disconnect. We make design decisions based on what feels right, while the business makes decisions based on what drives revenue. When these two perspectives don't align, everyone loses.</p>
-
-<p>The solution isn't to abandon user-centered design principles. It's to expand our understanding to include business metrics alongside user metrics. We need to become bilingual - fluent in both UX and business language.</p>
-
-<h2>When "Bad UX" Might Be Good Business</h2>
-
-<p>Here's where it gets really uncomfortable: sometimes what we consider "bad UX" might actually be good for the business. A slightly longer checkout process might increase order value. A few more clicks might lead to better user education and higher satisfaction in the long run.</p>
-
-<p>This doesn't mean we should abandon our principles and create intentionally frustrating experiences. It means we need to understand the full context of our decisions and find ways to balance user needs with business needs.</p>
-
-<p>The key is to move beyond binary thinking. It's not "good UX vs. bad UX" - it's "what serves both the user and the business in the long term?"</p>
-
-<h2>Building Financial Awareness</h2>
-
-<p>So how do we bridge this gap? Start by asking questions:</p>
-
-<ul>
-<li>What are the key business metrics for this product?</li>
-<li>How do our design decisions impact those metrics?</li>
-<li>What's the cost of implementing this feature vs. the potential revenue impact?</li>
-<li>Are we optimizing for short-term user satisfaction at the expense of long-term business health?</li>
-</ul>
-
-<p>Learn to speak the language of business. Understand basic financial concepts. Ask to see the data that drives business decisions. Collaborate with product managers and business analysts to understand the full picture.</p>
-
-<p>Most importantly, recognize that serving users well means ensuring the product can continue to serve them. That requires understanding how your design decisions impact the business model.</p>
-
-<h2>The Path Forward</h2>
-
-<p>This isn't about selling out or abandoning user-centered design. It's about expanding our definition of what it means to serve users well. The best UX professionals understand that they're not just designing interfaces - they're designing business models.</p>
-
-<p>When we understand the financial implications of our decisions, we can make better choices. We can design experiences that serve users while also supporting the business that makes those experiences possible.</p>
-
-<p>It's time for UX professionals to become financially literate. Our users deserve nothing less.</p>
-
-`,
-        image: "/img/analytics-desktop.svg",
-        date: "Draft - January 2025",
-        tags: ["UX Design", "Business", "Product Strategy"],
-      },
+      // Temporarily hidden until admin panel is fully operational
+      // {
+      //   id: "ux-business-financial-implications",
+      //   title: "When Good UX Isn't Good Business",
+      //   description:
+      //     "Why UX professionals need to understand the financial implications of their design decisions.",
+      //   url: "when-good-ux-isnt-good-business",
+      //   content: `<h1>When Good UX Isn't Good Business</h1>
+      //
+      // <h2>The UX Professional's Blind Spot</h2>
+      //
+      // <p>We UX professionals are trained to think about user needs, accessibility, and intuitive interactions. We pride ourselves on creating experiences that feel natural and helpful. But there's a critical gap in our education and practice: we rarely consider the financial implications of our design decisions.</p>
+      //
+      // <p>Here's the uncomfortable truth: sometimes what feels like "good UX" to us isn't actually good for the business. And when we don't understand the financial impact of our decisions, we're not serving our users as well as we think we are.</p>
+      //
+      // <h2>The Hidden Costs of "Intuitive" Design</h2>
+      //
+      // <p>Consider a common scenario: you design a checkout flow that's so streamlined, users can complete a purchase in three clicks. It feels great, it's accessible, it follows all the UX best practices. But what if that streamlined flow actually reduces the average order value by 15%?</p>
+      //
+      // <p>Or take another example: you create a beautiful, distraction-free reading experience that removes all navigation elements. Users can focus entirely on the content. But what if that same design reduces page views by 30% and cuts ad revenue in half?</p>
+      //
+      // <p>These aren't hypothetical situations - they're real trade-offs that happen every day in product design. The problem is that most UX professionals don't have the data or the financial literacy to understand these implications.</p>
+      //
+      // <h2>Why Traditional UX Thinking Falls Short</h2>
+      //
+      // <p>Our traditional UX education teaches us to optimize for user satisfaction, task completion, and accessibility. These are all important, but they're not the whole picture. We're missing a crucial piece: understanding how our design decisions impact the business metrics that keep the product alive.</p>
+      //
+      // <p>When we design without considering financial implications, we're essentially working in a vacuum. We might create the most beautiful, accessible interface in the world, but if it doesn't support the business model, it won't last long enough to help anyone.</p>
+      //
+      // <p>Think about it: if your product can't sustain itself financially, it won't exist to serve users at all. The most user-friendly design in the world is worthless if the company goes out of business.</p>
+      //
+      // <h2>The Financial Literacy Gap</h2>
+      //
+      // <p>Most UX professionals don't have a background in business or finance. We don't understand concepts like customer lifetime value, conversion rates, or revenue per user. We don't know how to read a P&L statement or understand what metrics actually matter to the business.</p>
+      //
+      // <p>This gap creates a dangerous disconnect. We make design decisions based on what feels right, while the business makes decisions based on what drives revenue. When these two perspectives don't align, everyone loses.</p>
+      //
+      // <p>The solution isn't to abandon user-centered design principles. It's to expand our understanding to include business metrics alongside user metrics. We need to become bilingual - fluent in both UX and business language.</p>
+      //
+      // <h2>When "Bad UX" Might Be Good Business</h2>
+      //
+      // <p>Here's where it gets really uncomfortable: sometimes what we consider "bad UX" might actually be good for the business. A slightly longer checkout process might increase order value. A few more clicks might lead to better user education and higher satisfaction in the long run.</p>
+      //
+      // <p>This doesn't mean we should abandon our principles and create intentionally frustrating experiences. It means we need to understand the full context of our decisions and find ways to balance user needs with business needs.</p>
+      //
+      // <p>The key is to move beyond binary thinking. It's not "good UX vs. bad UX" - it's "what serves both the user and the business in the long term?"</p>
+      //
+      // <h2>Building Financial Awareness</h2>
+      //
+      // <p>So how do we bridge this gap? Start by asking questions:</p>
+      //
+      // <ul>
+      // <li>What are the key business metrics for this product?</li>
+      // <li>How do our design decisions impact those metrics?</li>
+      // <li>What's the cost of implementing this feature vs. the potential revenue impact?</li>
+      // <li>Are we optimizing for short-term user satisfaction at the expense of long-term business health?</li>
+      // </ul>
+      //
+      // <p>Learn to speak the language of business. Understand basic financial concepts. Ask to see the data that drives business decisions. Collaborate with product managers and business analysts to understand the full picture.</p>
+      //
+      // <p>Most importantly, recognize that serving users well means ensuring the product can continue to serve them. That requires understanding how your design decisions impact the business model.</p>
+      //
+      // <h2>The Path Forward</h2>
+      //
+      // <p>This isn't about selling out or abandoning user-centered design. It's about expanding our definition of what it means to serve users well. The best UX professionals understand that they're not just designing interfaces - they're designing business models.</p>
+      //
+      // <p>When we understand the financial implications of our decisions, we can make better choices. We can design experiences that serve users while also supporting the business that makes those experiences possible.</p>
+      //
+      // <p>It's time for UX professionals to become financially literate. Our users deserve nothing less.</p>
+      //
+      // `,
+      //   image: "/img/analytics-desktop.svg",
+      //   date: "Draft - January 2025",
+      //   tags: ["UX Design", "Business", "Product Strategy"],
+      // },
       {
         id: "seven-interviews-excessive",
         title: "Seven Interviews?",
-        description:
-          "Some folks say that's excessive.",
+        description: "Some folks say that's excessive.",
         url: "seven-interviews",
         content: `<h1>Seven Interviews?</h1>
 
@@ -462,73 +473,75 @@ export const content = {
         date: "June 8, 2024",
         tags: ["UX Design", "Development", "Product Design"],
       },
-      {
-        id: "ai-hallucination-prevention",
-        title: "AI Hallucination Prevention",
-        description:
-          "How to spot, handle, and stop the AI needle from skipping.",
-        url: "ai-hallucination-prevention",
-        content: `
+      // Temporarily hidden until admin panel is fully operational
+      // {
+      //   id: "ai-hallucination-prevention",
+      //   title: "AI Hallucination Prevention",
+      //   description:
+      //     "How to spot, handle, and stop the AI needle from skipping.",
+      //   url: "ai-hallucination-prevention",
+      //   content: `
 
-<h2>The AI Confidence Trap</h2>
+      // <h2>The AI Confidence Trap</h2>
 
-<p>When your AI assistant sounds super confident about something, but you're pretty sure it's making it up - that's a hallucination. It's when AI confidently presents false information as fact. It's like that friend who always has an answer, even when they're completely wrong.</p>
+      // <p>When your AI assistant sounds super confident about something, but you're pretty sure it's making it up - that's a hallucination. It's when AI confidently presents false information as fact. It's like that friend who always has an answer, even when they're completely wrong.</p>
 
-<p>When you catch an AI hallucinating, call it out directly: "I think you might be hallucinating here." Ask for sources or citations, break the problem into smaller pieces, give it more context. If all else fails, start fresh with a new conversation.</p>
+      // <p>When you catch an AI hallucinating, call it out directly: "I think you might be hallucinating here." Ask for sources or citations, break the problem into smaller pieces, give it more context. If all else fails, start fresh with a new conversation.</p>
 
-<h2>The Practical Guide</h2>
+      // <h2>The Practical Guide</h2>
 
-<p>The best way to prevent hallucinations is to be specific about what you need, provide relevant context, ask for step-by-step reasoning, request sources or citations upfront, and use follow-up questions to verify information.</p>
+      // <p>The best way to prevent hallucinations is to be specific about what you need, provide relevant context, ask for step-by-step reasoning, request sources or citations upfront, and use follow-up questions to verify information.</p>
 
-<p>Remember, it's not just what you ask - it's how you ask it. Telling AI to "create a login form" might get you something that looks right but doesn't actually work. Instead, try "create a login form with email validation, password requirements, and error handling for invalid credentials." The more specific your request, the less room there is for the AI to fill in the gaps with made-up details. It's like the difference between asking someone to "make it look nice" versus "use a 16px font size with 1.5 line height and 24px margins."</p>
+      // <p>Remember, it's not just what you ask - it's how you ask it. Telling AI to "create a login form" might get you something that looks right but doesn't actually work. Instead, try "create a login form with email validation, password requirements, and error handling for invalid credentials." The more specific your request, the less room there is for the AI to fill in the gaps with made-up details. It's like the difference between asking someone to "make it look nice" versus "use a 16px font size with 1.5 line height and 24px margins."</p>
 
-<p>Here's a hard truth: even when AI gives you exactly what you asked for, you still need to test it. Every time. I've seen AI-generated code that looked perfect but broke existing functionality. That's why regression testing is non-negotiable - especially when working with AI. It's not about distrusting the AI; it's about respecting the complexity of the systems we're building.</p>
+      // <p>Here's a hard truth: even when AI gives you exactly what you asked for, you still need to test it. Every time. I've seen AI-generated code that looked perfect but broke existing functionality. That's why regression testing is non-negotiable - especially when working with AI. It's not about distrusting the AI; it's about respecting the complexity of the systems we're building.</p>
 
-<p>One of the trickiest parts of working with AI is knowing when to be specific and when to be vague. Need a specific implementation? Be precise with your requirements. Looking for creative solutions? Leave some room for the AI to surprise you. It's like the difference between asking for "a blue button" versus "something that draws attention to this action." Sometimes the AI's interpretation is better than what you had in mind.</p>
+      // <p>One of the trickiest parts of working with AI is knowing when to be specific and when to be vague. Need a specific implementation? Be precise with your requirements. Looking for creative solutions? Leave some room for the AI to surprise you. It's like the difference between asking for "a blue button" versus "something that draws attention to this action." Sometimes the AI's interpretation is better than what you had in mind.</p>
 
-<p>Here's something I've learned the hard way: multi-step changes are risky. When you ask AI to make several changes at once, it's like playing a game of telephone - each step can introduce new errors or misunderstandings. Instead, break complex changes into single, focused steps. Test each step before moving to the next. It might feel slower, but it's much faster than fixing a cascade of issues later.</p>
+      // <p>Here's something I've learned the hard way: multi-step changes are risky. When you ask AI to make several changes at once, it's like playing a game of telephone - each step can introduce new errors or misunderstandings. Instead, break complex changes into single, focused steps. Test each step before moving to the next. It might feel slower, but it's much faster than fixing a cascade of issues later.</p>
 
-<h2>Moving Forward</h2>
+      // <h2>Moving Forward</h2>
 
-<p>Hallucinations aren't going away anytime soon. They're part of how these models work. The key is to develop a healthy skepticism and know how to work around them. <strong>THINK</strong> of it like proofreading - you don't trust spell check completely, you use it as a tool.</p>
+      // <p>Hallucinations aren't going away anytime soon. They're part of how these models work. The key is to develop a healthy skepticism and know how to work around them. <strong>THINK</strong> of it like proofreading - you don't trust spell check completely, you use it as a tool.</p>
 
-`,
-        image: "/img/ai-hallucination.png",
-        cardImage: "/img/lebow-ball.png",
-        date: "May 30, 2024",
-        tags: ["AI", "Productivity", "Best Practices"],
-      },
+      // `,
+      //   image: "/img/ai-hallucination.png",
+      //   cardImage: "/img/lebow-ball.png",
+      //   date: "May 30, 2024",
+      //   tags: ["AI", "Productivity", "Best Practices"],
+      // },
 
-      {
-        id: "bolt-new-rapid-prototyping",
-        title: "Bolt.new: The Leader in the Clubhouse",
-        description:
-          "Bolt.new and its ecosystem is killing it in the AI-assisted development and design space.",
-        url: "bolt-new-rapid-prototyping",
-        content: `<h1>Bolt.new: Leader in the Rapid Prototyping Clubhouse</h1>
+      // Temporarily hidden until admin panel is fully operational
+      // {
+      //   id: "bolt-new-rapid-prototyping",
+      //   title: "Bolt.new: The Leader in the Clubhouse",
+      //   description:
+      //     "Bolt.new and its ecosystem is killing it in the AI-assisted development and design space.",
+      //   url: "bolt-new-rapid-prototyping",
+      //   content: `<h1>Bolt.new: Leader in the Rapid Prototyping Clubhouse</h1>
 
-<h2>The Speed of Thought</h2>
+      // <h2>The Speed of Thought</h2>
 
-<p>When you have a great idea, but getting it into something you can actually show people takes forever - bolt.new is like having a superpower for turning ideas into real things, fast.</p>
+      // <p>When you have a great idea, but getting it into something you can actually show people takes forever - bolt.new is like having a superpower for turning ideas into real things, fast.</p>
 
-<p>The interface is slick, everything moves smoothly, and it looks good while being quick. Sure, it can get a bit sluggish when you're pushing it hard - we're talking about AI here - but that's a small price to pay for what it gives you in return.</p>
+      // <p>The interface is slick, everything moves smoothly, and it looks good while being quick. Sure, it can get a bit sluggish when you're pushing it hard - we're talking about AI here - but that's a small price to pay for what it gives you in return.</p>
 
-<h2>The Real Magic</h2>
+      // <h2>The Real Magic</h2>
 
-<p>The best part about bolt.new isn't the tech - it's how it changes the way you talk about ideas. Instead of trying to explain what you're thinking, you can just show it. That changes everything about how you get feedback and make things better.</p>
+      // <p>The best part about bolt.new isn't the tech - it's how it changes the way you talk about ideas. Instead of trying to explain what you're thinking, you can just show it. That changes everything about how you get feedback and make things better.</p>
 
-<h2>Looking Forward</h2>
+      // <h2>Looking Forward</h2>
 
-<p>Tools like bolt.new aren't just about speed - they're about making better stuff. When you can focus on solving problems instead of fighting with your tools, that's when the real magic happens.</p>
+      // <p>Tools like bolt.new aren't just about speed - they're about making better stuff. When you can focus on solving problems instead of fighting with your tools, that's when the real magic happens.</p>
 
-<p>And the best part? This is just the start. As bolt.new keeps getting better, we're seeing a future where the line between design and development gets blurrier - and that's exactly what we need.</p>
+      // <p>And the best part? This is just the start. As bolt.new keeps getting better, we're seeing a future where the line between design and development gets blurrier - and that's exactly what we need.</p>
 
-`,
-        image: "/img/bolt-new.png",
-        cardImage: "/img/bolt-new.png",
-        date: "June 1, 2024",
-        tags: ["Design Tools", "Prototyping", "UX Design"],
-      },
+      // `,
+      //   image: "/img/bolt-new.png",
+      //   cardImage: "/img/bolt-new.png",
+      //   date: "June 1, 2024",
+      //   tags: ["Design Tools", "Prototyping", "UX Design"],
+      // },
       {
         id: "information-architecture-not-sacred",
         title: "Information Architecture Is Not Sacred",
@@ -571,8 +584,7 @@ export const content = {
       {
         id: "five-design-genres",
         title: "The Five Design Genres",
-        description:
-          "I have defined the five design genres.",
+        description: "I have defined the five design genres.",
         url: "five-design-genres",
         content: `
 
@@ -771,8 +783,7 @@ export const content = {
       {
         id: "text-tunneling",
         title: "Text Tunneling",
-        description:
-          "The art of getting to the point.",
+        description: "The art of getting to the point.",
         url: "text-Tunneling",
         content: `<h1>Text Tunneling: Make It Make Sense</h1>
 
@@ -995,8 +1006,8 @@ export const content = {
 </div>
 
 `,
-        image: "/img/lazy-ai.png",
-        cardImage: "/img/all-dumber.png",
+        image: "/img/smart-dumb.png",
+        cardImage: "/img/smart-dumb.png",
         date: "July 6, 2024",
         tags: [
           "AI",

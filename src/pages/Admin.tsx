@@ -16,6 +16,7 @@ import {
   getSessionInfo,
 } from "../utils/adminAuth";
 import { contentVisibilityStorage, storage } from "../utils/storage";
+import { forceMigration } from "../utils/storageMigration";
 
 interface ArticleVisibility {
   [key: string]: {
@@ -223,6 +224,26 @@ export default function Admin() {
     }
   };
 
+  const handleForceMigration = () => {
+    if (
+      window.confirm(
+        "Force storage migration? This will attempt to migrate any old data."
+      )
+    ) {
+      const result = forceMigration();
+      if (result.success) {
+        alert(
+          `Migration successful! Migrated keys: ${result.migratedKeys.join(
+            ", "
+          )}`
+        );
+        window.location.reload();
+      } else {
+        alert(`Migration failed: ${result.errors.join(", ")}`);
+      }
+    }
+  };
+
   // Export data functionality
   const exportData = () => {
     try {
@@ -350,11 +371,124 @@ export default function Admin() {
                   className="hidden"
                 />
               </label>
+              <button
+                onClick={handleForceMigration}
+                className="flex items-center gap-2 px-3 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-colors text-sm"
+                title="Force storage migration"
+              >
+                <Upload className="h-4 w-4" />
+                Migrate
+              </button>
 
               {/* Session Status */}
               <div className="flex items-center gap-2 text-nav">
                 <Clock className="h-4 w-4 text-white" />
                 <span className="text-white">{sessionInfo.timeRemaining}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Site Summary */}
+        <div className="bg-gradient-to-r from-slate-100 to-blue-100 dark:from-slate-800 dark:to-blue-900/20 border border-slate-200 dark:border-slate-700 rounded-lg p-6 mb-8">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+            Site Overview & Journey
+          </h2>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div>
+              <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-3">
+                Purpose & Content
+              </h3>
+              <div className="space-y-3 text-sm text-slate-700 dark:text-slate-300">
+                <p>
+                  <strong>Portfolio Site:</strong> Dave Melkonian's digital
+                  experience design portfolio showcasing 15+ years of UX/UI work
+                  across healthcare, insurance, and SaaS industries.
+                </p>
+                <p>
+                  <strong>Content Sections:</strong> Articles (12 published, 3
+                  hidden), Design Work (9 projects), Lab Projects (3
+                  experimental), Career History (6 positions), Testimonials (8
+                  kudos), and Stories (3 case studies).
+                </p>
+                <p>
+                  <strong>Technical Stack:</strong> React/TypeScript, Tailwind
+                  CSS, Vite, with responsive design and dark mode support.
+                </p>
+                <p>
+                  <strong>Special Features:</strong> Music player with 6 tracks,
+                  writing gallery with admin controls, and comprehensive content
+                  management system.
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-3">
+                Development Journey
+              </h3>
+              <div className="space-y-3 text-sm text-slate-700 dark:text-slate-300">
+                <p>
+                  <strong>Initial Build:</strong> Started as a simple portfolio
+                  with basic sections and navigation. Evolved into a
+                  comprehensive content management system.
+                </p>
+                <p>
+                  <strong>Content Management:</strong> Added admin panel with
+                  granular visibility controls for all content types, persistent
+                  storage with export/import functionality.
+                </p>
+                <p>
+                  <strong>Enhanced Features:</strong> Integrated music player,
+                  writing gallery with card-based layout, and sophisticated
+                  storage system with migration capabilities.
+                </p>
+                <p>
+                  <strong>Current State:</strong> Fully functional admin system
+                  with session management, content visibility controls, and
+                  backup/restore functionality.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6 p-4 bg-white/50 dark:bg-slate-800/50 rounded-lg">
+            <h4 className="font-semibold text-slate-800 dark:text-slate-200 mb-2">
+              Content Statistics
+            </h4>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+              <div className="text-center">
+                <div className="font-bold text-blue-600 dark:text-blue-400">
+                  12
+                </div>
+                <div className="text-slate-600 dark:text-slate-400">
+                  Articles
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="font-bold text-green-600 dark:text-green-400">
+                  9
+                </div>
+                <div className="text-slate-600 dark:text-slate-400">
+                  Design Projects
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="font-bold text-purple-600 dark:text-purple-400">
+                  8
+                </div>
+                <div className="text-slate-600 dark:text-slate-400">
+                  Testimonials
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="font-bold text-orange-600 dark:text-orange-400">
+                  6
+                </div>
+                <div className="text-slate-600 dark:text-slate-400">
+                  Career Positions
+                </div>
               </div>
             </div>
           </div>
