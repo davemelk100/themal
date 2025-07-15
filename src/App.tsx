@@ -402,7 +402,7 @@ function App() {
                               </h3>
                             </div>
                             <div className="flex-1 flex flex-col">
-                              <p className="text-black mb-2 dark:text-black text-card-body flex-1">
+                              <p className="text-sm text-gray-600 dark:text-gray-600 mb-2 flex-1">
                                 {project.description}
                               </p>
                             </div>
@@ -492,7 +492,7 @@ function App() {
                               </div>
                               <div className="flex-1 flex flex-col">
                                 {article.description && (
-                                  <p className="text-black mb-2 dark:text-black text-card-body flex-1">
+                                  <p className="text-sm text-gray-600 dark:text-gray-600 mb-2 flex-1">
                                     {article.description}
                                   </p>
                                 )}
@@ -547,7 +547,7 @@ function App() {
                                   {project.title}
                                 </h3>
                                 {project.description && (
-                                  <p className="text-black mb-2 dark:text-black text-card-body">
+                                  <p className="text-sm text-gray-600 dark:text-gray-600 mb-2">
                                     {project.description}
                                   </p>
                                 )}

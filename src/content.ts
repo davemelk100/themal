@@ -56,7 +56,7 @@ export const content = {
       {
         title: "Delta Dental Member Portal",
         description:
-          "Led UI design implementation for a SaaS provider portal",
+          "Led UI design implementation for a SaaS product",
         categories: "",
         image: "/img/delta-portal-sq.png",
         alt: "Delta Dental Member Portal",
@@ -73,7 +73,7 @@ export const content = {
       {
         title: "Delta Dental Registration",
         description:
-          "Saas individual insurance registration application.",
+          "Individual insurance registration application.",
         categories: "Insurance",
         image: "/img/delta-search.png",
         alt: "Delta Dental Individual Insurance Registration",
@@ -97,7 +97,7 @@ export const content = {
       {
         title: "Hex Code Pop Art",
         description:
-          "Digital art piece exploring color theory through hex codes.",
+          "Digital art piece with hex codes",
         categories: "Graphic Design, CSS",
         image: "/img/hex-orange.png",
         alt: "Hex Code Pop Art",
