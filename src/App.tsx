@@ -150,7 +150,7 @@ function App() {
                   className="absolute inset-0 bg-gradient-to-b from-transparent to-background/5"
                 />
 
-                <div className="container mx-auto px-4 sm:px-8 pt-16 sm:pt-20">
+                <div className="container mx-auto px-4 sm:px-8 pt-32 sm:pt-40">
                   {/* Title, Icons, and Navigation Row */}
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
                     <motion.div
