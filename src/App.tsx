@@ -59,7 +59,7 @@ const SectionHeader = ({
         )}
       </div>
       {subtitle && (
-        <p className="text-base text-muted-foreground">{subtitle}</p>
+        <p className="text-base text-muted-foreground mb-6">{subtitle}</p>
       )}
     </div>
   );
@@ -260,7 +260,7 @@ function App() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 1, delay: 1.2 }}
-                    className="mt-6 hidden sm:flex flex-wrap justify-center sm:justify-start gap-3"
+                    className="mt-6 mb-12 hidden sm:flex flex-wrap justify-center sm:justify-start gap-3"
                   >
                     {designTokens.colors.map((color) => {
                       return (
@@ -292,7 +292,7 @@ function App() {
                   <SectionHeader
                     title={content.stories.title}
                     subtitle={content.stories.subtitle}
-                    className="mb-4"
+                    className="mb-8"
                   />
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {content.stories.items.map((story, index) => (
@@ -371,7 +371,7 @@ function App() {
                     <SectionHeader
                       title={content.currentProjects.title}
                       subtitle={content.currentProjects.subtitle}
-                      className="mb-4"
+                      className="mb-8"
                     />
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {getVisibleLabProjects(
@@ -444,7 +444,7 @@ function App() {
                     <SectionHeader
                       title="Articles"
                       subtitle={content.articles.subtitle}
-                      className="mb-4"
+                      className="mb-8"
                       showArchiveLink={false}
                     />
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -529,7 +529,7 @@ function App() {
                     <SectionHeader
                       title="Design"
                       subtitle={content.work.subtitle}
-                      className="mb-4"
+                      className="mb-8"
                       showArchiveLink={false}
                     />
 
