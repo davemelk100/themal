@@ -73,7 +73,7 @@ export const content = {
       {
         title: "Delta Dental Registration",
         description:
-          "Image for Saas individual insurance registration application.",
+          "Saas individual insurance registration application.",
         categories: "Insurance",
         image: "/img/delta-search.png",
         alt: "Delta Dental Individual Insurance Registration",
@@ -572,7 +572,7 @@ export const content = {
         id: "five-design-genres",
         title: "The Five Design Genres",
         description:
-          "After years of research, five design genres have been defined (by me ).",
+          "I have defined the five design genres.",
         url: "five-design-genres",
         content: `
 
