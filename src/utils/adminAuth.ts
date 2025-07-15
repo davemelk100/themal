@@ -1,27 +1,36 @@
+import { adminSessionStorage } from "./storage";
+
+interface AdminSession {
+  isAuthenticated: boolean;
+  authTime: string;
+}
+
 export const checkAdminAuth = (): boolean => {
   try {
-    const isAuthenticated = localStorage.getItem("adminAuthenticated");
-    const authTime = localStorage.getItem("adminAuthTime");
+    const session = adminSessionStorage.getSession() as AdminSession | null;
 
-    if (!isAuthenticated || !authTime) {
+    if (!session || !session.isAuthenticated || !session.authTime) {
       return false;
     }
 
     // Check if authentication is still valid (24 hour session)
     const currentTime = Date.now();
-    const authTimestamp = parseInt(authTime);
+    const authTimestamp = parseInt(session.authTime);
     const sessionDuration = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
     if (currentTime - authTimestamp > sessionDuration) {
       // Session expired, clear authentication
-      localStorage.removeItem("adminAuthenticated");
-      localStorage.removeItem("adminAuthTime");
+      logoutAdmin();
       return false;
     }
 
     // Refresh session timestamp if it's still valid (extends session on activity)
     if (currentTime - authTimestamp < sessionDuration) {
-      localStorage.setItem("adminAuthTime", currentTime.toString());
+      const updatedSession: AdminSession = {
+        isAuthenticated: session.isAuthenticated,
+        authTime: currentTime.toString(),
+      };
+      adminSessionStorage.setSession(updatedSession);
     }
 
     return true;
@@ -32,8 +41,11 @@ export const checkAdminAuth = (): boolean => {
 };
 
 export const logoutAdmin = (): void => {
-  localStorage.removeItem("adminAuthenticated");
-  localStorage.removeItem("adminAuthTime");
+  try {
+    adminSessionStorage.clearSession();
+  } catch (error) {
+    console.error("Error during logout:", error);
+  }
 };
 
 export const getSessionInfo = (): {
@@ -42,10 +54,9 @@ export const getSessionInfo = (): {
   timeRemaining: string;
 } => {
   try {
-    const isAuthenticated = localStorage.getItem("adminAuthenticated");
-    const authTime = localStorage.getItem("adminAuthTime");
+    const session = adminSessionStorage.getSession() as AdminSession | null;
 
-    if (!isAuthenticated || !authTime) {
+    if (!session || !session.isAuthenticated || !session.authTime) {
       return {
         isActive: false,
         expiresAt: null,
@@ -54,7 +65,7 @@ export const getSessionInfo = (): {
     }
 
     const currentTime = Date.now();
-    const authTimestamp = parseInt(authTime);
+    const authTimestamp = parseInt(session.authTime);
     const sessionDuration = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
     const expiresAt = new Date(authTimestamp + sessionDuration);
     const timeRemaining = expiresAt.getTime() - currentTime;

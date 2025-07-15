@@ -31,6 +31,7 @@ import { getVisibleDesignWork } from "./utils/designWorkVisibility";
 
 import { getVisibleLabProjects } from "./utils/labProjectVisibility";
 import { isSectionVisible } from "./utils/contentVisibility";
+import "./utils/storageMigration"; // Import to trigger migration if needed
 
 // Add SectionHeader component
 const SectionHeader = ({
@@ -801,6 +802,20 @@ function App() {
       >
         <ArrowUp className="h-6 w-6" />
       </motion.button>
+
+      {/* Hidden Admin Access Button */}
+      <Link
+        to="/admin-login"
+        className="fixed top-0 left-0 w-8 h-8 bg-white opacity-0 hover:opacity-20 transition-opacity duration-300 z-[9999] cursor-pointer"
+        style={{
+          boxShadow: "none",
+          border: "none",
+          outline: "none",
+          cursor: "pointer",
+          pointerEvents: "auto",
+        }}
+        title="Admin Access"
+      />
     </div>
   );
 }

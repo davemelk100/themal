@@ -1,12 +1,21 @@
 import { useState, useEffect } from "react";
 import { content } from "../content";
-import { ArrowLeft, LogOut, Clock, Play } from "lucide-react";
+import {
+  ArrowLeft,
+  LogOut,
+  Clock,
+  Play,
+  Download,
+  Upload,
+  AlertCircle,
+} from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import {
   checkAdminAuth,
   logoutAdmin,
   getSessionInfo,
 } from "../utils/adminAuth";
+import { contentVisibilityStorage, storage } from "../utils/storage";
 
 interface ArticleVisibility {
   [key: string]: {
@@ -50,6 +59,10 @@ export default function Admin() {
   );
   const [isLoading, setIsLoading] = useState(true);
   const [sessionInfo, setSessionInfo] = useState(getSessionInfo());
+  const [storageStatus, setStorageStatus] = useState<{
+    available: boolean;
+    message?: string;
+  }>({ available: storage.isAvailable() });
 
   useEffect(() => {
     // Check authentication first
@@ -58,10 +71,10 @@ export default function Admin() {
       return;
     }
 
-    // Load saved visibility settings from localStorage
-    const savedVisibility = localStorage.getItem("contentVisibility");
-    if (savedVisibility) {
-      setContentVisibility(JSON.parse(savedVisibility));
+    // Load saved visibility settings from storage
+    const savedVisibility = contentVisibilityStorage.getSettings();
+    if (savedVisibility && Object.keys(savedVisibility).length > 0) {
+      setContentVisibility(savedVisibility as ContentVisibility);
     } else {
       // Initialize all content as visible
       const initialVisibility: ContentVisibility = {
@@ -139,7 +152,16 @@ export default function Admin() {
       },
     };
     setContentVisibility(newVisibility);
-    localStorage.setItem("contentVisibility", JSON.stringify(newVisibility));
+    try {
+      contentVisibilityStorage.setSettings(newVisibility);
+      setStorageStatus({ available: true });
+    } catch (error) {
+      console.error("Failed to save content visibility:", error);
+      setStorageStatus({
+        available: false,
+        message: "Failed to save changes. Please try again.",
+      });
+    }
   };
 
   const handleContentVisibilityToggle = (
@@ -154,7 +176,16 @@ export default function Admin() {
       },
     };
     setContentVisibility(newVisibility);
-    localStorage.setItem("contentVisibility", JSON.stringify(newVisibility));
+    try {
+      contentVisibilityStorage.setSettings(newVisibility);
+      setStorageStatus({ available: true });
+    } catch (error) {
+      console.error("Failed to save content visibility:", error);
+      setStorageStatus({
+        available: false,
+        message: "Failed to save changes. Please try again.",
+      });
+    }
   };
 
   const handleSectionVisibilityToggle = (
@@ -168,7 +199,16 @@ export default function Admin() {
       },
     };
     setContentVisibility(newVisibility);
-    localStorage.setItem("contentVisibility", JSON.stringify(newVisibility));
+    try {
+      contentVisibilityStorage.setSettings(newVisibility);
+      setStorageStatus({ available: true });
+    } catch (error) {
+      console.error("Failed to save content visibility:", error);
+      setStorageStatus({
+        available: false,
+        message: "Failed to save changes. Please try again.",
+      });
+    }
   };
 
   const handleBackClick = (e: React.MouseEvent) => {
@@ -181,6 +221,66 @@ export default function Admin() {
       logoutAdmin();
       navigate("/admin-login");
     }
+  };
+
+  // Export data functionality
+  const exportData = () => {
+    try {
+      const data = {
+        contentVisibility,
+        exportDate: new Date().toISOString(),
+        version: "1.0",
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], {
+        type: "application/json",
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `admin-settings-backup-${
+        new Date().toISOString().split("T")[0]
+      }.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Failed to export data:", error);
+      alert("Failed to export data. Please try again.");
+    }
+  };
+
+  // Import data functionality
+  const importData = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target?.result as string);
+        if (data.contentVisibility) {
+          setContentVisibility(data.contentVisibility);
+          try {
+            contentVisibilityStorage.setSettings(data.contentVisibility);
+            setStorageStatus({ available: true });
+            alert("Settings imported successfully!");
+          } catch (error) {
+            console.error("Failed to save imported settings:", error);
+            setStorageStatus({
+              available: false,
+              message: "Failed to save imported settings.",
+            });
+          }
+        } else {
+          alert("Invalid file format. Please select a valid backup file.");
+        }
+      } catch (error) {
+        console.error("Failed to import data:", error);
+        alert("Failed to import data. Please check the file format.");
+      }
+    };
+    reader.readAsText(file);
   };
 
   if (isLoading) {
@@ -216,14 +316,46 @@ export default function Admin() {
 
         <div className="bg-gradient-to-r from-black via-gray-600 via-gray-400 via-white via-gray-100 via-gray-500 via-blue-500 via-emerald-500 via-amber-500 to-red-500 rounded-lg p-6 mb-8">
           <div className="flex items-center justify-between">
-            <h1 className="text-4xl sm:text-5xl font-bold text-white">
-              Admin Dashboard
-            </h1>
+            <div>
+              <h1 className="text-4xl sm:text-5xl font-bold text-white">
+                Admin Dashboard
+              </h1>
+              {!storageStatus.available && (
+                <div className="flex items-center gap-2 mt-2 text-amber-300">
+                  <AlertCircle className="h-4 w-4" />
+                  <span className="text-sm">
+                    {storageStatus.message || "Storage not available"}
+                  </span>
+                </div>
+              )}
+            </div>
 
-            {/* Session Status */}
-            <div className="flex items-center gap-2 text-nav">
-              <Clock className="h-4 w-4 text-white" />
-              <span className="text-white">{sessionInfo.timeRemaining}</span>
+            <div className="flex items-center gap-4">
+              {/* Export/Import buttons */}
+              <button
+                onClick={exportData}
+                className="flex items-center gap-2 px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors text-sm"
+                title="Export settings backup"
+              >
+                <Download className="h-4 w-4" />
+                Export
+              </button>
+              <label className="flex items-center gap-2 px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors text-sm cursor-pointer">
+                <Upload className="h-4 w-4" />
+                Import
+                <input
+                  type="file"
+                  accept=".json"
+                  onChange={importData}
+                  className="hidden"
+                />
+              </label>
+
+              {/* Session Status */}
+              <div className="flex items-center gap-2 text-nav">
+                <Clock className="h-4 w-4 text-white" />
+                <span className="text-white">{sessionInfo.timeRemaining}</span>
+              </div>
             </div>
           </div>
         </div>

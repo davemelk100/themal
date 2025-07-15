@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { verifyPassword } from "../utils/passwordHash";
 import { checkAdminAuth } from "../utils/adminAuth";
+import { adminSessionStorage } from "../utils/storage";
 
 export default function AdminLogin() {
   const [password, setPassword] = useState("");
@@ -26,9 +27,12 @@ export default function AdminLogin() {
       const isValid = await verifyPassword(password);
 
       if (isValid) {
-        // Store authentication in localStorage
-        localStorage.setItem("adminAuthenticated", "true");
-        localStorage.setItem("adminAuthTime", Date.now().toString());
+        // Store authentication using the storage utility
+        const session = {
+          isAuthenticated: true,
+          authTime: Date.now().toString(),
+        } as const;
+        adminSessionStorage.setSession(session);
         navigate("/admin");
       } else {
         setError("Incorrect password");

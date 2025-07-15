@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Plus, Trash2, Edit2, Check, X } from "lucide-react";
+import { Plus, Trash2, Edit2, Check, X, Download, Upload, AlertCircle } from "lucide-react";
+import { writingGalleryStorage, storage } from "../utils/storage";
 
 interface WritingPiece {
   id: number;
@@ -16,50 +17,80 @@ interface WritingPiece {
 }
 
 const WritingGallery: React.FC = () => {
-  const [writingPieces, setWritingPieces] = useState<WritingPiece[]>([
-    {
-      id: 1,
-      title: "",
-      subtitle: "",
-      excerpt:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-      category: "",
-      readTime: "",
-      date: "",
-      image: "",
-      url: "",
-      isPublished: true,
-    },
-    {
-      id: 2,
-      title: "",
-      subtitle: "",
-      excerpt:
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
-      category: "",
-      readTime: "",
-      date: "",
-      image: "",
-      url: "",
-      isPublished: true,
-    },
-    {
-      id: 3,
-      title: "",
-      subtitle: "",
-      excerpt:
-        "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.",
-      category: "",
-      readTime: "",
-      date: "",
-      image: "",
-      url: "",
-      isPublished: true,
-    },
-  ]);
+  // Load saved writing pieces from storage or use defaults
+  const getInitialWritingPieces = (): WritingPiece[] => {
+    const saved = writingGalleryStorage.getPieces();
+    if (saved && Array.isArray(saved) && saved.length > 0) {
+      return saved;
+    }
+
+    // Default pieces if nothing is saved
+    return [
+      {
+        id: 1,
+        title: "",
+        subtitle: "",
+        excerpt:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+        category: "",
+        readTime: "",
+        date: "",
+        image: "",
+        url: "",
+        isPublished: true,
+      },
+      {
+        id: 2,
+        title: "",
+        subtitle: "",
+        excerpt:
+          "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
+        category: "",
+        readTime: "",
+        date: "",
+        image: "",
+        url: "",
+        isPublished: true,
+      },
+      {
+        id: 3,
+        title: "",
+        subtitle: "",
+        excerpt:
+          "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.",
+        category: "",
+        readTime: "",
+        date: "",
+        image: "",
+        url: "",
+        isPublished: true,
+      },
+    ];
+  };
+
+  const [writingPieces, setWritingPieces] = useState<WritingPiece[]>(
+    getInitialWritingPieces
+  );
 
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editText, setEditText] = useState("");
+  const [storageStatus, setStorageStatus] = useState<{
+    available: boolean;
+    message?: string;
+  }>({ available: storage.isAvailable() });
+
+  const saveToStorage = (pieces: WritingPiece[]) => {
+    try {
+      writingGalleryStorage.setPieces(pieces);
+      setStorageStatus({ available: true });
+    } catch (error) {
+      console.error("Failed to save writing pieces:", error);
+      setStorageStatus({ 
+        available: false, 
+        message: "Failed to save changes. Please try again." 
+      });
+    }
+  };
 
   const addCard = () => {
     const newId = Math.max(...writingPieces.map((piece) => piece.id), 0) + 1;
@@ -76,11 +107,15 @@ const WritingGallery: React.FC = () => {
       url: "",
       isPublished: true,
     };
-    setWritingPieces([...writingPieces, newCard]);
+    const updatedPieces = [...writingPieces, newCard];
+    setWritingPieces(updatedPieces);
+    saveToStorage(updatedPieces);
   };
 
   const removeCard = (id: number) => {
-    setWritingPieces(writingPieces.filter((piece) => piece.id !== id));
+    const updatedPieces = writingPieces.filter((piece) => piece.id !== id);
+    setWritingPieces(updatedPieces);
+    saveToStorage(updatedPieces);
   };
 
   const startEditing = (id: number, currentText: string) => {
@@ -89,11 +124,11 @@ const WritingGallery: React.FC = () => {
   };
 
   const saveEdit = (id: number) => {
-    setWritingPieces(
-      writingPieces.map((piece) =>
-        piece.id === id ? { ...piece, excerpt: editText } : piece
-      )
+    const updatedPieces = writingPieces.map((piece) =>
+      piece.id === id ? { ...piece, excerpt: editText } : piece
     );
+    setWritingPieces(updatedPieces);
+    saveToStorage(updatedPieces);
     setEditingId(null);
     setEditText("");
   };
@@ -101,6 +136,53 @@ const WritingGallery: React.FC = () => {
   const cancelEdit = () => {
     setEditingId(null);
     setEditText("");
+  };
+
+  // Export data functionality
+  const exportData = () => {
+    try {
+      const data = {
+        writingPieces,
+        exportDate: new Date().toISOString(),
+        version: "1.0"
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `writing-gallery-backup-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Failed to export data:", error);
+      alert("Failed to export data. Please try again.");
+    }
+  };
+
+  // Import data functionality
+  const importData = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target?.result as string);
+        if (data.writingPieces && Array.isArray(data.writingPieces)) {
+          setWritingPieces(data.writingPieces);
+          saveToStorage(data.writingPieces);
+          alert("Data imported successfully!");
+        } else {
+          alert("Invalid file format. Please select a valid backup file.");
+        }
+      } catch (error) {
+        console.error("Failed to import data:", error);
+        alert("Failed to import data. Please check the file format.");
+      }
+    };
+    reader.readAsText(file);
   };
 
   return (
@@ -113,16 +195,45 @@ const WritingGallery: React.FC = () => {
         >
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-              Writing Gallery
-            </h1>
-            <button
-              onClick={addCard}
-              className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-            >
-              <Plus className="h-4 w-4" />
-              Add Card
-            </button>
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+                Writing Gallery
+              </h1>
+              {!storageStatus.available && (
+                <div className="flex items-center gap-2 mt-2 text-amber-600 dark:text-amber-400">
+                  <AlertCircle className="h-4 w-4" />
+                  <span className="text-sm">{storageStatus.message || "Storage not available"}</span>
+                </div>
+              )}
+            </div>
+            <div className="flex items-center gap-3">
+              {/* Export/Import buttons */}
+              <button
+                onClick={exportData}
+                className="flex items-center gap-2 px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors text-sm"
+                title="Export data backup"
+              >
+                <Download className="h-4 w-4" />
+                Export
+              </button>
+              <label className="flex items-center gap-2 px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors text-sm cursor-pointer">
+                <Upload className="h-4 w-4" />
+                Import
+                <input
+                  type="file"
+                  accept=".json"
+                  onChange={importData}
+                  className="hidden"
+                />
+              </label>
+              <button
+                onClick={addCard}
+                className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+              >
+                <Plus className="h-4 w-4" />
+                Add Card
+              </button>
+            </div>
           </div>
 
           {/* Writing Cards Grid */}
@@ -196,6 +307,11 @@ const WritingGallery: React.FC = () => {
             <p className="text-gray-500 dark:text-gray-400 text-sm">
               This gallery is only accessible via the admin panel.
             </p>
+            {storageStatus.available && (
+              <p className="text-green-600 dark:text-green-400 text-xs mt-2">
+                ✓ Data is being saved automatically
+              </p>
+            )}
           </div>
         </motion.div>
       </div>
