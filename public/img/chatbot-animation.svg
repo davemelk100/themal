@@ -324,7 +324,7 @@
   </defs>
   
   <!-- Central Core Circle -->
-  <circle cx="45" cy="45" r="3" fill="url(#designGradient1)" opacity="0.5" class="fractal-square primary-rotate"/>
+  <circle cx="45" cy="45" r="3" fill="url(#designGradient1)" opacity="0.7" class="fractal-square primary-rotate"/>
   
   <!-- First Layer of Rotating Circles -->
   <g class="fractal-square secondary-rotate">
@@ -454,6 +454,30 @@
     <circle cx="42" cy="48" r="1.8" fill="#0d9488" opacity="0.6" class="pulse"/>
     <circle cx="48" cy="48" r="1.8" fill="#f97316" opacity="0.6" class="pulse"/>
     <circle cx="45" cy="45" r="1.8" fill="url(#designGradient1)" opacity="0.7" class="glow"/>
+  </g>
+  
+  <!-- Additional 4D Rotation Group 1 -->
+  <g class="fractal-square center-4d-rotate">
+    <circle cx="35" cy="35" r="1.5" fill="#0d9488" opacity="0.5" class="floating"/>
+    <circle cx="55" cy="35" r="1.5" fill="#f97316" opacity="0.5" class="floating"/>
+    <circle cx="55" cy="55" r="1.5" fill="#0d9488" opacity="0.5" class="floating"/>
+    <circle cx="35" cy="55" r="1.5" fill="#f97316" opacity="0.5" class="floating"/>
+  </g>
+  
+  <!-- Additional 4D Rotation Group 2 -->
+  <g class="fractal-square center-4d-rotate">
+    <circle cx="25" cy="25" r="1.2" fill="#f97316" opacity="0.4" class="pulse"/>
+    <circle cx="65" cy="25" r="1.2" fill="#0d9488" opacity="0.4" class="pulse"/>
+    <circle cx="65" cy="65" r="1.2" fill="#f97316" opacity="0.4" class="pulse"/>
+    <circle cx="25" cy="65" r="1.2" fill="#0d9488" opacity="0.4" class="pulse"/>
+  </g>
+  
+  <!-- Additional 4D Rotation Group 3 -->
+  <g class="fractal-square center-4d-rotate">
+    <circle cx="15" cy="15" r="0.8" fill="#0d9488" opacity="0.3" class="breathing"/>
+    <circle cx="75" cy="15" r="0.8" fill="#f97316" opacity="0.3" class="breathing"/>
+    <circle cx="75" cy="75" r="0.8" fill="#0d9488" opacity="0.3" class="breathing"/>
+    <circle cx="15" cy="75" r="0.8" fill="#f97316" opacity="0.3" class="breathing"/>
   </g>
   
   <!-- Glowing Center Point -->

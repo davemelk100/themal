@@ -87,7 +87,6 @@ const SectionHeader = ({
 };
 
 function App() {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedArticle, setSelectedArticle] = useState<{
     title: string;
@@ -104,15 +103,6 @@ function App() {
 
   const location = useLocation();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 100);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   // Scroll to top on route change
   useEffect(() => {
@@ -369,9 +359,9 @@ function App() {
                                 project.title === "Chatbots"
                                   ? `/img/chatbot-animation.svg?v=${Date.now()}`
                                   : project.title === "Design Panes"
-                                  ? `/img/design-panes-slow.svg?v=${Date.now()}`
+                                  ? `/img/design-panes-alt.svg?v=${Date.now()}`
                                   : project.title === "AI NUI"
-                                  ? `/img/ai-nui-animation.svg?v=${Date.now()}`
+                                  ? `/img/ai-nui-alt.svg?v=${Date.now()}`
                                   : `/img/lab.svg?v=${Date.now()}`
                               }
                               alt={
