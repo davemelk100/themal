@@ -53,6 +53,10 @@
         animation: denaryRotate 340s linear infinite reverse;
       }
       
+      .group-rotate {
+        animation: groupRotate2D 45s linear infinite;
+      }
+      
       .floating {
         animation: float 48s ease-in-out infinite;
       }
@@ -87,13 +91,13 @@
       
       @keyframes primaryRotate {
         0% {
-          transform: perspective(200px) rotateY(0deg) rotateX(0deg) scale(1);
+          transform: rotate(0deg) scale(1);
         }
         50% {
-          transform: perspective(200px) rotateY(180deg) rotateX(180deg) scale(1.1);
+          transform: rotate(180deg) scale(1.1);
         }
         100% {
-          transform: perspective(200px) rotateY(360deg) rotateX(360deg) scale(1);
+          transform: rotate(360deg) scale(1);
         }
       }
       
@@ -102,22 +106,22 @@
           transform: perspective(200px) rotateY(0deg) rotateX(0deg) scale(1.1);
         }
         50% {
-          transform: perspective(200px) rotateY(-180deg) rotateX(-180deg) scale(0.9);
+          transform: perspective(200px) rotateY(-360deg) rotateX(-180deg) scale(0.9);
         }
         100% {
-          transform: perspective(200px) rotateY(-360deg) rotateX(-360deg) scale(1.1);
+          transform: perspective(200px) rotateY(-720deg) rotateX(-360deg) scale(1.1);
         }
       }
       
       @keyframes tertiaryRotate {
         0% {
-          transform: perspective(200px) rotateY(0deg) rotateX(0deg) scale(0.9);
+          transform: rotate(0deg) scale(0.9);
         }
         50% {
-          transform: perspective(200px) rotateY(180deg) rotateX(180deg) scale(1.2);
+          transform: rotate(180deg) scale(1.2);
         }
         100% {
-          transform: perspective(200px) rotateY(360deg) rotateX(360deg) scale(0.9);
+          transform: rotate(360deg) scale(0.9);
         }
       }
       
@@ -126,22 +130,22 @@
           transform: perspective(200px) rotateY(0deg) rotateX(0deg) scale(1.2);
         }
         50% {
-          transform: perspective(200px) rotateY(-180deg) rotateX(-180deg) scale(0.8);
+          transform: perspective(200px) rotateY(-360deg) rotateX(-180deg) scale(0.8);
         }
         100% {
-          transform: perspective(200px) rotateY(-360deg) rotateX(-360deg) scale(1.2);
+          transform: perspective(200px) rotateY(-720deg) rotateX(-360deg) scale(1.2);
         }
       }
       
       @keyframes quinaryRotate {
         0% {
-          transform: perspective(200px) rotateY(0deg) rotateX(0deg) scale(0.8);
+          transform: rotate(0deg) scale(0.8);
         }
         50% {
-          transform: perspective(200px) rotateY(180deg) rotateX(180deg) scale(1.3);
+          transform: rotate(180deg) scale(1.3);
         }
         100% {
-          transform: perspective(200px) rotateY(360deg) rotateX(360deg) scale(0.8);
+          transform: rotate(360deg) scale(0.8);
         }
       }
       
@@ -150,22 +154,22 @@
           transform: perspective(200px) rotateY(0deg) rotateX(0deg) scale(1.3);
         }
         50% {
-          transform: perspective(200px) rotateY(-180deg) rotateX(-180deg) scale(0.7);
+          transform: perspective(200px) rotateY(-360deg) rotateX(-180deg) scale(0.7);
         }
         100% {
-          transform: perspective(200px) rotateY(-360deg) rotateX(-360deg) scale(1.3);
+          transform: perspective(200px) rotateY(-720deg) rotateX(-360deg) scale(1.3);
         }
       }
       
       @keyframes septenaryRotate {
         0% {
-          transform: perspective(200px) rotateY(0deg) rotateX(0deg) scale(0.6);
+          transform: rotate(0deg) scale(0.6);
         }
         50% {
-          transform: perspective(200px) rotateY(180deg) rotateX(180deg) scale(1.4);
+          transform: rotate(180deg) scale(1.4);
         }
         100% {
-          transform: perspective(200px) rotateY(360deg) rotateX(360deg) scale(0.6);
+          transform: rotate(360deg) scale(0.6);
         }
       }
       
@@ -174,22 +178,22 @@
           transform: perspective(200px) rotateY(0deg) rotateX(0deg) scale(1.4);
         }
         50% {
-          transform: perspective(200px) rotateY(-180deg) rotateX(-180deg) scale(0.5);
+          transform: perspective(200px) rotateY(-360deg) rotateX(-180deg) scale(0.5);
         }
         100% {
-          transform: perspective(200px) rotateY(-360deg) rotateX(-360deg) scale(1.4);
+          transform: perspective(200px) rotateY(-720deg) rotateX(-360deg) scale(1.4);
         }
       }
       
       @keyframes nonaryRotate {
         0% {
-          transform: perspective(200px) rotateY(0deg) rotateX(0deg) scale(0.5);
+          transform: rotate(0deg) scale(0.5);
         }
         50% {
-          transform: perspective(200px) rotateY(180deg) rotateX(180deg) scale(1.5);
+          transform: rotate(180deg) scale(1.5);
         }
         100% {
-          transform: perspective(200px) rotateY(360deg) rotateX(360deg) scale(0.5);
+          transform: rotate(360deg) scale(0.5);
         }
       }
       
@@ -198,10 +202,58 @@
           transform: perspective(200px) rotateY(0deg) rotateX(0deg) scale(1.5);
         }
         50% {
-          transform: perspective(200px) rotateY(-180deg) rotateX(-180deg) scale(0.4);
+          transform: perspective(200px) rotateY(-360deg) rotateX(-180deg) scale(0.4);
         }
         100% {
-          transform: perspective(200px) rotateY(-360deg) rotateX(-360deg) scale(1.5);
+          transform: perspective(200px) rotateY(-720deg) rotateX(-360deg) scale(1.5);
+        }
+      }
+      
+      @keyframes groupRotate {
+        0% {
+          transform: perspective(300px) rotateY(0deg) rotateX(0deg) scale(1);
+        }
+        12.5% {
+          transform: perspective(300px) rotateY(90deg) rotateX(22.5deg) scale(1.1);
+        }
+        25% {
+          transform: perspective(300px) rotateY(180deg) rotateX(45deg) scale(1);
+        }
+        37.5% {
+          transform: perspective(300px) rotateY(270deg) rotateX(67.5deg) scale(1.1);
+        }
+        50% {
+          transform: perspective(300px) rotateY(360deg) rotateX(90deg) scale(1);
+        }
+        62.5% {
+          transform: perspective(300px) rotateY(450deg) rotateX(67.5deg) scale(1.1);
+        }
+        75% {
+          transform: perspective(300px) rotateY(540deg) rotateX(45deg) scale(1);
+        }
+        87.5% {
+          transform: perspective(300px) rotateY(630deg) rotateX(22.5deg) scale(1.1);
+        }
+        100% {
+          transform: perspective(300px) rotateY(720deg) rotateX(0deg) scale(1);
+        }
+      }
+      
+      @keyframes groupRotate2D {
+        0% {
+          transform: rotate(0deg) scale(1);
+        }
+        25% {
+          transform: rotate(90deg) scale(1.1);
+        }
+        50% {
+          transform: rotate(180deg) scale(1);
+        }
+        75% {
+          transform: rotate(270deg) scale(1.1);
+        }
+        100% {
+          transform: rotate(360deg) scale(1);
         }
       }
       
@@ -370,6 +422,16 @@
     <circle cx="80" cy="10" r="0.6" fill="#f97316" opacity="0.1" class="breathing"/>
     <circle cx="80" cy="80" r="0.6" fill="#0d9488" opacity="0.1" class="breathing"/>
     <circle cx="10" cy="80" r="0.6" fill="#f97316" opacity="0.1" class="breathing"/>
+  </g>
+  
+  <!-- Grouped Circles with 3D/4D Rotation -->
+  <g class="fractal-square group-rotate">
+    <circle cx="42" cy="42" r="1.8" fill="#f97316" opacity="0.6" class="pulse"/>
+    <circle cx="48" cy="42" r="1.8" fill="#0d9488" opacity="0.6" class="pulse"/>
+    <circle cx="45" cy="48" r="1.8" fill="#f97316" opacity="0.6" class="pulse"/>
+    <circle cx="42" cy="48" r="1.8" fill="#0d9488" opacity="0.6" class="pulse"/>
+    <circle cx="48" cy="48" r="1.8" fill="#f97316" opacity="0.6" class="pulse"/>
+    <circle cx="45" cy="45" r="1.8" fill="url(#designGradient1)" opacity="0.7" class="glow"/>
   </g>
   
   <!-- Glowing Center Point -->

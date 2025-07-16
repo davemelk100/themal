@@ -14,43 +14,43 @@
       }
       
       .primary-rotate {
-        animation: primaryRotate 140s linear infinite;
+        animation: primaryRotate 60s linear infinite;
       }
       
       .secondary-rotate {
-        animation: secondaryRotate 112s linear infinite reverse;
+        animation: secondaryRotate 48s linear infinite reverse;
       }
       
       .tertiary-rotate {
-        animation: tertiaryRotate 168s linear infinite;
+        animation: tertiaryRotate 72s linear infinite;
       }
       
       .quaternary-rotate {
-        animation: quaternaryRotate 200s linear infinite reverse;
+        animation: quaternaryRotate 84s linear infinite reverse;
       }
       
       .quinary-rotate {
-        animation: quinaryRotate 240s linear infinite;
+        animation: quinaryRotate 96s linear infinite;
       }
       
       .senary-rotate {
-        animation: senaryRotate 280s linear infinite reverse;
+        animation: senaryRotate 108s linear infinite reverse;
       }
       
       .septenary-rotate {
-        animation: septenaryRotate 320s linear infinite;
+        animation: septenaryRotate 120s linear infinite;
       }
       
       .octonary-rotate {
-        animation: octonaryRotate 360s linear infinite reverse;
+        animation: octonaryRotate 132s linear infinite reverse;
       }
       
       .nonary-rotate {
-        animation: nonaryRotate 300s linear infinite;
+        animation: nonaryRotate 144s linear infinite;
       }
       
       .denary-rotate {
-        animation: denaryRotate 340s linear infinite reverse;
+        animation: denaryRotate 156s linear infinite reverse;
       }
       
       .floating {
@@ -87,121 +87,121 @@
       
       @keyframes primaryRotate {
         0% {
-          transform: rotate(0deg) scale(1);
+          transform: perspective(200px) rotateY(0deg) rotateX(0deg) scale(1);
         }
         50% {
-          transform: rotate(180deg) scale(1.1);
+          transform: perspective(200px) rotateY(180deg) rotateX(180deg) scale(1.1);
         }
         100% {
-          transform: rotate(360deg) scale(1);
+          transform: perspective(200px) rotateY(360deg) rotateX(360deg) scale(1);
         }
       }
       
       @keyframes secondaryRotate {
         0% {
-          transform: rotate(0deg) scale(1.1);
+          transform: perspective(200px) rotateY(0deg) rotateX(0deg) scale(1.1);
         }
         50% {
-          transform: rotate(-180deg) scale(0.9);
+          transform: perspective(200px) rotateY(-180deg) rotateX(-180deg) scale(0.9);
         }
         100% {
-          transform: rotate(-360deg) scale(1.1);
+          transform: perspective(200px) rotateY(-360deg) rotateX(-360deg) scale(1.1);
         }
       }
       
       @keyframes tertiaryRotate {
         0% {
-          transform: rotate(0deg) scale(0.9);
+          transform: perspective(200px) rotateY(0deg) rotateX(0deg) scale(0.9);
         }
         50% {
-          transform: rotate(180deg) scale(1.2);
+          transform: perspective(200px) rotateY(180deg) rotateX(180deg) scale(1.2);
         }
         100% {
-          transform: rotate(360deg) scale(0.9);
+          transform: perspective(200px) rotateY(360deg) rotateX(360deg) scale(0.9);
         }
       }
       
       @keyframes quaternaryRotate {
         0% {
-          transform: rotate(0deg) scale(1.2);
+          transform: perspective(200px) rotateY(0deg) rotateX(0deg) scale(1.2);
         }
         50% {
-          transform: rotate(-180deg) scale(0.8);
+          transform: perspective(200px) rotateY(-180deg) rotateX(-180deg) scale(0.8);
         }
         100% {
-          transform: rotate(-360deg) scale(1.2);
+          transform: perspective(200px) rotateY(-360deg) rotateX(-360deg) scale(1.2);
         }
       }
       
       @keyframes quinaryRotate {
         0% {
-          transform: rotate(0deg) scale(0.8);
+          transform: perspective(200px) rotateY(0deg) rotateX(0deg) scale(0.8);
         }
         50% {
-          transform: rotate(180deg) scale(1.3);
+          transform: perspective(200px) rotateY(180deg) rotateX(180deg) scale(1.3);
         }
         100% {
-          transform: rotate(360deg) scale(0.8);
+          transform: perspective(200px) rotateY(360deg) rotateX(360deg) scale(0.8);
         }
       }
       
       @keyframes senaryRotate {
         0% {
-          transform: rotate(0deg) scale(1.3);
+          transform: perspective(200px) rotateY(0deg) rotateX(0deg) scale(1.3);
         }
         50% {
-          transform: rotate(-180deg) scale(0.7);
+          transform: perspective(200px) rotateY(-180deg) rotateX(-180deg) scale(0.7);
         }
         100% {
-          transform: rotate(-360deg) scale(1.3);
+          transform: perspective(200px) rotateY(-360deg) rotateX(-360deg) scale(1.3);
         }
       }
       
       @keyframes septenaryRotate {
         0% {
-          transform: rotate(0deg) scale(0.6);
+          transform: perspective(200px) rotateY(0deg) rotateX(0deg) scale(0.6);
         }
         50% {
-          transform: rotate(180deg) scale(1.4);
+          transform: perspective(200px) rotateY(180deg) rotateX(180deg) scale(1.4);
         }
         100% {
-          transform: rotate(360deg) scale(0.6);
+          transform: perspective(200px) rotateY(360deg) rotateX(360deg) scale(0.6);
         }
       }
       
       @keyframes octonaryRotate {
         0% {
-          transform: rotate(0deg) scale(1.4);
+          transform: perspective(200px) rotateY(0deg) rotateX(0deg) scale(1.4);
         }
         50% {
-          transform: rotate(-180deg) scale(0.5);
+          transform: perspective(200px) rotateY(-180deg) rotateX(-180deg) scale(0.5);
         }
         100% {
-          transform: rotate(-360deg) scale(1.4);
+          transform: perspective(200px) rotateY(-360deg) rotateX(-360deg) scale(1.4);
         }
       }
       
       @keyframes nonaryRotate {
         0% {
-          transform: rotate(0deg) scale(0.5);
+          transform: perspective(200px) rotateY(0deg) rotateX(0deg) scale(0.5);
         }
         50% {
-          transform: rotate(180deg) scale(1.5);
+          transform: perspective(200px) rotateY(180deg) rotateX(180deg) scale(1.5);
         }
         100% {
-          transform: rotate(360deg) scale(0.5);
+          transform: perspective(200px) rotateY(360deg) rotateX(360deg) scale(0.5);
         }
       }
       
       @keyframes denaryRotate {
         0% {
-          transform: rotate(0deg) scale(1.5);
+          transform: perspective(200px) rotateY(0deg) rotateX(0deg) scale(1.5);
         }
         50% {
-          transform: rotate(-180deg) scale(0.4);
+          transform: perspective(200px) rotateY(-180deg) rotateX(-180deg) scale(0.4);
         }
         100% {
-          transform: rotate(-360deg) scale(1.5);
+          transform: perspective(200px) rotateY(-360deg) rotateX(-360deg) scale(1.5);
         }
       }
       
