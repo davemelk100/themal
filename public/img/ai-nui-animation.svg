@@ -367,11 +367,11 @@
   <line x1="45" y1="45" x2="10" y2="80" stroke="#f97316" stroke-width="0.2" opacity="0.1"/>
   
   <!-- Glowing Center Point -->
-  <circle cx="45" cy="45" r="2" fill="url(#designGradient1)" opacity="0.7" class="pulse"/>
-  <circle cx="45" cy="45" r="4" fill="url(#designGradient2)" opacity="0.2" class="pulse"/>
-  <circle cx="45" cy="45" r="6" fill="url(#designGradient1)" opacity="0.1" class="breathing"/>
+  <polygon points="45,43 47,45 45,47 43,45" fill="url(#designGradient1)" opacity="0.7" class="pulse"/>
+  <polygon points="45,41 49,45 45,49 41,45" fill="url(#designGradient2)" opacity="0.2" class="pulse"/>
+  <polygon points="45,39 51,45 45,51 39,45" fill="url(#designGradient1)" opacity="0.1" class="breathing"/>
   
   <!-- Additional Glow Rings -->
-  <circle cx="45" cy="45" r="8" fill="url(#designGradient2)" opacity="0.08" class="glow"/>
-  <circle cx="45" cy="45" r="10" fill="url(#designGradient1)" opacity="0.05" class="breathing"/>
+  <polygon points="45,37 53,45 45,53 37,45" fill="url(#designGradient2)" opacity="0.08" class="glow"/>
+  <polygon points="45,35 55,45 45,55 35,45" fill="url(#designGradient1)" opacity="0.05" class="breathing"/>
 </svg> 

@@ -14,43 +14,43 @@
       }
       
       .primary-rotate {
-        animation: primaryRotate 35s linear infinite;
+        animation: primaryRotate 35s linear infinite reverse;
       }
       
       .secondary-rotate {
-        animation: secondaryRotate 28s linear infinite reverse;
+        animation: secondaryRotate 28s linear infinite;
       }
       
       .tertiary-rotate {
-        animation: tertiaryRotate 42s linear infinite;
+        animation: tertiaryRotate 42s linear infinite reverse;
       }
       
       .quaternary-rotate {
-        animation: quaternaryRotate 50s linear infinite reverse;
+        animation: quaternaryRotate 50s linear infinite;
       }
       
       .quinary-rotate {
-        animation: quinaryRotate 60s linear infinite;
+        animation: quinaryRotate 60s linear infinite reverse;
       }
       
       .senary-rotate {
-        animation: senaryRotate 70s linear infinite reverse;
+        animation: senaryRotate 70s linear infinite;
       }
       
       .septenary-rotate {
-        animation: septenaryRotate 80s linear infinite;
+        animation: septenaryRotate 80s linear infinite reverse;
       }
       
       .octonary-rotate {
-        animation: octonaryRotate 90s linear infinite reverse;
+        animation: octonaryRotate 90s linear infinite;
       }
       
       .nonary-rotate {
-        animation: nonaryRotate 75s linear infinite;
+        animation: nonaryRotate 75s linear infinite reverse;
       }
       
       .denary-rotate {
-        animation: denaryRotate 85s linear infinite reverse;
+        animation: denaryRotate 85s linear infinite;
       }
       
       .floating {
@@ -367,11 +367,11 @@
   <line x1="45" y1="45" x2="10" y2="80" stroke="#f97316" stroke-width="0.2" opacity="0.1"/>
   
   <!-- Glowing Center Point -->
-  <circle cx="45" cy="45" r="2" fill="url(#designGradient1)" opacity="0.7" class="pulse"/>
-  <circle cx="45" cy="45" r="4" fill="url(#designGradient2)" opacity="0.2" class="pulse"/>
-  <circle cx="45" cy="45" r="6" fill="url(#designGradient1)" opacity="0.1" class="breathing"/>
+  <rect x="43" y="43" width="4" height="4" fill="url(#designGradient1)" opacity="0.7" class="pulse"/>
+  <rect x="41" y="41" width="8" height="8" fill="url(#designGradient2)" opacity="0.2" class="pulse"/>
+  <rect x="39" y="39" width="12" height="12" fill="url(#designGradient1)" opacity="0.1" class="breathing"/>
   
   <!-- Additional Glow Rings -->
-  <circle cx="45" cy="45" r="8" fill="url(#designGradient2)" opacity="0.08" class="glow"/>
-  <circle cx="45" cy="45" r="10" fill="url(#designGradient1)" opacity="0.05" class="breathing"/>
+  <rect x="37" y="37" width="16" height="16" fill="url(#designGradient2)" opacity="0.08" class="glow"/>
+  <rect x="35" y="35" width="20" height="20" fill="url(#designGradient1)" opacity="0.05" class="breathing"/>
 </svg> 
