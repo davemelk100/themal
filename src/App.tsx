@@ -361,7 +361,7 @@ function App() {
                                   : project.title === "Design Panes"
                                   ? `/img/design-panes-alt.svg?v=${Date.now()}`
                                   : project.title === "AI NUI"
-                                  ? `/img/ai-nui-alt.svg?v=${Date.now()}`
+                                  ? `/img/ai-nui-alt2.svg?v=${Date.now()}`
                                   : `/img/lab.svg?v=${Date.now()}`
                               }
                               alt={

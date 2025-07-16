@@ -9,14 +9,7 @@ import {
   VolumeX,
   Loader2,
 } from "lucide-react";
-
-interface Track {
-  id: number;
-  title: string;
-  artist: string;
-  url: string;
-  duration: string;
-}
+import { audioTracks, AudioTrack } from "../data/audioUrls";
 
 const MusicPlayer: React.FC = () => {
   const [currentTrack, setCurrentTrack] = useState(0);
@@ -29,63 +22,20 @@ const MusicPlayer: React.FC = () => {
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  // MP3 tracks
-  const tracks: Track[] = [
-    {
-      id: 1,
-      title: "Warrior Women",
-      artist: "BALM",
-      url: "/audio/warrior.mp3",
-      duration: "3:30",
-    },
-    {
-      id: 2,
-      title: "Motorhead v Notorious B.I.G. v Pink Floyd",
-      artist: "BALM",
-      url: "/audio/motorbeatv2.mp3",
-      duration: "1:26",
-    },
-    {
-      id: 3,
-      title: "Alice In Chains x Fiend",
-      artist: "BALM",
-      url: "/audio/aic-fiend.mp3",
-      duration: "0:38",
-    },
-    {
-      id: 4,
-      title: "Slayer x Congas",
-      artist: "BALM",
-      url: "/audio/slayer-congas.mp3",
-      duration: "2:15",
-    },
-    {
-      id: 5,
-      title: "Staggered (Reprised)",
-      artist: "BALM",
-      url: "/audio/ht-stems.mp3",
-      duration: "4:20",
-    },
-    {
-      id: 6,
-      title: "Lasorda v Bevacqua",
-      artist: "BALM",
-      url: "/audio/bevacqua.mp3",
-      duration: "2:45",
-    },
-  ];
+  // Use the tracks from the audioUrls data
+  const tracks: AudioTrack[] = audioTracks;
 
   // Preload all MP3 files when component mounts
   useEffect(() => {
     tracks.forEach((track) => {
       const audio = new Audio();
-      audio.src = track.url;
+      audio.src = track.uniqueUrl;
       audio.preload = "auto";
     });
 
     // Initialize the audio element with the first track
     if (audioRef.current) {
-      audioRef.current.src = tracks[0].url;
+      audioRef.current.src = tracks[0].uniqueUrl;
       audioRef.current.load();
     }
   }, []);
@@ -110,9 +60,9 @@ const MusicPlayer: React.FC = () => {
     setLoading(true);
     setPendingPlay(true);
     if (audioRef.current) {
-      audioRef.current.src = tracks[index].url;
+      audioRef.current.src = tracks[index].uniqueUrl;
       audioRef.current.load();
-      console.log("Audio src set to:", tracks[index].url);
+      console.log("Audio src set to:", tracks[index].uniqueUrl);
     }
   };
 
