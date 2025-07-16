@@ -62,14 +62,7 @@ export const content = {
       //   alt: "Delta Dental Member Portal",
       //   url: "https://www.memberportal.com/mp/delta/",
       // },
-      {
-        title: "Remote interpretation SaaS application",
-        description:
-          "Implemented a design in conjunction with marketing that overhauled the entire look and feel of the application. Mapped out and defined the user experience, and did front end development implementing the design.",
-        categories: "Design Systems",
-        image: "/img/on-demand-int.png",
-        alt: "Modern UI Design System",
-      },
+
       {
         title: "Delta Dental Registration",
         description: "Individual insurance registration application.",
