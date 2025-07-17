@@ -2,12 +2,7 @@ import { motion } from "framer-motion";
 import { Dribbble, ArrowUp, Eye, Menu, ExternalLink } from "lucide-react";
 import { LinkedInLogoIcon } from "@radix-ui/react-icons";
 import { useState, useEffect } from "react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../components/ui/dropdown-menu";
+
 import { content } from "./content";
 import Preloader from "./components/Preloader";
 
@@ -610,7 +605,7 @@ function App() {
                       className="mb-8"
                     />
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {content.stories.items.map((story, index) => (
+                      {content.stories.items.map((story) => (
                         <motion.div
                           key={story.title}
                           initial={{ opacity: 0, y: 20 }}
