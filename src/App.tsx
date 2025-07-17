@@ -209,35 +209,35 @@ function App() {
                       <div className="bg-white/10 backdrop-blur-sm rounded-lg px-4 sm:px-6 py-3 flex items-center justify-start gap-4 sm:gap-8">
                         <button
                           onClick={() => handleNavClick("current-projects")}
-                          className="text-black hover:text-gray-600 transition-colors text-sm sm:text-base font-medium"
+                          className="text-black hover:text-gray-600 transition-colors text-sm sm:text-base font-medium uppercase"
                           style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
                         >
                           Lab
                         </button>
                         <button
                           onClick={() => handleNavClick("stories")}
-                          className="text-black hover:text-gray-600 transition-colors text-sm sm:text-base font-medium"
+                          className="text-black hover:text-gray-600 transition-colors text-sm sm:text-base font-medium uppercase"
                           style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
                         >
                           Stories
                         </button>
                         <button
                           onClick={() => handleNavClick("articles")}
-                          className="text-black hover:text-gray-600 transition-colors text-sm sm:text-base font-medium"
+                          className="text-black hover:text-gray-600 transition-colors text-sm sm:text-base font-medium uppercase"
                           style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
                         >
                           Articles
                         </button>
                         <button
                           onClick={() => handleNavClick("work")}
-                          className="text-black hover:text-gray-600 transition-colors text-sm sm:text-base font-medium"
+                          className="text-black hover:text-gray-600 transition-colors text-sm sm:text-base font-medium uppercase"
                           style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
                         >
                           Design
                         </button>
                         <button
                           onClick={() => handleNavClick("career")}
-                          className="text-black hover:text-gray-600 transition-colors text-sm sm:text-base font-medium"
+                          className="text-black hover:text-gray-600 transition-colors text-sm sm:text-base font-medium uppercase"
                           style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
                         >
                           Career
