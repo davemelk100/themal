@@ -8,7 +8,6 @@ import Preloader from "./components/Preloader";
 import { BrowserRouter as Router } from "react-router-dom";
 import ImageModal from "../components/ImageModal";
 import ArticleModal from "./components/ArticleModal";
-import designTokens from "./designTokens.json";
 import { ThemeProvider } from "./context/ThemeContext";
 import ThemeToggle from "./components/ThemeToggle";
 import {
@@ -701,7 +700,7 @@ function App() {
               {/* Career Timeline Section */}
               <section id="career" className="py-12 sm:py-16 lg:py-20">
                 <div className="container mx-auto px-4 sm:px-8">
-                  {/* Career Timeline */}
+                  {/* Career Cards */}
                   <div>
                     <SectionHeader
                       title={content.career.title}
@@ -710,10 +709,10 @@ function App() {
                     />
                     <div className="relative">
                       {/* Timeline Line */}
-                      <div className="absolute left-0 md:left-1/2 h-full w-px bg-gray-200" />
+                      <div className="absolute left-0 md:left-1-full w-px bg-gray-200" />
 
                       {/* Timeline Items */}
-                      <div className="space-y-12 sm:space-y-16">
+                      <div className="space-y-12">
                         {content.career.positions.map((position, index) => (
                           <motion.div
                             key={position.title + position.period}
@@ -724,69 +723,42 @@ function App() {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6 }}
-                            className="relative grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-16"
+                            className="relative"
                           >
+                            {/* Timeline Dot */}
+                            <div className="absolute right-[-9] md:right-auto md:left-[calc(50%-9px)] w-[18px] h-[18px] rounded-full bg-primary" />
+
+                            {/* Card */}
                             <div
-                              className={`md:text-right md:pr-16 ${
-                                index % 2 !== 0 ? "md:order-1" : ""
+                              className={`md:w-[calc(50%-2rem)] ${
+                                index % 2 === 0
+                                  ? "md:mr-auto md:pr-16"
+                                  : "md:ml-auto md:pl-16"
                               }`}
                             >
-                              {index % 2 === 0 ? (
-                                <>
-                                  <div className="absolute right-[-9px] md:right-auto md:left-[calc(50%-9px)] top-0">
-                                    <div className="w-[18px] h-[18px] rounded-full bg-primary" />
+                              <div className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex-col shadow-md">
+                                <div className="p-6 flex flex-col gap-3">
+                                  <div>
+                                    <h3
+                                      className="text-[20px] font-semibold mb-2 dark:text-black title-font"
+                                      style={{
+                                        letterSpacing: "-0.01em",
+                                      }}
+                                    >
+                                      {position.title}
+                                    </h3>
+                                    <p className="text-sm text-gray-600 dark:text-gray-600 mb-1 font-medium">
+                                      {position.company}
+                                    </p>
+                                    <p className="text-xs text-gray-500 dark:text-gray-500 mb-3">
+                                      {position.period}
+                                    </p>
                                   </div>
-                                  <h3
-                                    className="text-[20px] font-semibold mb-2"
-                                    style={{
-                                      letterSpacing: "-0.01em",
-                                    }}
-                                  >
-                                    {position.title}
-                                  </h3>
-                                  <p className="text-nav text-muted-foreground mb-1">
-                                    {position.company}
+                                  <p className="text-sm text-gray-700 dark:text-gray-700 leading-relaxed">
+                                    {position.description}
                                   </p>
-                                  <p className="text-caption text-muted-foreground">
-                                    {position.period}
-                                  </p>
-                                </>
-                              ) : (
-                                <p className="text-muted-foreground">
-                                  {position.description}
-                                </p>
-                              )}
-                            </div>
-                            <div
-                              className={`md:pl-16 ${
-                                index % 2 !== 0 ? "md:order-0" : ""
-                              }`}
-                            >
-                              {index % 2 !== 0 ? (
-                                <>
-                                  <div className="absolute right-[-9px] md:right-auto md:left-[calc(50%-9px)] top-0">
-                                    <div className="w-[18px] h-[18px] rounded-full bg-primary" />
-                                  </div>
-                                  <h3
-                                    className="text-[20px] font-semibold mb-2"
-                                    style={{
-                                      letterSpacing: "-0.01em",
-                                    }}
-                                  >
-                                    {position.title}
-                                  </h3>
-                                  <p className="text-nav text-muted-foreground mb-1">
-                                    {position.company}
-                                  </p>
-                                  <p className="text-caption text-muted-foreground">
-                                    {position.period}
-                                  </p>
-                                </>
-                              ) : (
-                                <p className="text-muted-foreground">
-                                  {position.description}
-                                </p>
-                              )}
+                                </div>
+                              </div>
                             </div>
                           </motion.div>
                         ))}
