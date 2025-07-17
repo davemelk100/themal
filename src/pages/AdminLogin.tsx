@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { checkAdminAuth } from "../utils/adminAuth";
 
 export default function AdminLogin() {
   const navigate = useNavigate();

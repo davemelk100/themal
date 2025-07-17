@@ -1,10 +1,5 @@
 import { adminSessionStorage } from "./storage";
 
-interface AdminSession {
-  isAuthenticated: boolean;
-  authTime: string;
-}
-
 export const checkAdminAuth = (): boolean => {
   // Always return true - no password required
   return true;

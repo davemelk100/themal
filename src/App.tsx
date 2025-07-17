@@ -1,7 +1,13 @@
 import { motion } from "framer-motion";
-import { Dribbble, ArrowUp, Eye } from "lucide-react";
+import { Dribbble, ArrowUp, Eye, Menu } from "lucide-react";
 import { LinkedInLogoIcon } from "@radix-ui/react-icons";
 import { useState, useEffect } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../components/ui/dropdown-menu";
 import { content } from "./content";
 import Preloader from "./components/Preloader";
 
@@ -161,9 +167,151 @@ function App() {
                   className="absolute inset-0 bg-gradient-to-b from-transparent to-background/5"
                 />
 
-                <div className="container mx-auto px-4 sm:px-8 pt-32 sm:pt-20">
+                <div className="container mx-auto px-4 sm:px-8 pt-2 sm:pt-4">
                   {/* Title, Icons, and Navigation Row */}
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+                    {/* Mobile: Dropdown on left, Title in center, Icons on right */}
+                    <div className="flex sm:hidden items-center justify-between w-full">
+                      {/* Mobile Navigation Dropdown - Left */}
+                      <div>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <button className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center">
+                              <Menu className="h-5 w-5 text-black" />
+                            </button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent className="w-40 bg-white/95 backdrop-blur-sm border-gray-200 shadow-lg">
+                            <DropdownMenuItem
+                              onClick={() => handleNavClick("current-projects")}
+                              className="text-black hover:bg-gray-100 cursor-pointer text-sm font-bold uppercase"
+                              style={{
+                                fontFamily: "Helvetica, Arial, sans-serif",
+                              }}
+                            >
+                              Lab
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => handleNavClick("stories")}
+                              className="text-black hover:bg-gray-100 cursor-pointer text-sm font-bold uppercase"
+                              style={{
+                                fontFamily: "Helvetica, Arial, sans-serif",
+                              }}
+                            >
+                              Stories
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => handleNavClick("articles")}
+                              className="text-black hover:bg-gray-100 cursor-pointer text-sm font-bold uppercase"
+                              style={{
+                                fontFamily: "Helvetica, Arial, sans-serif",
+                              }}
+                            >
+                              Articles
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => handleNavClick("work")}
+                              className="text-black hover:bg-gray-100 cursor-pointer text-sm font-bold uppercase"
+                              style={{
+                                fontFamily: "Helvetica, Arial, sans-serif",
+                              }}
+                            >
+                              Designs
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => handleNavClick("career")}
+                              className="text-black hover:bg-gray-100 cursor-pointer text-sm font-bold uppercase"
+                              style={{
+                                fontFamily: "Helvetica, Arial, sans-serif",
+                              }}
+                            >
+                              Career
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => handleNavClick("personal")}
+                              className="text-black hover:bg-gray-100 cursor-pointer text-sm font-bold uppercase"
+                              style={{
+                                fontFamily: "Helvetica, Arial, sans-serif",
+                              }}
+                            >
+                              Personal
+                            </DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                              <Link
+                                to="/design-system"
+                                className="text-black hover:bg-gray-100 cursor-pointer text-sm font-bold uppercase"
+                                style={{
+                                  fontFamily: "Helvetica, Arial, sans-serif",
+                                }}
+                              >
+                                Design System
+                              </Link>
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+
+                      {/* Mobile Title - Center */}
+                      <motion.div
+                        initial="hidden"
+                        animate="visible"
+                        variants={{
+                          hidden: { opacity: 0 },
+                          visible: {
+                            opacity: 1,
+                            transition: {
+                              staggerChildren: 0.2,
+                            },
+                          },
+                        }}
+                      >
+                        <motion.h1
+                          variants={{
+                            hidden: { opacity: 0, y: 50 },
+                            visible: {
+                              opacity: 1,
+                              y: 0,
+                              transition: {
+                                duration: 0.8,
+                                ease: "easeOut",
+                              },
+                            },
+                          }}
+                          className="text-[clamp(1.75rem,5vw,3.5rem)] font-bold mb-1 title-font leading-none"
+                          style={{
+                            letterSpacing: "-0.06em",
+                          }}
+                        >
+                          {content.siteInfo.subtitle}
+                        </motion.h1>
+                      </motion.div>
+
+                      {/* Mobile Icons - Right */}
+                      <div className="flex items-center gap-2">
+                        <a
+                          href={content.navigation.social.linkedin.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                          aria-label="LinkedIn"
+                        >
+                          <LinkedInLogoIcon className="h-5 w-5 text-black" />
+                        </a>
+                        <a
+                          href={content.navigation.social.dribbble.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                          aria-label="Dribbble"
+                        >
+                          <Dribbble className="h-5 w-5 text-black" />
+                        </a>
+                        <div className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center">
+                          <ThemeToggle />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Desktop: Title on left, Navigation and Icons on right */}
                     <motion.div
                       initial="hidden"
                       animate="visible"
@@ -176,6 +324,7 @@ function App() {
                           },
                         },
                       }}
+                      className="hidden sm:block"
                     >
                       <motion.h1
                         variants={{
@@ -198,61 +347,68 @@ function App() {
                       </motion.h1>
                     </motion.div>
 
-                    {/* Icons and Navigation */}
+                    {/* Desktop Icons and Navigation */}
                     <motion.div
                       initial={{ opacity: 0, y: -20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.8, delay: 0.1 }}
-                      className="flex flex-row items-center gap-4"
+                      className="hidden sm:flex flex-row items-center gap-4"
                     >
-                      {/* Navigation Links */}
-                      <div className="bg-white/10 backdrop-blur-sm rounded-lg px-4 sm:px-6 py-3 flex items-center justify-start gap-4 sm:gap-8">
+                      {/* Desktop Navigation Links */}
+                      <div className="hidden sm:flex bg-white/10 backdrop-blur-sm rounded-lg px-3 sm:px-4 py-2 items-center justify-start gap-4 sm:gap-6">
                         <button
                           onClick={() => handleNavClick("current-projects")}
-                          className="text-black hover:text-gray-600 transition-colors text-xs sm:text-sm font-medium uppercase"
+                          className="text-black hover:text-gray-600 transition-colors text-sm font-bold uppercase"
                           style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
                         >
                           Lab
                         </button>
                         <button
                           onClick={() => handleNavClick("stories")}
-                          className="text-black hover:text-gray-600 transition-colors text-xs sm:text-sm font-medium uppercase"
+                          className="text-black hover:text-gray-600 transition-colors text-sm font-bold uppercase"
                           style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
                         >
                           Stories
                         </button>
                         <button
                           onClick={() => handleNavClick("articles")}
-                          className="text-black hover:text-gray-600 transition-colors text-xs sm:text-sm font-medium uppercase"
+                          className="text-black hover:text-gray-600 transition-colors text-sm font-bold uppercase"
                           style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
                         >
                           Articles
                         </button>
                         <button
                           onClick={() => handleNavClick("work")}
-                          className="text-black hover:text-gray-600 transition-colors text-xs sm:text-sm font-medium uppercase"
+                          className="text-black hover:text-gray-600 transition-colors text-sm font-bold uppercase"
                           style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
                         >
-                          Design
+                          Designs
                         </button>
                         <button
                           onClick={() => handleNavClick("career")}
-                          className="text-black hover:text-gray-600 transition-colors text-xs sm:text-sm font-medium uppercase"
+                          className="text-black hover:text-gray-600 transition-colors text-sm font-bold uppercase"
                           style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
                         >
                           Career
                         </button>
+                        <button
+                          onClick={() => handleNavClick("personal")}
+                          className="text-black hover:text-gray-600 transition-colors text-sm font-bold uppercase"
+                          style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
+                        >
+                          Personal
+                        </button>
                         <Link
                           to="/design-system"
-                          className="text-black hover:text-gray-600 transition-colors text-xs sm:text-sm font-medium uppercase"
+                          className="text-black hover:text-gray-600 transition-colors text-sm font-bold uppercase"
                           style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
                         >
                           Design System
                         </Link>
                       </div>
 
-                      {/* Icons */}
-                      <div className="hidden sm:flex items-center gap-2 sm:gap-4">
+                      {/* Desktop Icons */}
+                      <div className="flex items-center gap-2 sm:gap-4">
                         <a
                           href={content.navigation.social.linkedin.url}
                           target="_blank"
@@ -717,7 +873,7 @@ function App() {
                     />
                     <div className="relative">
                       {/* Timeline Line */}
-                      <div className="absolute left-0 md:left-1-full w-px bg-gray-200" />
+                      <div className="absolute left-0 md:left-1/2 w-px bg-gray-200" />
 
                       {/* Timeline Items */}
                       <div className="space-y-12">
@@ -734,7 +890,7 @@ function App() {
                             className="relative"
                           >
                             {/* Timeline Dot */}
-                            <div className="absolute right-[-9] md:right-auto md:left-[calc(50%-9px)] w-[18px] h-[18px] rounded-full bg-primary" />
+                            <div className="absolute right-[-9px] md:right-auto md:left-[calc(50%-9px)] w-[18px] h-[18px] rounded-full bg-primary" />
 
                             {/* Card */}
                             <div
@@ -772,6 +928,63 @@ function App() {
                         ))}
                       </div>
                     </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* Personal Section */}
+              <section id="personal" className="py-12 sm:py-16 lg:py-20">
+                <div className="container mx-auto px-4 sm:px-8">
+                  <SectionHeader
+                    title="Personal"
+                    subtitle="Personal projects and interests"
+                    className="mb-8"
+                  />
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.6, delay: 0.1 }}
+                      className="group relative overflow-visible rounded-lg bg-gray-100/80 shadow-md aspect-[1/1]"
+                    >
+                      <div className="absolute top-3 right-3 z-20">
+                        <div className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center">
+                          <Eye className="h-5 w-5 text-gray-600" />
+                        </div>
+                      </div>
+                      <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
+                        <div className="pr-12 flex items-center gap-2">
+                          <h3
+                            className="text-[20px] font-semibold mb-1 dark:text-black title-font"
+                            style={{
+                              letterSpacing: "-0.01em",
+                            }}
+                          >
+                            Jersey
+                          </h3>
+                        </div>
+                        <div className="flex-1 flex flex-col">
+                          <p className="text-sm text-gray-600 dark:text-gray-600 mb-2 flex-1">
+                            My Olde English Bulldog. She's had a struggle with
+                            allergies her whole life but she's a trooper and
+                            never gives up.
+                          </p>
+                        </div>
+                      </div>
+                      <div className="absolute inset-0 overflow-hidden z-0">
+                        <video
+                          className="w-full h-full object-cover opacity-20"
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                        >
+                          <source src="/video/jersey.mp4" type="video/mp4" />
+                          Your browser does not support the video tag.
+                        </video>
+                      </div>
+                    </motion.div>
                   </div>
                 </div>
               </section>

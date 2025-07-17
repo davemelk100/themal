@@ -7,7 +7,7 @@ const DesignSystem: React.FC = () => {
     <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="border-b border-gray-200 bg-white">
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-4 md:py-8">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-5xl font-bold text-gray-900 mt-0 mb-2">
@@ -208,6 +208,7 @@ const DesignSystem: React.FC = () => {
                 <p className="text-gray-600">Interactive Card</p>
               </div>
             </div>
+
             <div className="group relative overflow-visible rounded-lg bg-gray-100/80 shadow-md aspect-[1/1]">
               <div className="absolute top-3 right-3 z-20">
                 <div className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center">
@@ -222,37 +223,11 @@ const DesignSystem: React.FC = () => {
                       letterSpacing: "-0.01em",
                     }}
                   >
-                    Video Test Card
+                    Video Card
                   </h3>
-                  {/* Video indicator balls */}
-                  <div className="flex items-center gap-1 ml-2">
-                    {[
-                      "#ef4444", // Red for video
-                      "#f97316", // Orange for autoplay
-                      "#eab308", // Yellow for muted
-                      "#dc2626", // Darker red
-                      "#ea580c", // Darker orange
-                      "#ca8a04", // Darker yellow
-                    ].map((color, i) => (
-                      <span
-                        key={i}
-                        style={{
-                          display: "inline-block",
-                          width: 14,
-                          height: 14,
-                          borderRadius: "50%",
-                          background: `radial-gradient(circle at 70% 70%, ${color} 0%, ${color} 60%, ${color}dd 100%)`,
-                          boxShadow: "0 1px 2px rgba(0,0,0,0.08)",
-                        }}
-                      />
-                    ))}
-                  </div>
                 </div>
                 <div className="flex-1 flex flex-col">
-                  <p className="text-sm text-gray-600 dark:text-gray-600 mb-2 flex-1">
-                    This card contains a test video that autoplays with sound
-                    muted.
-                  </p>
+                  <p className="text-sm text-gray-600 dark:text-gray-600 mb-2 flex-1"></p>
                 </div>
               </div>
               <div className="absolute inset-0 overflow-hidden z-0">
@@ -263,10 +238,7 @@ const DesignSystem: React.FC = () => {
                   loop
                   playsInline
                 >
-                  <source
-                    src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-                    type="video/mp4"
-                  />
+                  <source src="/video/jersey.mov" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
               </div>
@@ -285,7 +257,7 @@ const DesignSystem: React.FC = () => {
                       letterSpacing: "-0.01em",
                     }}
                   >
-                    Design Panes
+                    Lab Card
                   </h3>
                   {/* Greyscale colored balls */}
                   <div className="flex items-center gap-1 ml-2">
@@ -312,10 +284,7 @@ const DesignSystem: React.FC = () => {
                   </div>
                 </div>
                 <div className="flex-1 flex flex-col">
-                  <p className="text-sm text-gray-600 dark:text-gray-600 mb-2 flex-1">
-                    Experimental interface patterns exploring dynamic layout
-                    systems and responsive design principles.
-                  </p>
+                  <p className="text-sm text-gray-600 dark:text-gray-600 mb-2 flex-1"></p>
                 </div>
               </div>
               <div className="absolute inset-0 overflow-hidden z-0">
@@ -324,6 +293,38 @@ const DesignSystem: React.FC = () => {
                   alt="Design Panes"
                   className="w-full h-full object-cover opacity-20"
                   style={{ filter: "grayscale(100%)" }}
+                />
+              </div>
+            </div>
+            <div className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md">
+              <div className="absolute top-3 right-3">
+                <div className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center">
+                  <Eye className="h-5 w-5 text-gray-600" />
+                </div>
+              </div>
+              <div className="p-3 flex flex-col gap-2 flex-1">
+                <div className="pr-12">
+                  <h3
+                    className="text-[20px] font-semibold mb-1 dark:text-black title-font"
+                    style={{
+                      letterSpacing: "-0.01em",
+                    }}
+                  >
+                    Sample Story
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-600 mb-2">
+                    Description of how I helped solve problems
+                  </p>
+                </div>
+                <div className="flex-1 flex flex-col">
+                  <p className="text-black mb-2 dark:text-black text-card-body flex-1"></p>
+                </div>
+              </div>
+              <div className="relative aspect-[3/2] overflow-visible -mx-3 -mb-3">
+                <img
+                  src="/img/delta-story.png"
+                  alt="Selling Accessibility"
+                  className="absolute inset-0 h-full w-full object-cover"
                 />
               </div>
             </div>
@@ -364,27 +365,27 @@ const DesignSystem: React.FC = () => {
           </h2>
           <div className="flex flex-wrap gap-6">
             <div className="space-y-2">
-              <div className="w-16 h-16 bg-primary rounded-none border-2 border-gray-300"></div>
+              <div className="w-16 h-16 bg-primary rounded-none"></div>
               <p className="text-sm text-gray-600">rounded-none (0px)</p>
             </div>
             <div className="space-y-2">
-              <div className="w-16 h-16 bg-primary rounded-sm border-2 border-gray-300"></div>
+              <div className="w-16 h-16 bg-primary rounded-sm"></div>
               <p className="text-sm text-gray-600">rounded-sm (2px)</p>
             </div>
             <div className="space-y-2">
-              <div className="w-16 h-16 bg-primary rounded border-2 border-gray-300"></div>
+              <div className="w-16 h-16 bg-primary rounded"></div>
               <p className="text-sm text-gray-600">rounded (4px)</p>
             </div>
             <div className="space-y-2">
-              <div className="w-16 h-16 bg-primary rounded-md border-2 border-gray-300"></div>
+              <div className="w-16 h-16 bg-primary rounded-md"></div>
               <p className="text-sm text-gray-600">rounded-md (6px)</p>
             </div>
             <div className="space-y-2">
-              <div className="w-16 h-16 bg-primary rounded-lg border-2 border-gray-300"></div>
+              <div className="w-16 h-16 bg-primary rounded-lg"></div>
               <p className="text-sm text-gray-600">rounded-lg (8px)</p>
             </div>
             <div className="space-y-2">
-              <div className="w-16 h-16 bg-primary rounded-full border-2 border-gray-300"></div>
+              <div className="w-16 h-16 bg-primary rounded-full"></div>
               <p className="text-sm text-gray-600">rounded-full (50%)</p>
             </div>
           </div>
