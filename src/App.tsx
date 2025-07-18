@@ -1,5 +1,19 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Dribbble, ArrowUp, Eye, Menu, ExternalLink, X } from "lucide-react";
+import {
+  Dribbble,
+  ArrowUp,
+  Eye,
+  Menu,
+  ExternalLink,
+  X,
+  FlaskConical,
+  BookOpen,
+  FileText,
+  Palette,
+  Briefcase,
+  Heart,
+  Settings,
+} from "lucide-react";
 import { LinkedInLogoIcon } from "@radix-ui/react-icons";
 import { useState, useEffect } from "react";
 
@@ -346,9 +360,7 @@ function App() {
                             className="flex flex-col items-center gap-1 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                           >
                             <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">
-                              <span className="text-white text-xs font-bold">
-                                L
-                              </span>
+                              <FlaskConical className="h-3 w-3 text-white" />
                             </div>
                             <span className="text-xs font-semibold">Lab</span>
                           </button>
@@ -360,9 +372,7 @@ function App() {
                             className="flex flex-col items-center gap-1 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                           >
                             <div className="w-6 h-6 bg-teal-500 rounded-full flex items-center justify-center">
-                              <span className="text-white text-xs font-bold">
-                                S
-                              </span>
+                              <BookOpen className="h-3 w-3 text-white" />
                             </div>
                             <span className="text-xs font-semibold">
                               Stories
@@ -376,9 +386,7 @@ function App() {
                             className="flex flex-col items-center gap-1 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                           >
                             <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
-                              <span className="text-white text-xs font-bold">
-                                A
-                              </span>
+                              <FileText className="h-3 w-3 text-white" />
                             </div>
                             <span className="text-xs font-semibold">
                               Articles
@@ -392,9 +400,7 @@ function App() {
                             className="flex flex-col items-center gap-1 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                           >
                             <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center">
-                              <span className="text-white text-xs font-bold">
-                                D
-                              </span>
+                              <Palette className="h-3 w-3 text-white" />
                             </div>
                             <span className="text-xs font-semibold">
                               Designs
@@ -408,9 +414,7 @@ function App() {
                             className="flex flex-col items-center gap-1 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                           >
                             <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                              <span className="text-white text-xs font-bold">
-                                C
-                              </span>
+                              <Briefcase className="h-3 w-3 text-white" />
                             </div>
                             <span className="text-xs font-semibold">
                               Career
@@ -424,9 +428,7 @@ function App() {
                             className="flex flex-col items-center gap-1 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                           >
                             <div className="w-6 h-6 bg-pink-500 rounded-full flex items-center justify-center">
-                              <span className="text-white text-xs font-bold">
-                                P
-                              </span>
+                              <Heart className="h-3 w-3 text-white" />
                             </div>
                             <span className="text-xs font-semibold">
                               Personal
@@ -438,9 +440,7 @@ function App() {
                             className="flex flex-col items-center gap-1 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                           >
                             <div className="w-6 h-6 bg-gray-500 rounded-full flex items-center justify-center">
-                              <span className="text-white text-xs font-bold">
-                                DS
-                              </span>
+                              <Settings className="h-3 w-3 text-white" />
                             </div>
                             <span className="text-xs font-semibold">
                               Design System
