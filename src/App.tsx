@@ -58,11 +58,13 @@ const SectionHeader = ({
   subtitle,
   className = "",
   showArchiveLink = false,
+  showUpArrow = true,
 }: {
   title: string;
   subtitle?: string;
   className?: string;
   showArchiveLink?: boolean;
+  showUpArrow?: boolean;
 }) => {
   return (
     <div className={`${className}`}>
@@ -86,13 +88,15 @@ const SectionHeader = ({
               View Archive
             </Link>
           )}
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="bg-black text-white dark:bg-white/10 dark:text-white p-2 rounded-full shadow-lg hover:opacity-80 transition-opacity"
-            aria-label="Scroll to top"
-          >
-            <ArrowUp className="h-4 w-4 text-white dark:text-white" />
-          </button>
+          {showUpArrow && (
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="bg-black text-white dark:bg-white/10 dark:text-white p-2 rounded-full shadow-lg hover:opacity-80 transition-opacity"
+              aria-label="Scroll to top"
+            >
+              <ArrowUp className="h-4 w-4 text-white dark:text-white" />
+            </button>
+          )}
         </div>
       </div>
       {subtitle && (
@@ -351,7 +355,7 @@ function App() {
                             <X className="h-5 w-5 text-gray-600" />
                           </button>
                         </div>
-                        <div className="grid grid-cols-2 gap-2">
+                        <div className="grid grid-cols-3 gap-2">
                           <button
                             onClick={() => {
                               handleNavClick("current-projects");
@@ -474,6 +478,15 @@ function App() {
                               Dribbble
                             </span>
                           </a>
+                          <button
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="flex flex-col items-center gap-1 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                          >
+                            <div className="w-6 h-6 bg-gray-600 rounded-full flex items-center justify-center">
+                              <ThemeToggle />
+                            </div>
+                            <span className="text-xs font-semibold">Theme</span>
+                          </button>
                         </div>
                       </motion.div>
                     </motion.div>
@@ -519,6 +532,7 @@ function App() {
                         title={content.currentProjects.title}
                         subtitle={content.currentProjects.subtitle}
                         className="mb-8"
+                        showUpArrow={false}
                       />
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {getVisibleLabProjects(
@@ -1085,7 +1099,7 @@ function App() {
 
       {/* Mobile Bottom Icons Tray */}
       <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-gray-200 z-[9999] xl:hidden">
-        <div className="flex items-center justify-around px-4 py-3">
+        <div className="flex items-center justify-center px-4 py-3">
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className={`backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center ${
@@ -1097,9 +1111,6 @@ function App() {
           >
             <Menu className="h-5 w-5" />
           </button>
-          <div className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center">
-            <ThemeToggle />
-          </div>
         </div>
       </div>
 
