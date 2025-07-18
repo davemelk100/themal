@@ -446,39 +446,34 @@ function App() {
                               Design System
                             </span>
                           </Link>
-                        </div>
-
-                        {/* Social Links */}
-                        <div className="mt-3 pt-3 border-t border-gray-200">
-                          <h3 className="text-xs font-semibold text-gray-600 mb-2">
-                            Connect
-                          </h3>
-                          <div className="flex gap-2">
-                            <a
-                              href={content.navigation.social.linkedin.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={() => setIsMobileMenuOpen(false)}
-                              className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex-1"
-                            >
-                              <LinkedInLogoIcon className="h-4 w-4 text-blue-600" />
-                              <span className="text-xs font-medium">
-                                LinkedIn
-                              </span>
-                            </a>
-                            <a
-                              href={content.navigation.social.dribbble.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={() => setIsMobileMenuOpen(false)}
-                              className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex-1"
-                            >
-                              <Dribbble className="h-4 w-4 text-pink-600" />
-                              <span className="text-xs font-medium">
-                                Dribbble
-                              </span>
-                            </a>
-                          </div>
+                          <a
+                            href={content.navigation.social.linkedin.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="flex flex-col items-center gap-1 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                          >
+                            <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
+                              <LinkedInLogoIcon className="h-4 w-4 text-white" />
+                            </div>
+                            <span className="text-xs font-semibold">
+                              LinkedIn
+                            </span>
+                          </a>
+                          <a
+                            href={content.navigation.social.dribbble.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="flex flex-col items-center gap-1 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                          >
+                            <div className="w-6 h-6 bg-pink-600 rounded-full flex items-center justify-center">
+                              <Dribbble className="h-4 w-4 text-white" />
+                            </div>
+                            <span className="text-xs font-semibold">
+                              Dribbble
+                            </span>
+                          </a>
                         </div>
                       </motion.div>
                     </motion.div>
