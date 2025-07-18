@@ -1,9 +1,183 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Eye } from "lucide-react";
+import { ArrowLeft, Eye, Download, Upload, AlertCircle } from "lucide-react";
 import LazyVideo from "../components/LazyVideo";
+import { storage } from "../utils/storage";
+
+interface DesignSystemData {
+  colors?: {
+    [key: string]: string;
+  };
+  typography?: {
+    [key: string]: string;
+  };
+  spacing?: {
+    [key: string]: string;
+  };
+  borderRadius?: {
+    [key: string]: string;
+  };
+  components?: {
+    [key: string]: string[];
+  };
+  exportDate?: string;
+}
 
 const DesignSystem: React.FC = () => {
+  const [storageStatus, setStorageStatus] = useState<{
+    available: boolean;
+    message?: string;
+  }>({ available: storage.isAvailable() });
+
+  // Load stored design system data on component mount
+  React.useEffect(() => {
+    try {
+      const storedData = storage.get(
+        "designSystemData"
+      ) as DesignSystemData | null;
+      if (storedData && storedData.colors) {
+        // Apply stored colors to CSS custom properties
+        const root = document.documentElement;
+        Object.entries(storedData.colors).forEach(([key, value]) => {
+          root.style.setProperty(`--color-${key}`, value as string);
+        });
+      }
+    } catch (error) {
+      console.error("Failed to load stored design system data:", error);
+    }
+  }, []);
+
+  const exportData = () => {
+    try {
+      const designSystemData = {
+        colors: {
+          primary: "#3b82f6",
+          secondary: "#10b981",
+          gray100: "#f3f4f6",
+          gray200: "#e5e7eb",
+          gray600: "#4b5563",
+          gray900: "#111827",
+        },
+        typography: {
+          h1: "text-4xl font-bold",
+          h2: "text-3xl font-semibold",
+          h3: "text-2xl font-semibold",
+          h4: "text-xl font-semibold",
+          body: "text-base",
+          small: "text-sm",
+        },
+        spacing: {
+          xs: "w-4 h-4",
+          sm: "w-8 h-8",
+          md: "w-12 h-12",
+          lg: "w-16 h-16",
+          xl: "w-20 h-20",
+        },
+        borderRadius: {
+          none: "rounded-none",
+          sm: "rounded-sm",
+          base: "rounded",
+          md: "rounded-md",
+          lg: "rounded-lg",
+          full: "rounded-full",
+        },
+        components: {
+          buttons: [
+            "Primary",
+            "Secondary",
+            "Tertiary",
+            "Outline Primary",
+            "Outline Secondary",
+          ],
+          cards: [
+            "Basic Card",
+            "Background Card",
+            "Interactive Card",
+            "Video Card",
+            "Lab Card",
+            "Sample Story",
+          ],
+        },
+        exportDate: new Date().toISOString(),
+      };
+
+      const dataStr = JSON.stringify(designSystemData, null, 2);
+      const dataBlob = new Blob([dataStr], { type: "application/json" });
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `design-system-${
+        new Date().toISOString().split("T")[0]
+      }.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Failed to export design system data:", error);
+      setStorageStatus({
+        available: false,
+        message: "Failed to export data. Please try again.",
+      });
+    }
+  };
+
+  const importData = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target?.result as string);
+        console.log("Imported design system data:", data);
+
+        // Apply the imported data to the design system
+        try {
+          // Store the imported data in localStorage
+          storage.set("designSystemData", data);
+
+          // Apply CSS custom properties for colors if they exist
+          if (data.colors) {
+            const root = document.documentElement;
+            Object.entries(data.colors).forEach(([key, value]) => {
+              root.style.setProperty(`--color-${key}`, value as string);
+            });
+          }
+
+          // Force a re-render by updating state
+          setStorageStatus({
+            available: true,
+            message: "Design system data imported and applied successfully!",
+          });
+
+          // Clear the message after 3 seconds
+          setTimeout(() => {
+            setStorageStatus({ available: true });
+          }, 3000);
+
+          // Optionally reload the page to see all changes
+          // window.location.reload();
+        } catch (applyError) {
+          console.error("Failed to apply imported data:", applyError);
+          setStorageStatus({
+            available: false,
+            message: "Failed to apply imported data. Please try again.",
+          });
+        }
+      } catch (error) {
+        console.error("Failed to parse imported data:", error);
+        setStorageStatus({
+          available: false,
+          message: "Invalid file format. Please select a valid JSON file.",
+        });
+      }
+    };
+    reader.readAsText(file);
+    // Reset the input
+    event.target.value = "";
+  };
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -17,14 +191,48 @@ const DesignSystem: React.FC = () => {
               <p className="text-lg text-gray-600 mt-0 mb-0">
                 Component library and design tokens
               </p>
+              {!storageStatus.available && (
+                <div className="flex items-center gap-2 mt-2 text-amber-600">
+                  <AlertCircle className="h-4 w-4" />
+                  <span className="text-sm">
+                    {storageStatus.message || "Storage not available"}
+                  </span>
+                </div>
+              )}
+              {storageStatus.message && storageStatus.available && (
+                <div className="flex items-center gap-2 mt-2 text-green-600">
+                  <span className="text-sm">{storageStatus.message}</span>
+                </div>
+              )}
             </div>
-            <Link
-              to="/"
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Back to Site
-            </Link>
+            <div className="flex items-center gap-3">
+              {/* Export/Import buttons */}
+              <button
+                onClick={exportData}
+                className="flex items-center gap-2 px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors text-sm"
+                title="Export design system data"
+              >
+                <Download className="h-4 w-4" />
+                Export
+              </button>
+              <label className="flex items-center gap-2 px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors text-sm cursor-pointer">
+                <Upload className="h-4 w-4" />
+                Import
+                <input
+                  type="file"
+                  accept=".json"
+                  onChange={importData}
+                  className="hidden"
+                />
+              </label>
+              <Link
+                to="/"
+                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Back to Site
+              </Link>
+            </div>
           </div>
         </div>
       </header>

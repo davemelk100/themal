@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import {
   Plus,
   Trash2,
@@ -9,6 +10,7 @@ import {
   Download,
   Upload,
   AlertCircle,
+  ArrowLeft,
 } from "lucide-react";
 import { writingGalleryStorage, storage } from "../utils/storage";
 
@@ -39,8 +41,7 @@ const WritingGallery: React.FC = () => {
         id: 1,
         title: "",
         subtitle: "",
-        excerpt:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+        excerpt: "AI has made it less scary for when their parents die.",
         category: "",
         readTime: "",
         date: "",
@@ -53,7 +54,7 @@ const WritingGallery: React.FC = () => {
         title: "",
         subtitle: "",
         excerpt:
-          "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
+          "I mean, you came to see Shattered Realm, so now's not the time to whine about your helmet being split in two.",
         category: "",
         readTime: "",
         date: "",
@@ -66,7 +67,7 @@ const WritingGallery: React.FC = () => {
         title: "",
         subtitle: "",
         excerpt:
-          "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.",
+          "Thick Goth Chick Gets Ozempic and Leaves Harcore Dude Who Held Her Down All Those Years Before She Got Skinny",
         category: "",
         readTime: "",
         date: "",
@@ -78,20 +79,8 @@ const WritingGallery: React.FC = () => {
         id: 4,
         title: "",
         subtitle: "",
-        excerpt: "AI has made it less scary for when their parents die.",
-        category: "",
-        readTime: "",
-        date: "",
-        image: "",
-        url: "",
-        isPublished: true,
-      },
-      {
-        id: 5,
-        title: "",
-        subtitle: "",
         excerpt:
-          "I mean, you came to see Shattered Realm, so now's not the time to whine about your helmet being split in two.",
+          "Chick Loses Weight, Boyfriend Knows This Is Just The First Step, Next Thing You Know She'll Ask To Go Outside",
         category: "",
         readTime: "",
         date: "",
@@ -266,13 +255,13 @@ const WritingGallery: React.FC = () => {
                   className="hidden"
                 />
               </label>
-              <button
-                onClick={addCard}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+              <Link
+                to="/"
+                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
               >
-                <Plus className="h-4 w-4" />
-                Add Card
-              </button>
+                <ArrowLeft className="h-4 w-4" />
+                Back to Site
+              </Link>
             </div>
           </div>
 
