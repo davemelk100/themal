@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Dribbble, ArrowUp, Eye, Menu, ExternalLink } from "lucide-react";
+import { Dribbble, ArrowUp, Eye, Menu, ExternalLink, X } from "lucide-react";
 import { LinkedInLogoIcon } from "@radix-ui/react-icons";
 import { useState, useEffect } from "react";
 
@@ -324,50 +324,47 @@ function App() {
                           damping: 25,
                           stiffness: 300,
                         }}
-                        className="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-gray-200 p-4 rounded-t-2xl max-h-[80vh] overflow-y-auto"
+                        className="absolute bottom-16 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-gray-200 p-3 rounded-t-2xl max-h-[70vh] overflow-y-auto"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        <div className="flex items-center justify-between mb-4">
-                          <h2 className="text-lg font-semibold">
-                            Navigation (Menu Open:{" "}
-                            {isMobileMenuOpen ? "Yes" : "No"})
-                          </h2>
+                        <div className="flex items-center justify-between mb-3">
+                          <h2 className="text-lg font-semibold">Navigation</h2>
                           <button
                             onClick={() => setIsMobileMenuOpen(false)}
                             className="bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition-colors"
                             aria-label="Close menu"
                           >
-                            <Menu className="h-5 w-5 text-gray-600" />
+                            <X className="h-5 w-5 text-gray-600" />
                           </button>
                         </div>
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid grid-cols-2 gap-2">
                           <button
                             onClick={() => {
                               handleNavClick("current-projects");
                               setIsMobileMenuOpen(false);
                             }}
-                            className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                            className="flex flex-col items-center gap-1 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                           >
-                            <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
-                              <span className="text-white text-sm font-bold">
+                            <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">
+                              <span className="text-white text-xs font-bold">
                                 L
                               </span>
                             </div>
-                            <span className="text-sm font-semibold">Lab</span>
+                            <span className="text-xs font-semibold">Lab</span>
                           </button>
                           <button
                             onClick={() => {
                               handleNavClick("stories");
                               setIsMobileMenuOpen(false);
                             }}
-                            className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                            className="flex flex-col items-center gap-1 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                           >
-                            <div className="w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center">
-                              <span className="text-white text-sm font-bold">
+                            <div className="w-6 h-6 bg-teal-500 rounded-full flex items-center justify-center">
+                              <span className="text-white text-xs font-bold">
                                 S
                               </span>
                             </div>
-                            <span className="text-sm font-semibold">
+                            <span className="text-xs font-semibold">
                               Stories
                             </span>
                           </button>
@@ -376,14 +373,14 @@ function App() {
                               handleNavClick("articles");
                               setIsMobileMenuOpen(false);
                             }}
-                            className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                            className="flex flex-col items-center gap-1 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                           >
-                            <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                              <span className="text-white text-sm font-bold">
+                            <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+                              <span className="text-white text-xs font-bold">
                                 A
                               </span>
                             </div>
-                            <span className="text-sm font-semibold">
+                            <span className="text-xs font-semibold">
                               Articles
                             </span>
                           </button>
@@ -392,14 +389,14 @@ function App() {
                               handleNavClick("work");
                               setIsMobileMenuOpen(false);
                             }}
-                            className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                            className="flex flex-col items-center gap-1 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                           >
-                            <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
-                              <span className="text-white text-sm font-bold">
+                            <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center">
+                              <span className="text-white text-xs font-bold">
                                 D
                               </span>
                             </div>
-                            <span className="text-sm font-semibold">
+                            <span className="text-xs font-semibold">
                               Designs
                             </span>
                           </button>
@@ -408,14 +405,14 @@ function App() {
                               handleNavClick("career");
                               setIsMobileMenuOpen(false);
                             }}
-                            className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                            className="flex flex-col items-center gap-1 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                           >
-                            <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                              <span className="text-white text-sm font-bold">
+                            <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                              <span className="text-white text-xs font-bold">
                                 C
                               </span>
                             </div>
-                            <span className="text-sm font-semibold">
+                            <span className="text-xs font-semibold">
                               Career
                             </span>
                           </button>
@@ -424,48 +421,48 @@ function App() {
                               handleNavClick("personal");
                               setIsMobileMenuOpen(false);
                             }}
-                            className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                            className="flex flex-col items-center gap-1 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                           >
-                            <div className="w-8 h-8 bg-pink-500 rounded-full flex items-center justify-center">
-                              <span className="text-white text-sm font-bold">
+                            <div className="w-6 h-6 bg-pink-500 rounded-full flex items-center justify-center">
+                              <span className="text-white text-xs font-bold">
                                 P
                               </span>
                             </div>
-                            <span className="text-sm font-semibold">
+                            <span className="text-xs font-semibold">
                               Personal
                             </span>
                           </button>
                           <Link
                             to="/design-system"
                             onClick={() => setIsMobileMenuOpen(false)}
-                            className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                            className="flex flex-col items-center gap-1 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                           >
-                            <div className="w-8 h-8 bg-gray-500 rounded-full flex items-center justify-center">
-                              <span className="text-white text-sm font-bold">
+                            <div className="w-6 h-6 bg-gray-500 rounded-full flex items-center justify-center">
+                              <span className="text-white text-xs font-bold">
                                 DS
                               </span>
                             </div>
-                            <span className="text-sm font-semibold">
+                            <span className="text-xs font-semibold">
                               Design System
                             </span>
                           </Link>
                         </div>
 
                         {/* Social Links */}
-                        <div className="mt-4 pt-4 border-t border-gray-200">
-                          <h3 className="text-sm font-semibold text-gray-600 mb-3">
+                        <div className="mt-3 pt-3 border-t border-gray-200">
+                          <h3 className="text-xs font-semibold text-gray-600 mb-2">
                             Connect
                           </h3>
-                          <div className="flex gap-3">
+                          <div className="flex gap-2">
                             <a
                               href={content.navigation.social.linkedin.url}
                               target="_blank"
                               rel="noopener noreferrer"
                               onClick={() => setIsMobileMenuOpen(false)}
-                              className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex-1"
+                              className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex-1"
                             >
-                              <LinkedInLogoIcon className="h-5 w-5 text-blue-600" />
-                              <span className="text-sm font-medium">
+                              <LinkedInLogoIcon className="h-4 w-4 text-blue-600" />
+                              <span className="text-xs font-medium">
                                 LinkedIn
                               </span>
                             </a>
@@ -474,10 +471,10 @@ function App() {
                               target="_blank"
                               rel="noopener noreferrer"
                               onClick={() => setIsMobileMenuOpen(false)}
-                              className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex-1"
+                              className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex-1"
                             >
-                              <Dribbble className="h-5 w-5 text-pink-600" />
-                              <span className="text-sm font-medium">
+                              <Dribbble className="h-4 w-4 text-pink-600" />
+                              <span className="text-xs font-medium">
                                 Dribbble
                               </span>
                             </a>
@@ -505,7 +502,7 @@ function App() {
                         experiences. Previously served as Principal UX/UI
                         Developer at Propio Language Services, improving
                         accessibility compliance from 78% to 98% and developing
-                        AI interpreter features. Expert in React, Figma, and
+                        AI interpreter features. Proficient in React, Figma, and
                         generative AI tools, with a track record of migrating
                         e-commerce platforms and conducting comprehensive
                         usability audits. Passionate about user-centered design,
@@ -1092,16 +1089,10 @@ function App() {
       </Suspense>
 
       {/* Mobile Bottom Icons Tray */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-gray-200 z-50 xl:hidden">
+      <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-gray-200 z-[9999] xl:hidden">
         <div className="flex items-center justify-around px-4 py-3">
           <button
-            onClick={() => {
-              console.log(
-                "Mobile menu button clicked, current state:",
-                isMobileMenuOpen
-              );
-              setIsMobileMenuOpen(!isMobileMenuOpen);
-            }}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className={`backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center ${
               isMobileMenuOpen
                 ? "bg-orange-500 text-white"
