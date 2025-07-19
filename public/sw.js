@@ -1,10 +1,10 @@
-const CACHE_NAME = "dm-2025-v1";
+const CACHE_NAME = "dm-2025-v2";
 const urlsToCache = [
   "/",
   "/index.html",
   "/assets/index.js",
   "/assets/index.css",
-  "/img/favicon.svg",
+  "/favicon.svg",
 ];
 
 // Install event - cache resources
