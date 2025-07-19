@@ -29,7 +29,13 @@ const tracks: Track[] = [
 
 ## Current Tracks
 
-The player is configured with various audio tracks. Add more tracks by updating the tracks array in `src/pages/MusicPlayer.tsx`.
+The player is currently configured with:
+
+- `motorbeatv2.mp3` - Mash - Motorhead v Notorious B.I.G. v Pink Floyd
+- `aic-fiend.mp3` - Mash - Alice In Chains x Fiend
+- `slayer-congas.mp3` - Mash - Slayer x Congas
+
+Add more tracks by updating the tracks array in `src/pages/MusicPlayer.tsx`.
 
 ## Access
 

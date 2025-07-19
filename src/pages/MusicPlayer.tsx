@@ -92,7 +92,7 @@ const MusicPlayer: React.FC = () => {
           setIsPlaying(true);
           setPendingPlay(false);
         })
-        .catch((error) => {
+        .catch(() => {
           setPendingPlay(false);
         });
     }
