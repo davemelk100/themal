@@ -11,7 +11,6 @@ import {
   FileText,
   Palette,
   Briefcase,
-  Heart,
   Settings,
   Users,
 } from "lucide-react";
