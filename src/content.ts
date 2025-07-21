@@ -277,18 +277,18 @@ export const content = {
         date: "2024",
         hasModal: true,
       },
-      {
-        title: "CMS Portfolio",
-        subtitle:
-          "Building a simple portfolio to be a multi-purpose career portal",
-        description: "",
-        category: "Portfolio Development",
-        image: "/img/port-story.png",
-        content:
-          "What started as a simple portfolio site evolved into a comprehensive career portal that demonstrates both technical skills and content management capabilities. The journey began with a basic React/TypeScript application showcasing design work and career history.\n\nThe initial challenge was creating a portfolio that could adapt to different audiences and purposes. Rather than building separate sites for different use cases, I designed a single application with sophisticated content management capabilities. This approach allowed the same codebase to serve as a portfolio, writing platform, and demonstration of technical skills.\n\nThe technical implementation focused on creating a flexible content system. I built a comprehensive admin panel with granular visibility controls for all content types - articles, design work, lab projects, and testimonials. The system includes persistent storage with export/import functionality, session management, and backup/restore capabilities.\n\nKey features include a music player showcasing creative interests, a writing gallery with card-based layout for content management, and sophisticated storage system with migration capabilities. The admin panel allows real-time content management without requiring code changes, making it easy to update the portfolio for different opportunities.\n\nThe result is a portfolio that serves multiple purposes: it demonstrates technical skills through its implementation, showcases design work through its presentation, and provides a platform for sharing insights through articles and writing samples. The content management system itself becomes a demonstration of understanding user needs and creating efficient workflows.\n\nThis approach has proven valuable for career opportunities where technical skills, design thinking, and content management abilities are all relevant. The portfolio demonstrates not just what I've done, but how I think about solving problems and creating systems that scale.",
-        date: "2025",
-        hasModal: true,
-      },
+      // {
+      //   title: "CMS Portfolio",
+      //   subtitle:
+      //     "Building a simple portfolio to be a multi-purpose career portal",
+      //   description: "",
+      //   category: "Portfolio Development",
+      //   image: "/img/port-story.png",
+      //   content:
+      //     "What started as a simple portfolio site evolved into a comprehensive career portal that demonstrates both technical skills and content management capabilities. The journey began with a basic React/TypeScript application showcasing design work and career history.\n\nThe initial challenge was creating a portfolio that could adapt to different audiences and purposes. Rather than building separate sites for different use cases, I designed a single application with sophisticated content management capabilities. This approach allowed the same codebase to serve as a portfolio, writing platform, and demonstration of technical skills.\n\nThe technical implementation focused on creating a flexible content system. I built a comprehensive admin panel with granular visibility controls for all content types - articles, design work, lab projects, and testimonials. The system includes persistent storage with export/import functionality, session management, and backup/restore capabilities.\n\nKey features include a music player showcasing creative interests, a writing gallery with card-based layout for content management, and sophisticated storage system with migration capabilities. The admin panel allows real-time content management without requiring code changes, making it easy to update the portfolio for different opportunities.\n\nThe result is a portfolio that serves multiple purposes: it demonstrates technical skills through its implementation, showcases design work through its presentation, and provides a platform for sharing insights through articles and writing samples. The content management system itself becomes a demonstration of understanding user needs and creating efficient workflows.\n\nThis approach has proven valuable for career opportunities where technical skills, design thinking, and content management abilities are all relevant. The portfolio demonstrates not just what I've done, but how I think about solving problems and creating systems that scale.",
+      //   date: "2025",
+      //   hasModal: true,
+      // },
     ],
   },
 
