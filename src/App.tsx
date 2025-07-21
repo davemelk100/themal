@@ -497,7 +497,7 @@ function App() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 1.8, delay: 0.4 }}
-                      className="max-w-4xl mx-auto"
+                      className="max-w-4xl flex flex-col items-start"
                     >
                       <p className="text-base text-muted-foreground leading-relaxed text-left">
                         Senior Product Designer with over 15 years of experience
