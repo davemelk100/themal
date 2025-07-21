@@ -1,6 +1,47 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Eye, Download, Upload, AlertCircle } from "lucide-react";
+import {
+  ArrowLeft,
+  Eye,
+  Download,
+  Upload,
+  AlertCircle,
+  ArrowUp,
+  Dribbble,
+  Menu,
+  ExternalLink,
+  X,
+  FlaskConical,
+  BookOpen,
+  FileText,
+  Palette,
+  Briefcase,
+  Settings,
+  Users,
+  Play,
+  Pause,
+  SkipBack,
+  SkipForward,
+  Volume2,
+  VolumeX,
+  Loader2,
+  Search,
+  Calendar,
+  Moon,
+  Sun,
+  Link2,
+  ArrowRight,
+  Check,
+  ChevronRight,
+  Circle,
+  ChevronDown,
+  ChevronUp,
+  GripVertical,
+  Dot,
+  MoreHorizontal,
+  ChevronLeft,
+} from "lucide-react";
+import { LinkedInLogoIcon } from "@radix-ui/react-icons";
 import LazyVideo from "../components/LazyVideo";
 import { storage } from "../utils/storage";
 
@@ -95,6 +136,15 @@ const DesignSystem: React.FC = () => {
             "Video Card",
             "Lab Card",
             "Sample Story",
+          ],
+          icons: [
+            "Navigation & UI Icons",
+            "Social & Brand Icons",
+            "Section Icons",
+            "Music Player Icons",
+            "Theme Icons",
+            "Action Icons",
+            "UI Component Icons",
           ],
         },
         exportDate: new Date().toISOString(),
@@ -473,6 +523,240 @@ const DesignSystem: React.FC = () => {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Icons */}
+        <section className="mb-16">
+          <h2 className="text-xl font-semibold text-gray-900 mb-6">Icons</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+            {/* Navigation & UI Icons */}
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <ArrowUp className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">ArrowUp</span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <ArrowLeft className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">
+                ArrowLeft
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <ArrowRight className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">
+                ArrowRight
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <Menu className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">Menu</span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <X className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">
+                X (Close)
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <Eye className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">
+                Eye (View)
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <ExternalLink className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">
+                ExternalLink
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <Search className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">Search</span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <Calendar className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">
+                Calendar
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <Link2 className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">Link2</span>
+            </div>
+
+            {/* Social & Brand Icons */}
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <Dribbble className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">
+                Dribbble
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <LinkedInLogoIcon className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">
+                LinkedIn
+              </span>
+            </div>
+
+            {/* Section Icons */}
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <FlaskConical className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">
+                FlaskConical (Lab)
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <BookOpen className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">
+                BookOpen (Articles)
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <FileText className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">
+                FileText (Writing)
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <Palette className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">
+                Palette (Design)
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <Briefcase className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">
+                Briefcase (Career)
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <Users className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">
+                Users (Personal)
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <Settings className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">
+                Settings
+              </span>
+            </div>
+
+            {/* Music Player Icons */}
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <Play className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">Play</span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <Pause className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">Pause</span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <SkipBack className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">
+                SkipBack
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <SkipForward className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">
+                SkipForward
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <Volume2 className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">Volume2</span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <VolumeX className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">VolumeX</span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <Loader2 className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">Loader2</span>
+            </div>
+
+            {/* Theme Icons */}
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <Sun className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">
+                Sun (Light)
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <Moon className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">
+                Moon (Dark)
+              </span>
+            </div>
+
+            {/* Action Icons */}
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <Download className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">
+                Download
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <Upload className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">Upload</span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <AlertCircle className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">
+                AlertCircle
+              </span>
+            </div>
+
+            {/* UI Component Icons */}
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <Check className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">Check</span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <Circle className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">Circle</span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <ChevronDown className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">
+                ChevronDown
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <ChevronUp className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">
+                ChevronUp
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <ChevronLeft className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">
+                ChevronLeft
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <ChevronRight className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">
+                ChevronRight
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <GripVertical className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">
+                GripVertical
+              </span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <Dot className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">Dot</span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
+              <MoreHorizontal className="h-6 w-6 text-gray-700" />
+              <span className="text-xs text-gray-600 text-center">
+                MoreHorizontal
+              </span>
             </div>
           </div>
         </section>
