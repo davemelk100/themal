@@ -193,7 +193,7 @@ function App() {
                 <section className="relative h-[12vh] sm:h-[20vh] flex items-start sm:items-center">
                   <div className="container mx-auto px-4 sm:px-8 pt-8 sm:pt-4">
                     {/* Title, Icons, and Navigation Row */}
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 sm:mb-6 gap-4 relative z-10">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 relative z-10">
                       {/* Mobile: Title left-aligned */}
                       <div
                         className={`flex xl:hidden items-center justify-start w-full transition-opacity duration-300 ${
@@ -491,7 +491,7 @@ function App() {
                 )}
 
                 {/* Summary Section */}
-                <section className="py-4 sm:py-6">
+                <section>
                   <div className="container mx-auto px-4 sm:px-8">
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
@@ -1010,16 +1010,14 @@ function App() {
                         <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
                           <div className="pr-12 flex items-center gap-2">
                             <h3
-                              className="text-[20px] font-semibold mb-1 dark:text-black title-font"
-                              style={{
-                                letterSpacing: "-0.01em",
-                              }}
+                              className="text-[20px] font-semibold mb-0 dark:text-black title-font"
+                              style={{ letterSpacing: "-0.01em" }}
                             >
                               Violet
                             </h3>
                           </div>
                           <div className="flex-1 flex flex-col">
-                            <p className="text-sm text-gray-600 dark:text-gray-600 mb-2 flex-1">
+                            <p className="text-base text-gray-600 dark:text-gray-600 mb-1 flex-1">
                               My amazing daughter with another line drive for a
                               base hit
                             </p>
@@ -1039,16 +1037,14 @@ function App() {
                         <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
                           <div className="pr-12 flex items-center gap-2">
                             <h3
-                              className="text-[20px] font-semibold mb-1 dark:text-black title-font"
-                              style={{
-                                letterSpacing: "-0.01em",
-                              }}
+                              className="text-[20px] font-semibold mb-0 dark:text-black title-font"
+                              style={{ letterSpacing: "-0.01em" }}
                             >
                               Sam
                             </h3>
                           </div>
                           <div className="flex-1 flex flex-col">
-                            <p className="text-sm text-gray-600 dark:text-gray-600 mb-2 flex-1">
+                            <p className="text-base text-gray-600 dark:text-gray-600 mb-1 flex-1">
                               My son doing what he does better than most
                             </p>
                           </div>
@@ -1067,16 +1063,14 @@ function App() {
                         <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
                           <div className="pr-12 flex items-center gap-2">
                             <h3
-                              className="text-[20px] font-semibold mb-1 dark:text-black title-font"
-                              style={{
-                                letterSpacing: "-0.01em",
-                              }}
+                              className="text-[20px] font-semibold mb-0 dark:text-black title-font"
+                              style={{ letterSpacing: "-0.01em" }}
                             >
                               Golf
                             </h3>
                           </div>
                           <div className="flex-1 flex flex-col">
-                            <p className="text-sm text-gray-600 dark:text-gray-600 mb-2 flex-1">
+                            <p className="text-base text-gray-600 dark:text-gray-600 mb-1 flex-1">
                               The game I love to hate
                             </p>
                           </div>
