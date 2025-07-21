@@ -226,9 +226,9 @@ function App() {
                       </div>
 
                       {/* Desktop Icons and Navigation */}
-                      <div className="hidden xl:flex flex-row items-center gap-4">
+                      <div className="hidden md:flex md:flex-col lg:flex-row md:items-stretch lg:items-center gap-4 w-full">
                         {/* Desktop Navigation Links */}
-                        <div className="hidden xl:flex rounded-lg px-3 sm:px-4 py-2 items-center justify-start gap-4 sm:gap-6">
+                        <div className="hidden md:flex w-full md:justify-center lg:justify-start rounded-lg px-3 sm:px-4 py-2 items-center gap-4 sm:gap-6">
                           <button
                             onClick={() => handleNavClick("current-projects")}
                             className="text-black hover:text-gray-600 dark:text-white dark:hover:text-gray-200 transition-colors text-sm font-bold uppercase"
@@ -285,7 +285,7 @@ function App() {
                           </button>
                           <Link
                             to="/design-system"
-                            className="text-black hover:text-gray-600 dark:text-white dark:hover:text-gray-200 transition-colors text-sm font-bold uppercase"
+                            className="text-black hover:text-gray-600 dark:text-white dark:hover:text-gray-200 transition-colors text-sm font-bold uppercase whitespace-nowrap"
                             style={{
                               fontFamily: "Helvetica, Arial, sans-serif",
                             }}
@@ -446,7 +446,7 @@ function App() {
                             <div className="w-8 h-8 bg-gray-500 rounded-full flex items-center justify-center">
                               <Settings className="h-4 w-4 text-white" />
                             </div>
-                            <span className="text-sm font-semibold">
+                            <span className="text-sm font-semibold whitespace-nowrap">
                               Design System
                             </span>
                           </Link>
@@ -499,7 +499,7 @@ function App() {
                       transition={{ duration: 1.8, delay: 0.4 }}
                       className="max-w-4xl mx-auto"
                     >
-                      <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed text-left">
+                      <p className="text-base text-muted-foreground leading-relaxed text-left">
                         Senior Product Designer with over 15 years of experience
                         delivering accessible, intuitive, and high-impact
                         digital experiences for a range of users and business
