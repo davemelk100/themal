@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Download, Upload, AlertCircle, ArrowLeft } from "lucide-react";
-import { writingGalleryStorage, storage } from "../utils/storage";
+import { AlertCircle, ArrowLeft } from "lucide-react";
 
 interface WritingPiece {
   id: number;
@@ -20,11 +19,6 @@ interface WritingPiece {
 const WritingGallery: React.FC = () => {
   // Load saved writing pieces from storage or use defaults
   const getInitialWritingPieces = (): WritingPiece[] => {
-    const saved = writingGalleryStorage.getPieces();
-    if (saved && Array.isArray(saved) && saved.length > 0) {
-      return saved;
-    }
-
     // Default pieces if nothing is saved
     return [
       {
@@ -107,75 +101,11 @@ const WritingGallery: React.FC = () => {
     ];
   };
 
-  const [writingPieces, setWritingPieces] = useState<WritingPiece[]>(
-    getInitialWritingPieces
-  );
+  const [writingPieces] = useState<WritingPiece[]>(getInitialWritingPieces);
 
-  const [storageStatus, setStorageStatus] = useState<{
-    available: boolean;
-    message?: string;
-  }>({ available: storage.isAvailable() });
-
-  const saveToStorage = (pieces: WritingPiece[]) => {
-    try {
-      writingGalleryStorage.setPieces(pieces);
-      setStorageStatus({ available: true });
-    } catch (error) {
-      setStorageStatus({
-        available: false,
-        message: "Failed to save changes. Please try again.",
-      });
-    }
-  };
-
-  // Export data functionality
-  const exportData = () => {
-    try {
-      const data = {
-        writingPieces,
-        exportDate: new Date().toISOString(),
-        version: "1.0",
-      };
-      const blob = new Blob([JSON.stringify(data, null, 2)], {
-        type: "application/json",
-      });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `writing-gallery-backup-${
-        new Date().toISOString().split("T")[0]
-      }.json`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    } catch (error) {
-      alert("Failed to export data. Please try again.");
-    }
-  };
-
-  // Import data functionality
-  const importData = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const data = JSON.parse(e.target?.result as string);
-        if (data.writingPieces && Array.isArray(data.writingPieces)) {
-          setWritingPieces(data.writingPieces);
-          saveToStorage(data.writingPieces);
-          alert("Data imported successfully!");
-        } else {
-          alert("Invalid file format. Please select a valid backup file.");
-        }
-      } catch (error) {
-        alert("Failed to import data. Please check the file format.");
-      }
-    };
-    reader.readAsText(file);
-  };
+  const [storageStatus] = useState<{ available: boolean; message?: string }>({
+    available: true,
+  });
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 p-8">
@@ -201,25 +131,6 @@ const WritingGallery: React.FC = () => {
               )}
             </div>
             <div className="flex items-center gap-3">
-              {/* Export/Import buttons */}
-              <button
-                onClick={exportData}
-                className="flex items-center gap-2 px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors text-sm"
-                title="Export data backup"
-              >
-                <Download className="h-4 w-4" />
-                Export
-              </button>
-              <label className="flex items-center gap-2 px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors text-sm cursor-pointer">
-                <Upload className="h-4 w-4" />
-                Import
-                <input
-                  type="file"
-                  accept=".json"
-                  onChange={importData}
-                  className="hidden"
-                />
-              </label>
               <Link
                 to="/"
                 className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"

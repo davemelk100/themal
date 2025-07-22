@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import {
   ArrowLeft,
   Eye,
-  Download,
-  Upload,
   AlertCircle,
   ArrowUp,
   Dribbble,
@@ -65,10 +63,10 @@ interface DesignSystemData {
 }
 
 const DesignSystem: React.FC = () => {
-  const [storageStatus, setStorageStatus] = useState<{
+  const [storageStatus] = useState<{
     available: boolean;
     message?: string;
-  }>({ available: storage.isAvailable() });
+  }>({ available: true });
 
   // Load stored design system data on component mount
   React.useEffect(() => {
@@ -87,135 +85,6 @@ const DesignSystem: React.FC = () => {
       // Failed to load stored design system data
     }
   }, []);
-
-  const exportData = () => {
-    try {
-      const designSystemData = {
-        colors: {
-          primary: "#3b82f6",
-          secondary: "#10b981",
-          gray100: "#f3f4f6",
-          gray200: "#e5e7eb",
-          gray600: "#4b5563",
-          gray900: "#111827",
-        },
-        typography: {
-          h1: "text-4xl font-bold",
-          h2: "text-3xl font-semibold",
-          h3: "text-2xl font-semibold",
-          h4: "text-xl font-semibold",
-          body: "text-base",
-          small: "text-sm",
-        },
-        spacing: {
-          xs: "w-4 h-4",
-          sm: "w-8 h-8",
-          md: "w-12 h-12",
-          lg: "w-16 h-16",
-          xl: "w-20 h-20",
-        },
-        borderRadius: {
-          none: "rounded-none",
-          sm: "rounded-sm",
-          base: "rounded",
-          md: "rounded-md",
-          lg: "rounded-lg",
-          full: "rounded-full",
-        },
-        components: {
-          buttons: [
-            "Primary",
-            "Secondary",
-            "Tertiary",
-            "Outline Primary",
-            "Outline Secondary",
-          ],
-          cards: ["Background Card", "Video Card", "Lab Card", "Sample Story"],
-          icons: [
-            "Navigation & UI Icons",
-            "Social & Brand Icons",
-            "Section Icons",
-            "Music Player Icons",
-            "Theme Icons",
-            "Action Icons",
-            "UI Component Icons",
-          ],
-        },
-        exportDate: new Date().toISOString(),
-      };
-
-      const dataStr = JSON.stringify(designSystemData, null, 2);
-      const dataBlob = new Blob([dataStr], { type: "application/json" });
-      const url = URL.createObjectURL(dataBlob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `design-system-${
-        new Date().toISOString().split("T")[0]
-      }.json`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    } catch (error) {
-      setStorageStatus({
-        available: false,
-        message: "Failed to export data. Please try again.",
-      });
-    }
-  };
-
-  const importData = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const data = JSON.parse(e.target?.result as string) as DesignSystemData;
-
-        // Apply the imported data to the design system
-        try {
-          // Store the imported data in localStorage
-          storage.set("designSystemData", data);
-
-          // Apply CSS custom properties for colors if they exist
-          if (data.colors) {
-            const root = document.documentElement;
-            Object.entries(data.colors).forEach(([key, value]) => {
-              root.style.setProperty(`--color-${key}`, value as string);
-            });
-          }
-
-          // Force a re-render by updating state
-          setStorageStatus({
-            available: true,
-            message: "Design system data imported and applied successfully!",
-          });
-
-          // Clear the message after 3 seconds
-          setTimeout(() => {
-            setStorageStatus({ available: true });
-          }, 3000);
-
-          // Optionally reload the page to see all changes
-          // window.location.reload();
-        } catch (applyError) {
-          setStorageStatus({
-            available: false,
-            message: "Failed to apply imported data. Please try again.",
-          });
-        }
-      } catch (error) {
-        setStorageStatus({
-          available: false,
-          message: "Invalid file format. Please select a valid JSON file.",
-        });
-      }
-    };
-    reader.readAsText(file);
-    // Reset the input
-    event.target.value = "";
-  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -245,25 +114,6 @@ const DesignSystem: React.FC = () => {
               )}
             </div>
             <div className="flex flex-col gap-2 sm:flex-row sm:gap-3">
-              {/* Export/Import buttons */}
-              <button
-                onClick={exportData}
-                className="flex items-center gap-2 w-full justify-center mb-2 sm:w-auto sm:mb-0 px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors text-sm"
-                title="Export design system data"
-              >
-                <Download className="h-4 w-4" />
-                Export
-              </button>
-              <label className="flex items-center gap-2 w-full justify-center mb-2 sm:w-auto sm:mb-0 px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors text-sm cursor-pointer">
-                <Upload className="h-4 w-4" />
-                Import
-                <input
-                  type="file"
-                  accept=".json"
-                  onChange={importData}
-                  className="hidden"
-                />
-              </label>
               <Link
                 to="/"
                 className="inline-flex items-center gap-2 w-full justify-center mb-2 sm:w-auto sm:mb-0 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
@@ -669,16 +519,6 @@ const DesignSystem: React.FC = () => {
             </div>
 
             {/* Action Icons */}
-            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <Download className="h-6 w-6 text-gray-700" />
-              <span className="text-xs text-gray-600 text-center">
-                Download
-              </span>
-            </div>
-            <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <Upload className="h-6 w-6 text-gray-700" />
-              <span className="text-xs text-gray-600 text-center">Upload</span>
-            </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
               <AlertCircle className="h-6 w-6 text-gray-700" />
               <span className="text-xs text-gray-600 text-center">
