@@ -340,7 +340,11 @@ function App() {
                         functional collaboration, user centered and product
                         strategy, and applying advanced methods such as
                         artificial intelligence to solve complex challenges and
-                        drive inclusive innovation.
+                        drive inclusive innovation. My expertise extends to
+                        technical writing and content strategy, where I craft
+                        clear, engaging documentation and thought leadership
+                        pieces that bridge the gap between complex technical
+                        concepts and accessible user experiences.
                       </p>
                     </motion.div>
                   </div>
@@ -646,78 +650,80 @@ function App() {
                       subtitle={content.stories.subtitle}
                       className="mb-8"
                     />
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {content.stories.items.map((story) => (
-                        <motion.div
-                          key={story.title}
-                          initial={{ opacity: 0, y: 20 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 2.4, delay: 0.2 }}
-                          className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md"
-                        >
-                          <div className="absolute top-3 right-3">
-                            {story.hasModal ? (
-                              <button
-                                onClick={() =>
-                                  setSelectedStory({
-                                    title: story.title,
-                                    content: story.content,
-                                    subtitle: story.subtitle,
-                                  })
-                                }
-                                className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
-                              >
-                                <Eye className="h-5 w-5 text-gray-600" />
-                              </button>
-                            ) : (
-                              <div className="bg-white/80 backdrop-blur-sm rounded-full p-2 shadow-md w-10 h-10 flex items-center justify-center">
-                                <Eye className="h-5 w-5 text-gray-600" />
-                              </div>
-                            )}
-                          </div>
-                          <div className="p-3 flex flex-col gap-2 flex-1">
-                            <div className="pr-12">
-                              <h3
-                                className="text-[20px] font-semibold mb-1 dark:text-black title-font"
-                                style={{
-                                  letterSpacing: "-0.01em",
-                                }}
-                              >
-                                {story.title}
-                              </h3>
-                              {story.subtitle && (
-                                <p className="text-sm text-gray-600 dark:text-gray-600 mb-2">
-                                  {story.subtitle}
-                                </p>
-                              )}
-                            </div>
-                            <div className="flex-1 flex flex-col">
-                              {story.description && (
-                                <p className="text-black mb-2 dark:text-black text-card-body flex-1">
-                                  {story.description}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                          <div className="relative aspect-[3/2] overflow-visible -mx-3 -mb-3">
-                            {story.image ? (
-                              <img
-                                src={story.image}
-                                alt={story.title}
-                                className="absolute inset-0 h-full w-full object-cover"
-                                loading="lazy"
-                              />
-                            ) : (
-                              <div className="absolute inset-0 h-full w-full bg-gray-200/50 flex items-center justify-center">
-                                <div className="text-gray-400 text-sm">
-                                  No image
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {content.stories.items
+                        .filter((story) => story.title !== "Design Management")
+                        .map((story) => (
+                          <motion.div
+                            key={story.title}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 2.4, delay: 0.2 }}
+                            className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md"
+                          >
+                            <div className="absolute top-3 right-3">
+                              {story.hasModal ? (
+                                <button
+                                  onClick={() =>
+                                    setSelectedStory({
+                                      title: story.title,
+                                      content: story.content,
+                                      subtitle: story.subtitle,
+                                    })
+                                  }
+                                  className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                                >
+                                  <Eye className="h-5 w-5 text-gray-600" />
+                                </button>
+                              ) : (
+                                <div className="bg-white/80 backdrop-blur-sm rounded-full p-2 shadow-md w-10 h-10 flex items-center justify-center">
+                                  <Eye className="h-5 w-5 text-gray-600" />
                                 </div>
+                              )}
+                            </div>
+                            <div className="p-3 flex flex-col gap-2 flex-1">
+                              <div className="pr-12">
+                                <h3
+                                  className="text-[20px] font-semibold mb-1 dark:text-black title-font"
+                                  style={{
+                                    letterSpacing: "-0.01em",
+                                  }}
+                                >
+                                  {story.title}
+                                </h3>
+                                {story.subtitle && (
+                                  <p className="text-sm text-gray-600 dark:text-gray-600 mb-2">
+                                    {story.subtitle}
+                                  </p>
+                                )}
                               </div>
-                            )}
-                          </div>
-                        </motion.div>
-                      ))}
+                              <div className="flex-1 flex flex-col">
+                                {story.description && (
+                                  <p className="text-black mb-2 dark:text-black text-card-body flex-1">
+                                    {story.description}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                            <div className="relative aspect-[3/2] overflow-visible -mx-3 -mb-3">
+                              {story.image ? (
+                                <img
+                                  src={story.image}
+                                  alt={story.title}
+                                  className="absolute inset-0 h-full w-full object-cover"
+                                  loading="lazy"
+                                />
+                              ) : (
+                                <div className="absolute inset-0 h-full w-full bg-gray-200/50 flex items-center justify-center">
+                                  <div className="text-gray-400 text-sm">
+                                    No image
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </motion.div>
+                        ))}
                     </div>
                   </div>
                 </section>
@@ -731,7 +737,7 @@ function App() {
                       className="mb-8"
                       showArchiveLink={false}
                     />
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {content.articles.items
                         .filter(
                           (article) =>
@@ -744,7 +750,9 @@ function App() {
                             article.title !==
                               "Information Architecture Is Not Sacred" &&
                             article.title !==
-                              "AI is hydrated with user research data"
+                              "AI is hydrated with user research data" &&
+                            article.title !==
+                              "Can Bad (or Good) Prompts Make AI Dumber (or Smarter)?"
                         )
                         .sort(
                           (a, b) =>
