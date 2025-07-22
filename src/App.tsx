@@ -37,6 +37,7 @@ import { lazy, Suspense } from "react";
 const Article = lazy(() => import("./pages/Article"));
 const Archive = lazy(() => import("./pages/Archive"));
 const DesignArchive = lazy(() => import("./pages/DesignArchive"));
+const Admin = lazy(() => import("./pages/Admin"));
 const MusicPlayer = lazy(() => import("./pages/MusicPlayer"));
 const WritingGallery = lazy(() => import("./pages/WritingGallery"));
 const DesignSystem = lazy(() => import("./pages/DesignSystem"));
@@ -702,9 +703,10 @@ function App() {
                           <div className="relative aspect-[3/2] overflow-visible -mx-3 -mb-3">
                             {story.image ? (
                               <img
-                                src={`${story.image}?v=${Date.now()}`}
+                                src={story.image}
                                 alt={story.title}
                                 className="absolute inset-0 h-full w-full object-cover"
+                                loading="lazy"
                               />
                             ) : (
                               <div className="absolute inset-0 h-full w-full bg-gray-200/50 flex items-center justify-center">
@@ -818,7 +820,7 @@ function App() {
                       showArchiveLink={false}
                     />
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {content.work.projects
                         .filter(
                           (project: any) =>
@@ -850,17 +852,21 @@ function App() {
                               className={`relative ${
                                 project.title === "Vintage Form Design"
                                   ? "aspect-[4/3]"
+                                  : project.title === "Mobile Game"
+                                  ? "aspect-[3/2]"
                                   : "aspect-[5/3]"
                               } overflow-visible -mx-3 -mb-3`}
                             >
                               <img
-                                src={`${project.image}?v=${Date.now()}`}
+                                src={project.image}
                                 alt={project.alt || project.title}
                                 className={`absolute inset-0 h-full w-full ${
                                   project.title === "Hex Code Pop Art"
-                                    ? "object-cover scale-102"
+                                    ? "object-cover"
                                     : project.title === "Vintage Form Design"
-                                    ? "object-contain scale-90"
+                                    ? "object-contain"
+                                    : project.title === "Mobile Game"
+                                    ? "object-cover"
                                     : "object-contain"
                                 }`}
                                 loading="lazy"
@@ -871,7 +877,7 @@ function App() {
                           return project.url ? (
                             <div
                               key={index}
-                              className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md"
+                              className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md project-card"
                             >
                               <div className="absolute top-3 right-3">
                                 <a
@@ -891,7 +897,7 @@ function App() {
                           ) : (
                             <div
                               key={index}
-                              className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md"
+                              className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md project-card"
                             >
                               <div className="absolute top-3 right-3">
                                 <div className="bg-white/80 backdrop-blur-sm rounded-full p-2 shadow-md w-10 h-10 flex items-center justify-center">
@@ -1049,6 +1055,7 @@ function App() {
           <Route path="/article/:slug" element={<Article />} />
           <Route path="/archive" element={<Archive />} />
           <Route path="/design-archive" element={<DesignArchive />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path="/music-player" element={<MusicPlayer />} />
           <Route path="/writing-gallery" element={<WritingGallery />} />
           <Route path="/design-system" element={<DesignSystem />} />

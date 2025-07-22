@@ -90,11 +90,39 @@
     font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   }
 
-  /* Force image refresh */
+  /* Smooth image rendering for all images */
   img {
+    image-rendering: auto;
     image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
+    image-rendering: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    will-change: auto;
   }
+
+  /* Enhanced smoothing for specific image types */
+  img[class*="object-cover"],
+  img[class*="object-contain"] {
+    image-rendering: auto;
+    image-rendering: smooth;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  /* Prevent digitization on hover effects */
+  img:hover {
+    image-rendering: auto;
+    image-rendering: smooth;
+  }
+
+  /* Additional smoothing for scaled images */
+  img[class*="scale-"],
+  img[class*="transform"] {
+    image-rendering: auto;
+    image-rendering: smooth;
+  }
+
+
 }
 
 @layer components {

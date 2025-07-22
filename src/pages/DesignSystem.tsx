@@ -42,6 +42,7 @@ import {
 import { LinkedInLogoIcon } from "@radix-ui/react-icons";
 import LazyVideo from "../components/LazyVideo";
 import { storage } from "../utils/storage";
+import { content } from "../content";
 
 interface DesignSystemData {
   colors?: {
@@ -94,16 +95,17 @@ const DesignSystem: React.FC = () => {
           <div className="flex flex-col gap-y-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h1 className="text-5xl font-bold text-gray-900 mt-0 mb-2">
-                Design System
+                {content.designSystem.title}
               </h1>
               <p className="text-lg text-gray-600 mt-0 mb-0">
-                Component library and design tokens
+                {content.designSystem.subtitle}
               </p>
               {!storageStatus.available && (
                 <div className="flex items-center gap-2 mt-2 text-amber-600">
                   <AlertCircle className="h-4 w-4" />
                   <span className="text-sm">
-                    {storageStatus.message || "Storage not available"}
+                    {storageStatus.message ||
+                      content.designSystem.storageNotAvailable}
                   </span>
                 </div>
               )}
@@ -119,7 +121,7 @@ const DesignSystem: React.FC = () => {
                 className="inline-flex items-center gap-2 w-full justify-center mb-2 sm:w-auto sm:mb-0 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
               >
                 <ArrowLeft className="h-4 w-4" />
-                Back to Site
+                {content.designSystem.backToSite}
               </Link>
             </div>
           </div>
@@ -130,7 +132,9 @@ const DesignSystem: React.FC = () => {
       <main className="container mx-auto px-2 sm:px-4 py-12">
         {/* Colors */}
         <section className="mb-16">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6">Colors</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-6">
+            {content.designSystem.sections.colors}
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
             <div className="space-y-2">
               <div className="w-full h-20 bg-primary rounded-lg"></div>
@@ -180,7 +184,7 @@ const DesignSystem: React.FC = () => {
         {/* Typography */}
         <section className="mb-16">
           <h2 className="text-xl font-semibold text-gray-900 mb-6">
-            Typography
+            {content.designSystem.sections.typography}
           </h2>
           <div className="space-y-4">
             <div>

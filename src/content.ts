@@ -113,13 +113,12 @@ export const content = {
         url: "https://dribbble.com/shots/25274995-NFL-Themed-Logos-for-Sports-Podcast",
       },
       {
-        title: "Picture Disc Concept",
-        description:
-          "Conceptual design for a 7-inch vinyl record with integrated picture disc artwork.",
-        categories: "Product Design, Music, Vinyl",
-        image: "/img/record-disc.png",
-        alt: "7-inch Record Picture Disc Concept",
-        url: "https://dribbble.com/shots/20590753-7-inch-record-picture-disc-concept",
+        title: "Mobile Game",
+        description: "Prototype for a mobile app concept",
+        categories: "Product Design, Mobile, Prototype",
+        image: "/img/mobile-game.png",
+        alt: "Mobile Game Prototype",
+        url: "https://dribbble.com/shots/20590741-mobile-game-concept-screens",
       },
       {
         title: "Vintage Form Design",
@@ -1069,5 +1068,56 @@ export const content = {
         ],
       },
     ],
+  },
+  writingGallery: {
+    title: "Writing Gallery",
+    backToSite: "Back to Site",
+    storageNotAvailable: "Storage not available",
+    defaultPieces: [
+      { excerpt: "AI has made it less scary for when their parents die." },
+      {
+        excerpt:
+          "I mean, you came to see Shattered Realm, so now's not the time to whine about your helmet being split in two.",
+      },
+      {
+        excerpt:
+          "Thick Goth Chick Gets Ozempic and Leaves Harcore Dude Who Held Her Down All Those Years Before She Got Skinny",
+      },
+      {
+        excerpt:
+          "Chick Loses Weight, Boyfriend Knows This Is Just The First Step, Next Thing You Know She'll Ask To Go Outside",
+      },
+      {
+        excerpt:
+          "(image of the wild wild country guy bagwan shri rajneesh) SOUNDGARDEN",
+      },
+      {
+        excerpt:
+          "are moustaches still ironic? seems like people are taking them serious again.",
+      },
+    ],
+  },
+  designSystem: {
+    title: "Design System",
+    subtitle: "Component library and design tokens",
+    backToSite: "Back to Site",
+    storageNotAvailable: "Storage not available",
+    sections: {
+      colors: "Colors",
+      typography: "Typography",
+      buttons: "Buttons",
+      cards: "Cards",
+      icons: "Icons",
+      spacing: "Spacing",
+    },
+    colorLabels: [
+      { label: "Primary" },
+      { label: "Secondary" },
+      { label: "Gray 100" },
+      { label: "Gray 200" },
+      { label: "Gray 600" },
+      { label: "Gray 900" },
+    ],
+    // Add more as needed
   },
 } as const;
