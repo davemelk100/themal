@@ -543,7 +543,6 @@ function App() {
                                 <div
                                   className="flex items-center gap-1 ml-2"
                                   role="presentation"
-                                  aria-label="Decorative colored dots"
                                 >
                                   {project.title === "Design Panes" &&
                                     [
@@ -1270,7 +1269,6 @@ function App() {
                               <div
                                 className="flex items-center gap-1 ml-2"
                                 role="presentation"
-                                aria-label="Decorative greyscale dots"
                               >
                                 {[
                                   "#6b7280", // Gray 500

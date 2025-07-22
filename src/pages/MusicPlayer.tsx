@@ -142,16 +142,27 @@ const MusicPlayer: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 p-8">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 p-8 pb-[108px]">
       <div className="max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8"
         >
-          {/* <h1 className="text-3xl font-bold text-center mb-8 text-gray-900 dark:text-white">
-            Music Player
-          </h1> */}
+          {/* Bandcamp Link */}
+          <div className="text-center mb-6">
+            <a
+              href="https://balmsoothes.bandcamp.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-colors font-medium"
+              aria-label="Visit BALM on Bandcamp"
+            >
+              <span>🎵</span>
+              <span>Listen on Bandcamp</span>
+              <span>→</span>
+            </a>
+          </div>
 
           {/* Current Track Info */}
           <div className="text-left mb-8">
