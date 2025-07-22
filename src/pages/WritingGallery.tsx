@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { AlertCircle, ArrowLeft } from "lucide-react";
 import { content } from "../content";
+import MobileTrayMenu from "../components/MobileTrayMenu";
 
 interface WritingPiece {
   id: number;
@@ -97,6 +98,7 @@ const WritingGallery: React.FC = () => {
           <div className="mt-12 text-center"></div>
         </motion.div>
       </div>
+      <MobileTrayMenu />
     </div>
   );
 };

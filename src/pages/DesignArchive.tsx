@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { content } from "../content";
 import { ArrowLeft, Search } from "lucide-react";
+import MobileTrayMenu from "../components/MobileTrayMenu";
 
 export default function DesignArchive() {
   const navigate = useNavigate();
@@ -125,6 +126,7 @@ export default function DesignArchive() {
           </div>
         )}
       </div>
+      <MobileTrayMenu />
     </div>
   );
 }

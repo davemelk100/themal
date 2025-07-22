@@ -3,7 +3,6 @@ import {
   Dribbble,
   ArrowUp,
   Eye,
-  Menu,
   ExternalLink,
   X,
   FlaskConical,
@@ -24,6 +23,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import ArticleModal from "./components/ArticleModal";
 import { ThemeProvider } from "./context/ThemeContext";
 import ThemeToggle from "./components/ThemeToggle";
+import MobileTrayMenu from "./components/MobileTrayMenu";
 import {
   Routes,
   Route,
@@ -1315,20 +1315,6 @@ function App() {
         </Routes>
       </Suspense>
 
-      {/* Mobile Bottom Icons Tray */}
-      <div className="fixed bottom-0 left-0 right-0 bg-gray-50/95 backdrop-blur-sm border-t border-gray-200 shadow-lg z-[9999] md:hidden">
-        <div className="px-4 py-3">
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className={`w-full backdrop-blur-sm rounded-lg p-3 shadow-md hover:scale-[1.02] transition-all duration-200 flex items-center justify-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90`}
-            aria-label="Mobile menu"
-          >
-            <Menu className="h-5 w-5" />
-            <span className="text-sm font-medium">Menu</span>
-          </button>
-        </div>
-      </div>
-
       {selectedArticle && (
         <ArticleModal
           title={selectedArticle.title}
@@ -1345,6 +1331,7 @@ function App() {
           onClose={() => setSelectedStory(null)}
         />
       )}
+      <MobileTrayMenu />
     </div>
   );
 }

@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, FileText, Palette } from "lucide-react";
 import { content } from "../content";
+import MobileTrayMenu from "../components/MobileTrayMenu";
 
 const Admin: React.FC = () => {
   return (
@@ -138,6 +139,7 @@ const Admin: React.FC = () => {
           </div>
         </div>
       </main>
+      <MobileTrayMenu />
     </div>
   );
 };

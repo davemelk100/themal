@@ -4,6 +4,7 @@ import { slugify } from "../utils/slugify";
 import ShareWidget from "../components/ShareWidget";
 import { useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
+import MobileTrayMenu from "../components/MobileTrayMenu";
 
 export default function Article() {
   const { slug } = useParams();
@@ -183,6 +184,7 @@ export default function Article() {
           </Link>
         </div>
       </div>
+      <MobileTrayMenu />
     </div>
   );
 }

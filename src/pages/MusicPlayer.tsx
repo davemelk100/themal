@@ -10,6 +10,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { audioTracks, AudioTrack } from "../data/audioUrls";
+import MobileTrayMenu from "../components/MobileTrayMenu";
 
 const MusicPlayer: React.FC = () => {
   const [currentTrack, setCurrentTrack] = useState(0);
@@ -328,6 +329,7 @@ const MusicPlayer: React.FC = () => {
           </div>
         </motion.div>
       </div>
+      <MobileTrayMenu />
     </div>
   );
 };

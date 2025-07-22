@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { content } from "../content";
 import { slugify } from "../utils/slugify";
 import { ArrowLeft, Search, Calendar } from "lucide-react";
+import MobileTrayMenu from "../components/MobileTrayMenu";
 
 export default function Archive() {
   const navigate = useNavigate();
@@ -142,6 +143,7 @@ export default function Archive() {
           </div>
         )}
       </div>
+      <MobileTrayMenu />
     </div>
   );
 }
