@@ -330,7 +330,11 @@ const DesignSystem: React.FC = () => {
                     Lab Card
                   </h3>
                   {/* Greyscale colored balls */}
-                  <div className="flex items-center gap-1 ml-2">
+                  <div
+                    className="flex items-center gap-1 ml-2"
+                    role="presentation"
+                    aria-label="Decorative greyscale dots"
+                  >
                     {[
                       "#6b7280", // Gray 500
                       "#9ca3af", // Gray 400
@@ -341,6 +345,8 @@ const DesignSystem: React.FC = () => {
                     ].map((color, i) => (
                       <span
                         key={i}
+                        role="presentation"
+                        aria-hidden="true"
                         style={{
                           display: "inline-block",
                           width: 14,

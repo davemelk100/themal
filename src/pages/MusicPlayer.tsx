@@ -25,20 +25,15 @@ const MusicPlayer: React.FC = () => {
   // Use the tracks from the audioUrls data
   const tracks: AudioTrack[] = audioTracks;
 
-  // Preload all MP3 files when component mounts
+  // Initialize the audio element with the first track when component mounts
   useEffect(() => {
-    tracks.forEach((track) => {
-      const audio = new Audio();
-      audio.src = track.uniqueUrl;
-      audio.preload = "auto";
-    });
-
-    // Initialize the audio element with the first track
-    if (audioRef.current) {
+    if (audioRef.current && tracks.length > 0) {
+      console.log("Loading audio file:", tracks[0].uniqueUrl);
       audioRef.current.src = tracks[0].uniqueUrl;
       audioRef.current.load();
+      audioRef.current.volume = volume;
     }
-  }, []);
+  }, [volume]);
 
   const togglePlay = () => {
     if (audioRef.current) {
@@ -59,8 +54,15 @@ const MusicPlayer: React.FC = () => {
     setLoading(true);
     setPendingPlay(true);
     if (audioRef.current) {
+      console.log(
+        "Loading track:",
+        tracks[index].title,
+        "URL:",
+        tracks[index].uniqueUrl
+      );
       audioRef.current.src = tracks[index].uniqueUrl;
       audioRef.current.load();
+      audioRef.current.volume = isMuted ? 0 : volume;
     }
   };
 
@@ -177,6 +179,11 @@ const MusicPlayer: React.FC = () => {
             onEnded={nextTrack}
             onLoadedMetadata={handleTimeUpdate}
             onCanPlay={handleCanPlay}
+            onError={(e) => {
+              console.error("Audio loading error:", e);
+              setLoading(false);
+              setPendingPlay(false);
+            }}
             preload="auto"
           />
 

@@ -67,10 +67,10 @@ export const audioTracks: AudioTrack[] = [
     id: 7,
     title: "Specifically or Explicitly",
     artist: "BALM",
-    url: "/audio/specifically-or-explicitly.mp3",
-    uniqueUrl: "/audio/specifically-or-explicitly.mp3",
+    url: "/audio/nothing-specifically.mp3",
+    uniqueUrl: "/audio/nothing-specifically.mp3",
     duration: "1:55",
-    filename: "specifically-or-explicitly.mp3",
+    filename: "nothing-specifically.mp3",
   },
 ];
 

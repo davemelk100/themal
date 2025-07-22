@@ -27,6 +27,18 @@
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 
+# Audio files
+*.mp3
+  Content-Type: audio/mpeg
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
+# Audio directory
+/audio/*
+  Content-Type: audio/mpeg
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
 

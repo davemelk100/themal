@@ -524,6 +524,7 @@ function App() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center relative z-20"
+                                aria-label={`View demo: ${project.title}`}
                               >
                                 <ExternalLink className="h-5 w-5 text-gray-600" />
                               </a>
@@ -539,7 +540,11 @@ function App() {
                                   {project.title}
                                 </h3>
                                 {/* Colored balls for each Lab card */}
-                                <div className="flex items-center gap-1 ml-2">
+                                <div
+                                  className="flex items-center gap-1 ml-2"
+                                  role="presentation"
+                                  aria-label="Decorative colored dots"
+                                >
                                   {project.title === "Design Panes" &&
                                     [
                                       "#ffd700", // Gold from Design Panes animation
@@ -551,6 +556,8 @@ function App() {
                                     ].map((color, i) => (
                                       <span
                                         key={i}
+                                        role="presentation"
+                                        aria-hidden="true"
                                         style={{
                                           display: "inline-block",
                                           width: 14,
@@ -573,6 +580,8 @@ function App() {
                                     ].map((color, i) => (
                                       <span
                                         key={i}
+                                        role="presentation"
+                                        aria-hidden="true"
                                         style={{
                                           display: "inline-block",
                                           width: 14,
@@ -727,7 +736,9 @@ function App() {
                             article.title !==
                               "AI is hydrated with user research data" &&
                             article.title !==
-                              "Can Bad (or Good) Prompts Make AI Dumber (or Smarter)?"
+                              "Can Bad (or Good) Prompts Make AI Dumber (or Smarter)?" &&
+                            article.title !==
+                              "Prompts and Prompt Structure for Heuristic Evaluations"
                         )
                         .sort(
                           (a, b) =>
@@ -747,6 +758,7 @@ function App() {
                               <Link
                                 to={`/article/${slugify(article.title)}`}
                                 className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                                aria-label={`View article: ${article.title}`}
                               >
                                 <Eye className="h-5 w-5 text-gray-600" />
                               </Link>
@@ -868,6 +880,7 @@ function App() {
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                                  aria-label={`View project: ${project.title}`}
                                 >
                                   <Eye className="h-5 w-5 text-gray-600" />
                                 </a>
@@ -1254,7 +1267,11 @@ function App() {
                                 Lab Card
                               </h3>
                               {/* Greyscale colored balls */}
-                              <div className="flex items-center gap-1 ml-2">
+                              <div
+                                className="flex items-center gap-1 ml-2"
+                                role="presentation"
+                                aria-label="Decorative greyscale dots"
+                              >
                                 {[
                                   "#6b7280", // Gray 500
                                   "#9ca3af", // Gray 400
@@ -1265,6 +1282,8 @@ function App() {
                                 ].map((color, i) => (
                                   <span
                                     key={i}
+                                    role="presentation"
+                                    aria-hidden="true"
                                     style={{
                                       display: "inline-block",
                                       width: 18,
