@@ -19,6 +19,7 @@ const MusicPlayer: React.FC = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [audioError, setAudioError] = useState<string | null>(null);
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -87,6 +88,7 @@ const MusicPlayer: React.FC = () => {
 
   const handleCanPlay = () => {
     setLoading(false);
+    setAudioError(null); // Clear any previous errors
     if (pendingPlay && audioRef.current) {
       audioRef.current
         .play()
@@ -170,6 +172,17 @@ const MusicPlayer: React.FC = () => {
                 {tracks[currentTrack]?.uniqueUrl}
               </a>
             </p>
+            {audioError && (
+              <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+                <p className="text-sm">{audioError}</p>
+                <button
+                  onClick={() => setAudioError(null)}
+                  className="mt-2 text-xs underline"
+                >
+                  Dismiss
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Audio Element */}
@@ -183,6 +196,9 @@ const MusicPlayer: React.FC = () => {
               console.error("Audio loading error:", e);
               setLoading(false);
               setPendingPlay(false);
+              setAudioError(
+                `Failed to load audio: ${tracks[currentTrack]?.title}`
+              );
             }}
             preload="auto"
           />
