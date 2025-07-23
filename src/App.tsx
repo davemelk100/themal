@@ -329,13 +329,13 @@ function App() {
                       className="max-w-4xl flex flex-col items-start"
                     >
                       <p className="text-base text-muted-foreground leading-relaxed text-left">
-                        Senior User Experience Designer, Product Designer, and Writer
-                        with over 15 years of experience creating accessible,
-                        intuitive digital experiences across diverse industries.
-                        Projects have ranged from initial research to polished
-                        interfaces, including modernized dashboards, onboarding
-                        processes, and e-commerce platforms—always with a focus
-                        on clarity and accessibility. Skilled in
+                        Senior User Experience Designer, Product Designer, and
+                        Writer with over 15 years of experience creating
+                        accessible, intuitive digital experiences across diverse
+                        industries. Projects have ranged from initial research
+                        to polished interfaces, including modernized dashboards,
+                        onboarding processes, and e-commerce platforms—always
+                        with a focus on clarity and accessibility. Skilled in
                         cross-functional collaboration, user-centered and
                         product strategy, and applying advanced methods such as
                         artificial intelligence to solve complex challenges and
@@ -528,7 +528,7 @@ function App() {
                                     href={project.demo}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-1.5 shadow-md hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center relative z-20"
+                                    className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center relative z-20 mt-[5px] mr-[5px]"
                                     aria-label={`View demo: ${project.title}`}
                                   >
                                     <ExternalLink className="h-4 w-4 text-gray-600" />
@@ -660,12 +660,12 @@ function App() {
                                           subtitle: story.subtitle,
                                         })
                                       }
-                                      className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-1.5 shadow-md hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
+                                      className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center mt-[5px] mr-[5px]"
                                     >
                                       <Eye className="h-4 w-4 text-gray-600" />
                                     </button>
                                   ) : (
-                                    <div className="bg-white/80 backdrop-blur-sm rounded-full p-1.5 shadow-md w-8 h-8 flex items-center justify-center">
+                                    <div className="rounded-full p-1.5 w-8 h-8 flex items-center justify-center mt-[5px] mr-[5px]">
                                       <Eye className="h-4 w-4 text-gray-600" />
                                     </div>
                                   )}
@@ -762,7 +762,7 @@ function App() {
                                 <div className="absolute top-2 right-2 z-20">
                                   <Link
                                     to={`/article/${slugify(article.title)}`}
-                                    className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-1.5 shadow-md hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
+                                    className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center mt-[5px] mr-[5px]"
                                     aria-label={`View article: ${article.title}`}
                                   >
                                     <Eye className="h-4 w-4 text-gray-600" />
@@ -873,7 +873,7 @@ function App() {
                                       href={project.url}
                                       target="_blank"
                                       rel="noopener noreferrer"
-                                      className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-1.5 shadow-md hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
+                                      className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center mt-[5px] mr-[5px]"
                                       aria-label={`View project: ${project.title}`}
                                     >
                                       <Eye className="h-4 w-4 text-gray-600" />
@@ -890,7 +890,7 @@ function App() {
                                   className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md project-card h-[380px]"
                                 >
                                   <div className="absolute top-2 right-2 z-20">
-                                    <div className="bg-white/80 backdrop-blur-sm rounded-full p-1.5 shadow-md w-8 h-8 flex items-center justify-center">
+                                    <div className="rounded-full p-1.5 w-8 h-8 flex items-center justify-center mt-[5px] mr-[5px]">
                                       <Eye className="h-4 w-4 text-gray-600" />
                                     </div>
                                   </div>
