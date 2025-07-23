@@ -183,8 +183,8 @@ function App() {
             element={
               <>
                 {/* Hero Section */}
-                <section className="relative flex flex-col justify-center min-h-[120px] sm:min-h-[160px]">
-                  <div className="container mx-auto px-4 sm:px-8 pt-8 sm:pt-12 pb-4 sm:pb-4 flex flex-col gap-y-6 sm:gap-y-8">
+                <section className="relative flex flex-col justify-center min-h-[120px] sm:min-h-[160px] pt-4 sm:pt-6 lg:pt-8">
+                  <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
                     {/* Title Row */}
                     <div className="flex flex-row items-center gap-4 relative z-10 mt-5">
                       {/* Mobile: Title left-aligned */}
@@ -255,7 +255,7 @@ function App() {
                     {/* Nav Links and Icons Row */}
                     <div className="hidden md:flex md:flex-col lg:flex-row md:items-stretch lg:items-center gap-4 w-full">
                       {/* Desktop Navigation Links */}
-                      <div className="hidden md:flex w-full justify-start lg:justify-start rounded-lg pl-0 pr-3 sm:pr-4 py-2 items-center gap-2 sm:gap-3">
+                      <div className="hidden md:flex w-full justify-start lg:justify-start rounded-lg pl-0 pr-0 py-2 items-center gap-2 sm:gap-3">
                         <button
                           onClick={() => handleNavClick("current-projects")}
                           className="relative px-3 py-3 rounded-lg text-black hover:text-gray-600 dark:text-white dark:hover:text-gray-200 transition-all duration-200 text-sm font-bold uppercase hover:bg-gray-100 dark:hover:bg-gray-800"
@@ -301,7 +301,7 @@ function App() {
                         >
                           Career
                         </button>
-                        <button
+                        {/* <button
                           onClick={() => handleNavClick("personal")}
                           className="relative px-3 py-3 rounded-lg text-black hover:text-gray-600 dark:text-white dark:hover:text-gray-200 transition-all duration-200 text-sm font-bold uppercase hover:bg-gray-100 dark:hover:bg-gray-800"
                           style={{
@@ -309,7 +309,7 @@ function App() {
                           }}
                         >
                           Personal
-                        </button>
+                        </button> */}
                         <button
                           onClick={() => handleNavClick("design-system")}
                           className="relative px-3 py-3 rounded-lg text-black hover:text-gray-600 dark:text-white dark:hover:text-gray-200 transition-all duration-200 text-sm font-bold uppercase whitespace-nowrap hover:bg-gray-100 dark:hover:bg-gray-800"
@@ -326,7 +326,7 @@ function App() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 1.8, delay: 0.4 }}
-                      className="max-w-4xl flex flex-col items-start"
+                      className="flex flex-col items-start"
                     >
                       <p className="text-base text-muted-foreground leading-relaxed text-left">
                         Senior User Experience Designer, Product Designer, and
@@ -454,7 +454,7 @@ function App() {
                               Career
                             </span>
                           </button>
-                          <button
+                          {/* <button
                             onClick={() => {
                               handleNavClick("personal");
                               setIsMobileMenuOpen(false);
@@ -467,7 +467,7 @@ function App() {
                             <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                               Personal
                             </span>
-                          </button>
+                          </button> */}
                           <button
                             onClick={() => {
                               handleNavClick("design-system");
@@ -498,7 +498,7 @@ function App() {
 
                 {/* Lab and Stories Section */}
                 <section className="py-12 sm:py-16 lg:py-20">
-                  <div className="container mx-auto px-4 sm:px-8">
+                  <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                       {/* Lab Section */}
                       <div>
@@ -720,7 +720,7 @@ function App() {
 
                 {/* Articles and Design Section */}
                 <section className="py-12 sm:py-16 lg:py-20">
-                  <div className="container mx-auto px-4 sm:px-8">
+                  <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                       {/* Articles Section */}
                       <div>
@@ -917,7 +917,7 @@ function App() {
 
                 {/* Career Timeline Section */}
                 <section id="career" className="py-12 sm:py-16 lg:py-20">
-                  <div className="container mx-auto px-4 sm:px-8">
+                  <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
                     <SectionHeader
                       title={content.career.title}
                       subtitle={content.career.subtitle}
@@ -951,8 +951,8 @@ function App() {
                 </section>
 
                 {/* Personal Section */}
-                <section id="personal" className="py-12 sm:py-16 lg:py-20">
-                  <div className="container mx-auto px-4 sm:px-8">
+                {/* <section id="personal" className="py-12 sm:py-16 lg:py-20">
+                  <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
                     <SectionHeader
                       title="Personal"
                       subtitle="Personal projects and interests"
@@ -1040,11 +1040,11 @@ function App() {
                       </motion.div>
                     </div>
                   </div>
-                </section>
+                </section> */}
 
                 {/* Design System Section */}
                 <section id="design-system" className="py-12 sm:py-16 lg:py-20">
-                  <div className="container mx-auto px-4 sm:px-8">
+                  <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
                     <SectionHeader
                       title="Design System"
                       subtitle="Component library and design tokens"

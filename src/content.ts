@@ -243,7 +243,7 @@ export const content = {
       {
         title: "Selling Accessibility",
         subtitle:
-          "Building an accessibility discipline within a development and design organization",
+          "Building an accessibility discipline",
         description: "",
         category: "UX Strategy",
         image: "/img/delta-story.png",
@@ -254,8 +254,7 @@ export const content = {
       },
       {
         title: "AI-Driven Interpretation",
-        subtitle:
-          "Researching, and designing an AI design feature",
+        subtitle: "Researching, and designing an AI design feature",
         description: "",
         category: "AI Design",
         image: "/img/propio-story.png",
@@ -569,7 +568,7 @@ export const content = {
         id: "vibe-coding-vs-vibe-engineering",
         title: "Vibe Coding vs Vibe Engineering",
         description:
-          "The subtle art of making things work right, not just feel right.🎧 💻",
+          "The subtle art of making things work right, not just feel right.",
         url: "vibe-coding-vs-vibe-engineering",
         content: `<h1>Vibe Coding vs Vibe Engineering</h1>
 
@@ -785,7 +784,7 @@ export const content = {
         id: "api-tokens-digital-arcade",
         title: "API Tokens: The Digital Arcade",
         description:
-          "How the concept of tokens in modern API usage echoes the arcade culture of the 1980s. 🪙 🪙",
+          "How the concept of tokens in modern API usage echoes the arcade culture of the 1980s.",
         url: "api-tokens-digital-arcade",
         content: `<h1>API Tokens: The Digital Arcade</h1>
 
