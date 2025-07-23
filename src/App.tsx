@@ -329,7 +329,7 @@ function App() {
                       className="max-w-4xl flex flex-col items-start"
                     >
                       <p className="text-base text-muted-foreground leading-relaxed text-left">
-                        Senior User Experience Designer and Product Designer
+                        Senior User Experience Designer, Product Designer, and Writer
                         with over 15 years of experience creating accessible,
                         intuitive digital experiences across diverse industries.
                         Projects have ranged from initial research to polished
@@ -339,11 +339,13 @@ function App() {
                         cross-functional collaboration, user-centered and
                         product strategy, and applying advanced methods such as
                         artificial intelligence to solve complex challenges and
-                        drive inclusive innovation. Expertise also includes
-                        technical writing and content strategy, crafting clear,
+                        drive inclusive innovation. With extensive experience as
+                        a technical writer, I specialize in crafting clear,
                         engaging documentation and thought leadership that
                         bridge the gap between complex technical concepts and
-                        accessible user experiences.
+                        accessible user experiences, ensuring both users and
+                        stakeholders understand the value and functionality of
+                        digital products.
                       </p>
                     </motion.div>
                   </div>
