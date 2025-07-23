@@ -256,7 +256,7 @@ export const content = {
       {
         title: "AI-Driven Interpretation",
         subtitle:
-          "How I researched, and designed an AI-driven design feature request across organizations",
+          "Researching, and designing an AI-driven design feature request across organizations",
         description: "",
         category: "AI Design",
         image: "/img/propio-story.png",
