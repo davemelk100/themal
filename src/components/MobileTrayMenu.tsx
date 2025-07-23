@@ -124,7 +124,7 @@ const MobileTrayMenu: React.FC = () => {
                 >
                   Design Archive
                 </Link>
-                <Link
+                {/* <Link
                   to="/writing-gallery"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="block px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
@@ -144,7 +144,7 @@ const MobileTrayMenu: React.FC = () => {
                   className="block px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
                 >
                   Admin
-                </Link>
+                </Link> */}
               </div>
 
               {/* Social Links */}

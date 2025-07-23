@@ -186,7 +186,7 @@ function App() {
                 <section className="relative flex flex-col justify-center min-h-[120px] sm:min-h-[160px] pt-4 sm:pt-6 lg:pt-8">
                   <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
                     {/* Title Row */}
-                    <div className="flex flex-row items-center gap-4 relative z-10 mt-5">
+                    <div className="flex flex-row items-center gap-4 relative z-10 mt-5 mb-4 sm:mb-6">
                       {/* Mobile: Title left-aligned */}
                       <div className="flex xl:hidden items-center justify-start w-full">
                         <h1
@@ -326,7 +326,7 @@ function App() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 1.8, delay: 0.4 }}
-                      className="flex flex-col items-start"
+                      className="flex flex-col items-start mt-4 sm:mt-6"
                     >
                       <p className="text-base text-muted-foreground leading-relaxed text-left">
                         Senior User Experience Designer, Product Designer, and
