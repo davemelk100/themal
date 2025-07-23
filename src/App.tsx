@@ -519,7 +519,7 @@ function App() {
                                   duration: 1.8,
                                   delay: index * 0.2,
                                 }}
-                                className="group relative overflow-visible rounded-lg bg-gray-100/80 shadow-md h-[400px]"
+                                className="group relative overflow-visible rounded-lg bg-gray-100/80 shadow-md h-[380px]"
                               >
                                 <div className="absolute top-2 right-2 z-20">
                                   <a
@@ -646,7 +646,7 @@ function App() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 2.4, delay: 0.2 }}
-                                className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md h-[400px]"
+                                className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md h-[380px]"
                               >
                                 <div className="absolute top-2 right-2 z-20">
                                   {story.hasModal ? (
@@ -755,7 +755,7 @@ function App() {
                                   duration: 1.8,
                                   delay: index * 0.2,
                                 }}
-                                className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md h-[400px]"
+                                className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md h-[380px]"
                               >
                                 <div className="absolute top-2 right-2 z-20">
                                   <Link
@@ -864,7 +864,7 @@ function App() {
                               return project.url ? (
                                 <div
                                   key={index}
-                                  className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md project-card h-[400px]"
+                                  className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md project-card h-[380px]"
                                 >
                                   <div className="absolute top-2 right-2 z-20">
                                     <a
@@ -885,7 +885,7 @@ function App() {
                               ) : (
                                 <div
                                   key={index}
-                                  className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md project-card h-[400px]"
+                                  className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md project-card h-[380px]"
                                 >
                                   <div className="absolute top-2 right-2 z-20">
                                     <div className="bg-white/80 backdrop-blur-sm rounded-full p-1.5 shadow-md w-8 h-8 flex items-center justify-center">
