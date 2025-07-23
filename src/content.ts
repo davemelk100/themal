@@ -105,8 +105,7 @@ export const content = {
       },
       {
         title: "Logos for Sports Podcast",
-        description:
-          "Custom logo designs for a sports podcast with NFL team-inspired branding.",
+        description: "Logo designs for a sports podcast",
         categories: "Logo Design, Branding, Sports",
         image: "/img/nfl-logos.png",
         alt: "NFL-Themed Logos for Sports Podcast",
@@ -961,7 +960,7 @@ export const content = {
       },
       {
         id: "bad-good-prompts-ai-dumber-smarter",
-        title: "Can Bad (or Good) Prompts Make AI Dumber (or Smarter)?",
+        title: "Can we make AI dumber?",
         description:
           "A point-counterpoint article, rife with hypotheticals and indecision.",
         url: "bad-good-prompts-ai-dumber-smarter",
@@ -1069,9 +1068,9 @@ export const content = {
       },
       {
         id: "prompts-prompt-structure-heuristic-evaluations",
-        title: "Prompts and Prompt Structure for Heuristic Evaluations",
+        title: "Prompting for Heuristic Evaluations",
         description:
-          "How to effectively structure AI prompts for comprehensive heuristic evaluations of user interfaces.",
+          "How to structure AI prompts to conduct effective, comprehensive UI heuristic evaluations.",
         url: "prompts-prompt-structure-heuristic-evaluations",
         content: `<h1>Prompts and Prompt Structure for Heuristic Evaluations</h1>
 

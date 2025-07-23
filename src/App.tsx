@@ -51,7 +51,7 @@ const SectionHeader = ({
   subtitle,
   className = "",
   showArchiveLink = false,
-  showUpArrow = true,
+  showUpArrow = false,
 }: {
   title: string;
   subtitle?: string;
@@ -329,7 +329,21 @@ function App() {
                       className="max-w-4xl flex flex-col items-start"
                     >
                       <p className="text-base text-muted-foreground leading-relaxed text-left">
-                      Senior User Experience Designer and Product Designer with over 15 years of experience creating accessible, intuitive digital experiences across diverse industries. Projects have ranged from initial research to polished interfaces, including modernized dashboards, onboarding processes, and e-commerce platforms—always with a focus on clarity and accessibility. Skilled in cross-functional collaboration, user-centered and product strategy, and applying advanced methods such as artificial intelligence to solve complex challenges and drive inclusive innovation. Expertise also includes technical writing and content strategy, crafting clear, engaging documentation and thought leadership that bridge the gap between complex technical concepts and accessible user experiences.
+                        Senior User Experience Designer and Product Designer
+                        with over 15 years of experience creating accessible,
+                        intuitive digital experiences across diverse industries.
+                        Projects have ranged from initial research to polished
+                        interfaces, including modernized dashboards, onboarding
+                        processes, and e-commerce platforms—always with a focus
+                        on clarity and accessibility. Skilled in
+                        cross-functional collaboration, user-centered and
+                        product strategy, and applying advanced methods such as
+                        artificial intelligence to solve complex challenges and
+                        drive inclusive innovation. Expertise also includes
+                        technical writing and content strategy, crafting clear,
+                        engaging documentation and thought leadership that
+                        bridge the gap between complex technical concepts and
+                        accessible user experiences.
                       </p>
                     </motion.div>
                   </div>
@@ -480,426 +494,421 @@ function App() {
                   </AnimatePresence>
                 )}
 
-                {/* Current Projects Section */}
-                <section
-                  id="current-projects"
-                  className="py-12 sm:py-16 lg:py-20"
-                >
+                {/* Lab and Stories Section */}
+                <section className="py-12 sm:py-16 lg:py-20">
                   <div className="container mx-auto px-4 sm:px-8">
-                    <SectionHeader
-                      title={content.currentProjects.title}
-                      subtitle={content.currentProjects.subtitle}
-                      className="mb-8"
-                      showUpArrow={false}
-                    />
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {content.currentProjects.projects
-                        .filter((project) => project.title !== "Chatbots")
-                        .map((project, index) => (
-                          <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 1.8, delay: index * 0.2 }}
-                            className="group relative overflow-visible rounded-lg bg-gray-100/80 shadow-md aspect-[1/1]"
-                          >
-                            <div className="absolute top-3 right-3 z-20">
-                              <a
-                                href={project.demo}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center relative z-20"
-                                aria-label={`View demo: ${project.title}`}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                      {/* Lab Section */}
+                      <div>
+                        <SectionHeader
+                          title={content.currentProjects.title}
+                          subtitle={content.currentProjects.subtitle}
+                          className="mb-8"
+                          showUpArrow={false}
+                        />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          {content.currentProjects.projects
+                            .filter((project) => project.title !== "Chatbots")
+                            .map((project, index) => (
+                              <motion.div
+                                key={index}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{
+                                  duration: 1.8,
+                                  delay: index * 0.2,
+                                }}
+                                className="group relative overflow-visible rounded-lg bg-gray-100/80 shadow-md h-[400px]"
                               >
-                                <ExternalLink className="h-5 w-5 text-gray-600" />
-                              </a>
-                            </div>
-                            <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
-                              <div className="pr-12 flex items-center gap-2">
-                                <h3
-                                  className="text-[20px] font-semibold mb-1 dark:text-black title-font"
-                                  style={{
-                                    letterSpacing: "-0.01em",
-                                  }}
-                                >
-                                  {project.title}
-                                </h3>
-                                {/* Colored balls for each Lab card */}
-                                <div
-                                  className="flex items-center gap-1 ml-2"
-                                  role="presentation"
-                                >
-                                  {project.title === "Design Panes" &&
-                                    [
-                                      "#ffd700", // Gold from Design Panes animation
-                                      "#355c7d", // Deep Blue from Design Panes animation
-                                      "#88d498", // Soft Green from Design Panes animation
-                                      "#e6b800", // Darker Gold from Design Panes animation
-                                      "#26425a", // Darker Blue from Design Panes animation
-                                      "#5", // Darker Green from Design Panes animation
-                                    ].map((color, i) => (
-                                      <span
-                                        key={i}
-                                        role="presentation"
-                                        aria-hidden="true"
-                                        style={{
-                                          display: "inline-block",
-                                          width: 14,
-                                          height: 14,
-                                          borderRadius: "50%",
-                                          background: `radial-gradient(circle at 70% 70%, ${color} 0%, ${color} 60%, ${color}dd 100%)`,
-                                          boxShadow:
-                                            "0 1px 2px rgba(0,0,0,0.08)",
-                                        }}
-                                      />
-                                    ))}
-                                  {project.title === "AI NUI" &&
-                                    [
-                                      "#ff6b35", // Orange from AI NUI animation
-                                      "#4ecdc4", // Teal from AI NUI animation
-                                      "#6c757d", // Gray from AI NUI animation
-                                      "#e55a2b", // Darker Orange from AI NUI animation
-                                      "#457a", // Darker Teal from AI NUI animation
-                                      "#58", // Darker Gray from AI NUI animation
-                                    ].map((color, i) => (
-                                      <span
-                                        key={i}
-                                        role="presentation"
-                                        aria-hidden="true"
-                                        style={{
-                                          display: "inline-block",
-                                          width: 14,
-                                          height: 14,
-                                          borderRadius: "50%",
-                                          background: `radial-gradient(circle at 70% 70%, ${color} 0%, ${color} 60%, ${color}dd 100%)`,
-                                          boxShadow:
-                                            "0 1px 2px rgba(0,0,0,0.08)",
-                                        }}
-                                      />
-                                    ))}
+                                <div className="absolute top-3 right-3 z-20">
+                                  <a
+                                    href={project.demo}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center relative z-20"
+                                    aria-label={`View demo: ${project.title}`}
+                                  >
+                                    <ExternalLink className="h-5 w-5 text-gray-600" />
+                                  </a>
                                 </div>
-                              </div>
-                              <div className="flex-1 flex flex-col">
-                                <p className="text-sm text-gray-600 dark:text-gray-600 mb-2 flex-1">
-                                  {project.description}
-                                </p>
-                              </div>
-                            </div>
-                            <div className="absolute inset-0 overflow-hidden z-0">
-                              <img
-                                src={
-                                  project.title === "Design Panes"
-                                    ? `/img/design-panes-alt2.svg?v=${Date.now()}`
-                                    : project.title === "AI NUI"
-                                    ? `/img/ai-nui-alt2.svg?v=${Date.now()}`
-                                    : `/img/lab.svg?v=${Date.now()}`
-                                }
-                                alt={
-                                  project.title === "Design Panes"
-                                    ? "Design Panes"
-                                    : project.title === "AI NUI"
-                                    ? "Design Panes Animation"
-                                    : "Lab"
-                                }
-                                className="absolute inset-0 h-full w-full object-cover"
-                              />
-                            </div>
-                          </motion.div>
-                        ))}
-                    </div>
-                  </div>
-                </section>
-
-                {/* Stories Section */}
-                <section id="stories" className="py-12 sm:py-16 lg:py-20">
-                  <div className="container mx-auto px-4 sm:px-8">
-                    <SectionHeader
-                      title={content.stories.title}
-                      subtitle={content.stories.subtitle}
-                      className="mb-8"
-                    />
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {content.stories.items
-                        .filter((story) => story.title !== "Design Management")
-                        .map((story) => (
-                          <motion.div
-                            key={story.title}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 2.4, delay: 0.2 }}
-                            className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md"
-                          >
-                            <div className="absolute top-3 right-3">
-                              {story.hasModal ? (
-                                <button
-                                  onClick={() =>
-                                    setSelectedStory({
-                                      title: story.title,
-                                      content: story.content,
-                                      subtitle: story.subtitle,
-                                    })
-                                  }
-                                  className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
-                                >
-                                  <Eye className="h-5 w-5 text-gray-600" />
-                                </button>
-                              ) : (
-                                <div className="bg-white/80 backdrop-blur-sm rounded-full p-2 shadow-md w-10 h-10 flex items-center justify-center">
-                                  <Eye className="h-5 w-5 text-gray-600" />
+                                <div className="absolute inset-0 overflow-hidden z-0 p-6">
+                                  <img
+                                    src={
+                                      project.title === "Design Panes"
+                                        ? `/img/design-panes-alt2.svg?v=${Date.now()}`
+                                        : project.title === "AI NUI"
+                                        ? `/img/ai-nui-alt2.svg?v=${Date.now()}`
+                                        : `/img/lab.svg?v=${Date.now()}`
+                                    }
+                                    alt={
+                                      project.title === "Design Panes"
+                                        ? "Design Panes"
+                                        : project.title === "AI NUI"
+                                        ? "Design Panes Animation"
+                                        : "Lab"
+                                    }
+                                    className="absolute inset-0 h-full w-full object-contain object-bottom"
+                                  />
                                 </div>
-                              )}
-                            </div>
-                            <div className="p-3 flex flex-col gap-2 flex-1">
-                              <div className="pr-12">
-                                <h3
-                                  className="text-[20px] font-semibold mb-1 dark:text-black title-font"
-                                  style={{
-                                    letterSpacing: "-0.01em",
-                                  }}
-                                >
-                                  {story.title}
-                                </h3>
-                                {story.subtitle && (
-                                  <p className="text-sm text-gray-600 dark:text-gray-600 mb-2">
-                                    {story.subtitle}
-                                  </p>
-                                )}
-                              </div>
-                              <div className="flex-1 flex flex-col">
-                                {story.description && (
-                                  <p className="text-black mb-2 dark:text-black text-card-body flex-1">
-                                    {story.description}
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-                            <div className="relative aspect-[3/2] overflow-visible -mx-3 -mb-3">
-                              {story.image ? (
-                                <img
-                                  src={story.image}
-                                  alt={story.title}
-                                  className="absolute inset-0 h-full w-full object-cover"
-                                  loading="lazy"
-                                />
-                              ) : (
-                                <div className="absolute inset-0 h-full w-full bg-gray-200/50 flex items-center justify-center">
-                                  <div className="text-gray-400 text-sm">
-                                    No image
+                                <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
+                                  <div className="pr-12 bg-white/60 backdrop-blur-sm rounded-lg p-2">
+                                    <div className="flex items-center gap-2">
+                                      <h3
+                                        className="text-[20px] font-semibold mb-1 dark:text-black title-font"
+                                        style={{
+                                          letterSpacing: "-0.01em",
+                                        }}
+                                      >
+                                        {project.title}
+                                      </h3>
+                                      {/* Colored balls for each Lab card */}
+                                      <div
+                                        className="flex items-center gap-1 ml-2"
+                                        role="presentation"
+                                      >
+                                        {project.title === "Design Panes" &&
+                                          [
+                                            "#ffd700", // Gold from Design Panes animation
+                                            "#355c7d", // Deep Blue from Design Panes animation
+                                            "#88d498", // Soft Green from Design Panes animation
+                                            "#e6b800", // Darker Gold from Design Panes animation
+                                            "#26425a", // Darker Blue from Design Panes animation
+                                            "#5", // Darker Green from Design Panes animation
+                                          ].map((color, i) => (
+                                            <span
+                                              key={i}
+                                              role="presentation"
+                                              aria-hidden="true"
+                                              style={{
+                                                display: "inline-block",
+                                                width: 14,
+                                                height: 14,
+                                                borderRadius: "50%",
+                                                background: `radial-gradient(circle at 70% 70%, ${color} 0%, ${color} 60%, ${color}dd 100%)`,
+                                                boxShadow:
+                                                  "0 1px 2px rgba(0,0,0,0.08)",
+                                              }}
+                                            />
+                                          ))}
+                                        {project.title === "AI NUI" &&
+                                          [
+                                            "#ff6b35", // Orange from AI NUI animation
+                                            "#4ecdc4", // Teal from AI NUI animation
+                                            "#6c757d", // Gray from AI NUI animation
+                                            "#e55a2b", // Darker Orange from AI NUI animation
+                                            "#457a", // Darker Teal from AI NUI animation
+                                            "#58", // Darker Gray from AI NUI animation
+                                          ].map((color, i) => (
+                                            <span
+                                              key={i}
+                                              role="presentation"
+                                              aria-hidden="true"
+                                              style={{
+                                                display: "inline-block",
+                                                width: 14,
+                                                height: 14,
+                                                borderRadius: "50%",
+                                                background: `radial-gradient(circle at 70% 70%, ${color} 0%, ${color} 60%, ${color}dd 100%)`,
+                                                boxShadow:
+                                                  "0 1px 2px rgba(0,0,0,0.08)",
+                                              }}
+                                            />
+                                          ))}
+                                      </div>
+                                    </div>
+                                    <p className="text-sm text-gray-600 dark:text-gray-600 mb-2 flex-1">
+                                      {project.description}
+                                    </p>
                                   </div>
                                 </div>
-                              )}
-                            </div>
-                          </motion.div>
-                        ))}
-                    </div>
-                  </div>
-                </section>
+                              </motion.div>
+                            ))}
+                        </div>
+                      </div>
 
-                {/* Articles Section */}
-                <section id="articles" className="py-12 sm:py-16 lg:py-20">
-                  <div className="container mx-auto px-4 sm:px-8">
-                    <SectionHeader
-                      title="Articles"
-                      subtitle={content.articles.subtitle}
-                      className="mb-8"
-                      showArchiveLink={false}
-                    />
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {content.articles.items
-                        .filter(
-                          (article) =>
-                            article.title !==
-                              "API Tokens: The Digital Arcade" &&
-                            article.title !== "Commit Message Fatigue" &&
-                            article.title !== "The 5 Design Anti-Patterns" &&
-                            article.title !==
-                              "Vibe Coding vs Vibe Engineering" &&
-                            article.title !==
-                              "Information Architecture Is Not Sacred" &&
-                            article.title !==
-                              "AI is hydrated with user research data" &&
-                            article.title !==
-                              "Can Bad (or Good) Prompts Make AI Dumber (or Smarter)?" &&
-                            article.title !==
-                              "Prompts and Prompt Structure for Heuristic Evaluations"
-                        )
-                        .sort(
-                          (a, b) =>
-                            new Date(b.date).getTime() -
-                            new Date(a.date).getTime()
-                        )
-                        .map((article, index) => (
-                          <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 1.8, delay: index * 0.2 }}
-                            className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md"
-                          >
-                            <div className="absolute top-3 right-3">
-                              <Link
-                                to={`/article/${slugify(article.title)}`}
-                                className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
-                                aria-label={`View article: ${article.title}`}
+                      {/* Stories Section */}
+                      <div>
+                        <SectionHeader
+                          title={content.stories.title}
+                          subtitle={content.stories.subtitle}
+                          className="mb-8"
+                        />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          {content.stories.items
+                            .filter(
+                              (story) => story.title !== "Design Management"
+                            )
+                            .map((story) => (
+                              <motion.div
+                                key={story.title}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 2.4, delay: 0.2 }}
+                                className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md h-[400px]"
                               >
-                                <Eye className="h-5 w-5 text-gray-600" />
-                              </Link>
-                            </div>
-                            <div className="p-3 flex flex-col gap-2 flex-1">
-                              <div className="pr-12">
-                                <h3
-                                  className="text-[20px] font-semibold mb-1 dark:text-black title-font"
-                                  style={{
-                                    letterSpacing: "-0.01em",
-                                  }}
-                                >
-                                  {article.title}
-                                </h3>
-                              </div>
-                              <div className="flex-1 flex flex-col">
-                                {article.description && (
-                                  <p className="text-sm text-gray-600 dark:text-gray-600 mb-2 flex-1">
-                                    {article.description}
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-                            <div className="relative aspect-[3/2] overflow-visible -mx-3 -mb-3">
-                              <img
-                                src={`${
-                                  (article as any).cardImage || article.image
-                                }?v=${Date.now()}`}
-                                alt={article.title}
-                                className="absolute inset-0 h-full w-full object-cover"
-                              />
-                            </div>
-                          </motion.div>
-                        ))}
-                    </div>
-                    <div className="mt-8">
-                      <Link
-                        to="/archive"
-                        className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
-                      >
-                        View Archive
-                      </Link>
+                                <div className="absolute top-3 right-3 z-20">
+                                  {story.hasModal ? (
+                                    <button
+                                      onClick={() =>
+                                        setSelectedStory({
+                                          title: story.title,
+                                          content: story.content,
+                                          subtitle: story.subtitle,
+                                        })
+                                      }
+                                      className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                                    >
+                                      <Eye className="h-5 w-5 text-gray-600" />
+                                    </button>
+                                  ) : (
+                                    <div className="bg-white/80 backdrop-blur-sm rounded-full p-2 shadow-md w-10 h-10 flex items-center justify-center">
+                                      <Eye className="h-5 w-5 text-gray-600" />
+                                    </div>
+                                  )}
+                                </div>
+                                <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
+                                  <div className="pr-12 bg-white/60 backdrop-blur-sm rounded-lg p-2">
+                                    <h3
+                                      className="text-[20px] font-semibold mb-1 dark:text-black title-font"
+                                      style={{
+                                        letterSpacing: "-0.01em",
+                                      }}
+                                    >
+                                      {story.title}
+                                    </h3>
+                                    {story.subtitle && (
+                                      <p className="text-sm text-gray-600 dark:text-gray-600 mb-2">
+                                        {story.subtitle}
+                                      </p>
+                                    )}
+                                  </div>
+                                  <div className="flex-1 flex flex-col">
+                                    {story.description && (
+                                      <p className="text-black mb-2 dark:text-black text-card-body flex-1">
+                                        {story.description}
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="absolute inset-0 overflow-hidden z-0 p-6">
+                                  {story.image ? (
+                                    <img
+                                      src={story.image}
+                                      alt={story.title}
+                                      className="absolute inset-0 h-full w-full object-contain object-bottom"
+                                      loading="lazy"
+                                    />
+                                  ) : (
+                                    <div className="absolute inset-0 h-full w-full bg-gray-200/50 flex items-center justify-center">
+                                      <div className="text-gray-400 text-sm">
+                                        No image
+                                      </div>
+                                    </div>
+                                  )}
+                                </div>
+                              </motion.div>
+                            ))}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </section>
 
-                {/* Work Section */}
-                <section id="work" className="py-12 sm:py-16 lg:py-20">
+                {/* Articles and Design Section */}
+                <section className="py-12 sm:py-16 lg:py-20">
                   <div className="container mx-auto px-4 sm:px-8">
-                    <SectionHeader
-                      title="Design"
-                      subtitle={content.work.subtitle}
-                      className="mb-8"
-                      showArchiveLink={false}
-                    />
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {content.work.projects
-                        .filter(
-                          (project: any) =>
-                            project.title !== "3D Conversion UX Plan"
-                        )
-                        .map((project: any, index) => {
-                          const ProjectCard = (
-                            <div className="flex flex-col gap-2 flex-1">
-                              <div className="pr-12">
-                                <h3
-                                  className="text-[20px] font-semibold mb-1 dark:text-black title-font"
-                                  style={{
-                                    letterSpacing: "-0.01em",
-                                  }}
-                                >
-                                  {project.title}
-                                </h3>
-                                {project.description && (
-                                  <p className="text-sm text-gray-600 dark:text-gray-600 mb-2">
-                                    {project.description}
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-                          );
-
-                          const ProjectImage = (
-                            <div
-                              className={`relative ${
-                                project.title === "Vintage Form Design"
-                                  ? "aspect-[4/3]"
-                                  : project.title === "Mobile Game"
-                                  ? "aspect-[3/2]"
-                                  : "aspect-[5/3]"
-                              } overflow-visible -mx-3 -mb-3`}
-                            >
-                              <img
-                                src={project.image}
-                                alt={project.alt || project.title}
-                                className={`absolute inset-0 h-full w-full ${
-                                  project.title === "Hex Code Pop Art"
-                                    ? "object-cover"
-                                    : project.title === "Vintage Form Design"
-                                    ? "object-contain"
-                                    : project.title === "Mobile Game"
-                                    ? "object-cover"
-                                    : "object-contain"
-                                }`}
-                                loading="lazy"
-                              />
-                            </div>
-                          );
-
-                          return project.url ? (
-                            <div
-                              key={index}
-                              className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md project-card"
-                            >
-                              <div className="absolute top-3 right-3">
-                                <a
-                                  href={project.url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
-                                  aria-label={`View project: ${project.title}`}
-                                >
-                                  <Eye className="h-5 w-5 text-gray-600" />
-                                </a>
-                              </div>
-                              <div className="p-3 flex flex-col gap-2 flex-1">
-                                {ProjectCard}
-                              </div>
-                              {ProjectImage}
-                            </div>
-                          ) : (
-                            <div
-                              key={index}
-                              className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md project-card"
-                            >
-                              <div className="absolute top-3 right-3">
-                                <div className="bg-white/80 backdrop-blur-sm rounded-full p-2 shadow-md w-10 h-10 flex items-center justify-center">
-                                  <Eye className="h-5 w-5 text-gray-600" />
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                      {/* Articles Section */}
+                      <div>
+                        <SectionHeader
+                          title="Articles"
+                          subtitle={content.articles.subtitle}
+                          className="mb-8"
+                          showArchiveLink={false}
+                        />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          {content.articles.items
+                            .filter(
+                              (article) =>
+                                article.title !==
+                                  "API Tokens: The Digital Arcade" &&
+                                article.title !== "Commit Message Fatigue" &&
+                                article.title !==
+                                  "Information Architecture Is Not Sacred" &&
+                                article.title !==
+                                  "AI is hydrated with user research data"
+                            )
+                            .sort(
+                              (a, b) =>
+                                new Date(b.date).getTime() -
+                                new Date(a.date).getTime()
+                            )
+                            .map((article, index) => (
+                              <motion.div
+                                key={index}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{
+                                  duration: 1.8,
+                                  delay: index * 0.2,
+                                }}
+                                className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md h-[400px]"
+                              >
+                                <div className="absolute top-3 right-3 z-20">
+                                  <Link
+                                    to={`/article/${slugify(article.title)}`}
+                                    className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                                    aria-label={`View article: ${article.title}`}
+                                  >
+                                    <Eye className="h-5 w-5 text-gray-600" />
+                                  </Link>
                                 </div>
-                              </div>
-                              <div className="p-3 flex flex-col gap-2 flex-1">
-                                {ProjectCard}
-                              </div>
-                              {ProjectImage}
-                            </div>
-                          );
-                        })}
-                    </div>
-                    <div className="mt-8">
-                      <Link
-                        to="/design-archive"
-                        className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
-                      >
-                        View Design Archive
-                      </Link>
+                                <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
+                                  <div className="pr-12 bg-white/60 backdrop-blur-sm rounded-lg p-2">
+                                    <h3
+                                      className="text-[20px] font-semibold mb-1 dark:text-black title-font"
+                                      style={{
+                                        letterSpacing: "-0.01em",
+                                      }}
+                                    >
+                                      {article.title}
+                                    </h3>
+                                    {article.description && (
+                                      <p className="text-sm text-gray-600 dark:text-gray-600 mb-2 flex-1">
+                                        {article.description}
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="absolute inset-0 overflow-hidden z-0 p-6">
+                                  <img
+                                    src={`${
+                                      (article as any).cardImage ||
+                                      article.image
+                                    }?v=${Date.now()}`}
+                                    alt={article.title}
+                                    className="absolute inset-0 h-full w-full object-contain object-bottom"
+                                  />
+                                </div>
+                              </motion.div>
+                            ))}
+                        </div>
+                        <div className="mt-8">
+                          <Link
+                            to="/archive"
+                            className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
+                          >
+                            View Archive
+                          </Link>
+                        </div>
+                      </div>
+
+                      {/* Design Section */}
+                      <div>
+                        <SectionHeader
+                          title="Design"
+                          subtitle={content.work.subtitle}
+                          className="mb-8"
+                          showArchiveLink={false}
+                        />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          {content.work.projects
+                            .filter(
+                              (project: any) =>
+                                project.title !== "3D Conversion UX Plan"
+                            )
+                            .map((project: any, index) => {
+                              const ProjectCard = (
+                                <div className="flex flex-col gap-2 flex-1">
+                                  <div className="pr-12 bg-white/60 backdrop-blur-sm rounded-lg p-2">
+                                    <h3
+                                      className="text-[20px] font-semibold mb-1 dark:text-black title-font"
+                                      style={{
+                                        letterSpacing: "-0.01em",
+                                      }}
+                                    >
+                                      {project.title}
+                                    </h3>
+                                    {project.description && (
+                                      <p className="text-sm text-gray-600 dark:text-gray-600 mb-2">
+                                        {project.description}
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                              );
+
+                              const ProjectImage = (
+                                <div className="absolute inset-0 overflow-hidden z-0 p-6">
+                                  <img
+                                    src={project.image}
+                                    alt={project.alt || project.title}
+                                    className={`absolute inset-0 h-full w-full object-bottom ${
+                                      project.title === "Hex Code Pop Art"
+                                        ? "object-contain"
+                                        : project.title ===
+                                          "Vintage Form Design"
+                                        ? "object-contain"
+                                        : project.title === "Mobile Game"
+                                        ? "object-contain"
+                                        : "object-contain"
+                                    }`}
+                                    loading="lazy"
+                                  />
+                                </div>
+                              );
+
+                              return project.url ? (
+                                <div
+                                  key={index}
+                                  className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md project-card h-[400px]"
+                                >
+                                  <div className="absolute top-3 right-3 z-20">
+                                    <a
+                                      href={project.url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                                      aria-label={`View project: ${project.title}`}
+                                    >
+                                      <Eye className="h-5 w-5 text-gray-600" />
+                                    </a>
+                                  </div>
+                                  <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
+                                    {ProjectCard}
+                                  </div>
+                                  {ProjectImage}
+                                </div>
+                              ) : (
+                                <div
+                                  key={index}
+                                  className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md project-card h-[400px]"
+                                >
+                                  <div className="absolute top-3 right-3 z-20">
+                                    <div className="bg-white/80 backdrop-blur-sm rounded-full p-2 shadow-md w-10 h-10 flex items-center justify-center">
+                                      <Eye className="h-5 w-5 text-gray-600" />
+                                    </div>
+                                  </div>
+                                  <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
+                                    {ProjectCard}
+                                  </div>
+                                  {ProjectImage}
+                                </div>
+                              );
+                            })}
+                        </div>
+                        <div className="mt-8">
+                          <Link
+                            to="/design-archive"
+                            className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
+                          >
+                            View Design Archive
+                          </Link>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </section>
