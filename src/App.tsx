@@ -532,7 +532,7 @@ function App() {
                                     <ExternalLink className="h-4 w-4 text-gray-600" />
                                   </a>
                                 </div>
-                                <div className="absolute inset-0 overflow-hidden z-0 p-4">
+                                <div className="absolute inset-0 overflow-hidden z-0 p-2">
                                   <img
                                     src={
                                       project.title === "Design Panes"
@@ -692,7 +692,7 @@ function App() {
                                     )}
                                   </div>
                                 </div>
-                                <div className="absolute inset-0 overflow-hidden z-0 p-4">
+                                <div className="absolute inset-0 overflow-hidden z-0 p-2">
                                   {story.image ? (
                                     <img
                                       src={story.image}
@@ -757,13 +757,13 @@ function App() {
                                 }}
                                 className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md h-[400px]"
                               >
-                                <div className="absolute top-3 right-3 z-20">
+                                <div className="absolute top-2 right-2 z-20">
                                   <Link
                                     to={`/article/${slugify(article.title)}`}
-                                    className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                                    className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-1.5 shadow-md hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
                                     aria-label={`View article: ${article.title}`}
                                   >
-                                    <Eye className="h-5 w-5 text-gray-600" />
+                                    <Eye className="h-4 w-4 text-gray-600" />
                                   </Link>
                                 </div>
                                 <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
@@ -783,7 +783,7 @@ function App() {
                                     )}
                                   </div>
                                 </div>
-                                <div className="absolute inset-0 overflow-hidden z-0 p-4">
+                                <div className="absolute inset-0 overflow-hidden z-0 p-2">
                                   <img
                                     src={`${
                                       (article as any).cardImage ||
@@ -842,7 +842,7 @@ function App() {
                               );
 
                               const ProjectImage = (
-                                <div className="absolute inset-0 overflow-hidden z-0 p-4">
+                                <div className="absolute inset-0 overflow-hidden z-0 p-2">
                                   <img
                                     src={project.image}
                                     alt={project.alt || project.title}
@@ -866,15 +866,15 @@ function App() {
                                   key={index}
                                   className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md project-card h-[400px]"
                                 >
-                                  <div className="absolute top-3 right-3 z-20">
+                                  <div className="absolute top-2 right-2 z-20">
                                     <a
                                       href={project.url}
                                       target="_blank"
                                       rel="noopener noreferrer"
-                                      className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                                      className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-1.5 shadow-md hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
                                       aria-label={`View project: ${project.title}`}
                                     >
-                                      <Eye className="h-5 w-5 text-gray-600" />
+                                      <Eye className="h-4 w-4 text-gray-600" />
                                     </a>
                                   </div>
                                   <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
@@ -887,9 +887,9 @@ function App() {
                                   key={index}
                                   className="group relative overflow-hidden rounded-lg bg-gray-100/80 flex flex-col shadow-md project-card h-[400px]"
                                 >
-                                  <div className="absolute top-3 right-3 z-20">
-                                    <div className="bg-white/80 backdrop-blur-sm rounded-full p-2 shadow-md w-10 h-10 flex items-center justify-center">
-                                      <Eye className="h-5 w-5 text-gray-600" />
+                                  <div className="absolute top-2 right-2 z-20">
+                                    <div className="bg-white/80 backdrop-blur-sm rounded-full p-1.5 shadow-md w-8 h-8 flex items-center justify-center">
+                                      <Eye className="h-4 w-4 text-gray-600" />
                                     </div>
                                   </div>
                                   <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
