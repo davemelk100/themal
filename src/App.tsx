@@ -1053,7 +1053,7 @@ function App() {
                       title="Design System"
                       subtitle="Component library and design tokens"
                       className="mb-8"
-                      showUpArrow={true}
+                      showUpArrow={false}
                     />
 
                     {/* Colors */}
