@@ -12,6 +12,8 @@ import {
   Briefcase,
   Settings,
   Heart,
+  LayoutGrid,
+  List,
 } from "lucide-react";
 import { LinkedInLogoIcon } from "@radix-ui/react-icons";
 import { useState, useEffect } from "react";
@@ -52,12 +54,16 @@ const SectionHeader = ({
   className = "",
   showArchiveLink = false,
   showUpArrow = false,
+  toggleView,
+  viewMode,
 }: {
   title: string;
   subtitle?: string;
   className?: string;
   showArchiveLink?: boolean;
   showUpArrow?: boolean;
+  toggleView?: (mode: "grid" | "list") => void;
+  viewMode?: "grid" | "list";
 }) => {
   return (
     <div className={`${className}`}>
@@ -82,6 +88,32 @@ const SectionHeader = ({
           )}
         </div>
         <div className="flex items-center gap-3">
+          {toggleView && (
+            <div className="flex items-center gap-1 ml-2">
+              <button
+                aria-label="Grid view"
+                className={`p-2 rounded-md border transition-colors ${
+                  viewMode === "grid"
+                    ? "bg-gray-200 dark:bg-gray-700 border-gray-400 dark:border-gray-500"
+                    : "bg-transparent border-transparent hover:bg-gray-100 dark:hover:bg-gray-800"
+                }`}
+                onClick={() => toggleView("grid")}
+              >
+                <LayoutGrid className="h-4 w-4" />
+              </button>
+              <button
+                aria-label="List view"
+                className={`p-2 rounded-md border transition-colors ${
+                  viewMode === "list"
+                    ? "bg-gray-200 dark:bg-gray-700 border-gray-400 dark:border-gray-500"
+                    : "bg-transparent border-transparent hover:bg-gray-100 dark:hover:bg-gray-800"
+                }`}
+                onClick={() => toggleView("list")}
+              >
+                <List className="h-4 w-4" />
+              </button>
+            </div>
+          )}
           {showArchiveLink && (
             <Link
               to="/archive"
@@ -115,6 +147,10 @@ function App() {
   } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   // const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [labView, setLabView] = useState<"grid" | "list">("grid");
+  const [storiesView, setStoriesView] = useState<"grid" | "list">("grid");
+  const [articlesView, setArticlesView] = useState<"grid" | "list">("grid");
+  const [designView, setDesignView] = useState<"grid" | "list">("grid");
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -551,8 +587,16 @@ function App() {
                           subtitle={content.currentProjects.subtitle}
                           className="mb-8"
                           showUpArrow={false}
+                          toggleView={setLabView}
+                          viewMode={labView}
                         />
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div
+                          className={
+                            labView === "grid"
+                              ? "grid grid-cols-1 md:grid-cols-2 gap-6"
+                              : "flex flex-col gap-4"
+                          }
+                        >
                           {content.currentProjects.projects
                             .filter((project) => project.title !== "Chatbots")
                             .map((project, index) => (
@@ -682,8 +726,16 @@ function App() {
                           title={content.stories.title}
                           subtitle={content.stories.subtitle}
                           className="mb-8"
+                          toggleView={setStoriesView}
+                          viewMode={storiesView}
                         />
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div
+                          className={
+                            storiesView === "grid"
+                              ? "grid grid-cols-1 md:grid-cols-2 gap-6"
+                              : "flex flex-col gap-4"
+                          }
+                        >
                           {content.stories.items
                             .filter(
                               (story) => story.title !== "Design Management"
@@ -779,8 +831,16 @@ function App() {
                           subtitle={content.articles.subtitle}
                           className="mb-8"
                           showArchiveLink={false}
+                          toggleView={setArticlesView}
+                          viewMode={articlesView}
                         />
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div
+                          className={
+                            articlesView === "grid"
+                              ? "grid grid-cols-1 md:grid-cols-2 gap-6"
+                              : "flex flex-col gap-4"
+                          }
+                        >
                           {content.articles.items
                             .filter(
                               (article) =>
@@ -868,8 +928,16 @@ function App() {
                           subtitle={content.work.subtitle}
                           className="mb-8"
                           showArchiveLink={false}
+                          toggleView={setDesignView}
+                          viewMode={designView}
                         />
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div
+                          className={
+                            designView === "grid"
+                              ? "grid grid-cols-1 md:grid-cols-2 gap-6"
+                              : "flex flex-col gap-4"
+                          }
+                        >
                           {content.work.projects
                             .filter(
                               (project: any) =>
