@@ -969,6 +969,7 @@ function App() {
                 </section>
 
                 {/* Testimonials Section */}
+                {/**
                 <section id="testimonials" className="py-12 sm:py-16 lg:py-20">
                   <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
                     <SectionHeader
@@ -1006,6 +1007,7 @@ function App() {
                     </div>
                   </div>
                 </section>
+                */}
 
                 {/* Career Timeline Section */}
                 <section id="career" className="py-12 sm:py-16 lg:py-20">
@@ -1013,7 +1015,7 @@ function App() {
                     <SectionHeader
                       title={content.career.title}
                       subtitle={content.career.subtitle}
-                      className="mb-8 sm:mb-16"
+                      className="mb-8 sm:mb-6"
                     />
                     <div className="space-y-8">
                       {content.career.positions.map((position) => (
@@ -1038,6 +1040,30 @@ function App() {
                           </p>
                         </div>
                       ))}
+                    </div>
+                    {/* Certifications & Education */}
+                    <div className="mt-10 pt-6 max-w-3xl">
+                      <div className="mb-2 font-semibold text-gray-800 dark:text-gray-200 text-sm">
+                        Certifications
+                      </div>
+                      <ul className="list-disc list-inside text-sm text-gray-700 dark:text-gray-300 mb-4">
+                        <li>Certified ScrumMaster (Scrum Alliance)</li>
+                        <li>
+                          Certified Usability Analyst (Human Factors
+                          International)
+                        </li>
+                        <li>ITIL Foundation Certificate (Axelos)</li>
+                      </ul>
+                      <div className="mb-2 font-semibold text-gray-800 dark:text-gray-200 text-sm">
+                        Education
+                      </div>
+                      <div className="text-sm text-gray-700 dark:text-gray-300">
+                        Oakland University | Rochester MI
+                        <br />
+                        Bachelor of Arts in English
+                        <br />
+                        Minor in Public Relations
+                      </div>
                     </div>
                   </div>
                 </section>
