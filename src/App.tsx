@@ -316,8 +316,8 @@ function App() {
                         </div>
                       </div>
                     </div>
-                    {/* Nav Links and Icons Row - COMMENTED OUT */}
-                    {/* <div className="hidden md:flex md:flex-col lg:flex-row md:items-stretch lg:items-center gap-4 w-full">
+                    {/* Nav Links and Icons Row */}
+                    <div className="hidden md:flex md:flex-col lg:flex-row md:items-stretch lg:items-center gap-4 w-full">
                       <div className="hidden md:flex w-full justify-start lg:justify-start rounded-lg pl-0 pr-0 py-2 items-center gap-2 sm:gap-3">
                         <button
                           onClick={() => handleNavClick("current-projects")}
@@ -365,13 +365,13 @@ function App() {
                           Career
                         </button>
                         <button
-                          onClick={() => handleNavClick("testimonials")}
+                          onClick={() => handleNavClick("skills-and-software")}
                           className="relative px-3 py-3 rounded-lg text-black hover:text-gray-600 dark:text-white dark:hover:text-gray-200 transition-all duration-200 text-sm font-bold uppercase hover:bg-gray-100 dark:hover:bg-gray-800"
                           style={{
                             fontFamily: "Helvetica, Arial, sans-serif",
                           }}
                         >
-                          Testimonials
+                          Skills
                         </button>
                         <button
                           onClick={() => handleNavClick("design-system")}
@@ -383,7 +383,7 @@ function App() {
                           Design System
                         </button>
                       </div>
-                    </div> */}
+                    </div>
                     {/* Summary Row (unchanged) */}
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
@@ -392,23 +392,7 @@ function App() {
                       className="flex flex-col items-start mt-4 sm:mt-6"
                     >
                       <p className="text-base text-muted-foreground leading-relaxed text-left">
-                        Senior User Experience Designer, Product Designer, and
-                        Writer with over 15 years of experience creating
-                        accessible, intuitive digital experiences across diverse
-                        industries. Projects have ranged from initial research
-                        to polished interfaces, including modernized dashboards,
-                        onboarding processes, and e-commerce platforms—always
-                        with a focus on clarity and accessibility. Skilled in
-                        cross-functional collaboration, user-centered and
-                        product strategy, and applying advanced methods such as
-                        artificial intelligence to solve complex challenges and
-                        drive inclusive innovation. With extensive experience as
-                        a technical writer, I specialize in crafting clear,
-                        engaging documentation and thought leadership that
-                        bridge the gap between complex technical concepts and
-                        accessible user experiences, ensuring both users and
-                        stakeholders understand the value and functionality of
-                        digital products.
+                        Senior UX and Product Designer with 15+ years of experience delivering accessible, user-centered digital solutions across industries. Skilled in end-to-end design—from research to polished UIs—for dashboards, onboarding flows, and e-commerce. Expert in cross-functional collaboration, AI-driven problem solving, and inclusive innovation. Also an experienced technical writer, translating complex ideas into clear, engaging content for users and stakeholders.
                       </p>
                     </motion.div>
                   </div>
@@ -1233,7 +1217,7 @@ function App() {
                               {category.skills.map((skill, skillIndex) => (
                                 <div
                                   key={skillIndex}
-                                  className="border-l-4 border-orange-500 pl-4"
+                                  className="border-l-4 border-[#D2691E] pl-4"
                                 >
                                   <p className="text-sm font-medium text-gray-800 dark:text-gray-200 mb-2">
                                     {skill.skill}
@@ -1242,7 +1226,7 @@ function App() {
                                     {skill.software.map((tool, toolIndex) => (
                                       <span
                                         key={toolIndex}
-                                        className="inline-block px-3 py-1 text-xs bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-200 rounded-full border border-orange-200 dark:border-orange-800"
+                                        className="inline-block px-3 py-1 text-xs bg-[#D2691E]/10 dark:bg-[#D2691E]/20 text-[#D2691E] dark:text-[#E8A87C] rounded-full border border-[#D2691E]/30 dark:border-[#D2691E]/40"
                                       >
                                         {tool}
                                       </span>
@@ -1378,6 +1362,22 @@ function App() {
                           <div className="text-sm">
                             <p className="font-medium">Secondary</p>
                             <p className="text-gray-600">Secondary</p>
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <div className="w-full h-20 bg-[#D2691E] rounded-lg"></div>
+                          <div className="text-sm">
+                            <p className="font-medium text-white">
+                              Muted Orange
+                            </p>
+                            <p className="text-gray-300">#D2691E</p>
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <div className="w-full h-20 bg-[#20B2AA] rounded-lg"></div>
+                          <div className="text-sm">
+                            <p className="font-medium text-white">Teal</p>
+                            <p className="text-gray-300">#20B2AA</p>
                           </div>
                         </div>
                         <div className="space-y-2">
@@ -1633,6 +1633,31 @@ function App() {
         />
       )}
       <MobileTrayMenu />
+
+      {/* Back to Top Arrow */}
+      <motion.button
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        className="fixed bottom-6 right-6 z-50 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-800 backdrop-blur-sm rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 border border-gray-200 dark:border-gray-700"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        aria-label="Back to top"
+      >
+        <svg
+          className="w-6 h-6 text-gray-700 dark:text-gray-300"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M5 10l7-7m0 0l7 7m-7-7v18"
+          />
+        </svg>
+      </motion.button>
     </div>
   );
 }
