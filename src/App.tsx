@@ -250,7 +250,7 @@ function App() {
                 <section className="relative flex flex-col justify-center min-h-[120px] sm:min-h-[160px] pt-4 sm:pt-6 lg:pt-8">
                   <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
                     {/* Title Row */}
-                    <div className="flex flex-row items-center gap-4 relative z-10 mt-5 mb-4 sm:mb-6">
+                    <div className="flex flex-row items-center gap-4 relative z-10 mt-5 mb-6 sm:mb-8">
                       {/* Mobile: Title left-aligned */}
                       <div className="flex xl:hidden items-center justify-start w-full">
                         <h1
@@ -317,7 +317,7 @@ function App() {
                       </div>
                     </div>
                     {/* Nav Links and Icons Row */}
-                    <div className="hidden md:flex md:flex-col lg:flex-row md:items-stretch lg:items-center gap-4 w-full">
+                    <div className="hidden md:flex md:flex-col lg:flex-row md:items-stretch lg:items-center gap-4 w-full px-8 sm:px-16 lg:px-32">
                       <div className="hidden md:flex w-full justify-start lg:justify-start rounded-lg pl-0 pr-0 py-2 items-center gap-2 sm:gap-3">
                         <button
                           onClick={() => handleNavClick("current-projects")}
@@ -389,10 +389,18 @@ function App() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 1.8, delay: 0.4 }}
-                      className="flex flex-col items-start mt-4 sm:mt-6"
+                      className="flex flex-col items-start mt-4 sm:mt-6 px-8 sm:px-16 lg:px-32"
                     >
-                      <p className="text-base text-muted-foreground leading-relaxed text-left">
-                        Senior UX and Product Designer with 15+ years of experience delivering accessible, user-centered digital solutions across industries. Skilled in end-to-end design—from research to polished UIs—for dashboards, onboarding flows, and e-commerce. Expert in cross-functional collaboration, AI-driven problem solving, and inclusive innovation. Also an experienced technical writer, translating complex ideas into clear, engaging content for users and stakeholders.
+                      <p className="text-lg text-muted-foreground leading-relaxed text-left">
+                        Senior UX and Product Designer with 15+ years of
+                        experience delivering accessible, user-centered digital
+                        solutions across industries. Skilled in end-to-end
+                        design—from research to polished UIs—for dashboards,
+                        onboarding flows, and e-commerce. Expert in
+                        cross-functional collaboration, AI-driven problem
+                        solving, and inclusive innovation. Also an experienced
+                        technical writer, translating complex ideas into clear,
+                        engaging content for users and stakeholders.
                       </p>
                     </motion.div>
                   </div>
