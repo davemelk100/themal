@@ -25,7 +25,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import ArticleModal from "./components/ArticleModal";
 import { ThemeProvider } from "./context/ThemeContext";
 import ThemeToggle from "./components/ThemeToggle";
-// import MobileTrayMenu from "./components/MobileTrayMenu";
+import MobileTrayMenu from "./components/MobileTrayMenu";
 import {
   Routes,
   Route,
@@ -1575,7 +1575,7 @@ function App() {
           onClose={() => setSelectedStory(null)}
         />
       )}
-      {/* <MobileTrayMenu /> */}
+      <MobileTrayMenu />
     </div>
   );
 }
