@@ -631,6 +631,9 @@ function App() {
                                         ? `/img/ai-nui-alt2.svg?v=${Date.now()}`
                                         : project.title === "HealthAware"
                                         ? `/img/health-aware-animation.svg?v=${Date.now()}`
+                                        : project.title ===
+                                          "User Testing Config"
+                                        ? `/img/user-testing-config-animation.svg?v=${Date.now()}`
                                         : `/img/lab.svg?v=${Date.now()}`
                                     }
                                     alt={
@@ -640,6 +643,9 @@ function App() {
                                         ? "Design Panes Animation"
                                         : project.title === "HealthAware"
                                         ? "HealthAware Animation"
+                                        : project.title ===
+                                          "User Testing Config"
+                                        ? "User Testing Config Animation"
                                         : "Lab"
                                     }
                                     className="absolute inset-0 h-full w-full object-contain object-bottom"
@@ -716,6 +722,30 @@ function App() {
                                             "#475569", // Slate Dark - depth/contrast
                                             "#cbd5e1", // Slate Lighter - soft/gentle
                                             "#334155", // Slate Darker - sophisticated
+                                          ].map((color, i) => (
+                                            <span
+                                              key={i}
+                                              role="presentation"
+                                              aria-hidden="true"
+                                              style={{
+                                                display: "inline-block",
+                                                width: 12,
+                                                height: 12,
+                                                borderRadius: "50%",
+                                                background: `radial-gradient(circle at 70% 70%, ${color} 0%, ${color} 60%, ${color}dd 100%)`,
+                                                boxShadow:
+                                                  "0 1px 2px rgba(0,0,0,0.08)",
+                                              }}
+                                            />
+                                          ))}
+                                        {project.title ===
+                                          "User Testing Config" &&
+                                          [
+                                            "#a67c52", // Brighter Warm Brown - neutral/testing
+                                            "#b8a095", // Brighter Brown Gray - subtle/calm
+                                            "#8b6b4f", // Brighter Brown Dark - depth/contrast
+                                            "#e8d5d0", // Brighter Light Beige - soft/gentle
+                                            "#7a5a45", // Brighter Brown Darker - sophisticated
                                           ].map((color, i) => (
                                             <span
                                               key={i}

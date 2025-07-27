@@ -234,6 +234,217 @@ export const content = {
     ],
   },
 
+  skillsAndSoftware: {
+    title: "Skills and Software",
+    subtitle: "Skills and Software Used to Execute",
+    categories: [
+      {
+        name: "User Experience (UX) Design",
+        skills: [
+          {
+            skill: "Designing mobile and desktop interfaces for dashboards",
+            software: ["Figma", "Useberry", "bolt.new", "X-Code"],
+          },
+          {
+            skill: "Conducting usability evaluations and heuristic analysis",
+            software: ["Useberry", "Lighthouse", "aXe"],
+          },
+          {
+            skill: "Creating interactive prototypes",
+            software: ["Figma", "bolt.new"],
+          },
+          {
+            skill: "Developing user personas and user narratives",
+            software: ["Figma", "Perplexity", "ChatGPT", "Grok"],
+          },
+          {
+            skill: "Visualizing complex user flows and journey maps",
+            software: ["Figma"],
+          },
+          {
+            skill: "Conducting market research and best practice analysis",
+            software: ["Perplexity", "ChatGPT", "Grok"],
+          },
+          {
+            skill: "Facilitating and analyzing user testing sessions",
+            software: ["Useberry"],
+          },
+          {
+            skill: "Creating onboarding tutorials",
+            software: ["Figma"],
+          },
+          {
+            skill: "Synthesizing feedback to refine designs",
+            software: ["Figma", "Useberry", "Perplexity", "ChatGPT", "Grok"],
+          },
+        ],
+      },
+      {
+        name: "Digital Accessibility",
+        skills: [
+          {
+            skill: "Conducting accessibility audits and remediation",
+            software: ["Lighthouse", "aXe", "NVDA", "JAWS", "WAZE"],
+          },
+          {
+            skill: "Ensuring ADA/Section 508/WCAG compliance",
+            software: ["Lighthouse", "aXe"],
+          },
+          {
+            skill:
+              "Improving accessibility for applications (e.g., video call apps)",
+            software: [
+              "Lighthouse",
+              "aXe",
+              "screen readers",
+              "keyboard navigation tools",
+            ],
+          },
+          {
+            skill: "Using AI-powered tools for accessibility validation",
+            software: ["Perplexity", "ChatGPT", "Grok"],
+          },
+        ],
+      },
+      {
+        name: "Front-End Development",
+        skills: [
+          {
+            skill: "Building scalable design systems and reusable components",
+            software: [
+              "React",
+              "Next.js",
+              "Figma",
+              "HTML",
+              "CSS",
+              "JavaScript",
+              "TypeScript",
+            ],
+          },
+          {
+            skill: "Developing dynamic websites and applications",
+            software: [
+              "React",
+              "Next.js",
+              "HTML",
+              "CSS",
+              "JavaScript",
+              "TypeScript",
+              "ColdFusion",
+            ],
+          },
+          {
+            skill: "Creating pattern libraries and frameworks",
+            software: ["HTML", "CSS", "JavaScript", "TypeScript"],
+          },
+          {
+            skill: "Implementing responsive and accessible front-end code",
+            software: [
+              "HTML",
+              "CSS",
+              "JavaScript",
+              "TypeScript",
+              "React",
+              "Next.js",
+              "Tailwind CSS",
+            ],
+          },
+          {
+            skill: "Migrating websites to modern platforms",
+            software: [
+              "WordPress",
+              "WooCommerce",
+              "Shopify",
+              "HTML",
+              "CSS",
+              "PHP",
+            ],
+          },
+          {
+            skill: "Maintaining and updating websites",
+            software: ["WordPress", "ColdFusion", "HTML", "CSS", "JavaScript"],
+          },
+          {
+            skill: "Integrating payment systems and inventory sync",
+            software: ["Authorize.net", "coreSTORE", "WooCommerce"],
+          },
+          {
+            skill: "Developing custom themes and enhancements",
+            software: ["HTML", "CSS", "PHP", "WordPress"],
+          },
+          {
+            skill: "Building streaming media and interactive training guides",
+            software: [
+              "HTML",
+              "CSS",
+              "JavaScript",
+              "WMVs (Windows Media Video)",
+            ],
+          },
+        ],
+      },
+      {
+        name: "Search Engine Optimization (SEO)",
+        skills: [
+          {
+            skill: "Implementing SEO strategies and enhancements",
+            software: ["AIOSEO", "SEOpress"],
+          },
+          {
+            skill: "Conducting SEO analysis",
+            software: ["Lighthouse", "AIOSEO", "SEOpress"],
+          },
+          {
+            skill: "Using AI-powered SEO tools",
+            software: ["AIOSEO", "SEOpress"],
+          },
+        ],
+      },
+      {
+        name: "Technical Writing and Content Creation",
+        skills: [
+          {
+            skill: "Writing technical documentation and user guides",
+            software: ["SGML", "ArborText"],
+          },
+          {
+            skill: "Creating service manuals and electronic signage guides",
+            software: ["SGML", "ArborText"],
+          },
+          {
+            skill: "Developing interactive training guides and help content",
+            software: ["SGML", "HTML", "Confluence"],
+          },
+          {
+            skill: "Using AI to edit and test user-facing language",
+            software: ["Perplexity", "ChatGPT", "Grok"],
+          },
+        ],
+      },
+      {
+        name: "AI and Automation",
+        skills: [
+          {
+            skill: "Leveraging AI tools for research and feedback generation",
+            software: ["Perplexity", "ChatGPT", "Grok", "Cursor"],
+          },
+          {
+            skill: "Integrating AI chatbots into applications",
+            software: ["WordPress", "Slack", "React"],
+          },
+          {
+            skill: "Using Generative AI for actionable insights",
+            software: ["Perplexity", "ChatGPT", "Grok"],
+          },
+          {
+            skill: "Developing AI-powered features (e.g., live interpreter)",
+            software: ["React", "Next.js"],
+          },
+        ],
+      },
+    ],
+  },
+
   stories: {
     title: "Stories",
     subtitle: "My approach to problem solving and solution delivery.",
@@ -319,6 +530,13 @@ export const content = {
         technologies: ["React", "Health APIs", "IoT", "Real-time Data"],
         demo: "https://my-health-powerered-vehicle.netlify.app/",
         image: "/img/health-aware-animation.svg",
+      },
+      {
+        title: "User Testing Config",
+        description: "User testing configuration and management system.",
+        technologies: ["React", "TypeScript", "Tailwind", "Testing APIs"],
+        demo: "https://stupendous-paprenjak-06c1cc.netlify.app/",
+        image: "/img/user-testing-config-animation.svg",
       },
     ],
   },
