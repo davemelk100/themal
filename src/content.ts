@@ -191,45 +191,59 @@ export const content = {
     positions: [
       {
         title: "Senior Product Designer",
-        company: "Powerley",
+        company: "Powerley Inc., Detroit, MI",
         period: "January 2025 - Present",
         description:
-          "Contributing to design system initiatives and dashboard redesigns. Creating engaging user experiences through thoughtful onboarding flows and real-time interactions.",
+          "Designed both mobile and desktop interfaces for a bill analysis dashboard. Developed designs focused on identifying and presenting optimization opportunities. Leveraged AI tools to edit and test user-facing language for clarity and effectiveness. Utilized AI-powered tools to identify and address accessibility issues as part of ongoing design validation and improvement efforts. Worked with Useberry to facilitate and analyze user testing sessions. Created a comprehensive onboarding tutorial for new bill analysis features. Conducted market research and best practice analysis on comparable companies, methods, and industry approaches. Iterated on multiple design concepts using tools such as bolt.new, Cursor, Figma, Perplexity, ChatGPT, Grok, and others. Employed Generative AI to distill research findings and generate actionable feedback. Built a multi-functional React application enabling users to toggle between different design versions. Developed multiple Figma components for the design system and produced interactive, clickable prototypes. Reviewed and synthesized ad-hoc feedback to refine and improve design solutions.",
       },
       {
-        title: "Principal UX Designer",
-        company: "Propio Language Services",
+        title: "User Experience and Development Consultant",
+        company: "Melkonian Industries",
+        period: "November 2024 - January 2025",
+        description:
+          "Migrated a WordPress/eBay site to Shopify for a vintage antiques store, implementing SEO strategies and a path forward via AI-powered SEO tools (AIOSEO, SEOpress). Migrated a Wix site to WordPress with WooCommerce for an online knife store, integrating coreSTORE inventory sync, Authorize.net payments, and custom theme enhancements using HTML, CSS, and PHP. Added SEO enhancements and improvements via automated testing, as well as a fine-tunable chatbot integration. Designed and developed a specialized scheduling application using Figma, Next.js, and React. Conducted heuristic analysis on an AI chatbot product, documented workflows, integrated it into WordPress, Slack, and a React site, and delivered actionable findings with potential solutions. Completed a usability audit for a large data governance organization site, including screen reader and keyboard navigation tests, Lighthouse and aXe reports for 60+ pages, SEO analysis, and technical code improvement recommendations.",
+      },
+      {
+        title: "Principal UX/UI Developer",
+        company: "Propio Language Services Inc., Overland Park, KS",
         period: "July 2023 - November 2024",
         description:
-          "Improved video call accessibility to 98% and developed live transcription features. Created design systems and led EHR integration projects with comprehensive documentation.",
+          "Served as a subject matter expert on accessibility compliance. Led the design and development of interactive prototypes, ensuring accessibility and usability. Enhanced the accessibility of a video call application, improving its compliance from 78% to 98%. Collaborated with product and engineering teams to design and build a live AI interpreter feature. Crafted user narratives to inform design decisions and align workflows with user goals and pain points. Visualized complex user flows to simplify processes and align them with organizational objectives. Orchestrated design trade-offs using user-focused storytelling to drive cross-functional alignment.",
       },
       {
-        title: "Senior UX Designer",
-        company: "Dewpoint",
+        title: "Senior User Experience Lead Designer and Developer",
+        company: "Dewpoint Inc., Lansing, MI",
         period: "May 2016 - July 2023",
         description:
-          "Led UX strategy for 3D software, established accessibility standards, and built component libraries. Managed Agile teams and developed iterative design methodologies.",
+          "Established enterprise-wide HTML, CSS, and Accessibility (ADA/Section 508/WCAG) standards. Advised on UX methodologies, design processes, and RFPs to align with business goals. Conducted usability evaluations of Delta Dental of Michigan's software to identify design improvements. Created and implemented an accessibility support model to ensure ADA/Section 508/WCAG compliance. Integrated storytelling techniques into prototypes to communicate design solutions. Operated in Agile environments, aligning UX with development across four scrum teams. Collaborated with marketing and communications to maintain brand consistency. Designed visual style guides, pattern libraries, and reusable front-end code (HTML/CSS/JS/TS). Led and mentored team members and interviewed UX candidates to expand organizational expertise.",
       },
       {
         title: "Manager of Application Delivery",
-        company: "Meridian Health Plan",
+        company: "Meridian Health Plan, Detroit, MI",
         period: "June 2015 - May 2016",
         description:
-          "Managed a web team of 20 across numerous project tracks. Built a user experience discipline and implemented Agile Scrum framework. Created strategy for user experience and interface design while providing strategic direction for mobile and web development.",
+          "Managed a web team of 20 composed of designers and developers across numerous project tracks. Built a user experience discipline that previously had not existed within the company. Created strategy and methodology for user experience and user interface design. Worked with marketing and communications to identify demographics and develop user personas. Conducted user experience research to inform creative direction for web and mobile applications. Wrote job descriptions for all user experience and interface design roles. Implemented the Agile Scrum framework for rapid application development. Reported progress to CIO and IT president regarding strategic direction for mobile and web engineers. Worked in conjunction with web content strategist on information architecture. Worked with corporate communications to ensure proper web messaging.",
       },
       {
         title: "Software Development Manager",
-        company: "Optum / United Healthcare Group (UHG)",
-        period: "October 2011 - June 2015",
+        company: "Optum and United Healthcare Group, Southfield, MI",
+        period: "October 2012 - June 2015",
         description:
-          "Facilitated Federal Exchange (HealthCare.gov) UI/UX assessment and accessibility initiatives. Managed global team of 30 across multiple locations including Manila, New Delhi, and Hyderabad. Created responsive design framework using HTML/CSS/AngularJS and implemented Adobe Experience Manager CMS solutions.",
+          "Spent four months consulting on the Federal Exchange (HealthCare.gov) identifying UI and UX issues and delivering prescribed solutions. Participated, wrote scripts, and helped lead moderated user testing sessions. Created a pattern library and framework with HTML/CSS/JS/TS. Managed team of 30 across numerous project tracks. Created, staffed, and trained dev teams in Manila, New Delhi, Hyderabad, Minnesota, Boston, and Seattle. Consulted internal and external groups about responsive and accessible front-end coding. Interviewed over 75 candidates for web developer positions. Conducted user experience research which helped shape user personas. Created journey maps and digital storyboards based on defined user types. Served as a senior developer and in lead roles prior to management position. Participated in UX/UI/technical strategy sessions.",
       },
       {
-        title: "Senior Application Developer",
-        company: "Delta Dental of Michigan",
-        period: "June 2016 - October 2011",
+        title: "Senior Web Developer",
+        company: "Blue Cross Blue Shield of Michigan, Detroit, MI",
+        period: "August 2002 - October 2012",
         description:
-          "Led development of Individual Shopping platform, implementing responsive design and accessibility standards. Managed cross-functional teams and delivered high-quality user experiences for dental insurance shopping.",
+          "Wrote technical process and procedure documentation for case managers. Built dynamic websites using ColdFusion. Interviewed potential employee candidates. Performed significant maintenance on BCBSM.com and MiBCN.com. Created a new BCBSM Foundation site which won a bronze Wilmer Shields Rich Award. Assembled HTML, CSS, Javascript and WMVs for CEO Dan Loepp's streaming media webcasts. Created a new layout for online manuals and interactive training guides. Participated, wrote scripts, and helped lead moderated user testing sessions.",
+      },
+      {
+        title: "Technical Writing & Early Digital Experience",
+        company: "Ford, GM (Contract) - Michigan",
+        period: "Early Career",
+        description:
+          "Worked across multiple automotive and tech teams creating help content, training docs, and early web materials. Wrote interactive training guides, online help, and global software bulletins for Ford's prototype systems. Created service manuals and electronic signage user guides, collaborating closely with engineers. Helped launch and maintain GM's service information database and internal communications site. Supported ISO documentation efforts and service readiness planning at GM through EDS. Built project schedules, risk assessments, and baseline reports for large-scale vehicle documentation. Learned SGML and worked hands-on with early desktop publishing and content management tools. Jumped between writing, QA, content layout, and technical support.",
       },
     ],
   },
