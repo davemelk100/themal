@@ -293,9 +293,9 @@ function App() {
                             style={{
                               fontFamily: "Helvetica, Arial, sans-serif",
                             }}
-                            aria-label="Navigate to Stories section"
+                            aria-label="Navigate to Storytelling section"
                           >
-                            Stories
+                            Storytelling
                           </button>
                           <button
                             onClick={() => handleNavClick("articles")}
@@ -534,7 +534,7 @@ function App() {
                   </AnimatePresence>
                 )}
 
-                {/* Lab and Stories Section */}
+                {/* Lab and Storytelling Section */}
                 <section className="py-12 sm:py-16 lg:py-20 relative">
                   <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -764,7 +764,7 @@ function App() {
                         </div>
                       </div>
 
-                      {/* Stories Section */}
+                      {/* Storytelling Section */}
                       <div
                         id="stories"
                         className="border border-gray-300 dark:border-gray-600 p-6 rounded-lg"

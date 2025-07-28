@@ -34,7 +34,7 @@ export const content = {
       },
       {
         id: "stories",
-        text: "Stories",
+        text: "Storytelling",
       },
     ],
     social: {
@@ -460,7 +460,7 @@ export const content = {
   },
 
   stories: {
-    title: "Stories",
+    title: "Storytelling",
     subtitle: "My approach to problem solving and solution delivery.",
     items: [
       {

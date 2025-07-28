@@ -67,9 +67,9 @@ const MobileTrayMenu: React.FC = () => {
                 <button
                   onClick={() => handleNavClick("stories")}
                   className="w-full text-left px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
-                  aria-label="Navigate to Stories section"
+                  aria-label="Navigate to Storytelling section"
                 >
-                  Stories
+                  Storytelling
                 </button>
                 <button
                   onClick={() => handleNavClick("articles")}
