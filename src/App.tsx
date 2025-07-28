@@ -364,7 +364,7 @@ function App() {
                         Senior UX and Product Designer with 15+ years of
                         experience delivering accessible, user-centered digital
                         solutions across industries. Skilled in end-to-end
-                        design—from research to polished UIs—for dashboards,
+                        design - from research to polished UIs - for dashboards,
                         onboarding flows, and e-commerce. Expert in
                         cross-functional collaboration, AI-driven problem
                         solving, and inclusive innovation. Also an experienced
@@ -627,21 +627,58 @@ function App() {
                                     }`}
                                   >
                                     <div className="flex flex-col gap-1">
-                                      <div className="flex items-center w-full">
-                                        <h3
-                                          className="text-[18px] font-semibold mb-1 title-font text-black dark:text-white whitespace-nowrap flex-1"
-                                          style={{
-                                            letterSpacing: "-0.01em",
-                                          }}
-                                        >
-                                          {project.title}
-                                        </h3>
+                                      <div className="flex items-center justify-between w-full">
+                                        <div className="flex items-center gap-3">
+                                          {labView === "list" && (
+                                            <div className="w-8 h-8 rounded overflow-hidden flex-shrink-0">
+                                              <img
+                                                src={
+                                                  project.title ===
+                                                  "Design Panes"
+                                                    ? `/img/design-panes-alt2.svg?v=${Date.now()}`
+                                                    : project.title === "AI NUI"
+                                                    ? `/img/ai-nui-alt2.svg?v=${Date.now()}`
+                                                    : project.title ===
+                                                      "HealthAware"
+                                                    ? `/img/health-aware-animation.svg?v=${Date.now()}`
+                                                    : project.title ===
+                                                      "User Testing Config"
+                                                    ? `/img/user-testing-config-animation.svg?v=${Date.now()}`
+                                                    : `/img/lab.svg?v=${Date.now()}`
+                                                }
+                                                alt={
+                                                  project.title ===
+                                                  "Design Panes"
+                                                    ? "Design Panes"
+                                                    : project.title === "AI NUI"
+                                                    ? "Design Panes Animation"
+                                                    : project.title ===
+                                                      "HealthAware"
+                                                    ? "HealthAware Animation"
+                                                    : project.title ===
+                                                      "User Testing Config"
+                                                    ? "User Testing Config Animation"
+                                                    : "Lab"
+                                                }
+                                                className="w-full h-full object-cover"
+                                              />
+                                            </div>
+                                          )}
+                                          <h3
+                                            className="text-[18px] font-semibold mb-1 title-font text-black dark:text-white whitespace-nowrap"
+                                            style={{
+                                              letterSpacing: "-0.01em",
+                                            }}
+                                          >
+                                            {project.title}
+                                          </h3>
+                                        </div>
                                         {labView === "list" && (
                                           <a
                                             href={project.demo}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center ml-auto"
+                                            className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
                                             aria-label={`View demo: ${project.title}`}
                                           >
                                             <ExternalLink className="h-4 w-4 text-gray-600 dark:text-white" />
@@ -831,15 +868,35 @@ function App() {
                                         : "flex items-center justify-between h-full"
                                     }`}
                                   >
-                                    <div className="flex items-center w-full">
-                                      <h3
-                                        className="text-[18px] font-semibold mb-1 title-font text-black dark:text-white whitespace-nowrap flex-1"
-                                        style={{
-                                          letterSpacing: "-0.01em",
-                                        }}
-                                      >
-                                        {story.title}
-                                      </h3>
+                                    <div className="flex items-center justify-between w-full">
+                                      <div className="flex items-center gap-3">
+                                        {storiesView === "list" && (
+                                          <div className="w-8 h-8 rounded overflow-hidden flex-shrink-0">
+                                            {story.image ? (
+                                              <img
+                                                src={story.image}
+                                                alt={story.title}
+                                                className="w-full h-full object-cover"
+                                                loading="lazy"
+                                              />
+                                            ) : (
+                                              <div className="w-full h-full bg-gray-200/50 flex items-center justify-center">
+                                                <div className="text-gray-400 text-xs">
+                                                  No image
+                                                </div>
+                                              </div>
+                                            )}
+                                          </div>
+                                        )}
+                                        <h3
+                                          className="text-[18px] font-semibold mb-1 title-font text-black dark:text-white whitespace-nowrap"
+                                          style={{
+                                            letterSpacing: "-0.01em",
+                                          }}
+                                        >
+                                          {story.title}
+                                        </h3>
+                                      </div>
                                       {storiesView === "list" &&
                                         (story.hasModal ? (
                                           <button
@@ -850,13 +907,13 @@ function App() {
                                                 subtitle: story.subtitle,
                                               })
                                             }
-                                            className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center ml-auto"
+                                            className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
                                             aria-label={`View ${story.title} story`}
                                           >
                                             <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
                                           </button>
                                         ) : (
-                                          <div className="rounded-full p-1.5 w-8 h-8 flex items-center justify-center ml-auto">
+                                          <div className="rounded-full p-1.5 w-8 h-8 flex items-center justify-center">
                                             <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
                                           </div>
                                         ))}
@@ -996,21 +1053,36 @@ function App() {
                                         : "flex items-center justify-between h-full"
                                     }`}
                                   >
-                                    <div className="flex items-center w-full">
-                                      <h3
-                                        className="text-[18px] font-semibold mb-1 title-font text-black dark:text-white flex-1"
-                                        style={{
-                                          letterSpacing: "-0.01em",
-                                        }}
-                                      >
-                                        {article.title}
-                                      </h3>
+                                    <div className="flex items-center justify-between w-full">
+                                      <div className="flex items-center gap-3">
+                                        {articlesView === "list" && (
+                                          <div className="w-8 h-8 rounded overflow-hidden flex-shrink-0">
+                                            <img
+                                              src={`${
+                                                (article as any).cardImage ||
+                                                article.image
+                                              }?v=${Date.now()}`}
+                                              alt={article.title}
+                                              className="w-full h-full object-cover"
+                                              loading="lazy"
+                                            />
+                                          </div>
+                                        )}
+                                        <h3
+                                          className="text-[18px] font-semibold mb-1 title-font text-black dark:text-white"
+                                          style={{
+                                            letterSpacing: "-0.01em",
+                                          }}
+                                        >
+                                          {article.title}
+                                        </h3>
+                                      </div>
                                       {articlesView === "list" && (
                                         <Link
                                           to={`/article/${slugify(
                                             article.title
                                           )}`}
-                                          className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center ml-auto"
+                                          className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
                                           aria-label={`View article: ${article.title}`}
                                         >
                                           <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
@@ -1096,28 +1168,40 @@ function App() {
                                         : "flex items-center justify-between h-full"
                                     }`}
                                   >
-                                    <div className="flex items-center w-full">
-                                      <h3
-                                        className="text-[18px] font-semibold mb-1 title-font text-black dark:text-white flex-1"
-                                        style={{
-                                          letterSpacing: "-0.01em",
-                                        }}
-                                      >
-                                        {project.title}
-                                      </h3>
+                                    <div className="flex items-center justify-between w-full">
+                                      <div className="flex items-center gap-3">
+                                        {designView === "list" && (
+                                          <div className="w-8 h-8 rounded overflow-hidden flex-shrink-0">
+                                            <img
+                                              src={project.image}
+                                              alt={project.alt || project.title}
+                                              className="w-full h-full object-cover"
+                                              loading="lazy"
+                                            />
+                                          </div>
+                                        )}
+                                        <h3
+                                          className="text-[18px] font-semibold mb-1 title-font text-black dark:text-white"
+                                          style={{
+                                            letterSpacing: "-0.01em",
+                                          }}
+                                        >
+                                          {project.title}
+                                        </h3>
+                                      </div>
                                       {designView === "list" &&
                                         (project.url ? (
                                           <a
                                             href={project.url}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center ml-auto"
+                                            className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
                                             aria-label={`View project: ${project.title}`}
                                           >
                                             <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
                                           </a>
                                         ) : (
-                                          <div className="rounded-full p-1.5 w-8 h-8 flex items-center justify-center ml-auto">
+                                          <div className="rounded-full p-1.5 w-8 h-8 flex items-center justify-center">
                                             <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
                                           </div>
                                         ))}
