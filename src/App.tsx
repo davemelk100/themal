@@ -56,6 +56,7 @@ const SectionHeader = ({
   showUpArrow = false,
   toggleView,
   viewMode,
+  icon,
 }: {
   title: string;
   subtitle?: string;
@@ -64,6 +65,7 @@ const SectionHeader = ({
   showUpArrow?: boolean;
   toggleView?: (mode: "grid" | "list") => void;
   viewMode?: "grid" | "list";
+  icon?: React.ReactNode;
 }) => {
   return (
     <div className={`${className}`}>
@@ -77,6 +79,7 @@ const SectionHeader = ({
           >
             {title}
           </h2>
+          {icon && <div className="flex items-center gap-2">{icon}</div>}
           {showUpArrow && (
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
@@ -251,144 +254,103 @@ function App() {
                   <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
                     {/* Title Row */}
                     <div className="flex flex-row items-center gap-4 relative z-10 mt-5 mb-6 sm:mb-8">
-                      {/* Mobile: Title left-aligned */}
-                      <div className="flex xl:hidden items-center justify-start w-full">
+                      {/* Mobile: Title centered */}
+                      <div className="flex xl:hidden items-center justify-center w-full">
                         <h1
                           className="text-[clamp(1.5rem,4vw,3rem)] font-bold mb-1 title-font leading-none relative z-10"
                           style={{ letterSpacing: "-0.06em" }}
                         >
                           {content.siteInfo.subtitle}
                         </h1>
-                        <div className="flex items-center gap-2 ml-4">
-                          <a
-                            href={content.navigation.social.linkedin.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
-                            aria-label="LinkedIn"
-                          >
-                            <LinkedInLogoIcon className="h-5 w-5 text-black" />
-                          </a>
-                          <a
-                            href={content.navigation.social.dribbble.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
-                            aria-label="Dribbble"
-                          >
-                            <Dribbble className="h-5 w-5 text-black" />
-                          </a>
-                          <div className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center">
-                            <ThemeToggle />
-                          </div>
-                        </div>
                       </div>
-                      {/* Desktop: Title on left */}
-                      <div className="hidden xl:flex items-center">
+                      {/* Desktop: Title centered */}
+                      <div className="hidden xl:flex items-center justify-center w-full">
                         <h1
                           className="text-[clamp(1.5rem,4vw,3rem)] font-bold mb-1 title-font leading-none relative z-10"
                           style={{ letterSpacing: "-0.06em" }}
                         >
                           {content.siteInfo.subtitle}
                         </h1>
-                        <div className="flex items-center gap-2 ml-4">
-                          <a
-                            href={content.navigation.social.linkedin.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
-                            aria-label="LinkedIn"
-                          >
-                            <LinkedInLogoIcon className="h-5 w-5 text-black" />
-                          </a>
-                          <a
-                            href={content.navigation.social.dribbble.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
-                            aria-label="Dribbble"
-                          >
-                            <Dribbble className="h-5 w-5 text-black" />
-                          </a>
-                          <div className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center">
-                            <ThemeToggle />
-                          </div>
-                        </div>
                       </div>
                     </div>
                     {/* Nav Links and Icons Row */}
                     <div className="hidden md:flex md:flex-col lg:flex-row md:items-stretch lg:items-center gap-4 w-full px-8 sm:px-16 lg:px-32">
-                      <div className="hidden md:flex w-full justify-start lg:justify-start rounded-lg pl-0 pr-0 py-2 items-center gap-2 sm:gap-3">
-                        <button
-                          onClick={() => handleNavClick("current-projects")}
-                          className="relative px-3 py-3 rounded-lg text-black hover:text-gray-600 dark:text-white dark:hover:text-gray-200 transition-all duration-200 text-sm font-bold uppercase hover:bg-gray-100 dark:hover:bg-gray-800"
-                          style={{
-                            fontFamily: "Helvetica, Arial, sans-serif",
-                          }}
-                          aria-label="Navigate to Lab section"
-                        >
-                          Lab
-                        </button>
-                        <button
-                          onClick={() => handleNavClick("stories")}
-                          className="relative px-3 py-3 rounded-lg text-black hover:text-gray-600 dark:text-white dark:hover:text-gray-200 transition-all duration-200 text-sm font-bold uppercase hover:bg-gray-100 dark:hover:bg-gray-800"
-                          style={{
-                            fontFamily: "Helvetica, Arial, sans-serif",
-                          }}
-                          aria-label="Navigate to Stories section"
-                        >
-                          Stories
-                        </button>
-                        <button
-                          onClick={() => handleNavClick("articles")}
-                          className="relative px-3 py-3 rounded-lg text-black hover:text-gray-600 dark:text-white dark:hover:text-gray-200 transition-all duration-200 text-sm font-bold uppercase hover:bg-gray-100 dark:hover:bg-gray-800"
-                          style={{
-                            fontFamily: "Helvetica, Arial, sans-serif",
-                          }}
-                          aria-label="Navigate to Articles section"
-                        >
-                          Articles
-                        </button>
-                        <button
-                          onClick={() => handleNavClick("work")}
-                          className="relative px-3 py-3 rounded-lg text-black hover:text-gray-600 dark:text-white dark:hover:text-gray-200 transition-all duration-200 text-sm font-bold uppercase hover:bg-gray-100 dark:hover:bg-gray-800"
-                          style={{
-                            fontFamily: "Helvetica, Arial, sans-serif",
-                          }}
-                          aria-label="Navigate to Designs section"
-                        >
-                          Designs
-                        </button>
-                        <button
-                          onClick={() => handleNavClick("career")}
-                          className="relative px-3 py-3 rounded-lg text-black hover:text-gray-600 dark:text-white dark:hover:text-gray-200 transition-all duration-200 text-sm font-bold uppercase hover:bg-gray-100 dark:hover:bg-gray-800"
-                          style={{
-                            fontFamily: "Helvetica, Arial, sans-serif",
-                          }}
-                          aria-label="Navigate to Career section"
-                        >
-                          Career
-                        </button>
-                        <button
-                          onClick={() => handleNavClick("skills-and-software")}
-                          className="relative px-3 py-3 rounded-lg text-black hover:text-gray-600 dark:text-white dark:hover:text-gray-200 transition-all duration-200 text-sm font-bold uppercase hover:bg-gray-100 dark:hover:bg-gray-800"
-                          style={{
-                            fontFamily: "Helvetica, Arial, sans-serif",
-                          }}
-                          aria-label="Navigate to Skills and Software section"
-                        >
-                          Skills
-                        </button>
-                        <button
-                          onClick={() => handleNavClick("design-system")}
-                          className="relative px-3 py-3 rounded-lg text-black hover:text-gray-600 dark:text-white dark:hover:text-gray-200 transition-all duration-200 text-sm font-bold uppercase whitespace-nowrap hover:bg-gray-100 dark:hover:bg-gray-800"
-                          style={{
-                            fontFamily: "Helvetica, Arial, sans-serif",
-                          }}
-                          aria-label="Navigate to Design System section"
-                        >
-                          Design System
-                        </button>
+                      <div className="hidden md:flex w-full justify-center lg:justify-center rounded-lg pl-0 pr-0 py-2 items-center gap-2 sm:gap-3">
+                        <div className="flex items-center gap-2 sm:gap-3">
+                          <button
+                            onClick={() => handleNavClick("current-projects")}
+                            className="relative px-3 py-3 rounded-lg text-black hover:text-gray-600 dark:text-white dark:hover:text-gray-200 transition-all duration-200 text-sm font-bold uppercase hover:bg-gray-100 dark:hover:bg-gray-800"
+                            style={{
+                              fontFamily: "Helvetica, Arial, sans-serif",
+                            }}
+                            aria-label="Navigate to Lab section"
+                          >
+                            Lab
+                          </button>
+                          <button
+                            onClick={() => handleNavClick("stories")}
+                            className="relative px-3 py-3 rounded-lg text-black hover:text-gray-600 dark:text-white dark:hover:text-gray-200 transition-all duration-200 text-sm font-bold uppercase hover:bg-gray-100 dark:hover:bg-gray-800"
+                            style={{
+                              fontFamily: "Helvetica, Arial, sans-serif",
+                            }}
+                            aria-label="Navigate to Stories section"
+                          >
+                            Stories
+                          </button>
+                          <button
+                            onClick={() => handleNavClick("articles")}
+                            className="relative px-3 py-3 rounded-lg text-black hover:text-gray-600 dark:text-white dark:hover:text-gray-200 transition-all duration-200 text-sm font-bold uppercase hover:bg-gray-100 dark:hover:bg-gray-800"
+                            style={{
+                              fontFamily: "Helvetica, Arial, sans-serif",
+                            }}
+                            aria-label="Navigate to Articles section"
+                          >
+                            Articles
+                          </button>
+                          <button
+                            onClick={() => handleNavClick("work")}
+                            className="relative px-3 py-3 rounded-lg text-black hover:text-gray-600 dark:text-white dark:hover:text-gray-200 transition-all duration-200 text-sm font-bold uppercase hover:bg-gray-100 dark:hover:bg-gray-800"
+                            style={{
+                              fontFamily: "Helvetica, Arial, sans-serif",
+                            }}
+                            aria-label="Navigate to Designs section"
+                          >
+                            Designs
+                          </button>
+                          <button
+                            onClick={() => handleNavClick("career")}
+                            className="relative px-3 py-3 rounded-lg text-black hover:text-gray-600 dark:text-white dark:hover:text-gray-200 transition-all duration-200 text-sm font-bold uppercase hover:bg-gray-100 dark:hover:bg-gray-800"
+                            style={{
+                              fontFamily: "Helvetica, Arial, sans-serif",
+                            }}
+                            aria-label="Navigate to Career section"
+                          >
+                            Career
+                          </button>
+                          <button
+                            onClick={() =>
+                              handleNavClick("skills-and-software")
+                            }
+                            className="relative px-3 py-3 rounded-lg text-black hover:text-gray-600 dark:text-white dark:hover:text-gray-200 transition-all duration-200 text-sm font-bold uppercase hover:bg-gray-100 dark:hover:bg-gray-800"
+                            style={{
+                              fontFamily: "Helvetica, Arial, sans-serif",
+                            }}
+                            aria-label="Navigate to Skills and Software section"
+                          >
+                            Skills
+                          </button>
+                          <button
+                            onClick={() => handleNavClick("design-system")}
+                            className="relative px-3 py-3 rounded-lg text-black hover:text-gray-600 dark:text-white dark:hover:text-gray-200 transition-all duration-200 text-sm font-bold uppercase whitespace-nowrap hover:bg-gray-100 dark:hover:bg-gray-800"
+                            style={{
+                              fontFamily: "Helvetica, Arial, sans-serif",
+                            }}
+                            aria-label="Navigate to Design System section"
+                          >
+                            Design System
+                          </button>
+                        </div>
+                        <div className="flex items-center gap-2"></div>
                       </div>
                     </div>
                     {/* Summary Row (unchanged) */}
@@ -816,6 +778,7 @@ function App() {
                                         })
                                       }
                                       className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center mt-[5px] mr-[5px]"
+                                      aria-label={`View ${story.title} story`}
                                     >
                                       <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
                                     </button>
@@ -874,14 +837,14 @@ function App() {
                 </section>
 
                 {/* Articles and Design Section */}
-                <section className="py-12 sm:py-16 lg:py-20 relative">
+                <section
+                  id="articles"
+                  className="py-12 sm:py-16 lg:py-20 relative"
+                >
                   <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                       {/* Articles Section */}
-                      <div
-                        id="articles"
-                        className="border border-gray-300 dark:border-gray-600 p-6 rounded-lg"
-                      >
+                      <div className="border border-gray-300 dark:border-gray-600 p-6 rounded-lg">
                         <SectionHeader
                           title="Articles"
                           subtitle={content.articles.subtitle}
@@ -986,6 +949,17 @@ function App() {
                           showArchiveLink={false}
                           toggleView={setDesignView}
                           viewMode={designView}
+                          icon={
+                            <a
+                              href={content.navigation.social.dribbble.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                              aria-label="Dribbble"
+                            >
+                              <Dribbble className="h-5 w-5 text-black" />
+                            </a>
+                          }
                         />
                         <div
                           className={
@@ -1148,6 +1122,17 @@ function App() {
                       title={content.career.title}
                       subtitle={content.career.subtitle}
                       className="mb-8 sm:mb-6"
+                      icon={
+                        <a
+                          href={content.navigation.social.linkedin.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                          aria-label="LinkedIn"
+                        >
+                          <LinkedInLogoIcon className="h-5 w-5 text-black" />
+                        </a>
+                      }
                     />
                     <div className="space-y-8">
                       {content.career.positions.map((position) => (
@@ -1382,17 +1367,17 @@ function App() {
                         <div className="space-y-2">
                           <div className="w-full h-20 bg-[#D2691E] rounded-lg"></div>
                           <div className="text-sm">
-                            <p className="font-medium text-white">
+                            <p className="font-medium text-gray-900">
                               Muted Orange
                             </p>
-                            <p className="text-gray-300">#D2691E</p>
+                            <p className="text-gray-800">#D2691E</p>
                           </div>
                         </div>
                         <div className="space-y-2">
                           <div className="w-full h-20 bg-[#20B2AA] rounded-lg"></div>
                           <div className="text-sm">
-                            <p className="font-medium text-white">Teal</p>
-                            <p className="text-gray-300">#20B2AA</p>
+                            <p className="font-medium text-gray-900">Teal</p>
+                            <p className="text-gray-800">#20B2AA</p>
                           </div>
                         </div>
                         <div className="space-y-2">
@@ -1413,14 +1398,14 @@ function App() {
                           <div className="w-full h-20 bg-gray-600 rounded-lg"></div>
                           <div className="text-sm">
                             <p className="font-medium text-white">Gray 600</p>
-                            <p className="text-gray-300">Gray 600</p>
+                            <p className="text-gray-800">Gray 600</p>
                           </div>
                         </div>
                         <div className="space-y-2">
                           <div className="w-full h-20 bg-gray-900 rounded-lg"></div>
                           <div className="text-sm">
                             <p className="font-medium text-white">Gray 900</p>
-                            <p className="text-gray-300">Gray 900</p>
+                            <p className="text-gray-800">Gray 900</p>
                           </div>
                         </div>
                       </div>
@@ -1521,9 +1506,12 @@ function App() {
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <div className="group relative overflow-hidden rounded-lg bg-gray-100/80">
                           <div className="absolute top-3 right-3 z-20">
-                            <div className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center">
+                            <button
+                              className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                              aria-label="View Background Card"
+                            >
                               <Eye className="h-5 w-5 text-gray-600" />
-                            </div>
+                            </button>
                           </div>
                           <div className="p-6">
                             <h3 className="text-lg font-semibold text-gray-900 mb-2">
@@ -1535,9 +1523,12 @@ function App() {
 
                         <div className="group relative overflow-visible rounded-lg bg-gray-100/80 shadow-md aspect-[1/1]">
                           <div className="absolute top-3 right-3 z-20">
-                            <div className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center">
+                            <button
+                              className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                              aria-label="View Video Card"
+                            >
                               <Eye className="h-5 w-5 text-gray-600" />
-                            </div>
+                            </button>
                           </div>
                           <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
                             <div className="pr-12 flex items-center gap-2">
@@ -1567,9 +1558,12 @@ function App() {
                         </div>
                         <div className="group relative overflow-visible rounded-lg bg-gray-100/80 shadow-md aspect-[1/1]">
                           <div className="absolute top-3 right-3 z-20">
-                            <div className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center">
+                            <button
+                              className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                              aria-label="View Lab Card"
+                            >
                               <Eye className="h-5 w-5 text-gray-600" />
-                            </div>
+                            </button>
                           </div>
                           <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
                             <div className="pr-12 flex items-center gap-2">
@@ -1649,30 +1643,40 @@ function App() {
       )}
       <MobileTrayMenu />
 
-      {/* Back to Top Arrow */}
-      <motion.button
-        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className="fixed bottom-6 right-6 z-50 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-800 backdrop-blur-sm rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 border border-gray-200 dark:border-gray-700"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        aria-label="Back to top"
-      >
-        <svg
-          className="w-6 h-6 text-gray-700 dark:text-gray-300"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
+      {/* Back to Top Arrow and Theme Toggle */}
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+        <motion.button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-800 backdrop-blur-sm rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 border border-gray-200 dark:border-gray-700"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          aria-label="Back to top"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M5 10l7-7m0 0l7 7m-7-7v18"
-          />
-        </svg>
-      </motion.button>
+          <svg
+            className="w-6 h-6 text-gray-700 dark:text-gray-300"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M5 10l7-7m0 0l7 7m-7-7v18"
+            />
+          </svg>
+        </motion.button>
+        <motion.div
+          className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full p-3 shadow-lg border border-gray-200 dark:border-gray-700 w-12 h-12 flex items-center justify-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.1 }}
+        >
+          <ThemeToggle />
+        </motion.div>
+      </div>
     </div>
   );
 }

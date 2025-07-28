@@ -139,29 +139,29 @@ const DesignSystem: React.FC = () => {
             <div className="space-y-2">
               <div className="w-full h-20 bg-primary rounded-lg"></div>
               <div className="text-sm">
-                <p className="font-medium">Primary</p>
-                <p className="text-gray-600">Primary</p>
+                <p className="font-medium text-gray-900">Primary</p>
+                <p className="text-gray-800">Primary</p>
               </div>
             </div>
             <div className="space-y-2">
               <div className="w-full h-20 bg-secondary rounded-lg"></div>
               <div className="text-sm">
-                <p className="font-medium">Secondary</p>
-                <p className="text-gray-600">Secondary</p>
+                <p className="font-medium text-gray-900">Secondary</p>
+                <p className="text-gray-800">Secondary</p>
               </div>
             </div>
             <div className="space-y-2">
               <div className="w-full h-20 bg-gray-100 rounded-lg"></div>
               <div className="text-sm">
-                <p className="font-medium">Gray 100</p>
-                <p className="text-gray-600">Gray 100</p>
+                <p className="font-medium text-gray-900">Gray 100</p>
+                <p className="text-gray-800">Gray 100</p>
               </div>
             </div>
             <div className="space-y-2">
               <div className="w-full h-20 bg-gray-200 rounded-lg"></div>
               <div className="text-sm">
-                <p className="font-medium">Gray 200</p>
-                <p className="text-gray-600">Gray 200</p>
+                <p className="font-medium text-gray-900">Gray 200</p>
+                <p className="text-gray-800">Gray 200</p>
               </div>
             </div>
             <div className="space-y-2">
@@ -191,7 +191,7 @@ const DesignSystem: React.FC = () => {
               <h1 className="text-4xl font-bold text-gray-900 mb-2">
                 Whereas disregard and contempt for human rights have resulted
               </h1>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-800">
                 Component library and design tokens
               </p>
             </div>
@@ -199,7 +199,7 @@ const DesignSystem: React.FC = () => {
               <h2 className="text-3xl font-semibold text-gray-900 mb-2">
                 Whereas disregard and contempt for human rights have resulted
               </h2>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-800">
                 Component library and design tokens
               </p>
             </div>
@@ -207,7 +207,7 @@ const DesignSystem: React.FC = () => {
               <h3 className="text-2xl font-semibold text-gray-900 mb-2">
                 Whereas disregard and contempt for human rights have resulted
               </h3>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-800">
                 Component library and design tokens
               </p>
             </div>
@@ -215,7 +215,7 @@ const DesignSystem: React.FC = () => {
               <h4 className="text-xl font-semibold text-gray-900 mb-2">
                 Whereas disregard and contempt for human rights have resulted
               </h4>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-800">
                 Component library and design tokens
               </p>
             </div>
@@ -245,7 +245,7 @@ const DesignSystem: React.FC = () => {
         <section className="mb-16">
           <h2 className="text-xl font-semibold text-gray-900 mb-6">Buttons</h2>
           <div className="flex flex-wrap gap-4">
-            <button className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
               Primary Button
             </button>
             <button className="px-4 py-2 bg-secondary text-white rounded-lg hover:bg-secondary/90 transition-colors">
@@ -254,7 +254,7 @@ const DesignSystem: React.FC = () => {
             <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
               Tertiary Button
             </button>
-            <button className="px-4 py-2 border border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-colors">
+            <button className="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-colors">
               Outline Primary
             </button>
             <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
@@ -269,9 +269,12 @@ const DesignSystem: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="group relative overflow-hidden rounded-lg bg-gray-100/80">
               <div className="absolute top-3 right-3 z-20">
-                <div className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center">
+                <button
+                  className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                  aria-label="View Background Card"
+                >
                   <Eye className="h-5 w-5 text-gray-600" />
-                </div>
+                </button>
               </div>
               <div className="p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
@@ -283,9 +286,12 @@ const DesignSystem: React.FC = () => {
 
             <div className="group relative overflow-visible rounded-lg bg-gray-100/80 shadow-md aspect-[1/1]">
               <div className="absolute top-3 right-3 z-20">
-                <div className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center">
+                <button
+                  className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                  aria-label="View Video Card"
+                >
                   <Eye className="h-5 w-5 text-gray-600" />
-                </div>
+                </button>
               </div>
               <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
                 <div className="pr-12 flex items-center gap-2">
@@ -315,9 +321,12 @@ const DesignSystem: React.FC = () => {
             </div>
             <div className="group relative overflow-visible rounded-lg bg-gray-100/80 shadow-md aspect-[1/1]">
               <div className="absolute top-3 right-3 z-20">
-                <div className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center">
+                <button
+                  className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                  aria-label="View Lab Card"
+                >
                   <Eye className="h-5 w-5 text-gray-600" />
-                </div>
+                </button>
               </div>
               <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
                 <div className="pr-12 flex items-center gap-2">
