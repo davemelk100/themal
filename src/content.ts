@@ -744,7 +744,7 @@ export const content = {
         description: "Some folks say that's excessive.",
         url: "https://open.substack.com/pub/davemelk/p/seven-interviews?r=1jgk3k&utm_campaign=post&utm_medium=web",
         content: `<p>Read the full article on <a href="https://open.substack.com/pub/davemelk/p/seven-interviews?r=1jgk3k&utm_campaign=post&utm_medium=web" target="_blank" rel="noopener noreferrer">Substack</a>.</p>`,
-        image: "/img/seven-interviews-article.png",
+        image: "/img/seven-interview-article.png",
         date: "June 7, 2024",
         tags: ["Career", "Hiring", "Workplace Culture"],
       },
