@@ -271,7 +271,7 @@ function App() {
                       transition={{ duration: 1.8, delay: 0.4 }}
                       className="flex flex-col items-start mt-4 sm:mt-6 px-4 sm:px-8 lg:px-32"
                     >
-                      <p className="text-base sm:text-lg text-muted-foreground leading-relaxed text-center">
+                      <p className="text-base sm:text-lg text-muted-foreground leading-relaxed text-center font-['DM_Sans']">
                         Senior UX and Product Designer with 15+ years of
                         experience delivering accessible, user-centered digital
                         solutions across industries. Skilled in end-to-end
@@ -824,11 +824,11 @@ function App() {
                                           className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
                                           aria-label={`View project: ${project.title}`}
                                         >
-                                          <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
+                                          <ExternalLink className="h-4 w-4 text-gray-600 dark:text-white" />
                                         </a>
                                       ) : (
                                         <div className="rounded-full p-1.5 w-8 h-8 flex items-center justify-center">
-                                          <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
+                                          <ExternalLink className="h-4 w-4 text-gray-600 dark:text-white" />
                                         </div>
                                       ))}
                                   </div>
@@ -886,7 +886,7 @@ function App() {
                                       className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center mt-[5px] mr-[5px]"
                                       aria-label={`View project: ${project.title}`}
                                     >
-                                      <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
+                                      <ExternalLink className="h-4 w-4 text-gray-600 dark:text-white" />
                                     </a>
                                   </div>
                                 )}
