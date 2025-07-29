@@ -87,7 +87,7 @@ export const audioTracks: AudioTrack[] = [
     artist: "BALM",
     url: "/audio/claspaliti.mp3",
     uniqueUrl: "/audio/claspaliti.mp3",
-    duration: "4:30",
+    duration: "2:00",
     filename: "claspaliti.mp3",
   },
   {
@@ -96,7 +96,7 @@ export const audioTracks: AudioTrack[] = [
     artist: "BALM",
     url: "/audio/olson.mp3",
     uniqueUrl: "/audio/olson.mp3",
-    duration: "5:20",
+    duration: "2:51",
     filename: "olson.mp3",
   },
 ];
