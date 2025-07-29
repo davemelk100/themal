@@ -95,7 +95,7 @@ const SectionHeader = ({
             <div className="flex items-center gap-1 ml-0 sm:ml-2">
               <button
                 aria-label="Grid view"
-                className={`p-2 rounded-md border transition-colors ${
+                className={`p-2 rounded-md border transition-colors flex items-center justify-center ${
                   viewMode === "grid"
                     ? "bg-gray-200 dark:bg-gray-700 border-gray-400 dark:border-gray-500"
                     : "bg-transparent border-transparent hover:bg-gray-100 dark:hover:bg-gray-800"
@@ -106,7 +106,7 @@ const SectionHeader = ({
               </button>
               <button
                 aria-label="List view"
-                className={`p-2 rounded-md border transition-colors ${
+                className={`p-2 rounded-md border transition-colors flex items-center justify-center ${
                   viewMode === "list"
                     ? "bg-gray-200 dark:bg-gray-700 border-gray-400 dark:border-gray-500"
                     : "bg-transparent border-transparent hover:bg-gray-100 dark:hover:bg-gray-800"
