@@ -322,7 +322,7 @@ function App() {
                                       <div className="flex items-center justify-between w-full">
                                         <div className="flex items-center gap-3">
                                           {labView === "list" && (
-                                            <div className="w-8 h-8 rounded overflow-hidden flex-shrink-0">
+                                            <div className="w-12 h-12 rounded overflow-hidden flex-shrink-0">
                                               <img
                                                 src={
                                                   project.title ===
@@ -615,7 +615,7 @@ function App() {
                                   <div className="flex items-center justify-between w-full">
                                     <div className="flex items-center gap-3">
                                       {articlesView === "list" && (
-                                        <div className="w-8 h-8 rounded overflow-hidden flex-shrink-0">
+                                        <div className="w-12 h-12 rounded overflow-hidden flex-shrink-0">
                                           <img
                                             src={`${
                                               (article as any).cardImage ||
@@ -727,7 +727,7 @@ function App() {
                                   <div className="flex items-center justify-between w-full">
                                     <div className="flex items-center gap-3">
                                       {designView === "list" && (
-                                        <div className="w-8 h-8 rounded overflow-hidden flex-shrink-0">
+                                        <div className="w-12 h-12 rounded overflow-hidden flex-shrink-0">
                                           <img
                                             src={project.image}
                                             alt={project.alt || project.title}
@@ -993,7 +993,7 @@ function App() {
                                   <div className="flex items-center justify-between w-full">
                                     <div className="flex items-center gap-3">
                                       {storiesView === "list" && (
-                                        <div className="w-8 h-8 rounded overflow-hidden flex-shrink-0">
+                                        <div className="w-12 h-12 rounded overflow-hidden flex-shrink-0">
                                           {story.image ? (
                                             <img
                                               src={story.image}
@@ -1578,6 +1578,103 @@ function App() {
                             <div className="flex-1 flex flex-col">
                               <p className="text-sm text-gray-600 dark:text-gray-600 mb-2 flex-1"></p>
                             </div>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+
+                    {/* Chips/Tags */}
+                    <section className="mb-12 sm:mb-16">
+                      <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">
+                        Chips & Tags
+                      </h2>
+                      <div className="space-y-4">
+                        <div>
+                          <h3 className="text-base font-semibold text-gray-900 mb-3">
+                            Default Chips
+                          </h3>
+                          <div className="flex flex-wrap gap-2">
+                            <span className="px-3 py-1 bg-primary text-white rounded-full text-sm font-medium">
+                              Primary
+                            </span>
+                            <span className="px-3 py-1 bg-secondary text-white rounded-full text-sm font-medium">
+                              Secondary
+                            </span>
+                            <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">
+                              Neutral
+                            </span>
+                            <span className="px-3 py-1 bg-[#D2691E] text-white rounded-full text-sm font-medium">
+                              Orange
+                            </span>
+                            <span className="px-3 py-1 bg-[#20B2AA] text-white rounded-full text-sm font-medium">
+                              Teal
+                            </span>
+                          </div>
+                        </div>
+
+                        <div>
+                          <h3 className="text-base font-semibold text-gray-900 mb-3">
+                            Outline Chips
+                          </h3>
+                          <div className="flex flex-wrap gap-2">
+                            <span className="px-3 py-1 border border-primary text-primary rounded-full text-sm font-medium">
+                              Primary
+                            </span>
+                            <span className="px-3 py-1 border border-secondary text-secondary rounded-full text-sm font-medium">
+                              Secondary
+                            </span>
+                            <span className="px-3 py-1 border border-gray-300 text-gray-700 rounded-full text-sm font-medium">
+                              Neutral
+                            </span>
+                            <span className="px-3 py-1 border border-[#D2691E] text-[#D2691E] rounded-full text-sm font-medium">
+                              Orange
+                            </span>
+                            <span className="px-3 py-1 border border-[#20B2AA] text-[#20B2AA] rounded-full text-sm font-medium">
+                              Teal
+                            </span>
+                          </div>
+                        </div>
+
+                        <div>
+                          <h3 className="text-base font-semibold text-gray-900 mb-3">
+                            Small Chips
+                          </h3>
+                          <div className="flex flex-wrap gap-2">
+                            <span className="px-2 py-0.5 bg-primary text-white rounded-full text-xs font-medium">
+                              Small
+                            </span>
+                            <span className="px-2 py-0.5 bg-secondary text-white rounded-full text-xs font-medium">
+                              Chip
+                            </span>
+                            <span className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded-full text-xs font-medium">
+                              Tags
+                            </span>
+                            <span className="px-2 py-0.5 bg-[#D2691E] text-white rounded-full text-xs font-medium">
+                              Orange
+                            </span>
+                            <span className="px-2 py-0.5 bg-[#20B2AA] text-white rounded-full text-xs font-medium">
+                              Teal
+                            </span>
+                          </div>
+                        </div>
+
+                        <div>
+                          <h3 className="text-base font-semibold text-gray-900 mb-3">
+                            Interactive Chips
+                          </h3>
+                          <div className="flex flex-wrap gap-2">
+                            <button className="px-3 py-1 bg-primary text-white rounded-full text-sm font-medium hover:bg-primary/90 transition-colors">
+                              Clickable
+                            </button>
+                            <button className="px-3 py-1 bg-secondary text-white rounded-full text-sm font-medium hover:bg-secondary/90 transition-colors">
+                              Interactive
+                            </button>
+                            <button className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors">
+                              Button
+                            </button>
+                            <button className="px-3 py-1 border border-primary text-primary rounded-full text-sm font-medium hover:bg-primary hover:text-white transition-colors">
+                              Outline
+                            </button>
                           </div>
                         </div>
                       </div>
