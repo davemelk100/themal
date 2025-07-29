@@ -96,28 +96,12 @@ export const content = {
         url: "https://dribbble.com/shots/25891436-Hex-code-gradient-endpoints-in-pop-art-style",
       },
       {
-        title: "Design Panes",
-        description: "Design, Designs, Designers.",
-        categories: "Mobile",
-        image: "/img/design-panes.png",
-        alt: "Design Panes",
-        url: "https://designpanes.com/",
-      },
-      {
         title: "Logos for Sports Podcast",
         description: "Logo designs for a sports podcast",
         categories: "Logo Design, Branding, Sports",
         image: "/img/nfl-logos.png",
         alt: "NFL-Themed Logos for Sports Podcast",
         url: "https://dribbble.com/shots/25274995-NFL-Themed-Logos-for-Sports-Podcast",
-      },
-      {
-        title: "Mobile Game",
-        description: "Prototype for a mobile app concept",
-        categories: "Product Design, Mobile, Prototype",
-        image: "/img/mobile-game.png",
-        alt: "Mobile Game Prototype",
-        url: "https://dribbble.com/shots/20590741-mobile-game-concept-screens",
       },
       {
         title: "Vintage Form Design",

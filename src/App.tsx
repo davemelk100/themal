@@ -534,10 +534,10 @@ function App() {
                   </AnimatePresence>
                 )}
 
-                {/* Lab and Storytelling Section */}
+                {/* Lab Section */}
                 <section className="py-12 sm:py-16 lg:py-20 relative">
                   <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <div className="grid grid-cols-1 gap-12">
                       {/* Lab Section */}
                       <div
                         id="current-projects"
@@ -554,7 +554,7 @@ function App() {
                         <div
                           className={
                             labView === "grid"
-                              ? "grid grid-cols-1 md:grid-cols-2 gap-6"
+                              ? "grid grid-cols-4 gap-6"
                               : "flex flex-col gap-4"
                           }
                         >
@@ -800,163 +800,6 @@ function App() {
                             ))}
                         </div>
                       </div>
-
-                      {/* Storytelling Section */}
-                      <div
-                        id="stories"
-                        className="border border-gray-300 dark:border-gray-600 p-6 rounded-lg"
-                      >
-                        <SectionHeader
-                          title={content.stories.title}
-                          subtitle={content.stories.subtitle}
-                          className="mb-8"
-                          toggleView={setStoriesView}
-                          viewMode={storiesView}
-                        />
-                        <div
-                          className={
-                            storiesView === "grid"
-                              ? "grid grid-cols-1 md:grid-cols-2 gap-6"
-                              : "flex flex-col gap-4"
-                          }
-                        >
-                          {content.stories.items
-                            .filter(
-                              (story) => story.title !== "Design Management"
-                            )
-                            .map((story) => (
-                              <motion.div
-                                key={story.title}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 2.4, delay: 0.2 }}
-                                className={`group relative overflow-hidden rounded-lg bg-gray-100/80 dark:bg-transparent border dark:border-gray-500 flex flex-col shadow-md ${
-                                  storiesView === "list"
-                                    ? "h-[50px]"
-                                    : "h-[320px]"
-                                }`}
-                              >
-                                {storiesView === "grid" && (
-                                  <div className="absolute top-2 right-2 z-20">
-                                    {story.hasModal ? (
-                                      <button
-                                        onClick={() =>
-                                          setSelectedStory({
-                                            title: story.title,
-                                            content: story.content,
-                                            subtitle: story.subtitle,
-                                          })
-                                        }
-                                        className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center mt-[5px] mr-[5px]"
-                                        aria-label={`View ${story.title} story`}
-                                      >
-                                        <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
-                                      </button>
-                                    ) : (
-                                      <div className="rounded-full p-1.5 w-8 h-8 flex items-center justify-center mt-[5px] mr-[5px]">
-                                        <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
-                                      </div>
-                                    )}
-                                  </div>
-                                )}
-                                <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
-                                  <div
-                                    className={`rounded-lg p-2 ${
-                                      storiesView === "grid"
-                                        ? "bg-white/40 dark:bg-transparent backdrop-blur-sm pr-12"
-                                        : "flex items-center justify-between h-full"
-                                    }`}
-                                  >
-                                    <div className="flex items-center justify-between w-full">
-                                      <div className="flex items-center gap-3">
-                                        {storiesView === "list" && (
-                                          <div className="w-8 h-8 rounded overflow-hidden flex-shrink-0">
-                                            {story.image ? (
-                                              <img
-                                                src={story.image}
-                                                alt={story.title}
-                                                className="w-full h-full object-cover"
-                                                loading="lazy"
-                                              />
-                                            ) : (
-                                              <div className="w-full h-full bg-gray-200/50 flex items-center justify-center">
-                                                <div className="text-gray-400 text-xs">
-                                                  No image
-                                                </div>
-                                              </div>
-                                            )}
-                                          </div>
-                                        )}
-                                        <h3
-                                          className="text-[18px] font-semibold mb-1 title-font text-black dark:text-white whitespace-nowrap"
-                                          style={{
-                                            letterSpacing: "-0.01em",
-                                          }}
-                                        >
-                                          {story.title}
-                                        </h3>
-                                      </div>
-                                      {storiesView === "list" &&
-                                        (story.hasModal ? (
-                                          <button
-                                            onClick={() =>
-                                              setSelectedStory({
-                                                title: story.title,
-                                                content: story.content,
-                                                subtitle: story.subtitle,
-                                              })
-                                            }
-                                            className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
-                                            aria-label={`View ${story.title} story`}
-                                          >
-                                            <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
-                                          </button>
-                                        ) : (
-                                          <div className="rounded-full p-1.5 w-8 h-8 flex items-center justify-center">
-                                            <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
-                                          </div>
-                                        ))}
-                                    </div>
-                                    {storiesView === "grid" &&
-                                      story.subtitle && (
-                                        <p className="text-sm text-gray-600 dark:text-white mb-2">
-                                          {story.subtitle}
-                                        </p>
-                                      )}
-                                  </div>
-                                  {storiesView === "grid" && (
-                                    <div className="flex-1 flex flex-col">
-                                      {story.description && (
-                                        <p className="text-black mb-2 dark:text-white text-card-body flex-1">
-                                          {story.description}
-                                        </p>
-                                      )}
-                                    </div>
-                                  )}
-                                </div>
-                                {storiesView === "grid" && (
-                                  <div className="absolute inset-0 overflow-hidden z-0 p-2">
-                                    {story.image ? (
-                                      <img
-                                        src={story.image}
-                                        alt={story.title}
-                                        className="absolute inset-0 h-full w-full object-contain object-bottom"
-                                        loading="lazy"
-                                      />
-                                    ) : (
-                                      <div className="absolute inset-0 h-full w-full bg-gray-200/50 flex items-center justify-center">
-                                        <div className="text-gray-400 text-sm">
-                                          No image
-                                        </div>
-                                      </div>
-                                    )}
-                                  </div>
-                                )}
-                              </motion.div>
-                            ))}
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </section>
@@ -967,356 +810,359 @@ function App() {
                   className="py-12 sm:py-16 lg:py-20 relative"
                 >
                   <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                      {/* Articles Section */}
-                      <div className="border border-gray-300 dark:border-gray-600 p-6 rounded-lg">
-                        <SectionHeader
-                          title="Articles"
-                          subtitle={content.articles.subtitle}
-                          className="mb-8"
-                          showArchiveLink={false}
-                          toggleView={setArticlesView}
-                          viewMode={articlesView}
-                          icon={
-                            <a
-                              href="https://davemelk.substack.com/"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
-                              aria-label="Substack"
-                            >
-                              <svg
-                                className="h-5 w-5 text-black"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                              >
-                                <path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z" />
-                              </svg>
-                            </a>
-                          }
-                        />
-                        <div
-                          className={
-                            articlesView === "grid"
-                              ? "grid grid-cols-1 md:grid-cols-2 gap-6"
-                              : "flex flex-col gap-4"
-                          }
-                        >
-                          {content.articles.items
-                            .filter(
-                              (article) =>
-                                article.title !== "Commit Message Fatigue" &&
-                                article.title !==
-                                  "Information Architecture Is Not Sacred" &&
-                                article.title !==
-                                  "AI is hydrated with user research data" &&
-                                article.title !==
-                                  "Prompting for Heuristic Evaluations"
-                            )
-                            .sort(
-                              (a, b) =>
-                                new Date(b.date).getTime() -
-                                new Date(a.date).getTime()
-                            )
-                            .map((article, index) => (
-                              <motion.div
-                                key={index}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{
-                                  duration: 1.8,
-                                  delay: index * 0.2,
-                                }}
-                                className={`group relative overflow-hidden rounded-lg bg-gray-100/80 dark:bg-transparent border dark:border-gray-500 flex flex-col shadow-md ${
-                                  articlesView === "list"
-                                    ? "h-[50px]"
-                                    : "h-[320px]"
-                                }`}
-                              >
-                                {articlesView === "grid" && (
-                                  <div className="absolute top-2 right-2 z-20">
-                                    <Link
-                                      to={`/article/${slugify(article.title)}`}
-                                      className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center mt-[5px] mr-[5px]"
-                                      aria-label={`View article: ${article.title}`}
-                                    >
-                                      <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
-                                    </Link>
-                                  </div>
-                                )}
-                                <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
-                                  <div
-                                    className={`rounded-lg p-2 ${
-                                      articlesView === "grid"
-                                        ? "bg-white/40 dark:bg-transparent backdrop-blur-sm pr-12"
-                                        : "flex items-center justify-between h-full"
-                                    }`}
-                                  >
-                                    <div className="flex items-center justify-between w-full">
-                                      <div className="flex items-center gap-3">
-                                        {articlesView === "list" && (
-                                          <div className="w-8 h-8 rounded overflow-hidden flex-shrink-0">
-                                            <img
-                                              src={`${
-                                                (article as any).cardImage ||
-                                                article.image
-                                              }?v=${Date.now()}`}
-                                              alt={article.title}
-                                              className="w-full h-full object-cover"
-                                              loading="lazy"
-                                            />
-                                          </div>
-                                        )}
-                                        <h3
-                                          className="text-[18px] font-semibold mb-1 title-font text-black dark:text-white"
-                                          style={{
-                                            letterSpacing: "-0.01em",
-                                          }}
-                                        >
-                                          {article.title}
-                                        </h3>
-                                      </div>
-                                      {articlesView === "list" && (
-                                        <Link
-                                          to={`/article/${slugify(
-                                            article.title
-                                          )}`}
-                                          className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
-                                          aria-label={`View article: ${article.title}`}
-                                        >
-                                          <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
-                                        </Link>
-                                      )}
-                                    </div>
-                                    {articlesView === "grid" &&
-                                      article.description && (
-                                        <p className="text-sm text-gray-600 dark:text-white mb-2 flex-1">
-                                          {article.description}
-                                        </p>
-                                      )}
-                                  </div>
-                                </div>
-                                {articlesView === "grid" && (
-                                  <div className="absolute inset-0 overflow-hidden z-0 p-2">
-                                    <img
-                                      src={`${
-                                        (article as any).cardImage ||
-                                        article.image
-                                      }?v=${Date.now()}`}
-                                      alt={article.title}
-                                      className="absolute inset-0 h-full w-full object-contain object-bottom"
-                                    />
-                                  </div>
-                                )}
-                              </motion.div>
-                            ))}
-                        </div>
-                        <div className="mt-8">
-                          <Link
-                            to="/archive"
-                            className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
+                    <div className="border border-gray-300 dark:border-gray-600 p-6 rounded-lg">
+                      <SectionHeader
+                        title="Articles"
+                        subtitle={content.articles.subtitle}
+                        className="mb-8"
+                        showArchiveLink={false}
+                        toggleView={setArticlesView}
+                        viewMode={articlesView}
+                        icon={
+                          <a
+                            href="https://davemelk.substack.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                            aria-label="Substack"
                           >
-                            View Archive
-                          </Link>
-                        </div>
-                      </div>
-
-                      {/* Design Section */}
-                      <div
-                        id="work"
-                        className="border border-gray-300 dark:border-gray-600 p-6 rounded-lg"
-                      >
-                        <SectionHeader
-                          title="Design"
-                          subtitle={content.work.subtitle}
-                          className="mb-8"
-                          showArchiveLink={false}
-                          toggleView={setDesignView}
-                          viewMode={designView}
-                          icon={
-                            <a
-                              href={content.navigation.social.dribbble.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
-                              aria-label="Dribbble"
+                            <svg
+                              className="h-5 w-5 text-black"
+                              viewBox="0 0 24 24"
+                              fill="currentColor"
                             >
-                              <Dribbble className="h-5 w-5 text-black" />
-                            </a>
-                          }
-                        />
-                        <div
-                          className={
-                            designView === "grid"
-                              ? "grid grid-cols-1 md:grid-cols-2 gap-6"
-                              : "flex flex-col gap-4"
-                          }
-                        >
-                          {content.work.projects
-                            .filter(
-                              (project: any) =>
-                                project.title !== "3D Conversion UX Plan"
-                            )
-                            .map((project: any, index) => {
-                              const ProjectCard = (
-                                <div className="flex flex-col gap-2 flex-1">
-                                  <div
-                                    className={`rounded-lg p-2 ${
-                                      designView === "grid"
-                                        ? "bg-white/40 dark:bg-transparent backdrop-blur-sm pr-12"
-                                        : "flex items-center justify-between h-full"
-                                    }`}
+                              <path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z" />
+                            </svg>
+                          </a>
+                        }
+                      />
+                      <div
+                        className={
+                          articlesView === "grid"
+                            ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+                            : "flex flex-col gap-4"
+                        }
+                      >
+                        {content.articles.items
+                          .filter(
+                            (article) =>
+                              article.title !== "Commit Message Fatigue" &&
+                              article.title !==
+                                "Information Architecture Is Not Sacred" &&
+                              article.title !==
+                                "AI is hydrated with user research data" &&
+                              article.title !==
+                                "Prompting for Heuristic Evaluations"
+                          )
+                          .sort(
+                            (a, b) =>
+                              new Date(b.date).getTime() -
+                              new Date(a.date).getTime()
+                          )
+                          .map((article, index) => (
+                            <motion.div
+                              key={index}
+                              initial={{ opacity: 0, y: 20 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true }}
+                              transition={{
+                                duration: 1.8,
+                                delay: index * 0.2,
+                              }}
+                              className={`group relative overflow-hidden rounded-lg bg-gray-100/80 dark:bg-transparent border dark:border-gray-500 flex flex-col shadow-md ${
+                                articlesView === "list"
+                                  ? "h-[50px]"
+                                  : "h-[320px]"
+                              }`}
+                            >
+                              {articlesView === "grid" && (
+                                <div className="absolute top-2 right-2 z-20">
+                                  <Link
+                                    to={`/article/${slugify(article.title)}`}
+                                    className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center mt-[5px] mr-[5px]"
+                                    aria-label={`View article: ${article.title}`}
                                   >
-                                    <div className="flex items-center justify-between w-full">
-                                      <div className="flex items-center gap-3">
-                                        {designView === "list" && (
-                                          <div className="w-8 h-8 rounded overflow-hidden flex-shrink-0">
-                                            <img
-                                              src={project.image}
-                                              alt={project.alt || project.title}
-                                              className="w-full h-full object-cover"
-                                              loading="lazy"
-                                            />
-                                          </div>
-                                        )}
-                                        <h3
-                                          className="text-[18px] font-semibold mb-1 title-font text-black dark:text-white"
-                                          style={{
-                                            letterSpacing: "-0.01em",
-                                          }}
-                                        >
-                                          {project.title}
-                                        </h3>
-                                      </div>
-                                      {designView === "list" &&
-                                        (project.url ? (
-                                          <a
-                                            href={project.url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
-                                            aria-label={`View project: ${project.title}`}
-                                          >
-                                            <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
-                                          </a>
-                                        ) : (
-                                          <div className="rounded-full p-1.5 w-8 h-8 flex items-center justify-center">
-                                            <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
-                                          </div>
-                                        ))}
-                                    </div>
-                                    {designView === "grid" &&
-                                      project.description && (
-                                        <p className="text-sm text-gray-600 dark:text-white mb-2">
-                                          {project.description}
-                                        </p>
-                                      )}
-                                  </div>
+                                    <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
+                                  </Link>
                                 </div>
-                              );
-
-                              const ProjectImage = designView === "grid" && (
-                                <div className="absolute inset-0 overflow-hidden z-0 p-2">
-                                  <img
-                                    src={project.image}
-                                    alt={project.alt || project.title}
-                                    className={`absolute inset-0 h-full w-full object-bottom ${
-                                      project.title === "Hex Code Pop Art"
-                                        ? "object-contain"
-                                        : project.title ===
-                                          "Vintage Form Design"
-                                        ? "object-contain"
-                                        : project.title === "Mobile Game"
-                                        ? "object-contain"
-                                        : "object-contain"
-                                    }`}
-                                    loading="lazy"
-                                  />
-                                </div>
-                              );
-
-                              return project.url ? (
+                              )}
+                              <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
                                 <div
-                                  key={index}
-                                  className={`group relative overflow-hidden rounded-lg bg-gray-100/80 dark:bg-transparent border dark:border-gray-500 flex flex-col shadow-md project-card ${
-                                    designView === "list"
-                                      ? "h-[50px]"
-                                      : "h-[320px]"
+                                  className={`rounded-lg p-2 ${
+                                    articlesView === "grid"
+                                      ? "bg-white/40 dark:bg-transparent backdrop-blur-sm pr-12"
+                                      : "flex items-center justify-between h-full"
                                   }`}
                                 >
-                                  {designView === "grid" && (
-                                    <div className="absolute top-2 right-2 z-20">
-                                      <a
-                                        href={project.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center mt-[5px] mr-[5px]"
-                                        aria-label={`View project: ${project.title}`}
+                                  <div className="flex items-center justify-between w-full">
+                                    <div className="flex items-center gap-3">
+                                      {articlesView === "list" && (
+                                        <div className="w-8 h-8 rounded overflow-hidden flex-shrink-0">
+                                          <img
+                                            src={`${
+                                              (article as any).cardImage ||
+                                              article.image
+                                            }?v=${Date.now()}`}
+                                            alt={article.title}
+                                            className="w-full h-full object-cover"
+                                            loading="lazy"
+                                          />
+                                        </div>
+                                      )}
+                                      <h3
+                                        className="text-[18px] font-semibold mb-1 title-font text-black dark:text-white"
+                                        style={{
+                                          letterSpacing: "-0.01em",
+                                        }}
+                                      >
+                                        {article.title}
+                                      </h3>
+                                    </div>
+                                    {articlesView === "list" && (
+                                      <Link
+                                        to={`/article/${slugify(
+                                          article.title
+                                        )}`}
+                                        className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
+                                        aria-label={`View article: ${article.title}`}
                                       >
                                         <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
-                                      </a>
-                                    </div>
-                                  )}
-                                  <div
-                                    className={`absolute inset-0 p-3 z-10 ${
-                                      designView === "grid"
-                                        ? "flex flex-col gap-2"
-                                        : "flex items-center"
-                                    }`}
-                                  >
-                                    {React.cloneElement(ProjectCard, {
-                                      className:
-                                        (ProjectCard.props.className || "") +
-                                        " text-black dark:text-white",
-                                    })}
+                                      </Link>
+                                    )}
                                   </div>
-                                  {ProjectImage}
+                                  {articlesView === "grid" &&
+                                    article.description && (
+                                      <p className="text-sm text-gray-600 dark:text-white mb-2 flex-1">
+                                        {article.description}
+                                      </p>
+                                    )}
                                 </div>
-                              ) : (
-                                <div
-                                  key={index}
-                                  className={`group relative overflow-hidden rounded-lg bg-gray-100/80 dark:bg-transparent border dark:border-gray-500 flex flex-col shadow-md project-card ${
-                                    designView === "list"
-                                      ? "h-[50px]"
-                                      : "h-[320px]"
-                                  }`}
-                                >
-                                  {designView === "grid" && (
-                                    <div className="absolute top-2 right-2 z-20">
-                                      <div className="rounded-full p-1.5 w-8 h-8 flex items-center justify-center mt-[5px] mr-[5px]">
-                                        <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
-                                      </div>
-                                    </div>
-                                  )}
-                                  <div
-                                    className={`absolute inset-0 p-3 z-10 ${
-                                      designView === "grid"
-                                        ? "flex flex-col gap-2"
-                                        : "flex items-center"
-                                    }`}
-                                  >
-                                    {React.cloneElement(ProjectCard, {
-                                      className:
-                                        (ProjectCard.props.className || "") +
-                                        " text-black dark:text-white",
-                                    })}
-                                  </div>
-                                  {ProjectImage}
+                              </div>
+                              {articlesView === "grid" && (
+                                <div className="absolute inset-0 overflow-hidden z-0 p-2">
+                                  <img
+                                    src={`${
+                                      (article as any).cardImage ||
+                                      article.image
+                                    }?v=${Date.now()}`}
+                                    alt={article.title}
+                                    className="absolute inset-0 h-full w-full object-contain object-bottom"
+                                  />
                                 </div>
-                              );
-                            })}
-                        </div>
-                        <div className="mt-8">
-                          <Link
-                            to="/design-archive"
-                            className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
-                          >
-                            View Design Archive
-                          </Link>
-                        </div>
+                              )}
+                            </motion.div>
+                          ))}
+                      </div>
+                      <div className="mt-8">
+                        <Link
+                          to="/archive"
+                          className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
+                        >
+                          View Archive
+                        </Link>
                       </div>
                     </div>
+
+                    {/* Design Section */}
+                    <section
+                      id="work"
+                      className="py-12 sm:py-16 lg:py-20 relative"
+                    >
+                      <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
+                        <div className="border border-gray-300 dark:border-gray-600 p-6 rounded-lg">
+                          <SectionHeader
+                            title="Design"
+                            subtitle={content.work.subtitle}
+                            className="mb-8"
+                            showArchiveLink={false}
+                            toggleView={setDesignView}
+                            viewMode={designView}
+                            icon={
+                              <a
+                                href={content.navigation.social.dribbble.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                                aria-label="Dribbble"
+                              >
+                                <Dribbble className="h-5 w-5 text-black" />
+                              </a>
+                            }
+                          />
+                          <div
+                            className={
+                              designView === "grid"
+                                ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+                                : "flex flex-col gap-4"
+                            }
+                          >
+                            {content.work.projects
+                              .filter(
+                                (project: any) =>
+                                  project.title !== "3D Conversion UX Plan"
+                              )
+                              .map((project: any, index) => {
+                                const ProjectCard = (
+                                  <div className="flex flex-col gap-2 flex-1">
+                                    <div
+                                      className={`rounded-lg p-2 ${
+                                        designView === "grid"
+                                          ? "bg-white/40 dark:bg-transparent backdrop-blur-sm pr-12"
+                                          : "flex items-center justify-between h-full"
+                                      }`}
+                                    >
+                                      <div className="flex items-center justify-between w-full">
+                                        <div className="flex items-center gap-3">
+                                          {designView === "list" && (
+                                            <div className="w-8 h-8 rounded overflow-hidden flex-shrink-0">
+                                              <img
+                                                src={project.image}
+                                                alt={
+                                                  project.alt || project.title
+                                                }
+                                                className="w-full h-full object-cover"
+                                                loading="lazy"
+                                              />
+                                            </div>
+                                          )}
+                                          <h3
+                                            className="text-[18px] font-semibold mb-1 title-font text-black dark:text-white"
+                                            style={{
+                                              letterSpacing: "-0.01em",
+                                            }}
+                                          >
+                                            {project.title}
+                                          </h3>
+                                        </div>
+                                        {designView === "list" &&
+                                          (project.url ? (
+                                            <a
+                                              href={project.url}
+                                              target="_blank"
+                                              rel="noopener noreferrer"
+                                              className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
+                                              aria-label={`View project: ${project.title}`}
+                                            >
+                                              <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
+                                            </a>
+                                          ) : (
+                                            <div className="rounded-full p-1.5 w-8 h-8 flex items-center justify-center">
+                                              <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
+                                            </div>
+                                          ))}
+                                      </div>
+                                      {designView === "grid" &&
+                                        project.description && (
+                                          <p className="text-sm text-gray-600 dark:text-white mb-2">
+                                            {project.description}
+                                          </p>
+                                        )}
+                                    </div>
+                                  </div>
+                                );
+
+                                const ProjectImage = designView === "grid" && (
+                                  <div className="absolute inset-0 overflow-hidden z-0 p-2">
+                                    <img
+                                      src={project.image}
+                                      alt={project.alt || project.title}
+                                      className={`absolute inset-0 h-full w-full object-bottom ${
+                                        project.title === "Hex Code Pop Art"
+                                          ? "object-contain"
+                                          : project.title ===
+                                            "Vintage Form Design"
+                                          ? "object-contain"
+                                          : project.title === "Mobile Game"
+                                          ? "object-contain"
+                                          : "object-contain"
+                                      }`}
+                                      loading="lazy"
+                                    />
+                                  </div>
+                                );
+
+                                return project.url ? (
+                                  <div
+                                    key={index}
+                                    className={`group relative overflow-hidden rounded-lg bg-gray-100/80 dark:bg-transparent border dark:border-gray-500 flex flex-col shadow-md project-card ${
+                                      designView === "list"
+                                        ? "h-[50px]"
+                                        : "h-[320px]"
+                                    }`}
+                                  >
+                                    {designView === "grid" && (
+                                      <div className="absolute top-2 right-2 z-20">
+                                        <a
+                                          href={project.url}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center mt-[5px] mr-[5px]"
+                                          aria-label={`View project: ${project.title}`}
+                                        >
+                                          <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
+                                        </a>
+                                      </div>
+                                    )}
+                                    <div
+                                      className={`absolute inset-0 p-3 z-10 ${
+                                        designView === "grid"
+                                          ? "flex flex-col gap-2"
+                                          : "flex items-center"
+                                      }`}
+                                    >
+                                      {React.cloneElement(ProjectCard, {
+                                        className:
+                                          (ProjectCard.props.className || "") +
+                                          " text-black dark:text-white",
+                                      })}
+                                    </div>
+                                    {ProjectImage}
+                                  </div>
+                                ) : (
+                                  <div
+                                    key={index}
+                                    className={`group relative overflow-hidden rounded-lg bg-gray-100/80 dark:bg-transparent border dark:border-gray-500 flex flex-col shadow-md project-card ${
+                                      designView === "list"
+                                        ? "h-[50px]"
+                                        : "h-[320px]"
+                                    }`}
+                                  >
+                                    {designView === "grid" && (
+                                      <div className="absolute top-2 right-2 z-20">
+                                        <div className="rounded-full p-1.5 w-8 h-8 flex items-center justify-center mt-[5px] mr-[5px]">
+                                          <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
+                                        </div>
+                                      </div>
+                                    )}
+                                    <div
+                                      className={`absolute inset-0 p-3 z-10 ${
+                                        designView === "grid"
+                                          ? "flex flex-col gap-2"
+                                          : "flex items-center"
+                                      }`}
+                                    >
+                                      {React.cloneElement(ProjectCard, {
+                                        className:
+                                          (ProjectCard.props.className || "") +
+                                          " text-black dark:text-white",
+                                      })}
+                                    </div>
+                                    {ProjectImage}
+                                  </div>
+                                );
+                              })}
+                          </div>
+                          <div className="mt-8">
+                            <Link
+                              to="/design-archive"
+                              className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
+                            >
+                              View Design Archive
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
                   </div>
                 </section>
 
@@ -1360,6 +1206,157 @@ function App() {
                   </div>
                 </section>
                 */}
+
+                {/* Storytelling Section */}
+                <section id="stories" className="py-12 sm:py-16 lg:py-20">
+                  <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
+                    <SectionHeader
+                      title={content.stories.title}
+                      subtitle={content.stories.subtitle}
+                      className="mb-8"
+                      toggleView={setStoriesView}
+                      viewMode={storiesView}
+                    />
+                    <div
+                      className={
+                        storiesView === "grid"
+                          ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+                          : "flex flex-col gap-4"
+                      }
+                    >
+                      {content.stories.items
+                        .filter((story) => story.title !== "Design Management")
+                        .map((story) => (
+                          <motion.div
+                            key={story.title}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 2.4, delay: 0.2 }}
+                            className={`group relative overflow-hidden rounded-lg bg-gray-100/80 dark:bg-transparent border dark:border-gray-500 flex flex-col shadow-md ${
+                              storiesView === "list" ? "h-[50px]" : "h-[320px]"
+                            }`}
+                          >
+                            {storiesView === "grid" && (
+                              <div className="absolute top-2 right-2 z-20">
+                                {story.hasModal ? (
+                                  <button
+                                    onClick={() =>
+                                      setSelectedStory({
+                                        title: story.title,
+                                        content: story.content,
+                                        subtitle: story.subtitle,
+                                      })
+                                    }
+                                    className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center mt-[5px] mr-[5px]"
+                                    aria-label={`View ${story.title} story`}
+                                  >
+                                    <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
+                                  </button>
+                                ) : (
+                                  <div className="rounded-full p-1.5 w-8 h-8 flex items-center justify-center mt-[5px] mr-[5px]">
+                                    <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                            <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
+                              <div
+                                className={`rounded-lg p-2 ${
+                                  storiesView === "grid"
+                                    ? "bg-white/40 dark:bg-transparent backdrop-blur-sm pr-12"
+                                    : "flex items-center justify-between h-full"
+                                }`}
+                              >
+                                <div className="flex items-center justify-between w-full">
+                                  <div className="flex items-center gap-3">
+                                    {storiesView === "list" && (
+                                      <div className="w-8 h-8 rounded overflow-hidden flex-shrink-0">
+                                        {story.image ? (
+                                          <img
+                                            src={story.image}
+                                            alt={story.title}
+                                            className="w-full h-full object-cover"
+                                            loading="lazy"
+                                          />
+                                        ) : (
+                                          <div className="w-full h-full bg-gray-200/50 flex items-center justify-center">
+                                            <div className="text-gray-400 text-xs">
+                                              No image
+                                            </div>
+                                          </div>
+                                        )}
+                                      </div>
+                                    )}
+                                    <h3
+                                      className="text-[18px] font-semibold mb-1 title-font text-black dark:text-white whitespace-nowrap"
+                                      style={{
+                                        letterSpacing: "-0.01em",
+                                      }}
+                                    >
+                                      {story.title}
+                                    </h3>
+                                  </div>
+                                  {storiesView === "list" &&
+                                    (story.hasModal ? (
+                                      <button
+                                        onClick={() =>
+                                          setSelectedStory({
+                                            title: story.title,
+                                            content: story.content,
+                                            subtitle: story.subtitle,
+                                          })
+                                        }
+                                        className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
+                                        aria-label={`View ${story.title} story`}
+                                      >
+                                        <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
+                                      </button>
+                                    ) : (
+                                      <div className="rounded-full p-1.5 w-8 h-8 flex items-center justify-center">
+                                        <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
+                                      </div>
+                                    ))}
+                                </div>
+                                {storiesView === "grid" && story.subtitle && (
+                                  <p className="text-sm text-gray-600 dark:text-white mb-2">
+                                    {story.subtitle}
+                                  </p>
+                                )}
+                              </div>
+                              {storiesView === "grid" && (
+                                <div className="flex-1 flex flex-col">
+                                  {story.description && (
+                                    <p className="text-black mb-2 dark:text-white text-card-body flex-1">
+                                      {story.description}
+                                    </p>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                            {storiesView === "grid" && (
+                              <div className="absolute inset-0 overflow-hidden z-0 p-2">
+                                {story.image ? (
+                                  <img
+                                    src={story.image}
+                                    alt={story.title}
+                                    className="absolute inset-0 h-full w-full object-contain object-bottom"
+                                    loading="lazy"
+                                  />
+                                ) : (
+                                  <div className="absolute inset-0 h-full w-full bg-gray-200/50 flex items-center justify-center">
+                                    <div className="text-gray-400 text-sm">
+                                      No image
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </motion.div>
+                        ))}
+                    </div>
+                  </div>
+                </section>
 
                 {/* Career Timeline Section */}
                 <section id="career" className="py-12 sm:py-16 lg:py-20">
@@ -1749,7 +1746,7 @@ function App() {
                       <h2 className="text-xl font-semibold text-gray-900 mb-6">
                         Cards
                       </h2>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         <div className="group relative overflow-hidden rounded-lg bg-gray-100/80">
                           <div className="absolute top-3 right-3 z-20">
                             <button
@@ -1920,7 +1917,7 @@ function App() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.1 }}
         >
-          <ThemeToggle />
+          <ThemeToggle className="text-black dark:text-white" />
         </motion.div>
       </div>
     </div>
