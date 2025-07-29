@@ -11,9 +11,9 @@ import {
   Palette,
   Briefcase,
   Settings,
-  Heart,
   LayoutGrid,
   List,
+  Menu,
 } from "lucide-react";
 import { LinkedInLogoIcon } from "@radix-ui/react-icons";
 import React, { useState, useEffect } from "react";
@@ -69,8 +69,8 @@ const SectionHeader = ({
 }) => {
   return (
     <div className={`${className}`}>
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2 gap-2 sm:gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <h2
             className="text-[clamp(1.25rem,3vw,2.5rem)] font-bold title-font leading-tight"
             style={{
@@ -90,9 +90,9 @@ const SectionHeader = ({
             </button>
           )}
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           {toggleView && (
-            <div className="flex items-center gap-1 ml-2">
+            <div className="flex items-center gap-1 ml-0 sm:ml-2">
               <button
                 aria-label="Grid view"
                 className={`p-2 rounded-md border transition-colors ${
@@ -120,7 +120,7 @@ const SectionHeader = ({
           {showArchiveLink && (
             <Link
               to="/archive"
-              className="text-nav text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
+              className="text-nav text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline text-sm sm:text-base"
             >
               View Archive
             </Link>
@@ -128,7 +128,7 @@ const SectionHeader = ({
         </div>
       </div>
       {subtitle && (
-        <p className="text-base text-muted-foreground mb-8 sm:mb-10">
+        <p className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8 lg:mb-10">
           {subtitle}
         </p>
       )}
@@ -149,7 +149,7 @@ function App() {
     subtitle?: string;
   } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  // const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [labView, setLabView] = useState<"grid" | "list">("grid");
   const [storiesView, setStoriesView] = useState<"grid" | "list">("grid");
   const [articlesView, setArticlesView] = useState<"grid" | "list">("grid");
@@ -168,7 +168,7 @@ function App() {
 
   // Close mobile menu when route changes
   useEffect(() => {
-    // setIsMobileMenuOpen(false);
+    setIsMobileMenuOpen(false);
   }, [location.pathname]);
 
   const handleNavClick = (id: string) => {
@@ -273,10 +273,22 @@ function App() {
                         </h1>
                       </div>
                     </div>
+
+                    {/* Mobile Navigation Button */}
+                    <div className="flex justify-center mb-4 md:hidden">
+                      <button
+                        onClick={() => setIsMobileMenuOpen(true)}
+                        className="bg-black text-white dark:bg-white/10 dark:text-white p-3 rounded-full shadow-lg hover:opacity-80 transition-opacity"
+                        aria-label="Open navigation menu"
+                      >
+                        <Menu className="h-5 w-5" />
+                      </button>
+                    </div>
+
                     {/* Nav Links and Icons Row */}
                     <div className="hidden md:flex md:flex-col lg:flex-row md:items-stretch lg:items-center gap-4 w-full px-8 sm:px-16 lg:px-32">
                       <div className="hidden md:flex w-full justify-center lg:justify-center rounded-lg pl-0 pr-0 py-2 items-center gap-2 sm:gap-3">
-                        <div className="flex items-center gap-2 sm:gap-3">
+                        <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-center">
                           <button
                             onClick={() => handleNavClick("current-projects")}
                             className="relative px-3 py-3 rounded-lg text-black hover:text-gray-600 dark:text-white dark:hover:text-gray-200 transition-all duration-200 text-sm font-bold uppercase hover:bg-gray-100 dark:hover:bg-gray-800"
@@ -358,9 +370,9 @@ function App() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 1.8, delay: 0.4 }}
-                      className="flex flex-col items-start mt-4 sm:mt-6 px-8 sm:px-16 lg:px-32"
+                      className="flex flex-col items-start mt-4 sm:mt-6 px-4 sm:px-8 lg:px-32"
                     >
-                      <p className="text-lg text-muted-foreground leading-relaxed text-center">
+                      <p className="text-base sm:text-lg text-muted-foreground leading-relaxed text-center">
                         Senior UX and Product Designer with 15+ years of
                         experience delivering accessible, user-centered digital
                         solutions across industries. Skilled in end-to-end
@@ -375,15 +387,15 @@ function App() {
                   </div>
                 </section>
 
-                {/* Mobile Menu - DISABLED */}
-                {false && (
-                  <AnimatePresence>
+                {/* Mobile Menu - ENABLED */}
+                <AnimatePresence>
+                  {isMobileMenuOpen && (
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      className="fixed top-0 left-0 right-0 bottom-0 bg-black/50 z-[9999] xl:hidden"
-                      onClick={() => {}}
+                      className="fixed top-0 left-0 right-0 bottom-0 bg-black/50 z-[9999] md:hidden"
+                      onClick={() => setIsMobileMenuOpen(false)}
                     >
                       <motion.div
                         initial={{ y: "100%" }}
@@ -394,24 +406,26 @@ function App() {
                           damping: 25,
                           stiffness: 300,
                         }}
-                        className="absolute bottom-16 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-gray-200 p-3 rounded-t-3xl max-h-[70vh] overflow-y-auto"
+                        className="absolute bottom-16 left-0 right-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-t border-gray-200 dark:border-gray-700 p-3 rounded-t-3xl max-h-[70vh] overflow-y-auto"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <div className="flex items-center justify-between mb-3">
-                          <h2 className="text-lg font-semibold">Navigation</h2>
+                          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                            Navigation
+                          </h2>
                           <button
-                            onClick={() => {}}
-                            className="bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition-colors"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full p-2 transition-colors"
                             aria-label="Close menu"
                           >
-                            <X className="h-5 w-5 text-gray-600" />
+                            <X className="h-5 w-5 text-gray-600 dark:text-gray-300" />
                           </button>
                         </div>
-                        <div className="grid grid-cols-4 gap-3">
+                        <div className="grid grid-cols-2 gap-3">
                           <button
                             onClick={() => {
                               handleNavClick("current-projects");
-                              // setIsMobileMenuOpen(false);
+                              setIsMobileMenuOpen(false);
                             }}
                             className="flex flex-col items-center gap-2 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors shadow-md"
                           >
@@ -425,7 +439,7 @@ function App() {
                           <button
                             onClick={() => {
                               handleNavClick("stories");
-                              // setIsMobileMenuOpen(false);
+                              setIsMobileMenuOpen(false);
                             }}
                             className="flex flex-col items-center gap-2 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors shadow-md"
                           >
@@ -439,7 +453,7 @@ function App() {
                           <button
                             onClick={() => {
                               handleNavClick("articles");
-                              // setIsMobileMenuOpen(false);
+                              setIsMobileMenuOpen(false);
                             }}
                             className="flex flex-col items-center gap-2 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors shadow-md"
                           >
@@ -453,7 +467,7 @@ function App() {
                           <button
                             onClick={() => {
                               handleNavClick("work");
-                              // setIsMobileMenuOpen(false);
+                              setIsMobileMenuOpen(false);
                             }}
                             className="flex flex-col items-center gap-2 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors shadow-md"
                           >
@@ -467,7 +481,7 @@ function App() {
                           <button
                             onClick={() => {
                               handleNavClick("career");
-                              // setIsMobileMenuOpen(false);
+                              setIsMobileMenuOpen(false);
                             }}
                             className="flex flex-col items-center gap-2 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors shadow-md"
                           >
@@ -478,38 +492,24 @@ function App() {
                               Career
                             </span>
                           </button>
-                          {/* <button
+                          <button
                             onClick={() => {
-                              handleNavClick("personal");
+                              handleNavClick("skills-and-software");
                               setIsMobileMenuOpen(false);
                             }}
                             className="flex flex-col items-center gap-2 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors shadow-md"
                           >
                             <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
-                              <Users className="h-4 w-4 text-white" />
+                              <Settings className="h-4 w-4 text-white" />
                             </div>
                             <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                              Personal
-                            </span>
-                          </button> */}
-                          <button
-                            onClick={() => {
-                              handleNavClick("testimonials");
-                              // setIsMobileMenuOpen(false);
-                            }}
-                            className="flex flex-col items-center gap-2 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors shadow-md"
-                          >
-                            <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
-                              <Heart className="h-4 w-4 text-white" />
-                            </div>
-                            <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                              Testimonials
+                              Skills
                             </span>
                           </button>
                           <button
                             onClick={() => {
                               handleNavClick("design-system");
-                              // setIsMobileMenuOpen(false);
+                              setIsMobileMenuOpen(false);
                             }}
                             className="flex flex-col items-center gap-2 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors shadow-md"
                           >
@@ -531,17 +531,17 @@ function App() {
                         </div>
                       </motion.div>
                     </motion.div>
-                  </AnimatePresence>
-                )}
+                  )}
+                </AnimatePresence>
 
                 {/* Lab Section */}
-                <section className="py-12 sm:py-16 lg:py-20 relative">
-                  <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
-                    <div className="grid grid-cols-1 gap-12">
+                <section className="py-8 sm:py-12 lg:py-16 xl:py-20 relative">
+                  <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="grid grid-cols-1 gap-8 sm:gap-12">
                       {/* Lab Section */}
                       <div
                         id="current-projects"
-                        className="border border-gray-300 dark:border-gray-600 p-6 rounded-lg"
+                        className="border border-gray-300 dark:border-gray-600 p-4 sm:p-6 rounded-lg"
                       >
                         <SectionHeader
                           title={content.currentProjects.title}
@@ -554,7 +554,7 @@ function App() {
                         <div
                           className={
                             labView === "grid"
-                              ? "grid grid-cols-4 gap-6"
+                              ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"
                               : "flex flex-col gap-4"
                           }
                         >
@@ -571,7 +571,9 @@ function App() {
                                   delay: index * 0.2,
                                 }}
                                 className={`group relative overflow-visible rounded-lg bg-gray-100/80 dark:bg-transparent border dark:border-gray-500 shadow-md ${
-                                  labView === "list" ? "h-[50px]" : "h-[320px]"
+                                  labView === "list"
+                                    ? "h-[50px]"
+                                    : "h-[280px] sm:h-[300px] lg:h-[320px]"
                                 }`}
                               >
                                 {labView === "grid" && (
@@ -807,10 +809,10 @@ function App() {
                 {/* Articles and Design Section */}
                 <section
                   id="articles"
-                  className="py-12 sm:py-16 lg:py-20 relative"
+                  className="py-8 sm:py-12 lg:py-16 xl:py-20 relative"
                 >
-                  <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
-                    <div className="border border-gray-300 dark:border-gray-600 p-6 rounded-lg">
+                  <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="border border-gray-300 dark:border-gray-600 p-4 sm:p-6 rounded-lg">
                       <SectionHeader
                         title="Articles"
                         subtitle={content.articles.subtitle}
@@ -839,7 +841,7 @@ function App() {
                       <div
                         className={
                           articlesView === "grid"
-                            ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+                            ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"
                             : "flex flex-col gap-4"
                         }
                       >
@@ -873,7 +875,7 @@ function App() {
                               className={`group relative overflow-hidden rounded-lg bg-gray-100/80 dark:bg-transparent border dark:border-gray-500 flex flex-col shadow-md ${
                                 articlesView === "list"
                                   ? "h-[50px]"
-                                  : "h-[320px]"
+                                  : "h-[280px] sm:h-[300px] lg:h-[320px]"
                               }`}
                             >
                               {articlesView === "grid" && (
@@ -967,10 +969,10 @@ function App() {
                     {/* Design Section */}
                     <section
                       id="work"
-                      className="py-12 sm:py-16 lg:py-20 relative"
+                      className="py-8 sm:py-12 lg:py-16 xl:py-20 relative"
                     >
-                      <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
-                        <div className="border border-gray-300 dark:border-gray-600 p-6 rounded-lg">
+                      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="border border-gray-300 dark:border-gray-600 p-4 sm:p-6 rounded-lg">
                           <SectionHeader
                             title="Design"
                             subtitle={content.work.subtitle}
@@ -993,7 +995,7 @@ function App() {
                           <div
                             className={
                               designView === "grid"
-                                ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+                                ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"
                                 : "flex flex-col gap-4"
                             }
                           >
@@ -1088,7 +1090,7 @@ function App() {
                                     className={`group relative overflow-hidden rounded-lg bg-gray-100/80 dark:bg-transparent border dark:border-gray-500 flex flex-col shadow-md project-card ${
                                       designView === "list"
                                         ? "h-[50px]"
-                                        : "h-[320px]"
+                                        : "h-[280px] sm:h-[300px] lg:h-[320px]"
                                     }`}
                                   >
                                     {designView === "grid" && (
@@ -1125,7 +1127,7 @@ function App() {
                                     className={`group relative overflow-hidden rounded-lg bg-gray-100/80 dark:bg-transparent border dark:border-gray-500 flex flex-col shadow-md project-card ${
                                       designView === "list"
                                         ? "h-[50px]"
-                                        : "h-[320px]"
+                                        : "h-[280px] sm:h-[300px] lg:h-[320px]"
                                     }`}
                                   >
                                     {designView === "grid" && (
@@ -1209,8 +1211,11 @@ function App() {
                 */}
 
                 {/* Storytelling Section */}
-                <section id="stories" className="py-12 sm:py-16 lg:py-20">
-                  <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
+                <section
+                  id="stories"
+                  className="py-8 sm:py-12 lg:py-16 xl:py-20"
+                >
+                  <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
                     <SectionHeader
                       title={content.stories.title}
                       subtitle={content.stories.subtitle}
@@ -1221,7 +1226,7 @@ function App() {
                     <div
                       className={
                         storiesView === "grid"
-                          ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+                          ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"
                           : "flex flex-col gap-4"
                       }
                     >
@@ -1235,7 +1240,9 @@ function App() {
                             viewport={{ once: true }}
                             transition={{ duration: 2.4, delay: 0.2 }}
                             className={`group relative overflow-hidden rounded-lg bg-gray-100/80 dark:bg-transparent border dark:border-gray-500 flex flex-col shadow-md ${
-                              storiesView === "list" ? "h-[50px]" : "h-[320px]"
+                              storiesView === "list"
+                                ? "h-[50px]"
+                                : "h-[280px] sm:h-[300px] lg:h-[320px]"
                             }`}
                           >
                             {storiesView === "grid" && (
@@ -1360,8 +1367,11 @@ function App() {
                 </section>
 
                 {/* Career Timeline Section */}
-                <section id="career" className="py-12 sm:py-16 lg:py-20">
-                  <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
+                <section
+                  id="career"
+                  className="py-8 sm:py-12 lg:py-16 xl:py-20"
+                >
+                  <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
                     <SectionHeader
                       title={content.career.title}
                       subtitle={content.career.subtitle}
@@ -1432,15 +1442,15 @@ function App() {
                 {/* Skills and Software Section */}
                 <section
                   id="skills-and-software"
-                  className="py-12 sm:py-16 lg:py-20"
+                  className="py-8 sm:py-12 lg:py-16 xl:py-20"
                 >
-                  <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
+                  <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
                     <SectionHeader
                       title={content.skillsAndSoftware.title}
                       subtitle={content.skillsAndSoftware.subtitle}
                       className="mb-8 sm:mb-6"
                     />
-                    <div className="space-y-12">
+                    <div className="space-y-8 sm:space-y-12">
                       {content.skillsAndSoftware.categories.map(
                         (category, categoryIndex) => (
                           <motion.div
@@ -1452,16 +1462,16 @@ function App() {
                               duration: 0.8,
                               delay: categoryIndex * 0.1,
                             }}
-                            className="bg-gray-50/50 dark:bg-gray-800/50 rounded-lg p-6"
+                            className="bg-gray-50/50 dark:bg-gray-800/50 rounded-lg p-4 sm:p-6"
                           >
-                            <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
+                            <h3 className="text-lg sm:text-xl font-semibold mb-4 text-gray-900 dark:text-white">
                               {category.name}
                             </h3>
                             <div className="space-y-4">
                               {category.skills.map((skill, skillIndex) => (
                                 <div
                                   key={skillIndex}
-                                  className="border-l-4 border-[#D2691E] pl-4"
+                                  className="border-l-4 border-[#D2691E] pl-3 sm:pl-4"
                                 >
                                   <p className="text-sm font-medium text-gray-800 dark:text-gray-200 mb-2">
                                     {skill.skill}
@@ -1470,7 +1480,7 @@ function App() {
                                     {skill.software.map((tool, toolIndex) => (
                                       <span
                                         key={toolIndex}
-                                        className="inline-block px-3 py-1 text-xs bg-[#D2691E]/10 dark:bg-[#D2691E]/20 text-[rgb(133,58,4)] dark:text-[#E8A87C] rounded-full border border-[#D2691E]/30 dark:border-[#D2691E]/40"
+                                        className="inline-block px-2 sm:px-3 py-1 text-xs bg-[#D2691E]/10 dark:bg-[#D2691E]/20 text-[rgb(133,58,4)] dark:text-[#E8A87C] rounded-full border border-[#D2691E]/30 dark:border-[#D2691E]/40"
                                       >
                                         {tool}
                                       </span>
@@ -1579,8 +1589,11 @@ function App() {
                 </section> */}
 
                 {/* Design System Section */}
-                <section id="design-system" className="py-12 sm:py-16 lg:py-20">
-                  <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
+                <section
+                  id="design-system"
+                  className="py-8 sm:py-12 lg:py-16 xl:py-20"
+                >
+                  <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
                     <SectionHeader
                       title="Design System"
                       subtitle="Component library and design tokens"
@@ -1589,28 +1602,28 @@ function App() {
                     />
 
                     {/* Colors */}
-                    <section className="mb-16">
-                      <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                    <section className="mb-12 sm:mb-16">
+                      <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">
                         Colors
                       </h2>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
                         <div className="space-y-2">
-                          <div className="w-full h-20 bg-primary rounded-lg"></div>
-                          <div className="text-sm">
+                          <div className="w-full h-16 sm:h-20 bg-primary rounded-lg"></div>
+                          <div className="text-xs sm:text-sm">
                             <p className="font-medium">Primary</p>
                             <p className="text-gray-600">Primary</p>
                           </div>
                         </div>
                         <div className="space-y-2">
-                          <div className="w-full h-20 bg-secondary rounded-lg"></div>
-                          <div className="text-sm">
+                          <div className="w-full h-16 sm:h-20 bg-secondary rounded-lg"></div>
+                          <div className="text-xs sm:text-sm">
                             <p className="font-medium">Secondary</p>
                             <p className="text-gray-600">Secondary</p>
                           </div>
                         </div>
                         <div className="space-y-2">
-                          <div className="w-full h-20 bg-[#D2691E] rounded-lg"></div>
-                          <div className="text-sm">
+                          <div className="w-full h-16 sm:h-20 bg-[#D2691E] rounded-lg"></div>
+                          <div className="text-xs sm:text-sm">
                             <p className="font-medium text-gray-900">
                               Muted Orange
                             </p>
@@ -1618,36 +1631,36 @@ function App() {
                           </div>
                         </div>
                         <div className="space-y-2">
-                          <div className="w-full h-20 bg-[#20B2AA] rounded-lg"></div>
-                          <div className="text-sm">
+                          <div className="w-full h-16 sm:h-20 bg-[#20B2AA] rounded-lg"></div>
+                          <div className="text-xs sm:text-sm">
                             <p className="font-medium text-gray-900">Teal</p>
                             <p className="text-gray-800">#20B2AA</p>
                           </div>
                         </div>
                         <div className="space-y-2">
-                          <div className="w-full h-20 bg-gray-100 rounded-lg"></div>
-                          <div className="text-sm">
+                          <div className="w-full h-16 sm:h-20 bg-gray-100 rounded-lg"></div>
+                          <div className="text-xs sm:text-sm">
                             <p className="font-medium">Gray 100</p>
                             <p className="text-gray-600">Gray 100</p>
                           </div>
                         </div>
                         <div className="space-y-2">
-                          <div className="w-full h-20 bg-gray-200 rounded-lg"></div>
-                          <div className="text-sm">
+                          <div className="w-full h-16 sm:h-20 bg-gray-200 rounded-lg"></div>
+                          <div className="text-xs sm:text-sm">
                             <p className="font-medium">Gray 200</p>
                             <p className="text-gray-600">Gray 200</p>
                           </div>
                         </div>
                         <div className="space-y-2">
-                          <div className="w-full h-20 bg-gray-600 rounded-lg"></div>
-                          <div className="text-sm">
+                          <div className="w-full h-16 sm:h-20 bg-gray-600 rounded-lg"></div>
+                          <div className="text-xs sm:text-sm">
                             <p className="font-medium text-white">Gray 600</p>
                             <p className="text-gray-800">Gray 600</p>
                           </div>
                         </div>
                         <div className="space-y-2">
-                          <div className="w-full h-20 bg-gray-900 rounded-lg"></div>
-                          <div className="text-sm">
+                          <div className="w-full h-16 sm:h-20 bg-gray-900 rounded-lg"></div>
+                          <div className="text-xs sm:text-sm">
                             <p className="font-medium text-white">Gray 900</p>
                             <p className="text-gray-800">Gray 900</p>
                           </div>
@@ -1656,61 +1669,61 @@ function App() {
                     </section>
 
                     {/* Typography */}
-                    <section className="mb-16">
-                      <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                    <section className="mb-12 sm:mb-16">
+                      <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">
                         Typography
                       </h2>
                       <div className="space-y-4">
                         <div>
-                          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+                          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
                             Whereas disregard and contempt for human rights have
                           </h1>
-                          <p className="text-sm text-gray-600">
+                          <p className="text-xs sm:text-sm text-gray-600">
                             Component library and design tokens
                           </p>
                         </div>
                         <div>
-                          <h2 className="text-3xl font-semibold text-gray-900 mb-2">
+                          <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-gray-900 mb-2">
                             Whereas disregard and contempt for human rights have
                           </h2>
-                          <p className="text-sm text-gray-600">
+                          <p className="text-xs sm:text-sm text-gray-600">
                             Component library and design tokens
                           </p>
                         </div>
                         <div>
-                          <h3 className="text-2xl font-semibold text-gray-900 mb-2">
+                          <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-900 mb-2">
                             Whereas disregard and contempt for human rights have
                           </h3>
-                          <p className="text-sm text-gray-600">
+                          <p className="text-xs sm:text-sm text-gray-600">
                             Component library and design tokens
                           </p>
                         </div>
                         <div>
-                          <h4 className="text-xl font-semibold text-gray-900 mb-2">
+                          <h4 className="text-base sm:text-lg lg:text-xl font-semibold text-gray-900 mb-2">
                             Whereas disregard and contempt for human rights have
                           </h4>
-                          <p className="text-sm text-gray-600">
+                          <p className="text-xs sm:text-sm text-gray-600">
                             Component library and design tokens
                           </p>
                         </div>
                         <div>
-                          <p className="text-base text-gray-700 mb-2">
+                          <p className="text-sm sm:text-base text-gray-700 mb-2">
                             Whereas disregard and contempt for human rights have
                             resulted in barbarous acts which have outraged the
                             conscience of mankind.
                           </p>
-                          <p className="text-sm text-gray-600">
+                          <p className="text-xs sm:text-sm text-gray-600">
                             Body text - This is a paragraph with regular body
                             text styling.
                           </p>
                         </div>
                         <div>
-                          <p className="text-sm text-gray-600 mb-2">
+                          <p className="text-xs sm:text-sm text-gray-600 mb-2">
                             Whereas disregard and contempt for human rights have
                             resulted in barbarous acts which have outraged the
                             conscience of mankind.
                           </p>
-                          <p className="text-sm text-gray-600">
+                          <p className="text-xs sm:text-sm text-gray-600">
                             Small text - This is smaller text for captions and
                             secondary information.
                           </p>
@@ -1719,65 +1732,67 @@ function App() {
                     </section>
 
                     {/* Buttons */}
-                    <section className="mb-16">
-                      <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                    <section className="mb-12 sm:mb-16">
+                      <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">
                         Buttons
                       </h2>
-                      <div className="flex flex-wrap gap-4">
-                        <button className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+                      <div className="flex flex-wrap gap-2 sm:gap-4">
+                        <button className="px-3 sm:px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm sm:text-base">
                           Primary Button
                         </button>
-                        <button className="px-4 py-2 bg-secondary text-white rounded-lg hover:bg-secondary/90 transition-colors">
+                        <button className="px-3 sm:px-4 py-2 bg-secondary text-white rounded-lg hover:bg-secondary/90 transition-colors text-sm sm:text-base">
                           Secondary Button
                         </button>
-                        <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                        <button className="px-3 sm:px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm sm:text-base">
                           Tertiary Button
                         </button>
-                        <button className="px-4 py-2 border border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-colors">
+                        <button className="px-3 sm:px-4 py-2 border border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-colors text-sm sm:text-base">
                           Outline Primary
                         </button>
-                        <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                        <button className="px-3 sm:px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm sm:text-base">
                           Outline Secondary
                         </button>
                       </div>
                     </section>
 
                     {/* Cards */}
-                    <section className="mb-16">
-                      <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                    <section className="mb-12 sm:mb-16">
+                      <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">
                         Cards
                       </h2>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
                         <div className="group relative overflow-hidden rounded-lg bg-gray-100/80">
                           <div className="absolute top-3 right-3 z-20">
                             <button
-                              className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                              className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center"
                               aria-label="View Background Card"
                             >
-                              <Eye className="h-5 w-5 text-gray-600" />
+                              <Eye className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
                             </button>
                           </div>
-                          <div className="p-6">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                          <div className="p-4 sm:p-6">
+                            <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
                               Background Card
                             </h3>
-                            <p className="text-gray-700">Background Card</p>
+                            <p className="text-sm sm:text-base text-gray-700">
+                              Background Card
+                            </p>
                           </div>
                         </div>
 
                         <div className="group relative overflow-visible rounded-lg bg-gray-100/80 shadow-md aspect-[1/1]">
                           <div className="absolute top-3 right-3 z-20">
                             <button
-                              className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                              className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center"
                               aria-label="View Video Card"
                             >
-                              <Eye className="h-5 w-5 text-gray-600" />
+                              <Eye className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
                             </button>
                           </div>
                           <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
                             <div className="pr-12 flex items-center gap-2">
                               <h3
-                                className="text-[20px] font-semibold mb-1 dark:text-black title-font"
+                                className="text-base sm:text-lg lg:text-xl font-semibold mb-1 dark:text-black title-font"
                                 style={{
                                   letterSpacing: "-0.01em",
                                 }}
@@ -1803,16 +1818,16 @@ function App() {
                         <div className="group relative overflow-visible rounded-lg bg-gray-100/80 shadow-md aspect-[1/1]">
                           <div className="absolute top-3 right-3 z-20">
                             <button
-                              className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                              className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center"
                               aria-label="View Lab Card"
                             >
-                              <Eye className="h-5 w-5 text-gray-600" />
+                              <Eye className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
                             </button>
                           </div>
                           <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
                             <div className="pr-12 flex items-center gap-2">
                               <h3
-                                className="text-[20px] font-semibold mb-1 dark:text-black title-font"
+                                className="text-base sm:text-lg lg:text-xl font-semibold mb-1 dark:text-black title-font"
                                 style={{
                                   letterSpacing: "-0.01em",
                                 }}
@@ -1838,8 +1853,8 @@ function App() {
                                     aria-hidden="true"
                                     style={{
                                       display: "inline-block",
-                                      width: 18,
-                                      height: 18,
+                                      width: 12,
+                                      height: 12,
                                       borderRadius: "50%",
                                       background: `radial-gradient(circle at 70% 70%, ${color} 0%, ${color} 60%, ${color}dd 100%)`,
                                       boxShadow: "0 1px 2px rgba(0,0,0,0.08)",
@@ -1888,17 +1903,17 @@ function App() {
       <MobileTrayMenu />
 
       {/* Back to Top Arrow and Theme Toggle */}
-      <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+      <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 flex flex-col gap-2 sm:gap-3">
         <motion.button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-800 backdrop-blur-sm rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 border border-gray-200 dark:border-gray-700"
+          className="bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-800 backdrop-blur-sm rounded-full p-2 sm:p-3 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 border border-gray-200 dark:border-gray-700"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
           aria-label="Back to top"
         >
           <svg
-            className="w-6 h-6 text-gray-700 dark:text-gray-300"
+            className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700 dark:text-gray-300"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -1913,7 +1928,7 @@ function App() {
           </svg>
         </motion.button>
         <motion.div
-          className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full p-3 shadow-lg border border-gray-200 dark:border-gray-700 w-12 h-12 flex items-center justify-center"
+          className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full p-2 sm:p-3 shadow-lg border border-gray-200 dark:border-gray-700 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.1 }}
