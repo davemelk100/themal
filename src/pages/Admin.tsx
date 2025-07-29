@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, FileText, Palette } from "lucide-react";
+import { ArrowLeft, FileText } from "lucide-react";
 import { content } from "../content";
 import MobileTrayMenu from "../components/MobileTrayMenu";
 

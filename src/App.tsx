@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Dribbble,
   ArrowUp,
@@ -18,13 +18,7 @@ import ArticleModal from "./components/ArticleModal";
 import { ThemeProvider } from "./context/ThemeContext";
 import ThemeToggle from "./components/ThemeToggle";
 import MobileTrayMenu from "./components/MobileTrayMenu";
-import {
-  Routes,
-  Route,
-  Link,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { Routes, Route, Link, useLocation } from "react-router-dom";
 import { lazy, Suspense } from "react";
 
 // Lazy load components for better performance
@@ -148,7 +142,6 @@ function App() {
   const [designView, setDesignView] = useState<"grid" | "list">("grid");
 
   const location = useLocation();
-  const navigate = useNavigate();
 
   // Scroll to top on route change (but not for internal navigation)
   useEffect(() => {
@@ -160,61 +153,6 @@ function App() {
 
   // Close mobile menu when route changes
   useEffect(() => {}, [location.pathname]);
-
-  const handleNavClick = (id: string) => {
-    console.log("handleNavClick called with id:", id);
-
-    const scrollToElement = () => {
-      return new Promise((resolve) => {
-        const element = document.getElementById(id);
-        if (element) {
-          const headerHeight = 80;
-          const elementPosition = element.offsetTop - headerHeight;
-          console.log(
-            "Scrolling to element:",
-            id,
-            "at position:",
-            elementPosition
-          );
-          window.scrollTo({
-            top: elementPosition,
-            behavior: "smooth",
-          });
-          resolve(true);
-        } else {
-          console.log("Element not found:", id);
-          console.log(
-            "Available IDs:",
-            Array.from(document.querySelectorAll("[id]")).map((el) => el.id)
-          );
-          resolve(false);
-        }
-      });
-    };
-
-    const attemptScroll = async () => {
-      // Try multiple times with increasing delays
-      for (let i = 0; i < 5; i++) {
-        const success = await scrollToElement();
-        if (success) break;
-
-        // Wait before next attempt
-        await new Promise((resolve) => setTimeout(resolve, 100 * (i + 1)));
-      }
-    };
-
-    if (location.pathname !== "/") {
-      // If we're not on the main page, navigate to main page first
-      navigate("/");
-      // Wait for navigation to complete before scrolling
-      setTimeout(() => {
-        attemptScroll();
-      }, 300);
-    } else {
-      // If we're already on the main page, try scrolling immediately
-      attemptScroll();
-    }
-  };
 
   if (isLoading) {
     return <Preloader onComplete={() => setIsLoading(false)} />;
