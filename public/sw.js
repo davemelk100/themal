@@ -1,4 +1,4 @@
-const CACHE_NAME = "dm-2025-v4";
+const CACHE_NAME = "dm-2025-v5";
 const urlsToCache = ["/", "/index.html", "/favicon.svg"];
 
 // Install event - cache resources
@@ -13,23 +13,50 @@ self.addEventListener("install", (event) => {
 // Fetch event - serve from cache if available
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
-  
-  // Never cache JavaScript files - always fetch fresh
-  if (url.pathname.includes("/assets/") && url.pathname.endsWith(".js")) {
-    event.respondWith(fetch(event.request));
+
+  // Handle navigation requests (HTML pages)
+  if (event.request.mode === "navigate") {
+    event.respondWith(
+      fetch(event.request).catch(() => {
+        // If network fails, try to serve from cache
+        return caches.match("/index.html");
+      })
+    );
     return;
   }
-  
+
+  // Never cache JavaScript files - always fetch fresh
+  if (url.pathname.includes("/assets/") && url.pathname.endsWith(".js")) {
+    event.respondWith(
+      fetch(event.request).catch(() => {
+        // If fetch fails, return a basic response to prevent crashes
+        return new Response("", { status: 404 });
+      })
+    );
+    return;
+  }
+
   // Never cache CSS files - always fetch fresh
   if (url.pathname.includes("/assets/") && url.pathname.endsWith(".css")) {
-    event.respondWith(fetch(event.request));
+    event.respondWith(
+      fetch(event.request).catch(() => {
+        // If fetch fails, return a basic response to prevent crashes
+        return new Response("", { status: 404 });
+      })
+    );
     return;
   }
 
   event.respondWith(
     caches.match(event.request).then((response) => {
       // Return cached version or fetch from network
-      return response || fetch(event.request);
+      return (
+        response ||
+        fetch(event.request).catch(() => {
+          // If both cache and network fail, return a basic response
+          return new Response("", { status: 404 });
+        })
+      );
     })
   );
 });
