@@ -852,7 +852,8 @@ function App() {
                               article.title !==
                                 "AI is hydrated with user research data" &&
                               article.title !==
-                                "Prompting for Heuristic Evaluations"
+                                "Prompting for Heuristic Evaluations" &&
+                              article.title !== "Vibe Coding v Vibe Engineering"
                           )
                           .sort(
                             (a, b) =>
