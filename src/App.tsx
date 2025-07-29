@@ -889,11 +889,24 @@ function App() {
                                   </Link>
                                 </div>
                               )}
+                              {articlesView === "grid" && (
+                                <div className="absolute inset-0 overflow-hidden z-0 p-2">
+                                  <img
+                                    src={`${
+                                      (article as any).cardImage ||
+                                      article.image
+                                    }?v=${Date.now()}`}
+                                    alt={article.title}
+                                    className="absolute inset-0 h-full w-full object-cover"
+                                    loading="lazy"
+                                  />
+                                </div>
+                              )}
                               <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
                                 <div
                                   className={`rounded-lg p-2 ${
                                     articlesView === "grid"
-                                      ? "bg-white/40 dark:bg-transparent backdrop-blur-sm pr-12"
+                                      ? "bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm pr-12"
                                       : "flex items-center justify-between h-full"
                                   }`}
                                 >
@@ -912,14 +925,22 @@ function App() {
                                           />
                                         </div>
                                       )}
-                                      <h3
-                                        className="text-[18px] font-semibold mb-1 title-font text-black dark:text-white"
-                                        style={{
-                                          letterSpacing: "-0.01em",
-                                        }}
-                                      >
-                                        {article.title}
-                                      </h3>
+                                      <div className="flex flex-col">
+                                        <h3
+                                          className="text-[18px] font-semibold mb-1 title-font text-black dark:text-white"
+                                          style={{
+                                            letterSpacing: "-0.01em",
+                                          }}
+                                        >
+                                          {article.title}
+                                        </h3>
+                                        {articlesView === "grid" &&
+                                          article.description && (
+                                            <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                                              {article.description}
+                                            </p>
+                                          )}
+                                      </div>
                                     </div>
                                     {articlesView === "list" && (
                                       <Link
@@ -934,19 +955,6 @@ function App() {
                                     )}
                                   </div>
                                 </div>
-                                {articlesView === "grid" && (
-                                  <div className="absolute inset-0 overflow-hidden z-0 p-2">
-                                    <img
-                                      src={`${
-                                        (article as any).cardImage ||
-                                        article.image
-                                      }?v=${Date.now()}`}
-                                      alt={article.title}
-                                      className="absolute inset-0 h-full w-full object-cover"
-                                      loading="lazy"
-                                    />
-                                  </div>
-                                )}
                               </div>
                             </motion.div>
                           ))}

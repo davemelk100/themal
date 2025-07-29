@@ -92,12 +92,12 @@ export const audioTracks: AudioTrack[] = [
   },
   {
     id: 10,
-    title: "Olson",
+    title: "Sickly",
     artist: "BALM",
-    url: "/audio/olson.mp3",
-    uniqueUrl: "/audio/olson.mp3",
-    duration: "2:51",
-    filename: "olson.mp3",
+    url: "/audio/sickly.mp3",
+    uniqueUrl: "/audio/sickly.mp3",
+    duration: "4:32",
+    filename: "sickly.mp3",
   },
 ];
 
