@@ -227,7 +227,7 @@ function App() {
                 {/* Lab Section */}
                 <section className="py-8 sm:py-12 lg:py-16 xl:py-20 relative">
                   <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-1 gap-8 sm:gap-12">
+                    <div className="grid grid-cols-1 gap-6 sm:gap-8">
                       {/* Lab Section */}
                       <div
                         id="current-projects"
@@ -236,7 +236,7 @@ function App() {
                         <SectionHeader
                           title={content.currentProjects.title}
                           subtitle={content.currentProjects.subtitle}
-                          className="mb-8"
+                          className="mb-6"
                           showUpArrow={false}
                           toggleView={setLabView}
                           viewMode={labView}
@@ -506,7 +506,7 @@ function App() {
                       <SectionHeader
                         title="Articles"
                         subtitle={content.articles.subtitle}
-                        className="mb-8"
+                        className="mb-6"
                         showArchiveLink={false}
                         toggleView={setArticlesView}
                         viewMode={articlesView}
@@ -694,7 +694,7 @@ function App() {
                       <SectionHeader
                         title="Design"
                         subtitle={content.work.subtitle}
-                        className="mb-8"
+                        className="mb-6"
                         showArchiveLink={false}
                         toggleView={setDesignView}
                         viewMode={designView}
@@ -946,7 +946,7 @@ function App() {
                       <div
                         className={
                           storiesView === "grid"
-                            ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"
+                            ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4 sm:gap-6 justify-center"
                             : "flex flex-col gap-4"
                         }
                       >

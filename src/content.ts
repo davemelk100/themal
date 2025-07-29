@@ -898,24 +898,7 @@ export const content = {
           "Product Development",
         ],
       },
-      {
-        id: "bad-good-prompts-ai-dumber-smarter",
-        title: "Can we make AI dumber?",
-        description:
-          "A point-counterpoint article, rife with hypotheticals and indecision.",
-        url: "https://open.substack.com/pub/davemelk/p/can-we-make-ai-dumber?r=1jgk3k&utm_campaign=post&utm_medium=web",
-        content: `<p>Read the full article on <a href="https://open.substack.com/pub/davemelk/p/can-we-make-ai-dumber?r=1jgk3k&utm_campaign=post&utm_medium=web" target="_blank" rel="noopener noreferrer">Substack</a>.</p>`,
-        image: "/img/smart-dumb.png",
-        cardImage: "/img/smart-dumb.png",
-        date: "July 6, 2024",
-        tags: [
-          "AI",
-          "Prompt Engineering",
-          "Best Practices",
-          "Productivity",
-          "Quality",
-        ],
-      },
+
       {
         id: "prompts-prompt-structure-heuristic-evaluations",
         title: "Prompting for Heuristic Evaluations",
