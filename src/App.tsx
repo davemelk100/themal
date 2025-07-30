@@ -140,7 +140,7 @@ function App() {
   const [storiesView, setStoriesView] = useState<"grid" | "list">("grid");
   const [articlesView, setArticlesView] = useState<"grid" | "list">("grid");
   const [designView, setDesignView] = useState<"grid" | "list">("grid");
-  const [currentSlide, setCurrentSlide] = useState(2);
+  const [currentSlide, setCurrentSlide] = useState(1);
 
   const location = useLocation();
 
@@ -205,7 +205,7 @@ function App() {
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 1.8, delay: 0.4 }}
-                          className="hidden lg:flex flex-wrap justify-start gap-2 sm:gap-3 mb-6 sm:mb-8"
+                          className="hidden lg:flex flex-wrap justify-start gap-2 sm:gap-3 mb-2 sm:mb-4"
                         >
                           {content.navigation.links.map((link) => (
                             <button
@@ -220,7 +220,7 @@ function App() {
                                   });
                                 }
                               }}
-                              className="text-sm font-bold text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 uppercase tracking-wide"
+                              className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
                             >
                               {link.text}
                             </button>

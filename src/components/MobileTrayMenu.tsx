@@ -106,13 +106,6 @@ const MobileTrayMenu: React.FC = () => {
                 >
                   Design System
                 </button>
-                {/*                 <button
-                  onClick={() => handleNavClick("personal")}
-                  className="w-full text-left px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
-                  aria-label="Navigate to Personal section"
-                >
-                  Personal
-                </button> */}
               </div>
 
               {/* Page-specific links */}
@@ -124,35 +117,6 @@ const MobileTrayMenu: React.FC = () => {
                 >
                   Home
                 </Link>
-                <Link
-                  to="/archive"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
-                >
-                  Articles Archive
-                </Link>
-
-                {/* <Link
-                  to="/writing-gallery"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
-                >
-                  Writing Gallery
-                </Link>
-                <Link
-                  to="/music-player"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
-                >
-                  Music Player
-                </Link>
-                <Link
-                  to="/admin"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
-                >
-                  Admin
-                </Link> */}
               </div>
 
               {/* Social Links */}

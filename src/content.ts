@@ -255,10 +255,7 @@ export const content = {
             skill: "Developing user personas and user narratives",
             software: ["Figma", "Perplexity", "ChatGPT", "Grok"],
           },
-          {
-            skill: "Visualizing complex user flows and journey maps",
-            software: ["Figma"],
-          },
+
           {
             skill: "Conducting market research and best practice analysis",
             software: ["Perplexity", "ChatGPT", "Grok"],
@@ -341,15 +338,7 @@ export const content = {
             skill: "Developing custom themes and enhancements",
             software: ["HTML", "CSS", "PHP", "WordPress", "Contact Form 7"],
           },
-          {
-            skill: "Building streaming media and interactive training guides",
-            software: [
-              "HTML",
-              "CSS",
-              "JavaScript",
-              "WMVs (Windows Media Video)",
-            ],
-          },
+
           {
             skill: "Integrating email systems and automation",
             software: ["Email.js", "Auth0", "Mailchimp", "Contact Form 7"],
