@@ -207,7 +207,7 @@ function App() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 1.8, delay: 0.4 }}
-                      className="flex flex-wrap justify-center gap-4 sm:gap-6 mb-6 sm:mb-8"
+                      className="hidden md:flex flex-wrap justify-center gap-4 sm:gap-6 mb-6 sm:mb-8"
                     >
                       {content.navigation.links.map((link) => (
                         <button
@@ -961,7 +961,7 @@ function App() {
                       <div
                         className={
                           storiesView === "grid"
-                            ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4 sm:gap-6 justify-center"
+                            ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-6 justify-center"
                             : "flex flex-col gap-4"
                         }
                       >
