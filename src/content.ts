@@ -13,28 +13,28 @@ export const content = {
     },
     links: [
       {
-        id: "articles",
-        text: "Articles",
-      },
-      {
         id: "current-projects",
         text: "Lab",
+      },
+      {
+        id: "articles",
+        text: "Articles",
       },
       {
         id: "work",
         text: "Design",
       },
       {
-        id: "testimonials",
-        text: "Testimonials",
+        id: "stories",
+        text: "Storytelling",
       },
       {
         id: "career",
         text: "Career",
       },
       {
-        id: "stories",
-        text: "Storytelling",
+        id: "design-system",
+        text: "Design System",
       },
     ],
     social: {

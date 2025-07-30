@@ -65,13 +65,6 @@ const MobileTrayMenu: React.FC = () => {
                   Lab
                 </button>
                 <button
-                  onClick={() => handleNavClick("stories")}
-                  className="w-full text-left px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
-                  aria-label="Navigate to Storytelling section"
-                >
-                  Storytelling
-                </button>
-                <button
                   onClick={() => handleNavClick("articles")}
                   className="w-full text-left px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
                   aria-label="Navigate to Articles section"
@@ -85,7 +78,13 @@ const MobileTrayMenu: React.FC = () => {
                 >
                   Designs
                 </button>
-
+                <button
+                  onClick={() => handleNavClick("stories")}
+                  className="w-full text-left px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
+                  aria-label="Navigate to Storytelling section"
+                >
+                  Storytelling
+                </button>
                 <button
                   onClick={() => handleNavClick("career")}
                   className="w-full text-left px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
@@ -94,11 +93,11 @@ const MobileTrayMenu: React.FC = () => {
                   Career
                 </button>
                 <button
-                  onClick={() => handleNavClick("skills-and-software")}
+                  onClick={() => handleNavClick("design-system")}
                   className="w-full text-left px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
-                  aria-label="Navigate to Skills and Software section"
+                  aria-label="Navigate to Design System section"
                 >
-                  Skills & Software
+                  Design System
                 </button>
                 {/*                 <button
                   onClick={() => handleNavClick("personal")}
