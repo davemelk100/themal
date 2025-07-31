@@ -140,7 +140,7 @@ function App() {
   const [storiesView, setStoriesView] = useState<"grid" | "list">("grid");
   const [articlesView, setArticlesView] = useState<"grid" | "list">("grid");
   const [designView, setDesignView] = useState<"grid" | "list">("grid");
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(2);
 
   const location = useLocation();
 
