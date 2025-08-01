@@ -12,7 +12,6 @@ import {
   Music2,
 } from "lucide-react";
 import {
-  audioTracks,
   AudioTrack,
   TrackVersion,
   getTrackUrl,
@@ -196,10 +195,6 @@ const MusicPlayer: React.FC = () => {
         });
       }
     }
-  };
-
-  const toggleView = () => {
-    setShowInstrumentals(!showInstrumentals);
   };
 
   const formatTime = (time: number) => {

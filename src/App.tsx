@@ -332,13 +332,10 @@ function App() {
                               }`}
                             >
                               <div className="absolute inset-0 z-0 flex items-end justify-center mt-8">
-                                <LazyVideo
-                                  src="/video/observed-rhythm.mp4"
+                                <img
+                                  src="/img/observed-rhythm-animation.svg"
                                   className="w-full h-auto object-contain shadow-none border-0"
-                                  autoPlay={currentSlide === 2}
-                                  muted={true}
-                                  loop={true}
-                                  playsInline={true}
+                                  alt="Observed Rhythm Animation"
                                 />
                               </div>
                               {/* Title and subtitle above animation */}

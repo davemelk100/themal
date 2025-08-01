@@ -1,0 +1,110 @@
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="rhythmGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff6b35;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f7931e;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="rhythmGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4ecdc4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#44a08d;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="rhythmGradient3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a67c52;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b6b4f;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Filters -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="300" fill="#f8fafc"/>
+  
+     <!-- Rhythm Elements - Row 1: Pulsing circles -->
+   <g id="rhythm-row-1">
+     <circle cx="80" cy="120" r="12" fill="url(#rhythmGradient1)" filter="url(#glow)">
+       <animate attributeName="r" values="12;18;12" dur="20s" repeatCount="indefinite" begin="0s"/>
+       <animate attributeName="opacity" values="0.7;1;0.7" dur="20s" repeatCount="indefinite" begin="0s"/>
+       <animate attributeName="cy" values="120;100;120" dur="15s" repeatCount="indefinite" begin="0s"/>
+     </circle>
+     <circle cx="160" cy="120" r="12" fill="url(#rhythmGradient1)" filter="url(#glow)">
+       <animate attributeName="r" values="12;18;12" dur="20s" repeatCount="indefinite" begin="3s"/>
+       <animate attributeName="opacity" values="0.7;1;0.7" dur="20s" repeatCount="indefinite" begin="3s"/>
+       <animate attributeName="cy" values="120;140;120" dur="15s" repeatCount="indefinite" begin="3s"/>
+     </circle>
+     <circle cx="240" cy="120" r="12" fill="url(#rhythmGradient1)" filter="url(#glow)">
+       <animate attributeName="r" values="12;18;12" dur="20s" repeatCount="indefinite" begin="6s"/>
+       <animate attributeName="opacity" values="0.7;1;0.7" dur="20s" repeatCount="indefinite" begin="6s"/>
+       <animate attributeName="cy" values="120;100;120" dur="15s" repeatCount="indefinite" begin="6s"/>
+     </circle>
+     <circle cx="320" cy="120" r="12" fill="url(#rhythmGradient1)" filter="url(#glow)">
+       <animate attributeName="r" values="12;18;12" dur="20s" repeatCount="indefinite" begin="9s"/>
+       <animate attributeName="opacity" values="0.7;1;0.7" dur="20s" repeatCount="indefinite" begin="9s"/>
+       <animate attributeName="cy" values="120;140;120" dur="15s" repeatCount="indefinite" begin="9s"/>
+     </circle>
+   </g>
+  
+     <!-- Rhythm Elements - Row 2: Sliding squares -->
+   <g id="rhythm-row-2">
+     <rect x="60" y="100" width="16" height="16" fill="url(#rhythmGradient2)" rx="2">
+       <animate attributeName="x" values="60;280;60" dur="30s" repeatCount="indefinite" begin="0s"/>
+       <animate attributeName="opacity" values="0.6;1;0.6" dur="30s" repeatCount="indefinite" begin="0s"/>
+       <animate attributeName="y" values="100;80;100" dur="25s" repeatCount="indefinite" begin="0s"/>
+     </rect>
+     <rect x="140" y="100" width="16" height="16" fill="url(#rhythmGradient2)" rx="2">
+       <animate attributeName="x" values="140;360;140" dur="30s" repeatCount="indefinite" begin="5s"/>
+       <animate attributeName="opacity" values="0.6;1;0.6" dur="30s" repeatCount="indefinite" begin="5s"/>
+       <animate attributeName="y" values="100;120;100" dur="25s" repeatCount="indefinite" begin="5s"/>
+     </rect>
+     <rect x="220" y="100" width="16" height="16" fill="url(#rhythmGradient2)" rx="2">
+       <animate attributeName="x" values="220;440;220" dur="30s" repeatCount="indefinite" begin="10s"/>
+       <animate attributeName="opacity" values="0.6;1;0.6" dur="30s" repeatCount="indefinite" begin="10s"/>
+       <animate attributeName="y" values="100;80;100" dur="25s" repeatCount="indefinite" begin="10s"/>
+     </rect>
+     <rect x="300" y="100" width="16" height="16" fill="url(#rhythmGradient2)" rx="2">
+       <animate attributeName="x" values="300;520;300" dur="30s" repeatCount="indefinite" begin="15s"/>
+       <animate attributeName="opacity" values="0.6;1;0.6" dur="30s" repeatCount="indefinite" begin="15s"/>
+       <animate attributeName="y" values="100;120;100" dur="25s" repeatCount="indefinite" begin="15s"/>
+     </rect>
+   </g>
+  
+  
+  
+     <!-- Rhythm Elements - Row 4: Rotating diamonds -->
+   <g id="rhythm-row-4">
+     <polygon points="120,180 140,160 120,140 100,160" fill="url(#rhythmGradient1)" opacity="0.8">
+       <animateTransform attributeName="transform" type="rotate" values="0 120 160;360 120 160" dur="40s" repeatCount="indefinite" begin="0s"/>
+       <animate attributeName="points" values="120,180 140,160 120,140 100,160;120,160 140,140 120,120 100,140;120,180 140,160 120,140 100,160" dur="35s" repeatCount="indefinite" begin="0s"/>
+     </polygon>
+     <polygon points="200,180 220,160 200,140 180,160" fill="url(#rhythmGradient2)" opacity="0.8">
+       <animateTransform attributeName="transform" type="rotate" values="0 200 160;360 200 160" dur="40s" repeatCount="indefinite" begin="10s"/>
+       <animate attributeName="points" values="200,180 220,160 200,140 180,160;200,160 220,140 200,120 180,140;200,180 220,160 200,140 180,160" dur="35s" repeatCount="indefinite" begin="10s"/>
+     </polygon>
+     <polygon points="280,180 300,160 280,140 260,160" fill="url(#rhythmGradient3)" opacity="0.8">
+       <animateTransform attributeName="transform" type="rotate" values="0 280 160;360 280 160" dur="40s" repeatCount="indefinite" begin="20s"/>
+       <animate attributeName="points" values="280,180 300,160 280,140 260,160;280,160 300,140 280,120 260,140;280,180 300,160 280,140 260,160" dur="35s" repeatCount="indefinite" begin="20s"/>
+     </polygon>
+   </g>
+  
+     <!-- Connecting lines to show rhythm flow -->
+   <g id="rhythm-flow" opacity="0.3">
+     <line x1="80" y1="120" x2="160" y2="120" stroke="#6b7280" stroke-width="1" stroke-dasharray="2,2">
+       <animate attributeName="stroke-dashoffset" values="0;4" dur="20s" repeatCount="indefinite"/>
+     </line>
+     <line x1="160" y1="120" x2="240" y2="120" stroke="#6b7280" stroke-width="1" stroke-dasharray="2,2">
+       <animate attributeName="stroke-dashoffset" values="0;4" dur="20s" repeatCount="indefinite" begin="3s"/>
+     </line>
+     <line x1="240" y1="120" x2="320" y2="120" stroke="#6b7280" stroke-width="1" stroke-dasharray="2,2">
+       <animate attributeName="stroke-dashoffset" values="0;4" dur="20s" repeatCount="indefinite" begin="6s"/>
+     </line>
+   </g>
+  
+  
+</svg> 
