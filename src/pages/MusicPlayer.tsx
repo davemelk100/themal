@@ -8,8 +8,16 @@ import {
   Volume2,
   VolumeX,
   Loader2,
+  Music,
+  Music2,
 } from "lucide-react";
-import { audioTracks, AudioTrack } from "../data/audioUrls";
+import {
+  audioTracks,
+  AudioTrack,
+  TrackVersion,
+  getTrackUrl,
+  getTracksByType,
+} from "../data/audioUrls";
 import MobileTrayMenu from "../components/MobileTrayMenu";
 
 const MusicPlayer: React.FC = () => {
@@ -21,21 +29,28 @@ const MusicPlayer: React.FC = () => {
   const [duration, setDuration] = useState(0);
   const [loading, setLoading] = useState(false);
   const [audioError, setAudioError] = useState<string | null>(null);
+  const [trackVersion, setTrackVersion] = useState<TrackVersion>("regular");
+  const [showInstrumentals, setShowInstrumentals] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  // Use the tracks from the audioUrls data
-  const tracks: AudioTrack[] = audioTracks;
+  // Get tracks based on current view
+  const tracks: AudioTrack[] = showInstrumentals
+    ? getTracksByType(true)
+    : getTracksByType(false);
 
-  // Initialize the audio element with the first track when component mounts
+  // Reset current track when switching views
   useEffect(() => {
+    setCurrentTrack(0);
     if (audioRef.current && tracks.length > 0) {
-      console.log("Loading audio file:", tracks[0].uniqueUrl);
-      audioRef.current.src = tracks[0].uniqueUrl;
+      const currentTrackData = tracks[0];
+      const trackUrl = getTrackUrl(currentTrackData, trackVersion);
+      console.log("Loading audio file:", trackUrl);
+      audioRef.current.src = trackUrl;
       audioRef.current.load();
       audioRef.current.volume = volume;
     }
-  }, []);
+  }, [showInstrumentals, trackVersion]);
 
   // Update volume when volume state changes
   useEffect(() => {
@@ -63,13 +78,17 @@ const MusicPlayer: React.FC = () => {
     setLoading(true);
     setPendingPlay(true);
     if (audioRef.current) {
+      const currentTrackData = tracks[index];
+      const trackUrl = getTrackUrl(currentTrackData, trackVersion);
       console.log(
         "Loading track:",
         tracks[index].title,
         "URL:",
-        tracks[index].uniqueUrl
+        trackUrl,
+        "Version:",
+        trackVersion
       );
-      audioRef.current.src = tracks[index].uniqueUrl;
+      audioRef.current.src = trackUrl;
       audioRef.current.load();
       // Ensure volume is properly set after loading
       setTimeout(() => {
@@ -150,11 +169,47 @@ const MusicPlayer: React.FC = () => {
     }
   };
 
+  const toggleVersion = () => {
+    const newVersion: TrackVersion =
+      trackVersion === "regular" ? "instrumental" : "regular";
+    setTrackVersion(newVersion);
+
+    // Reload current track with new version
+    if (audioRef.current && tracks[currentTrack]) {
+      const currentTrackData = tracks[currentTrack];
+      const trackUrl = getTrackUrl(currentTrackData, newVersion);
+
+      // Only switch if instrumental version exists
+      if (newVersion === "instrumental" && !currentTrackData.instrumentalUrl) {
+        console.log("No instrumental version available for this track");
+        return;
+      }
+
+      console.log("Switching to", newVersion, "version:", trackUrl);
+      audioRef.current.src = trackUrl;
+      audioRef.current.load();
+
+      // If currently playing, continue playing
+      if (isPlaying) {
+        audioRef.current.play().catch(() => {
+          console.log("Failed to play after version switch");
+        });
+      }
+    }
+  };
+
+  const toggleView = () => {
+    setShowInstrumentals(!showInstrumentals);
+  };
+
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds.toString().padStart(2, "0")}`;
   };
+
+  const currentTrackData = tracks[currentTrack];
+  const hasInstrumental = currentTrackData?.instrumentalUrl;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 p-8 pb-[108px]">
@@ -164,7 +219,31 @@ const MusicPlayer: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8"
         >
-
+          {/* View Toggle */}
+          <div className="flex justify-center mb-6">
+            <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+              <button
+                onClick={() => setShowInstrumentals(false)}
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                  !showInstrumentals
+                    ? "bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm"
+                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                }`}
+              >
+                Regular Tracks
+              </button>
+              <button
+                onClick={() => setShowInstrumentals(true)}
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                  showInstrumentals
+                    ? "bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm"
+                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                }`}
+              >
+                Instrumental Tracks
+              </button>
+            </div>
+          </div>
 
           {/* Current Track Info */}
           <div className="text-left mb-8">
@@ -174,15 +253,48 @@ const MusicPlayer: React.FC = () => {
             <p className="text-lg text-gray-600 dark:text-gray-400 mt-1">
               {tracks[currentTrack]?.artist}
             </p>
+            <div className="flex items-center gap-2 mt-2">
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                Version:
+              </span>
+              <span
+                className={`text-sm font-medium px-2 py-1 rounded ${
+                  trackVersion === "regular"
+                    ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300"
+                    : "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
+                }`}
+              >
+                {trackVersion === "regular" ? "Regular" : "Instrumental"}
+              </span>
+              {hasInstrumental && (
+                <button
+                  onClick={toggleVersion}
+                  className="flex items-center gap-1 px-3 py-1 text-sm bg-purple-100 hover:bg-purple-200 dark:bg-purple-900/30 dark:hover:bg-purple-900/50 text-purple-700 dark:text-purple-300 rounded transition-colors"
+                  disabled={loading}
+                >
+                  {trackVersion === "regular" ? (
+                    <>
+                      <Music2 className="h-4 w-4" />
+                      Switch to Instrumental
+                    </>
+                  ) : (
+                    <>
+                      <Music className="h-4 w-4" />
+                      Switch to Regular
+                    </>
+                  )}
+                </button>
+              )}
+            </div>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 font-mono">
               URL:{" "}
               <a
-                href={tracks[currentTrack]?.uniqueUrl}
+                href={getTrackUrl(tracks[currentTrack], trackVersion)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
               >
-                {tracks[currentTrack]?.uniqueUrl}
+                {getTrackUrl(tracks[currentTrack], trackVersion)}
               </a>
             </p>
             {audioError && (
@@ -210,7 +322,7 @@ const MusicPlayer: React.FC = () => {
               setLoading(false);
               setPendingPlay(false);
               setAudioError(
-                `Failed to load audio: ${tracks[currentTrack]?.title}`
+                `Failed to load audio: ${tracks[currentTrack]?.title} (${trackVersion} version)`
               );
             }}
             preload="auto"
@@ -308,7 +420,7 @@ const MusicPlayer: React.FC = () => {
           {/* Playlist */}
           <div className="space-y-2">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-              Playlist
+              {showInstrumentals ? "Instrumental Playlist" : "Regular Playlist"}
             </h3>
             {tracks.map((track, index) => (
               <motion.div

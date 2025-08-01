@@ -6,7 +6,12 @@ export interface AudioTrack {
   uniqueUrl: string;
   duration: string;
   filename: string;
+  instrumentalUrl?: string;
+  instrumentalFilename?: string;
+  isInstrumental?: boolean;
 }
+
+export type TrackVersion = "regular" | "instrumental";
 
 export const audioTracks: AudioTrack[] = [
   {
@@ -71,6 +76,8 @@ export const audioTracks: AudioTrack[] = [
     uniqueUrl: "/audio/nothing-specifically.mp3",
     duration: "1:55",
     filename: "nothing-specifically.mp3",
+    instrumentalUrl: "/audio/nothing-specifically-instrumental.mp3",
+    instrumentalFilename: "nothing-specifically-instrumental.mp3",
   },
   {
     id: 8,
@@ -80,6 +87,8 @@ export const audioTracks: AudioTrack[] = [
     uniqueUrl: "/audio/You-Son-Of-A.mp3",
     duration: "2:30",
     filename: "You-Son-Of-A.mp3",
+    instrumentalUrl: "/audio/ill-be-a-instrumental.mp3",
+    instrumentalFilename: "ill-be-a-instrumental.mp3",
   },
   {
     id: 9,
@@ -89,6 +98,8 @@ export const audioTracks: AudioTrack[] = [
     uniqueUrl: "/audio/claspaliti.mp3",
     duration: "2:00",
     filename: "claspaliti.mp3",
+    instrumentalUrl: "/audio/this-time-its-jeremy-instrumental.mp3",
+    instrumentalFilename: "this-time-its-jeremy-instrumental.mp3",
   },
   {
     id: 10,
@@ -107,6 +118,47 @@ export const audioTracks: AudioTrack[] = [
     uniqueUrl: "/audio/on-sunday.mp3",
     duration: "2:49",
     filename: "on-sunday.mp3",
+  },
+  // Instrumental tracks
+  {
+    id: 12,
+    title: "Specifically or Explicitly (Instrumental)",
+    artist: "BALM",
+    url: "/audio/nothing-specifically-instrumental.mp3",
+    uniqueUrl: "/audio/nothing-specifically-instrumental.mp3",
+    duration: "1:55",
+    filename: "nothing-specifically-instrumental.mp3",
+    isInstrumental: true,
+  },
+  {
+    id: 13,
+    title: "Well I'll Be A (Instrumental)",
+    artist: "BALM",
+    url: "/audio/ill-be-a-instrumental.mp3",
+    uniqueUrl: "/audio/ill-be-a-instrumental.mp3",
+    duration: "2:30",
+    filename: "ill-be-a-instrumental.mp3",
+    isInstrumental: true,
+  },
+  {
+    id: 14,
+    title: "This Time, It's Jeremy (Instrumental)",
+    artist: "BALM",
+    url: "/audio/this-time-its-jeremy-instrumental.mp3",
+    uniqueUrl: "/audio/this-time-its-jeremy-instrumental.mp3",
+    duration: "2:00",
+    filename: "this-time-its-jeremy-instrumental.mp3",
+    isInstrumental: true,
+  },
+  {
+    id: 15,
+    title: "Sickly (Instrumental)",
+    artist: "BALM",
+    url: "/audio/sickly-instrumental.mp3",
+    uniqueUrl: "/audio/sickly-instrumental.mp3",
+    duration: "3:45",
+    filename: "sickly-instrumental.mp3",
+    isInstrumental: true,
   },
 ];
 
@@ -127,4 +179,22 @@ export const getTrackByFilename = (
 // Helper function to get all unique URLs
 export const getAllUniqueUrls = (): string[] => {
   return audioTracks.map((track) => track.uniqueUrl);
+};
+
+// Helper function to get the appropriate URL based on version
+export const getTrackUrl = (
+  track: AudioTrack,
+  version: TrackVersion
+): string => {
+  if (version === "instrumental" && track.instrumentalUrl) {
+    return track.instrumentalUrl;
+  }
+  return track.uniqueUrl;
+};
+
+// Helper function to get tracks by type
+export const getTracksByType = (isInstrumental: boolean): AudioTrack[] => {
+  return audioTracks.filter((track) =>
+    isInstrumental ? track.isInstrumental : !track.isInstrumental
+  );
 };
