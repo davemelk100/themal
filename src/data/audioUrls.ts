@@ -119,9 +119,18 @@ export const audioTracks: AudioTrack[] = [
     duration: "2:49",
     filename: "on-sunday.mp3",
   },
-  // Instrumental tracks
   {
     id: 12,
+    title: "One Family Counting Worms In The Paint",
+    artist: "BALM",
+    url: "/audio/one-family-counting-worms-in-the-paint.mp3",
+    uniqueUrl: "/audio/one-family-counting-worms-in-the-paint.mp3",
+    duration: "3:15",
+    filename: "one-family-counting-worms-in-the-paint.mp3",
+  },
+  // Instrumental tracks
+  {
+    id: 13,
     title: "Specifically or Explicitly (Instrumental)",
     artist: "BALM",
     url: "/audio/nothing-specifically-instrumental.mp3",
@@ -131,7 +140,7 @@ export const audioTracks: AudioTrack[] = [
     isInstrumental: true,
   },
   {
-    id: 13,
+    id: 14,
     title: "Well I'll Be A (Instrumental)",
     artist: "BALM",
     url: "/audio/ill-be-a-instrumental.mp3",
@@ -141,7 +150,7 @@ export const audioTracks: AudioTrack[] = [
     isInstrumental: true,
   },
   {
-    id: 14,
+    id: 15,
     title: "This Time, It's Jeremy (Instrumental)",
     artist: "BALM",
     url: "/audio/this-time-its-jeremy-instrumental.mp3",
@@ -151,7 +160,7 @@ export const audioTracks: AudioTrack[] = [
     isInstrumental: true,
   },
   {
-    id: 15,
+    id: 16,
     title: "Sickly (Instrumental)",
     artist: "BALM",
     url: "/audio/sickly-instrumental.mp3",
@@ -161,7 +170,7 @@ export const audioTracks: AudioTrack[] = [
     isInstrumental: true,
   },
   {
-    id: 16,
+    id: 17,
     title: "Soulja Boy As A Service (Instrumental)",
     artist: "BALM",
     url: "/audio/soulja-boy-as-a-service.mp3",
