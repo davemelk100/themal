@@ -281,4 +281,10 @@
     background: #8b5cf6;
     border: 2px solid #374151;
   }
+
+  /* Roboto Serif override for Audio and Transcript page */
+  .roboto-serif-page,
+  .roboto-serif-page * {
+    font-family: "Roboto Serif", serif !important;
+  }
 }

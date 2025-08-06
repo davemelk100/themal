@@ -29,6 +29,7 @@ const Admin = lazy(() => import("./pages/Admin"));
 const MusicPlayer = lazy(() => import("./pages/MusicPlayer"));
 const WritingGallery = lazy(() => import("./pages/WritingGallery"));
 const JsonAiPrompts = lazy(() => import("./pages/JsonAiPrompts"));
+const AudioTranscript = lazy(() => import("./pages/AudioTranscript"));
 import { slugify } from "./utils/slugify";
 import LazyVideo from "./components/LazyVideo";
 
@@ -1054,10 +1055,10 @@ function App() {
                               whileInView={{ opacity: 1, y: 0 }}
                               viewport={{ once: true }}
                               transition={{ duration: 2.4, delay: 0.2 }}
-                              className={`group relative overflow-hidden rounded-lg bg-gray-100/80 dark:bg-transparent border dark:border-gray-500 flex flex-col shadow-md ${
+                              className={`group relative overflow-hidden rounded-lg bg-white border border-gray-200 flex flex-col shadow-md ${
                                 storiesView === "list"
                                   ? "h-[50px]"
-                                  : "h-[280px] sm:h-[300px] lg:h-[320px]"
+                                  : "h-[320px] sm:h-[336px] lg:h-[352px]"
                               }`}
                             >
                               {storiesView === "grid" && (
@@ -1083,11 +1084,11 @@ function App() {
                                   )}
                                 </div>
                               )}
-                              <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
+                              <div className="absolute inset-0 flex flex-col gap-2 z-10">
                                 <div
-                                  className={`rounded-lg p-2 ${
+                                  className={`pt-3 pl-3 pr-2 pb-2 ${
                                     storiesView === "grid"
-                                      ? "bg-white/40 dark:bg-transparent backdrop-blur-sm pr-12"
+                                      ? "bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm pr-20"
                                       : "flex items-center justify-between h-full"
                                   }`}
                                 >
@@ -1158,16 +1159,16 @@ function App() {
                                 )}
                               </div>
                               {storiesView === "grid" && (
-                                <div className="absolute inset-0 overflow-hidden z-0 p-2">
+                                <div className="absolute inset-0 z-0">
                                   {story.image ? (
                                     <img
                                       src={story.image}
                                       alt={story.title}
-                                      className="absolute inset-0 h-full w-full object-contain object-bottom"
+                                      className="absolute bottom-0 left-0 right-0 h-1/2 w-full object-cover object-center"
                                       loading="lazy"
                                     />
                                   ) : (
-                                    <div className="absolute inset-0 h-full w-full bg-gray-200/50 flex items-center justify-center">
+                                    <div className="absolute bottom-0 left-0 right-0 h-1/2 w-full bg-gray-200/50 flex items-center justify-center">
                                       <div className="text-gray-400 text-sm">
                                         No image
                                       </div>
@@ -1792,6 +1793,7 @@ function App() {
           <Route path="/music-player" element={<MusicPlayer />} />
           <Route path="/writing-gallery" element={<WritingGallery />} />
           <Route path="/json-ai-prompts" element={<JsonAiPrompts />} />
+          <Route path="/audio-transcript" element={<AudioTranscript />} />
         </Routes>
       </Suspense>
 
