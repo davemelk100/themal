@@ -28,6 +28,7 @@ const Archive = lazy(() => import("./pages/Archive"));
 const Admin = lazy(() => import("./pages/Admin"));
 const MusicPlayer = lazy(() => import("./pages/MusicPlayer"));
 const WritingGallery = lazy(() => import("./pages/WritingGallery"));
+const JsonAiPrompts = lazy(() => import("./pages/JsonAiPrompts"));
 import { slugify } from "./utils/slugify";
 import LazyVideo from "./components/LazyVideo";
 
@@ -140,7 +141,7 @@ function App() {
   const [storiesView, setStoriesView] = useState<"grid" | "list">("grid");
   const [articlesView, setArticlesView] = useState<"grid" | "list">("grid");
   const [designView, setDesignView] = useState<"grid" | "list">("grid");
-  const [currentSlide, setCurrentSlide] = useState(1);
+  const [currentSlide] = useState(0);
 
   const location = useLocation();
 
@@ -288,85 +289,9 @@ function App() {
                                 </div>
                               </div>
                             </div>
-
-                            {/* Observed Rhythm Slide */}
-                            <div
-                              className={`absolute inset-0 transition-opacity duration-500 ${
-                                currentSlide === 1 ? "opacity-100" : "opacity-0"
-                              }`}
-                            >
-                              <div className="absolute inset-0 z-0 flex items-end justify-center mt-8">
-                                <img
-                                  src="/img/observed-rhythm-animation.svg"
-                                  className="w-full h-auto object-contain shadow-none border-0"
-                                  alt="Observed Rhythm Animation"
-                                />
-                              </div>
-                              {/* Title and subtitle above animation */}
-                              <div className="absolute inset-0 z-10 flex flex-col justify-start p-4">
-                                <div className="text-gray-900 dark:text-white">
-                                  <h3 className="text-base font-semibold mb-1">
-                                    Observed Rhythm
-                                  </h3>
-                                  <p className="text-xs opacity-90 leading-relaxed">
-                                    Observed Rhythm creates visual patterns
-                                    through repeated elements and coordinated
-                                    movement. This technique uses timing,
-                                    spacing, and variation to create a sense of
-                                    flow and harmony.
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
                           </div>
 
                           {/* Navigation Arrows */}
-                          <button
-                            onClick={() =>
-                              setCurrentSlide((prev) =>
-                                prev === 0 ? 1 : prev - 1
-                              )
-                            }
-                            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 z-20 opacity-0 group-hover:opacity-100"
-                            aria-label="Previous video"
-                          >
-                            <svg
-                              className="w-4 h-4 text-gray-600"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M15 19l-7-7 7-7"
-                              />
-                            </svg>
-                          </button>
-                          <button
-                            onClick={() =>
-                              setCurrentSlide((prev) =>
-                                prev === 1 ? 0 : prev + 1
-                              )
-                            }
-                            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 z-20 opacity-0 group-hover:opacity-100"
-                            aria-label="Next video"
-                          >
-                            <svg
-                              className="w-4 h-4 text-gray-600"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M9 5l7 7-7 7"
-                              />
-                            </svg>
-                          </button>
                         </div>
                       </motion.div>
                     </div>
@@ -467,7 +392,7 @@ function App() {
                                   <div
                                     className={`rounded-lg p-2 ${
                                       labView === "grid"
-                                        ? "bg-white/40 dark:bg-transparent backdrop-blur-sm pr-12"
+                                        ? "pr-12"
                                         : "flex items-center justify-between h-full"
                                     }`}
                                   >
@@ -1874,6 +1799,7 @@ function App() {
           <Route path="/admin" element={<Admin />} />
           <Route path="/music-player" element={<MusicPlayer />} />
           <Route path="/writing-gallery" element={<WritingGallery />} />
+          <Route path="/json-ai-prompts" element={<JsonAiPrompts />} />
         </Routes>
       </Suspense>
 

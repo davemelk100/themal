@@ -505,7 +505,7 @@ export const content = {
         title: "JSON AI Prompts",
         description: "Design, designs, and designers.",
         technologies: ["React", "TypeScript", "Tailwind", "Figma API"],
-        demo: "https://designpanes.com/",
+        demo: "/json-ai-prompts",
         image: "/img/design-panes.png",
       },
       {
@@ -750,6 +750,72 @@ export const content = {
         image: "/img/vibe-engineering.png",
         date: "June 8, 2024",
         tags: ["UX Design", "Development", "Product Design"],
+      },
+      {
+        id: "json-ai-prompts-obsessed",
+        title:
+          "I Just Heard About Using JSON for AI Prompts, and Now I Won't Shut Up About It",
+        description: "Bots love structured data. Imagine that.",
+        url: "https://davemelk.substack.com/p/i-just-heard-about-using-json-for",
+        content: `<h1>I Heard About Using JSON for AI Prompts, and Now I'm Obsessed</h1>
+
+<h2>The Discovery</h2>
+
+<p>I was scrolling through a post when someone mentioned they were using JSON to structure their AI prompts. My first reaction was "wow, yes!". Soon after, I was absolutely furious that I hadn't thought of it first. And then I thought 'omg am I the only one who hasn't heard of this? Was I was wrong to be furious? Of course - I want to be the first to know about everything.'</p>
+
+<p>That said, it's a simplisticly elegant and brilliant idea that is sitting right in front of my face.</p>
+
+<p>See, me, I like to brain dump into that input box with little to no regard for spelling and punctuation. Now, instead of relying on my horribly-structured and poorly-punctuated typing, I copy my lazy prompt, then paste it into an LLM, and say 'make this JSON'. The resulting JSON proceeds to organize my pile of text into a cohesive structure.</p>
+
+<h2>Why JSON Makes Sense</h2>
+
+<p>Ask an AI to "create a login form," you're leaving a lot to interpretation. What validation rules should it include? What styling should it use? Should it have password requirements? What about error handling? You get my drift</p>
+
+<p>But when you structure that same request as JSON, you can be explicit about every detail:</p>
+
+<pre><code>{
+  "request": "create_login_form",
+  "requirements": {
+    "validation": ["email_format", "password_strength"],
+    "styling": "modern_minimal",
+    "error_handling": "user_friendly",
+    "accessibility": "wcag_aa_compliant"
+  },
+  "constraints": {
+    "framework": "react",
+    "styling": "tailwind_css"
+  }
+}</code></pre>
+
+<h3>Breaking Down the Structure:</h3>
+
+<h4>📋 Request Section</h4>
+<p><strong>Purpose:</strong> Defines what you want the AI to create</p>
+<pre><code>"request": "create_login_form"</code></pre>
+
+<h4>✅ Requirements Section</h4>
+<p><strong>Purpose:</strong> Specifies the features and behaviors you need</p>
+<ul>
+<li><strong>validation:</strong> What input validation rules to include</li>
+<li><strong>styling:</strong> The visual design approach</li>
+<li><strong>error_handling:</strong> How to handle and display errors</li>
+<li><strong>accessibility:</strong> Compliance standards to follow</li>
+</ul>
+
+<h4>🔧 Constraints Section</h4>
+<p><strong>Purpose:</strong> Defines technical limitations and preferences</p>
+<ul>
+<li><strong>framework:</strong> Which technology stack to use</li>
+<li><strong>styling:</strong> Specific CSS framework or approach</li>
+</ul>
+
+<p>Suddenly, there's no ambiguity. Mr. LLM Search Engine knows exactly what you want, and you get more predictable outcomes.</p>
+
+<p>Basically, just pick one common task you do and create a JSON structure for it. Maybe it's generating React components, or writing API documentation, or creating test cases. But I don't need to tell you that. You're smart. Do whatever you want with it. But you have to admit, it's kinda awesome. I'm very glad that I thought of it first. What?</p>
+`,
+        image: "/img/JSON.png",
+        date: "January 20, 2025",
+        tags: ["AI", "JSON", "Development", "Productivity"],
       },
       // Temporarily hidden until admin panel is fully operational
       // {
