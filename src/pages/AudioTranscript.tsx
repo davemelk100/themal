@@ -16,6 +16,14 @@ interface AudioTrack {
   transcript: string;
 }
 
+interface VideoTrack {
+  id: number;
+  title: string;
+  url: string;
+  duration: string;
+  description: string;
+}
+
 const audioTracks: AudioTrack[] = [
   {
     id: 1,
@@ -23,17 +31,15 @@ const audioTracks: AudioTrack[] = [
     artist: "Zaven",
     url: "/audio/Zaven - Dr Jack.m4a",
     duration: "4:30",
-    transcript: `"Jack moved in with your you guys right in Pontac for a while. Jack I knew Jack as a kid and not through school but my sister rendered a house right across the street from him. So I spent a lot of time with Jack. uh I've actually uh her brains were a different frequency. 
+    transcript: `"I knew him as a kid, not through school, but because my sister rented a house across the street from him. We spent a lot of time together back then. Jack was on a different wavelength—his mind worked in ways mine didn't.
 
-He went on to better himself and I just kind of hung back with the crowd. But he was an amazing he he really wasn't a amazing kid.. I know a lot of bad stuff that have been said about him, but uh uh his his determination to better one's life came from the fact that his mother was dying of cancer, and she was in total agony constantly, and he had made up his mind then if there's a way that I can relieve people from having this kind of disastrous end life, I'm going to do it. and that's why he got how that came about, it I'd never realized that. 
+He went on to better himself, while I just hung back with the crowd. But Jack was an incredible kid, truly special. I know a lot of bad things have been said about him, but his drive came from a deeply personal place. His mother was dying of cancer, in constant agony. That pain shaped him. As a young teen, he decided that if he could find a way to spare people that kind of suffering in their final days, he would. That's what drove him to develop his methods, like the pain-relieving concoction he put together for Tracy, who was in excruciating pain on a hospital bed. They'd prop her up, and she'd still have to wait 30 minutes for a shot. Can you imagine that?
 
-It was a it was to help people with their pain patched together a concoction about tracy in her final fusion. I remember if she was just in so much pain on a circle bed and they put that bed up like that and Tracy's just just in such pain. And they said, you gotta wait 30 minutes for a shot. 
+Today, we have pain pumps and medications like morphine to manage suffering, but Jack questioned why anyone would want to get people hooked on morphine when there were other ways. He was determined to ease the excruciating pain of those final days. His mom passed when he was in his early teens, and that experience left a mark on him. It's why he got so much bad press—people misunderstood him. If you didn't know his story, you might think he was some kind of monster, but that wasn't Jack. We were kids together, and I saw him grow up with this purpose.
 
-"That doesn't happen in today's world. can see the pumps is keeping their fain level. You know, I mean, keeping the pain can you imagine what these people went through?ics that we have today, and morphine, et cetera, et cetera, but why do you want to get somebody hooked down morphine? 
+I don't recall him living with us for six months, like Grandpa might've said, but our paths did cross a lot back then. By junior high, I was focused on becoming a vocational student, tinkering with aircraft mechanics, while Jack was in college prep, using his brain in the main school building. We rarely saw each other in high school because we were in different worlds. Later, though, I ran into him in Royal Oak. He was living in an apartment above a store, across from a funeral home. I was at a visitation for a mutual friend, walking down the hallway, when I heard someone call out. I turned around, and there was Jack—he recognized me from behind, after all those years. That's the kind of guy he was, extraordinary in every way.
 
-when there are other ways to do it? And he he made up his mind really kind of as a kid that if he had anything, if he was able to exclude a lot of acut, excruciating pain from somebody's last days, he was gonna do it. and that was how old was his mom? How old was his mom when she passed how old was he when she had cancer? 
-
-Jack was probably, uh, maybe early teens. Oh, that young teens. uh, but boy had left an impression he did. That's why he got a lot of bad press, right?  Oh yeah we're team Kavorky in here. If you didn't if you didn't know his history, you would mark him as a uh it's an ogre, you know, somebody who uh a parified death that and that wasn't him. That just was him grow up from a young kid?  I mean you guys were a young kid. watched him grow up? I said, you were young kids together. You watched him grow up, there a reason and he he lived with you guys for a while, didn't she?  His parents were gone or something, and he stayed with you guys for like six months? I remember I think Grandpa told me this. I don't remember that period.  Okay. Because when we got to uh actually even in junior high, uh I I had devoted myself to be coming a vocational student. I was a tink and he was using his brain.  He was doing we got to high school, I was in the aircraft mechanics course and he was in the in the college prep thing. So in in high school, we rarely saw one another. Why?  I was in a different building and he was in the main building. So, yeah, there was a point in time when our our pil our pa paths, uh became widened, but I never forgotten case in point, he was living in Royal Oak in an apartment above a store. There was a funeral home almost regularly across the street. uh We had a a mutual friend who had passed away.  I had gone to a visitation and I walk into the place and I'm getting ready to leave and I come out and I my back is to the entry door and I'm walking down this hallway and I hear somebody else and I turn it's Jack. He remembered me from from behind no less. So yeah he was he was he was he really was extraordinary and and I'm uh you never wanted to go into a discussion with people who didn't understand.  I was approached one time at church of all places, uh by someone who asked me about uh you know something like what do you think about this jacket about? I was not going to get into a muslinging thing. and I said, well, you know, he he's doing uh he's a physician. He's doing what he thinks is proper.  This guy got all over me, but he's killing people. Really? uh, you're not saying that it's he relieving them from a horrible death?  You're saying he's killing people. So I would never get into discussions. The less people knew of my relationship when Jack of Morgan was better for the both of us.  I's. It's unique. was."`,
+I never liked getting into debates about him. Once, at church of all places, someone asked me what I thought about Jack. I said, "He's a physician doing what he thinks is right." The guy got upset, saying, "He's killing people!" I just shook my head. Killing people? No, he was trying to relieve them from a horrible death. I learned to avoid those discussions. The less people knew about my connection to Jack, the better—for both of us."`,
   },
   {
     id: 2,
@@ -117,12 +123,39 @@ And if you want to get into it now, the cost would be ast builder fee the licens
   },
 ];
 
+const videoTracks: VideoTrack[] = [
+  {
+    id: 1,
+    title: "Paraddidle",
+    url: "/video/zaven-1.mp4",
+    duration: "0:30",
+    description:
+      "A drumming demonstration featuring the paradiddle technique, showcasing rhythmic precision and control.",
+  },
+  {
+    id: 2,
+    title: "A Gem",
+    url: "/video/zaven-2.mp4",
+    duration: "0:05",
+    description:
+      "A brief but brilliant moment captured in this short video clip.",
+  },
+];
+
 const AudioTranscript = () => {
   const [playingTrack, setPlayingTrack] = useState<number | null>(null);
+  const [playingVideo, setPlayingVideo] = useState<number | null>(null);
   const [currentTime, setCurrentTime] = useState<{ [key: number]: number }>({});
+  const [videoCurrentTime, setVideoCurrentTime] = useState<{
+    [key: number]: number;
+  }>({});
   const [duration, setDuration] = useState<{ [key: number]: number }>({});
+  const [videoDuration, setVideoDuration] = useState<{ [key: number]: number }>(
+    {}
+  );
   const [mode, setMode] = useState<"audio" | "video">("audio");
   const audioRefs = useRef<{ [key: number]: HTMLAudioElement | null }>({});
+  const videoRefs = useRef<{ [key: number]: HTMLVideoElement | null }>({});
 
   const togglePlay = (trackId: number) => {
     const audio = audioRefs.current[trackId];
@@ -171,6 +204,52 @@ const AudioTranscript = () => {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  };
+
+  const toggleVideo = (videoId: number) => {
+    const video = videoRefs.current[videoId];
+    if (!video) return;
+
+    if (playingVideo === videoId) {
+      video.pause();
+      setPlayingVideo(null);
+    } else {
+      // Stop all other videos
+      Object.keys(videoRefs.current).forEach((id) => {
+        const otherVideo = videoRefs.current[parseInt(id)];
+        if (otherVideo && parseInt(id) !== videoId) {
+          otherVideo.pause();
+        }
+      });
+
+      video.play();
+      setPlayingVideo(videoId);
+    }
+  };
+
+  const handleVideoTimeUpdate = (videoId: number) => {
+    const video = videoRefs.current[videoId];
+    if (video) {
+      setVideoCurrentTime((prev) => ({
+        ...prev,
+        [videoId]: video.currentTime,
+      }));
+    }
+  };
+
+  const handleVideoLoadedMetadata = (videoId: number) => {
+    const video = videoRefs.current[videoId];
+    if (video) {
+      setVideoDuration((prev) => ({ ...prev, [videoId]: video.duration }));
+    }
+  };
+
+  const handleVideoSeek = (videoId: number, value: number) => {
+    const video = videoRefs.current[videoId];
+    if (video) {
+      video.currentTime = value;
+      setVideoCurrentTime((prev) => ({ ...prev, [videoId]: value }));
+    }
   };
 
   return (
@@ -248,111 +327,221 @@ const AudioTranscript = () => {
         </section>
 
         {/* Audio Grid Section */}
-        <section className="py-4 sm:py-6 lg:py-8">
-          <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.8, delay: 0.8 }}
-              className="grid grid-cols-1 md:grid-cols-2 gap-6"
-            >
-              {audioTracks.map((track, index) => (
-                <motion.div
-                  key={track.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 1.8, delay: 1.0 + index * 0.1 }}
-                  className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden"
-                >
-                  {/* Audio Player Section */}
-                  <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-                    <div className="mb-4">
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
-                        {track.title}
-                      </h3>
-                    </div>
+        {mode === "audio" && (
+          <section className="py-4 sm:py-6 lg:py-8">
+            <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1.8, delay: 0.8 }}
+                className="grid grid-cols-1 md:grid-cols-2 gap-6"
+              >
+                {audioTracks.map((track, index) => (
+                  <motion.div
+                    key={track.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1.8, delay: 1.0 + index * 0.1 }}
+                    className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden"
+                  >
+                    {/* Audio Player Section */}
+                    <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+                      <div className="mb-4">
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
+                          {track.title}
+                        </h3>
+                      </div>
 
-                    {/* Audio Controls */}
-                    <div className="flex items-center gap-4 mb-4">
-                      <button
-                        onClick={() => togglePlay(track.id)}
-                        className="w-12 h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-full flex items-center justify-center transition-colors"
-                      >
-                        {playingTrack === track.id ? (
-                          <Pause className="w-5 h-5" />
-                        ) : (
-                          <Play className="w-5 h-5 ml-0.5" />
-                        )}
-                      </button>
+                      {/* Audio Controls */}
+                      <div className="flex items-center gap-4 mb-4">
+                        <button
+                          onClick={() => togglePlay(track.id)}
+                          className="w-12 h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-full flex items-center justify-center transition-colors"
+                        >
+                          {playingTrack === track.id ? (
+                            <Pause className="w-5 h-5" />
+                          ) : (
+                            <Play className="w-5 h-5 ml-0.5" />
+                          )}
+                        </button>
 
-                      <div className="flex-1">
-                        <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
-                          <span>{formatTime(currentTime[track.id] || 0)}</span>
-                          <span>{formatTime(duration[track.id] || 0)}</span>
+                        <div className="flex-1">
+                          <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
+                            <span>
+                              {formatTime(currentTime[track.id] || 0)}
+                            </span>
+                            <span>{formatTime(duration[track.id] || 0)}</span>
+                          </div>
+                          <input
+                            type="range"
+                            min="0"
+                            max={duration[track.id] || 0}
+                            value={currentTime[track.id] || 0}
+                            onChange={(e) =>
+                              handleSeek(track.id, parseFloat(e.target.value))
+                            }
+                            className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+                          />
                         </div>
+                      </div>
+
+                      {/* Volume Control */}
+                      <div className="flex items-center gap-2">
+                        <Volume2 className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                         <input
                           type="range"
                           min="0"
-                          max={duration[track.id] || 0}
-                          value={currentTime[track.id] || 0}
-                          onChange={(e) =>
-                            handleSeek(track.id, parseFloat(e.target.value))
-                          }
-                          className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+                          max="1"
+                          step="0.1"
+                          defaultValue="0.7"
+                          className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
                         />
                       </div>
                     </div>
 
-                    {/* Volume Control */}
-                    <div className="flex items-center gap-2">
-                      <Volume2 className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                      <input
-                        type="range"
-                        min="0"
-                        max="1"
-                        step="0.1"
-                        defaultValue="0.7"
-                        className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
-                      />
+                    {/* Transcript Section */}
+                    <div className="p-6">
+                      <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
+                        Transcript
+                      </h4>
+                      <div className="h-48 overflow-y-auto bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
+                        <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
+                          {track.transcript}
+                        </p>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Transcript Section */}
-                  <div className="p-6">
-                    <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
-                      Transcript
-                    </h4>
-                    <div className="h-48 overflow-y-auto bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
-                      <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
-                        {track.transcript}
-                      </p>
+                    {/* Hidden Audio Element */}
+                    <audio
+                      ref={(el) => (audioRefs.current[track.id] = el)}
+                      src={track.url}
+                      preload="metadata"
+                      onTimeUpdate={() => handleTimeUpdate(track.id)}
+                      onLoadedMetadata={() => handleLoadedMetadata(track.id)}
+                      onEnded={() => setPlayingTrack(null)}
+                      onError={(e) => {
+                        console.error("Audio error for track:", track.title, e);
+                        console.error("Audio URL:", track.url);
+                      }}
+                      onLoadStart={() =>
+                        console.log("Loading audio:", track.title)
+                      }
+                      onCanPlay={() =>
+                        console.log("Audio can play:", track.title)
+                      }
+                    />
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
+          </section>
+        )}
+
+        {/* Video Grid Section */}
+        {mode === "video" && (
+          <section className="py-4 sm:py-6 lg:py-8">
+            <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1.8, delay: 0.8 }}
+                className="grid grid-cols-1 md:grid-cols-2 gap-6"
+              >
+                {videoTracks.map((video, index) => (
+                  <motion.div
+                    key={video.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1.8, delay: 1.0 + index * 0.1 }}
+                    className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden"
+                  >
+                    {/* Video Player Section */}
+                    <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+                      <div className="mb-4">
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
+                          {video.title}
+                        </h3>
+                      </div>
+
+                      {/* Video Controls */}
+                      <div className="flex items-center gap-4 mb-4">
+                        <button
+                          onClick={() => toggleVideo(video.id)}
+                          className="w-12 h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-full flex items-center justify-center transition-colors"
+                        >
+                          {playingVideo === video.id ? (
+                            <Pause className="w-5 h-5" />
+                          ) : (
+                            <Play className="w-5 h-5 ml-0.5" />
+                          )}
+                        </button>
+
+                        <div className="flex-1">
+                          <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
+                            <span>
+                              {formatTime(videoCurrentTime[video.id] || 0)}
+                            </span>
+                            <span>
+                              {formatTime(videoDuration[video.id] || 0)}
+                            </span>
+                          </div>
+                          <input
+                            type="range"
+                            min="0"
+                            max={videoDuration[video.id] || 0}
+                            value={videoCurrentTime[video.id] || 0}
+                            onChange={(e) =>
+                              handleVideoSeek(
+                                video.id,
+                                parseFloat(e.target.value)
+                              )
+                            }
+                            className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Volume Control */}
+                      <div className="flex items-center gap-2">
+                        <Volume2 className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                        <input
+                          type="range"
+                          min="0"
+                          max="1"
+                          step="0.1"
+                          defaultValue="0.7"
+                          className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+                        />
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Hidden Audio Element */}
-                  <audio
-                    ref={(el) => (audioRefs.current[track.id] = el)}
-                    src={track.url}
-                    preload="metadata"
-                    onTimeUpdate={() => handleTimeUpdate(track.id)}
-                    onLoadedMetadata={() => handleLoadedMetadata(track.id)}
-                    onEnded={() => setPlayingTrack(null)}
-                    onError={(e) => {
-                      console.error("Audio error for track:", track.title, e);
-                      console.error("Audio URL:", track.url);
-                    }}
-                    onLoadStart={() =>
-                      console.log("Loading audio:", track.title)
-                    }
-                    onCanPlay={() =>
-                      console.log("Audio can play:", track.title)
-                    }
-                  />
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
+                    {/* Hidden Video Element */}
+                    <video
+                      ref={(el) => (videoRefs.current[video.id] = el)}
+                      src={video.url}
+                      preload="metadata"
+                      onTimeUpdate={() => handleVideoTimeUpdate(video.id)}
+                      onLoadedMetadata={() =>
+                        handleVideoLoadedMetadata(video.id)
+                      }
+                      onEnded={() => setPlayingVideo(null)}
+                      onError={(e) => {
+                        console.error("Video error for track:", video.title, e);
+                        console.error("Video URL:", video.url);
+                      }}
+                      onLoadStart={() =>
+                        console.log("Loading video:", video.title)
+                      }
+                      onCanPlay={() =>
+                        console.log("Video can play:", video.title)
+                      }
+                    />
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
+          </section>
+        )}
       </Suspense>
     </div>
   );
