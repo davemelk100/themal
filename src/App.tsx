@@ -827,9 +827,9 @@ function App() {
                             const ProjectCard = (
                               <div className="flex flex-col gap-2 flex-1">
                                 <div
-                                  className={`rounded-lg p-2 ${
+                                  className={`pt-3 pl-3 pr-2 pb-2 ${
                                     designView === "grid"
-                                      ? "bg-white/40 dark:bg-transparent backdrop-blur-sm pr-12"
+                                      ? "bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm pr-20"
                                       : "flex items-center justify-between h-full"
                                   }`}
                                 >
@@ -882,19 +882,11 @@ function App() {
                             );
 
                             const ProjectImage = designView === "grid" && (
-                              <div className="absolute inset-0 overflow-hidden z-0 p-2">
+                              <div className="absolute inset-0 z-0">
                                 <img
                                   src={project.image}
                                   alt={project.alt || project.title}
-                                  className={`absolute inset-0 h-full w-full object-bottom ${
-                                    project.title === "Hex Code Pop Art"
-                                      ? "object-contain"
-                                      : project.title === "Vintage Form Design"
-                                      ? "object-contain"
-                                      : project.title === "Mobile Game"
-                                      ? "object-contain"
-                                      : "object-contain"
-                                  }`}
+                                  className="absolute bottom-0 left-0 right-0 h-1/2 w-full object-contain object-bottom"
                                   loading="lazy"
                                 />
                               </div>
@@ -910,7 +902,7 @@ function App() {
                                   duration: 1.8,
                                   delay: index * 0.2,
                                 }}
-                                className={`group relative overflow-hidden rounded-lg bg-gray-100/80 dark:bg-transparent border dark:border-gray-500 flex flex-col shadow-md project-card ${
+                                className={`group relative overflow-hidden rounded-lg bg-white border border-gray-200 flex flex-col shadow-md project-card ${
                                   designView === "list"
                                     ? "h-[50px]"
                                     : "h-[280px] sm:h-[300px] lg:h-[320px]"
@@ -930,7 +922,7 @@ function App() {
                                   </div>
                                 )}
                                 <div
-                                  className={`absolute inset-0 p-3 z-10 ${
+                                  className={`absolute inset-0 z-10 ${
                                     designView === "grid"
                                       ? "flex flex-col gap-2"
                                       : "flex items-center"
@@ -954,7 +946,7 @@ function App() {
                                   duration: 1.8,
                                   delay: index * 0.2,
                                 }}
-                                className={`group relative overflow-hidden rounded-lg bg-gray-100/80 dark:bg-transparent border dark:border-gray-500 flex flex-col shadow-md project-card ${
+                                className={`group relative overflow-hidden rounded-lg bg-white border border-gray-200 flex flex-col shadow-md project-card ${
                                   designView === "list"
                                     ? "h-[50px]"
                                     : "h-[280px] sm:h-[300px] lg:h-[320px]"
@@ -968,7 +960,7 @@ function App() {
                                   </div>
                                 )}
                                 <div
-                                  className={`absolute inset-0 p-3 z-10 ${
+                                  className={`absolute inset-0 z-10 ${
                                     designView === "grid"
                                       ? "flex flex-col gap-2"
                                       : "flex items-center"
