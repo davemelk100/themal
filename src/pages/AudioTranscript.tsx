@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Suspense } from "react";
-import { Play, Pause, Volume2 } from "lucide-react";
+import { Play, Pause, Volume2, Video, Headphones } from "lucide-react";
 import { useState, useRef } from "react";
 
 // Import Roboto Serif font
@@ -19,14 +19,6 @@ interface AudioTrack {
 const audioTracks: AudioTrack[] = [
   {
     id: 1,
-    title: "Don't Sully My Name",
-    artist: "Zaven",
-    url: "/audio/Zaven - Don%27t Sully My Name 2.m4a",
-    duration: "2:15",
-    transcript: `"You've truly honored the Melkonian name. My father always said, "You can do anything you want, but never tarnish our name." And you haven't. There's a story about a famous person whose reputation was ruined unfairly. When he was finally proven innocent, he asked, "Okay, so where do I go to get my reputation back?" That's the honest truth. Once your name is damaged, it's tough to restore. You've never had to deal with that, and that's something to take pride in."`,
-  },
-  {
-    id: 2,
     title: "Dr Jack, part 1",
     artist: "Zaven",
     url: "/audio/Zaven - Dr Jack.m4a",
@@ -44,7 +36,7 @@ when there are other ways to do it? And he he made up his mind really kind of as
 Jack was probably, uh, maybe early teens. Oh, that young teens. uh, but boy had left an impression he did. That's why he got a lot of bad press, right?  Oh yeah we're team Kavorky in here. If you didn't if you didn't know his history, you would mark him as a uh it's an ogre, you know, somebody who uh a parified death that and that wasn't him. That just was him grow up from a young kid?  I mean you guys were a young kid. watched him grow up? I said, you were young kids together. You watched him grow up, there a reason and he he lived with you guys for a while, didn't she?  His parents were gone or something, and he stayed with you guys for like six months? I remember I think Grandpa told me this. I don't remember that period.  Okay. Because when we got to uh actually even in junior high, uh I I had devoted myself to be coming a vocational student. I was a tink and he was using his brain.  He was doing we got to high school, I was in the aircraft mechanics course and he was in the in the college prep thing. So in in high school, we rarely saw one another. Why?  I was in a different building and he was in the main building. So, yeah, there was a point in time when our our pil our pa paths, uh became widened, but I never forgotten case in point, he was living in Royal Oak in an apartment above a store. There was a funeral home almost regularly across the street. uh We had a a mutual friend who had passed away.  I had gone to a visitation and I walk into the place and I'm getting ready to leave and I come out and I my back is to the entry door and I'm walking down this hallway and I hear somebody else and I turn it's Jack. He remembered me from from behind no less. So yeah he was he was he was he really was extraordinary and and I'm uh you never wanted to go into a discussion with people who didn't understand.  I was approached one time at church of all places, uh by someone who asked me about uh you know something like what do you think about this jacket about? I was not going to get into a muslinging thing. and I said, well, you know, he he's doing uh he's a physician. He's doing what he thinks is proper.  This guy got all over me, but he's killing people. Really? uh, you're not saying that it's he relieving them from a horrible death?  You're saying he's killing people. So I would never get into discussions. The less people knew of my relationship when Jack of Morgan was better for the both of us.  I's. It's unique. was."`,
   },
   {
-    id: 3,
+    id: 2,
     title: "Dr Jack, part 2",
     artist: "Zaven",
     url: "/audio/Zaven - Dr Jack pt 2.m4a",
@@ -56,7 +48,7 @@ I was probably chatting with someone else while Jack was over there, scribbling 
 Later, when I saw it, I was amazed. In just a minute and a half, he'd filled the entire page with this incredible cartoon. Jack was truly an amazing guy, so talented. It's a shame he's often misunderstood, only showing up in comedians' punchlines or negative stories."`,
   },
   {
-    id: 4,
+    id: 3,
     title: "Eardrum Puncture",
     artist: "Zaven",
     url: "/audio/Zaven - eardrum puncture.m4a",
@@ -68,7 +60,7 @@ You remember me mentioning that, right? I manage okay with the other ear, so I'l
 Speaking of stories, we were laughing about how I got this house. Virginia took charge of finding us a new place. Back then, we were living in this tiny apartment—so small you had to step outside to change your mind. It was time to move. We ended up in Marshall, in a house next to where I grew up. The guy downstairs rented out the upstairs, and that's where we settled. It was a good move, no question."`,
   },
   {
-    id: 5,
+    id: 4,
     title: "Hearing Aids",
     artist: "Zaven",
     url: "/audio/Zaven - hearing aids etc.m4a",
@@ -82,7 +74,7 @@ When I decided I didn't want the expensive ones, it was a hassle. They were the 
 As for the cheap ones, they're sitting on the counter, charging right now. They're doing a heck of a job for what they cost. The only reason I'm not wearing them today is because I've got a wax buildup. I've got an appointment this Friday to get it checked out. Even with the hearing aids in, it's not helping much until that's cleared up."`,
   },
   {
-    id: 6,
+    id: 5,
     title: "Small Apartment",
     artist: "Zaven",
     url: "/audio/Zaven - small apartment .m4a",
@@ -100,7 +92,7 @@ I hate change, don't we all? But Virginia had this itch to move. It wasn't that 
 We moved into our current place in '61, the same year they finished building it. I was 11 years old, for crying out loud. I remember seeing you at Food Town back then. That place predates everything. I was a grocery maven, no question. My best friend ended up marrying Mrs. Adler, who worked there—she was one of the Adlers, you know, the family behind Food Town. Her husband was a butcher, and they had a great, happy marriage. Even after he passed, she stayed close with her son, a real wheeler-dealer in the Clarkston area. The Adlers and Roths were the ones who developed Clarkston. In fact, Roth is our landlord at the store."`,
   },
   {
-    id: 7,
+    id: 6,
     title: "Musical History",
     artist: "Zaven",
     url: "/audio/Zaven - musical history and disinterest.m4a",
@@ -110,7 +102,7 @@ We moved into our current place in '61, the same year they finished building it.
 When it came to singing, though, I found my place in a barbershop quartet. I sang bass. That's the only thing I ever accomplished musically, but we were pretty good. Jack Tuber was in the group too, and we had a blast. Those four-part harmonies were something special—close, tight, and beautiful. Nobody does that kind of harmony anymore, you know? It's a lost art."`,
   },
   {
-    id: 8,
+    id: 7,
     title: "Builders",
     artist: "Zaven",
     url: "/audio/Zaven - builders.m4a",
@@ -129,6 +121,7 @@ const AudioTranscript = () => {
   const [playingTrack, setPlayingTrack] = useState<number | null>(null);
   const [currentTime, setCurrentTime] = useState<{ [key: number]: number }>({});
   const [duration, setDuration] = useState<{ [key: number]: number }>({});
+  const [mode, setMode] = useState<"audio" | "video">("audio");
   const audioRefs = useRef<{ [key: number]: HTMLAudioElement | null }>({});
 
   const togglePlay = (trackId: number) => {
@@ -215,6 +208,39 @@ const AudioTranscript = () => {
                   >
                     Audio and Transcript
                   </h1>
+
+                  {/* Mode Toggle */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1.8, delay: 0.4 }}
+                    className="mt-4 flex justify-center"
+                  >
+                    <div className="flex items-center justify-center bg-gray-100 dark:bg-gray-800 rounded-lg p-1 w-fit">
+                      <button
+                        onClick={() => setMode("audio")}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-200 ${
+                          mode === "audio"
+                            ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm"
+                            : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                        }`}
+                      >
+                        <Headphones className="w-4 h-4" />
+                        <span className="text-sm font-medium">Audio</span>
+                      </button>
+                      <button
+                        onClick={() => setMode("video")}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-200 ${
+                          mode === "video"
+                            ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm"
+                            : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                        }`}
+                      >
+                        <Video className="w-4 h-4" />
+                        <span className="text-sm font-medium">Video</span>
+                      </button>
+                    </div>
+                  </motion.div>
                 </motion.div>
               </div>
             </div>
@@ -222,7 +248,7 @@ const AudioTranscript = () => {
         </section>
 
         {/* Audio Grid Section */}
-        <section className="py-8 sm:py-12 lg:py-16">
+        <section className="py-4 sm:py-6 lg:py-8">
           <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
