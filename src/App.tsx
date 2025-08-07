@@ -256,9 +256,9 @@ function App() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1.8, delay: 0.8 }}
-                        className="hidden md:block w-[352px]"
+                        className="hidden"
                       >
-                        <div className="relative overflow-hidden h-[350px] group rounded-lg shadow-lg">
+                        <div className="relative overflow-hidden h-[175px] group rounded-lg shadow-lg">
                           {/* Carousel Slides */}
                           <div className="relative w-full h-full">
                             {/* Axonometric Projection Slide */}
@@ -274,19 +274,12 @@ function App() {
                                   alt="Axonometric Projection Animation"
                                 />
                               </div>
-                              {/* Title and subtitle above animation */}
+                              {/* Title above animation */}
                               <div className="absolute inset-0 z-10 flex flex-col justify-start p-4">
                                 <div className="text-gray-900 dark:text-white">
                                   <h3 className="text-base font-semibold mb-1">
                                     Axonometric Projection
                                   </h3>
-                                  <p className="text-xs opacity-90 leading-relaxed">
-                                    Axonometric Projection creates a 3D space on
-                                    a 2D surface using parallel lines and
-                                    consistent angles. This technique maintains
-                                    object proportions while providing depth and
-                                    dimension.
-                                  </p>
                                 </div>
                               </div>
                             </div>
@@ -718,7 +711,7 @@ function App() {
                                 <div
                                   className={`pt-3 pl-3 pr-2 pb-2 ${
                                     articlesView === "grid"
-                                      ? "bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm pr-20"
+                                      ? "pr-20"
                                       : "flex items-center justify-between h-full"
                                   }`}
                                 >
@@ -830,7 +823,7 @@ function App() {
                                 <div
                                   className={`pt-3 pl-3 pr-2 pb-2 ${
                                     designView === "grid"
-                                      ? "bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm pr-20"
+                                      ? "pr-20"
                                       : "flex items-center justify-between h-full"
                                   }`}
                                 >
@@ -887,7 +880,14 @@ function App() {
                                 <img
                                   src={project.image}
                                   alt={project.alt || project.title}
-                                  className="absolute bottom-0 left-0 right-0 h-full w-full object-contain object-bottom"
+                                  className={`absolute bottom-0 left-0 right-0 object-contain object-bottom ${
+                                    project.title === "Band Shirt Design"
+                                      ? "h-2/3 w-2/3 mx-auto"
+                                      : project.title ===
+                                        "Figma Mobile Prototype"
+                                      ? "h-3/4 w-3/4 mx-auto"
+                                      : "h-full w-full"
+                                  }`}
                                   loading="lazy"
                                 />
                               </div>
@@ -906,7 +906,7 @@ function App() {
                                 className={`group relative overflow-hidden rounded-lg bg-white border border-gray-200 flex flex-col shadow-md project-card ${
                                   designView === "list"
                                     ? "h-[50px]"
-                                    : "h-[360px] sm:h-[380px] lg:h-[400px]"
+                                    : "h-[330px] sm:h-[350px] lg:h-[370px]"
                                 }`}
                               >
                                 {designView === "grid" && (
@@ -950,7 +950,7 @@ function App() {
                                 className={`group relative overflow-hidden rounded-lg bg-white border border-gray-200 flex flex-col shadow-md project-card ${
                                   designView === "list"
                                     ? "h-[50px]"
-                                    : "h-[360px] sm:h-[380px] lg:h-[400px]"
+                                    : "h-[330px] sm:h-[350px] lg:h-[370px]"
                                 }`}
                               >
                                 {designView === "grid" && (
@@ -1088,7 +1088,7 @@ function App() {
                                 <div
                                   className={`pt-3 pl-3 pr-2 pb-2 ${
                                     storiesView === "grid"
-                                      ? "bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm pr-20"
+                                      ? "pr-20"
                                       : "flex items-center justify-between h-full"
                                   }`}
                                 >
