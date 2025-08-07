@@ -140,6 +140,28 @@ const videoTracks: VideoTrack[] = [
     description:
       "A brief but brilliant moment captured in this short video clip.",
   },
+  {
+    id: 3,
+    title: "Sam and Zaven",
+    url: "/video/sam-and-zaven.mp4",
+    duration: "0:55",
+    description:
+      "A collaborative moment between Sam and Zaven captured on video.",
+  },
+  {
+    id: 4,
+    title: "Zaven Watching - Long",
+    url: "/video/zaven-watching-long.mp4",
+    duration: "3:46",
+    description: "An extended observation of Zaven in a contemplative state.",
+  },
+  {
+    id: 5,
+    title: "Zaven Watching - Short",
+    url: "/video/zaven-watching-short.mp4",
+    duration: "1:10",
+    description: "A brief glimpse of Zaven in a moment of quiet observation.",
+  },
 ];
 
 const AudioTranscript = () => {
