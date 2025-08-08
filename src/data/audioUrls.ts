@@ -191,13 +191,12 @@ export const audioTracks: AudioTrack[] = [
   },
   {
     id: 19,
-    title: "Eating Ourselves (Instrumental)",
+    title: "Eating Ourselves",
     artist: "BALM",
     url: "/audio/eating-ourselves-we-are-eating-ourselves.mp3",
     uniqueUrl: "/audio/eating-ourselves-we-are-eating-ourselves.mp3",
     duration: "3:00",
     filename: "eating-ourselves-we-are-eating-ourselves.mp3",
-    isInstrumental: true,
   },
 ];
 
