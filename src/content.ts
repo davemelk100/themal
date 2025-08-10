@@ -503,7 +503,7 @@ export const content = {
       },
       {
         title: "JSON AI Prompts",
-        description: "Design, designs, and designers.",
+        description: "Structured prompts for AI agents.",
         technologies: ["React", "TypeScript", "Tailwind", "Figma API"],
         demo: "/json-ai-prompts",
         image: "/img/design-panes.png",
