@@ -1,0 +1,121 @@
+{
+  "siteVocabulary": {
+    "description": "Agreed-upon terminology for site elements and components",
+    "lastUpdated": "2025-01-20",
+    "version": "1.0",
+
+    "layoutElements": {
+      "section": "Main content areas of the page (Hero Section, Lab Section, Articles Section)",
+      "grid": "Layout pattern for organizing multiple items in rows/columns",
+      "column": "Vertical content divisions in multi-column layouts",
+      "row": "Horizontal content divisions in grid layouts",
+      "container": "Wrapper element that constrains content width",
+      "wrapper": "Element that wraps and groups related content"
+    },
+
+    "contentContainers": {
+      "card": "Content container with defined boundaries, shadows, and padding",
+      "projectCard": "Specific card type for displaying project information",
+      "labCard": "Card type for experimental/lab projects",
+      "backgroundCard": "Card type for background content",
+      "videoCard": "Card type for video content",
+      "articleCard": "Card type for article previews"
+    },
+
+    "interactiveElements": {
+      "button": "Clickable element that triggers an action",
+      "primaryButton": "Main action button with primary styling",
+      "secondaryButton": "Secondary action button with secondary styling",
+      "tertiaryButton": "Tertiary action button with minimal styling",
+      "toggle": "Element that switches between two states",
+      "link": "Clickable text that navigates to another location"
+    },
+
+    "navigationElements": {
+      "menu": "Collection of navigation options",
+      "mobileMenu": "Mobile-specific navigation interface",
+      "navigation": "System for moving between different parts of the site",
+      "breadcrumb": "Secondary navigation showing current location",
+      "tray": "Container for mobile navigation (MobileTrayMenu)"
+    },
+
+    "overlayElements": {
+      "modal": "Overlay dialog that appears above the main content",
+      "overlay": "Semi-transparent layer behind modals",
+      "popup": "Small overlay that appears on hover or click",
+      "tooltip": "Small informational text that appears on hover"
+    },
+
+    "contentTypes": {
+      "article": "Written content piece with title, body, and metadata",
+      "project": "Work sample or portfolio item",
+      "story": "Case study or narrative content",
+      "testimonial": "Endorsement or recommendation content",
+      "track": "Audio file with metadata (title, artist, duration)",
+      "video": "Video content with controls and metadata"
+    },
+
+    "mediaElements": {
+      "player": "Interface for controlling media playback",
+      "audioPlayer": "Player specifically for audio files",
+      "videoPlayer": "Player specifically for video files",
+      "image": "Static visual content",
+      "animation": "Animated visual content (SVG, CSS, etc.)"
+    },
+
+    "formElements": {
+      "input": "Text entry field",
+      "textarea": "Multi-line text entry field",
+      "select": "Dropdown selection menu",
+      "checkbox": "Binary selection option",
+      "radio": "Single selection from multiple options",
+      "form": "Collection of input elements for data entry"
+    },
+
+    "stateIndicators": {
+      "loading": "Visual indication that content is being fetched",
+      "error": "Visual indication that something went wrong",
+      "success": "Visual indication that an action completed successfully",
+      "empty": "Visual indication that no content is available",
+      "disabled": "Visual indication that an element is not interactive"
+    },
+
+    "responsiveElements": {
+      "mobile": "Mobile-specific interface elements",
+      "desktop": "Desktop-specific interface elements",
+      "tablet": "Tablet-specific interface elements",
+      "breakpoint": "Screen size threshold for responsive design changes"
+    },
+
+    "designSystem": {
+      "colors": "Color palette and color variables",
+      "typography": "Text styles, fonts, and text hierarchy",
+      "spacing": "Layout spacing, margins, and padding",
+      "shadows": "Box shadows and depth indicators",
+      "borders": "Border styles and border radius values",
+      "icons": "Visual symbols and iconography"
+    },
+
+    "utilityElements": {
+      "preloader": "Loading screen shown before main content",
+      "backdrop": "Background visual element",
+      "separator": "Visual divider between content sections",
+      "badge": "Small indicator for status or category",
+      "avatar": "User profile image or placeholder"
+    },
+
+    "accessibilityElements": {
+      "ariaLabel": "Screen reader accessible label",
+      "focusIndicator": "Visual indication of keyboard focus",
+      "skipLink": "Link that allows keyboard users to skip to main content",
+      "altText": "Alternative text description for images"
+    }
+  },
+
+  "usageNotes": {
+    "general": "Use these exact terms when discussing site elements",
+    "consistency": "Maintain consistent terminology across all documentation and conversations",
+    "clarity": "These terms are chosen for clarity and simplicity",
+    "avoid": "Avoid using alternative terms or descriptions for these elements"
+  }
+}
