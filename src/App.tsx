@@ -30,6 +30,7 @@ const MusicPlayer = lazy(() => import("./pages/MusicPlayer"));
 const WritingGallery = lazy(() => import("./pages/WritingGallery"));
 const JsonAiPrompts = lazy(() => import("./pages/JsonAiPrompts"));
 const AudioTranscript = lazy(() => import("./pages/AudioTranscript"));
+const NewsAggregator = lazy(() => import("./pages/NewsAggregator"));
 import { slugify } from "./utils/slugify";
 import LazyVideo from "./components/LazyVideo";
 
@@ -1846,6 +1847,7 @@ function App() {
           <Route path="/writing-gallery" element={<WritingGallery />} />
           <Route path="/json-ai-prompts" element={<JsonAiPrompts />} />
           <Route path="/audio-transcript" element={<AudioTranscript />} />
+          <Route path="/news-aggregator" element={<NewsAggregator />} />
         </Routes>
       </Suspense>
 
