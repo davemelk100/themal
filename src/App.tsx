@@ -16,8 +16,10 @@ import Preloader from "./components/Preloader";
 import { BrowserRouter as Router } from "react-router-dom";
 import ArticleModal from "./components/ArticleModal";
 import { ThemeProvider } from "./context/ThemeContext";
+import { AuthProvider } from "./context/AuthContext";
 import ThemeToggle from "./components/ThemeToggle";
 import MobileTrayMenu from "./components/MobileTrayMenu";
+import { AuthHeader } from "./components/AuthHeader";
 import { Routes, Route, Link, useLocation } from "react-router-dom";
 import { lazy, Suspense } from "react";
 
@@ -31,6 +33,9 @@ const WritingGallery = lazy(() => import("./pages/WritingGallery"));
 const JsonAiPrompts = lazy(() => import("./pages/JsonAiPrompts"));
 const AudioTranscript = lazy(() => import("./pages/AudioTranscript"));
 const NewsAggregator = lazy(() => import("./pages/NewsAggregator"));
+const MagicLinkVerification = lazy(
+  () => import("./pages/MagicLinkVerification")
+);
 import { slugify } from "./utils/slugify";
 import LazyVideo from "./components/LazyVideo";
 
@@ -1848,6 +1853,7 @@ function App() {
           <Route path="/json-ai-prompts" element={<JsonAiPrompts />} />
           <Route path="/audio-transcript" element={<AudioTranscript />} />
           <Route path="/news" element={<NewsAggregator />} />
+          <Route path="/auth/verify" element={<MagicLinkVerification />} />
         </Routes>
       </Suspense>
 
@@ -1912,7 +1918,9 @@ export default function AppWithRouter() {
   return (
     <Router>
       <ThemeProvider>
-        <App />
+        <AuthProvider>
+          <App />
+        </AuthProvider>
       </ThemeProvider>
     </Router>
   );

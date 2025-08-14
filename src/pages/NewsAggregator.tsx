@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { Suspense, useState, useEffect } from "react";
+import { AuthHeader } from "../components/AuthHeader";
+import { useSettingsSync } from "../hooks/useSettingsSync";
 
 // Import Roboto Serif font
 import "@fontsource/roboto-serif/400.css";
@@ -119,6 +121,87 @@ const rssFeeds: RSSFeed[] = [
 ];
 
 const NewsAggregator = () => {
+  // Centralized color system for consistent theming
+  const categoryColors = {
+    all: {
+      bg: "bg-blue-50 dark:bg-blue-900/30",
+      text: "text-blue-900 dark:text-blue-100",
+      border: "border-blue-300",
+      hover: "hover:bg-blue-100 dark:hover:bg-blue-700",
+      chip: {
+        bg: "bg-blue-100 dark:bg-blue-800/50",
+        text: "text-blue-800 dark:text-blue-200",
+        border: "border-blue-300 dark:border-blue-600",
+      },
+    },
+    technology: {
+      bg: "bg-[#fef2de] dark:bg-[#f79d84]/30",
+      text: "text-gray-800 dark:text-gray-200",
+      border: "border-[#f79d84]",
+      hover: "hover:bg-[#fef2de] dark:hover:bg-[#f79d84]/20",
+      chip: {
+        bg: "bg-[#fef2de] dark:bg-[#f79d84]/30",
+        text: "text-gray-800 dark:text-gray-200",
+        border: "border-[#f79d84] dark:border-[#f79d84]",
+      },
+    },
+    sports: {
+      bg: "bg-[#def5e9] dark:bg-[#59cd90]/30",
+      text: "text-gray-800 dark:text-gray-200",
+      border: "border-[#59cd90]",
+      hover: "hover:bg-[#def5e9] dark:hover:bg-[#59cd90]/20",
+      chip: {
+        bg: "bg-[#def5e9] dark:bg-[#59cd90]/30",
+        text: "text-gray-800 dark:text-gray-200",
+        border: "border-[#59cd90] dark:border-[#59cd90]",
+      },
+    },
+    business: {
+      bg: "bg-[#d8edf7] dark:bg-[#3fa7d6]/30",
+      text: "text-gray-800 dark:text-gray-200",
+      border: "border-[#3fa7d6]",
+      hover: "hover:bg-[#d8edf7] dark:hover:bg-[#3fa7d6]/20",
+      chip: {
+        bg: "bg-[#d8edf7] dark:bg-[#3fa7d6]/30",
+        text: "text-gray-800 dark:text-gray-200",
+        border: "border-[#3fa7d6] dark:border-[#3fa7d6]",
+      },
+    },
+    entertainment: {
+      bg: "bg-[#f3e8ff] dark:bg-[#a855f7]/30",
+      text: "text-gray-800 dark:text-gray-200",
+      border: "border-[#a855f7]",
+      hover: "hover:bg-[#f3e8ff] dark:hover:bg-[#a855f7]/20",
+      chip: {
+        bg: "bg-[#f3e8ff] dark:bg-[#a855f7]/30",
+        text: "text-gray-800 dark:text-gray-200",
+        border: "border-[#a855f7] dark:border-[#a855f7]",
+      },
+    },
+    politics: {
+      bg: "bg-[#fdebe6] dark:bg-[#f97316]/30",
+      text: "text-gray-800 dark:text-gray-200",
+      border: "border-[#f97316]",
+      hover: "hover:bg-[#fdebe6] dark:hover:bg-[#f97316]/20",
+      chip: {
+        bg: "bg-[#fdebe6] dark:bg-[#f97316]/30",
+        text: "text-gray-800 dark:text-gray-200",
+        border: "border-[#f97316] dark:border-[#f97316]",
+      },
+    },
+    custom: {
+      bg: "bg-[#fdebe6] dark:bg-[#ef4444]/30",
+      text: "text-gray-800 dark:text-gray-200",
+      border: "border-[#ef4444]",
+      hover: "hover:bg-[#fdebe6] dark:hover:bg-[#ef4444]/20",
+      chip: {
+        bg: "bg-[#fdebe6] dark:bg-[#ef4444]/30",
+        text: "text-gray-800 dark:text-gray-200",
+        border: "border-[#ef4444] dark:border-[#ef4444]",
+      },
+    },
+  };
+
   const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -143,6 +226,26 @@ const NewsAggregator = () => {
   const [feedStatus, setFeedStatus] = useState<{
     [key: string]: { working: boolean; error?: string };
   }>({});
+
+  // Settings sync hook for authentication
+  const {
+    syncViewMode,
+    syncActiveCategory,
+    getCurrentSettings,
+    isAuthenticated,
+  } = useSettingsSync();
+
+  // Load user settings on mount and when authentication changes
+  useEffect(() => {
+    if (isAuthenticated) {
+      const savedSettings = getCurrentSettings();
+      if (savedSettings) {
+        if (savedSettings.viewMode) setViewMode(savedSettings.viewMode);
+        if (savedSettings.activeCategory)
+          setActiveCategory(savedSettings.activeCategory);
+      }
+    }
+  }, [isAuthenticated, getCurrentSettings]);
 
   // Helper functions for dynamic cards
   const getCurrentIndex = (sourceName: string) => {
@@ -581,22 +684,20 @@ const NewsAggregator = () => {
     }
   };
 
-  // Function to fetch RSS feed using a CORS proxy
+  // Function to fetch RSS feed using reliable CORS proxies
   const fetchRSSFeed = async (feed: RSSFeed): Promise<NewsItem[]> => {
     try {
       console.log(`Fetching RSS feed: ${feed.name} from ${feed.url}`);
 
-      // Try multiple proxy services as fallbacks
+      // Use reliable CORS proxy services
       const proxyServices = [
         `https://corsproxy.io/?${encodeURIComponent(feed.url)}`,
-        `https://api.allorigins.win/raw?url=${encodeURIComponent(feed.url)}`,
         `https://thingproxy.freeboard.io/fetch/${feed.url}`,
         `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(
           feed.url
         )}`,
-        `https://cors-anywhere.herokuapp.com/${feed.url}`,
-        `https://cors.bridged.cc/${feed.url}`,
-        `https://cors.eu.org/${feed.url}`,
+        // Fallback to our Netlify function if available
+        `/api/rss-proxy?url=${encodeURIComponent(feed.url)}`,
       ];
 
       let xmlText = "";
@@ -610,19 +711,21 @@ const NewsAggregator = () => {
             headers: {
               Accept: "application/xml, text/xml, */*",
             },
-            // Add timeout
-            signal: AbortSignal.timeout(10000), // 10 second timeout
+            signal: AbortSignal.timeout(12000), // 12 second timeout
           });
 
           console.log(`Response status: ${response.status}`);
-          console.log(`Response ok: ${response.ok}`);
 
           if (response.ok) {
             xmlText = await response.text();
             console.log(`Received XML text, length: ${xmlText.length}`);
-            console.log(`First 500 characters:`, xmlText.substring(0, 500));
 
-            if (xmlText.length > 100) {
+            if (
+              xmlText.length > 100 &&
+              (xmlText.includes("<?xml") ||
+                xmlText.includes("<rss") ||
+                xmlText.includes("<feed"))
+            ) {
               console.log(`Successfully fetched via proxy: ${proxyUrl}`);
               break;
             }
@@ -1071,7 +1174,7 @@ const NewsAggregator = () => {
           <nav
             className={`${
               isMobileNavOpen ? "translate-x-0" : "-translate-x-full"
-            } lg:translate-x-0 fixed lg:static inset-y-0 left-0 z-40 w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 min-h-screen p-4 transition-transform duration-300 ease-in-out lg:transition-none lg:block`}
+            } lg:translate-x-0 fixed lg:static inset-y-0 left-0 z-40 w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 min-h-screen p-4 transition-transform duration-300 ease-in-out lg:transition-none lg:block flex flex-col`}
           >
             <div className="mb-6">
               <div className="flex items-center justify-between">
@@ -1102,10 +1205,13 @@ const NewsAggregator = () => {
             {/* Category Tabs */}
             <div className="space-y-2">
               <button
-                onClick={() => setActiveCategory("all")}
+                onClick={() => {
+                  setActiveCategory("all");
+                  syncActiveCategory("all");
+                }}
                 className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${
                   activeCategory === "all"
-                    ? "bg-blue-50 dark:bg-blue-900/30 text-blue-900 dark:text-blue-100 border-l-4 border-blue-300"
+                    ? `${categoryColors.all.bg} ${categoryColors.all.text} border-l-4 ${categoryColors.all.border}`
                     : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                 }`}
               >
@@ -1113,48 +1219,65 @@ const NewsAggregator = () => {
               </button>
 
               <button
-                onClick={() => setActiveCategory("technology")}
+                onClick={() => {
+                  setActiveCategory("technology");
+                  syncActiveCategory("technology");
+                }}
                 className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${
                   activeCategory === "technology"
-                    ? "bg-[#fef2de] dark:bg-[#f79d84]/30 text-gray-800 dark:text-gray-200 border-l-4 border-[#f79d84]"
-                    : "text-gray-700 dark:text-gray-300 hover:bg-[#fef2de] dark:hover:bg-[#f79d84]/20"
+                    ? `${categoryColors.technology.bg} ${categoryColors.technology.text} border-l-4 ${categoryColors.technology.border}`
+                    : `text-gray-700 dark:text-gray-300 ${categoryColors.technology.hover}`
                 }`}
               >
                 <span className="font-medium">Technology</span>
               </button>
 
               <button
-                onClick={() => setActiveCategory("sports")}
+                onClick={() => {
+                  setActiveCategory("sports");
+                  syncActiveCategory("sports");
+                }}
                 className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${
                   activeCategory === "sports"
-                    ? "bg-[#def5e9] dark:bg-[#59cd90]/30 text-gray-800 dark:text-gray-200 border-l-4 border-[#59cd90]"
-                    : "text-gray-700 dark:text-gray-300 hover:bg-[#def5e9] dark:hover:bg-[#59cd90]/20"
+                    ? `${categoryColors.sports.bg} ${categoryColors.sports.text} border-l-4 ${categoryColors.sports.border}`
+                    : `text-gray-700 dark:text-gray-300 ${categoryColors.sports.hover}`
                 }`}
               >
                 <span className="font-medium">Sports</span>
               </button>
 
               <button
-                onClick={() => setActiveCategory("business")}
+                onClick={() => {
+                  setActiveCategory("business");
+                  syncActiveCategory("business");
+                }}
                 className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${
                   activeCategory === "business"
-                    ? "bg-[#d8edf7] dark:bg-[#3fa7d6]/30 text-gray-800 dark:text-gray-200 border-l-4 border-[#3fa7d6]"
-                    : "text-gray-700 dark:text-gray-300 hover:bg-[#d8edf7] dark:hover:bg-[#3fa7d6]/20"
+                    ? `${categoryColors.business.bg} ${categoryColors.business.text} border-l-4 ${categoryColors.business.border}`
+                    : `text-gray-700 dark:text-gray-300 ${categoryColors.business.hover}`
                 }`}
               >
                 <span className="font-medium">Business</span>
               </button>
 
               <button
-                onClick={() => setActiveCategory("entertainment")}
+                onClick={() => {
+                  setActiveCategory("entertainment");
+                  syncActiveCategory("entertainment");
+                }}
                 className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${
                   activeCategory === "entertainment"
-                    ? "bg-[#fef2de] dark:bg-[#fac05e]/30 text-gray-800 dark:text-gray-200 border-l-4 border-[#fac05e]"
-                    : "text-gray-700 dark:text-gray-300 hover:bg-[#fef2de] dark:hover:bg-[#fac05e]/20"
+                    ? `${categoryColors.entertainment.bg} ${categoryColors.entertainment.text} border-l-4 ${categoryColors.entertainment.border}`
+                    : `text-gray-700 dark:text-gray-300 ${categoryColors.entertainment.hover}`
                 }`}
               >
                 <span className="font-medium">Entertainment</span>
               </button>
+            </div>
+
+            {/* Authentication Section - Bottom of Navigation */}
+            <div className="mt-auto pt-6 border-t border-gray-200 dark:border-gray-700">
+              <AuthHeader />
             </div>
           </nav>
 
@@ -1182,7 +1305,10 @@ const NewsAggregator = () => {
                 <div className="flex justify-end mb-6">
                   <div className="flex items-center bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
                     <button
-                      onClick={() => setViewMode("grid")}
+                      onClick={() => {
+                        setViewMode("grid");
+                        syncViewMode("grid");
+                      }}
                       className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                         viewMode === "grid"
                           ? "bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm"
@@ -1204,7 +1330,10 @@ const NewsAggregator = () => {
                       </svg>
                     </button>
                     <button
-                      onClick={() => setViewMode("list")}
+                      onClick={() => {
+                        setViewMode("list");
+                        syncViewMode("list");
+                      }}
                       className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                         viewMode === "list"
                           ? "bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm"
@@ -1313,8 +1442,26 @@ const NewsAggregator = () => {
                             className={`bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col ${
                               viewMode === "grid"
                                 ? "h-[500px]"
-                                : "h-auto justify-center"
+                                : "h-auto justify-center border-l-4 min-h-[120px]"
                             }`}
+                            style={
+                              viewMode === "list"
+                                ? {
+                                    borderLeftColor:
+                                      feed.category === "technology"
+                                        ? "#f79d84"
+                                        : feed.category === "sports"
+                                        ? "#59cd90"
+                                        : feed.category === "business"
+                                        ? "#3fa7d6"
+                                        : feed.category === "entertainment"
+                                        ? "#fac05e"
+                                        : feed.category === "politics"
+                                        ? "#f79d84"
+                                        : "#6b7280",
+                                  }
+                                : {}
+                            }
                           >
                             {/* Card Header */}
                             <div
@@ -1322,75 +1469,54 @@ const NewsAggregator = () => {
                                 viewMode === "list" ? "px-4 py-3" : "px-6 pt-6"
                               } flex-shrink-0`}
                             >
-                              {/* Top Row - Source Title, Article Title, and Carousel Controls */}
+                              {/* Top Row - Source Title, Article Title, and Category Chip */}
                               <div
                                 className={`flex items-center justify-between ${
                                   viewMode === "list" ? "" : "mb-4"
                                 }`}
                               >
-                                {/* Source Title */}
-                                <h4 className="text-base font-normal text-gray-700 dark:text-gray-300 uppercase tracking-wide">
-                                  {feed.name}
-                                </h4>
+                                {/* Left side: Source Title and Article Title */}
+                                <div className="flex items-center flex-1">
+                                  {/* Source Title */}
+                                  <h4 className="text-base font-normal text-gray-700 dark:text-gray-300 uppercase tracking-wide">
+                                    {feed.name}
+                                  </h4>
 
-                                {/* Article Title - Only show in list view */}
-                                {viewMode === "list" &&
-                                  feedItems.length > 0 && (
-                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white leading-tight flex-1 mx-4">
-                                      <a
-                                        href={feedItems[currentIndex]?.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
-                                      >
-                                        {truncateText(
-                                          feedItems[currentIndex]?.title || "",
-                                          60
-                                        )}
-                                      </a>
-                                    </h3>
-                                  )}
+                                  {/* Article Title - Only show in list view */}
+                                  {viewMode === "list" &&
+                                    feedItems.length > 0 && (
+                                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white leading-tight ml-4">
+                                        <a
+                                          href={feedItems[currentIndex]?.url}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                                        >
+                                          {truncateText(
+                                            feedItems[currentIndex]?.title ||
+                                              "",
+                                            60
+                                          )}
+                                        </a>
+                                      </h3>
+                                    )}
+                                </div>
 
-                                {/* Carousel Controls - Only show if there are items */}
-                                {feedItems.length > 1 && (
-                                  <div className="flex items-center gap-2">
-                                    <button
-                                      onClick={() => goToPrevious(feed.name)}
-                                      disabled={feedItems.length <= 1}
-                                      className="w-6 h-6 text-xs text-gray-500 hover:text-gray-700 disabled:text-gray-300 disabled:cursor-not-allowed bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 flex items-center justify-center"
-                                    >
-                                      ←
-                                    </button>
-                                    <span className="text-xs text-gray-500 bg-white dark:bg-gray-700 px-2 py-1 rounded border border-gray-200 dark:border-gray-600">
-                                      {currentIndex + 1}/{feedItems.length}
-                                    </span>
-                                    <button
-                                      onClick={() => goToNext(feed.name)}
-                                      disabled={feedItems.length <= 1}
-                                      className="w-6 h-6 text-xs text-gray-500 hover:text-gray-700 disabled:text-gray-300 disabled:cursor-not-allowed bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 flex items-center justify-center"
-                                    >
-                                      →
-                                    </button>
-                                  </div>
-                                )}
-                              </div>
-
-                              {/* Category Chip - Hidden in list view */}
-                              {viewMode === "grid" && (
-                                <div className="mb-3">
+                                {/* Right side: Category Chip - Only show in grid view */}
+                                {viewMode === "grid" && (
                                   <span
                                     className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                                       feed.category === "technology"
-                                        ? "bg-[#fef2de] text-[#422b02] dark:bg-[#f79d84]/30 dark:text-[#f79d84]"
+                                        ? `${categoryColors.technology.chip.bg} ${categoryColors.technology.chip.text}`
                                         : feed.category === "sports"
-                                        ? "bg-[#def5e9] text-[#0e2e1d] dark:bg-[#59cd90]/30 dark:text-[#59cd90]"
+                                        ? `${categoryColors.sports.chip.bg} ${categoryColors.sports.chip.text}`
                                         : feed.category === "business"
-                                        ? "bg-[#d8edf7] text-[#0a222d] dark:bg-[#3fa7d6]/30 dark:text-[#3fa7d84]/30 dark:text-[#3fa7d6]"
+                                        ? `${categoryColors.business.chip.bg} ${categoryColors.business.chip.text}`
                                         : feed.category === "entertainment"
-                                        ? "bg-[#fef2de] text-[#422b02] dark:bg-[#fac05e]/30 dark:text-[#fac05e]"
+                                        ? `${categoryColors.entertainment.chip.bg} ${categoryColors.entertainment.chip.text}`
                                         : feed.category === "politics"
-                                        ? "bg-[#fdebe6] text-[#471305] dark:bg-[#f79d84]/30 dark:text-[#f79d84]"
-                                        : "bg-[#d8edf7] text-[#0a222d] dark:bg-[#3fa7d6]/30 dark:text-[#3fa7d6]"
+                                        ? `${categoryColors.politics.chip.bg} ${categoryColors.politics.chip.text}`
+                                        : `${categoryColors.all.chip.bg} ${categoryColors.all.chip.text}`
                                     }`}
                                   >
                                     {feed.category === "technology"
@@ -1405,6 +1531,64 @@ const NewsAggregator = () => {
                                       ? "Politics"
                                       : "All News"}
                                   </span>
+                                )}
+                              </div>
+
+                              {/* Second Row - Chip and Carousel Controls (list view only) */}
+                              {viewMode === "list" && (
+                                <div className="flex items-center justify-between mt-2 relative z-10">
+                                  {/* Category Chip - Left side */}
+                                  <span
+                                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium shadow-sm border ${
+                                      feed.category === "technology"
+                                        ? `${categoryColors.technology.chip.bg} ${categoryColors.technology.chip.text} ${categoryColors.technology.chip.border}`
+                                        : feed.category === "sports"
+                                        ? `${categoryColors.sports.chip.bg} ${categoryColors.sports.chip.text} ${categoryColors.sports.chip.border}`
+                                        : feed.category === "business"
+                                        ? `${categoryColors.business.chip.bg} ${categoryColors.business.chip.text} ${categoryColors.business.chip.border}`
+                                        : feed.category === "entertainment"
+                                        ? `${categoryColors.entertainment.chip.bg} ${categoryColors.entertainment.chip.text} ${categoryColors.entertainment.chip.border}`
+                                        : feed.category === "politics"
+                                        ? `${categoryColors.politics.chip.bg} ${categoryColors.politics.chip.text} ${categoryColors.politics.chip.border}`
+                                        : `${categoryColors.all.chip.bg} ${categoryColors.all.chip.text} ${categoryColors.all.chip.border}`
+                                    }`}
+                                    title={`Category: ${feed.category}`}
+                                  >
+                                    {feed.category === "technology"
+                                      ? "Technology"
+                                      : feed.category === "sports"
+                                      ? "Sports"
+                                      : feed.category === "business"
+                                      ? "Business"
+                                      : feed.category === "entertainment"
+                                      ? "Entertainment"
+                                      : feed.category === "politics"
+                                      ? "Politics"
+                                      : "All News"}
+                                  </span>
+
+                                  {/* Carousel Controls - Right side, only show if there are items */}
+                                  {feedItems.length > 1 && (
+                                    <div className="flex items-center gap-1">
+                                      <button
+                                        onClick={() => goToPrevious(feed.name)}
+                                        disabled={feedItems.length <= 1}
+                                        className="w-5 h-5 text-xs text-gray-500 hover:text-gray-700 disabled:text-gray-300 disabled:cursor-not-allowed bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 flex items-center justify-center"
+                                      >
+                                        ←
+                                      </button>
+                                      <span className="text-xs text-gray-500 bg-white dark:bg-gray-700 px-1.5 py-0.5 rounded border border-gray-200 dark:border-gray-600">
+                                        {currentIndex + 1}/{feedItems.length}
+                                      </span>
+                                      <button
+                                        onClick={() => goToNext(feed.name)}
+                                        disabled={feedItems.length <= 1}
+                                        className="w-5 h-5 text-xs text-gray-500 hover:text-gray-700 disabled:text-gray-300 disabled:cursor-not-allowed bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 flex items-center justify-center"
+                                      >
+                                        →
+                                      </button>
+                                    </div>
+                                  )}
                                 </div>
                               )}
 
@@ -1477,9 +1661,8 @@ const NewsAggregator = () => {
                                 viewMode === "list" ? {} : { height: "180px" }
                               }
                             >
-                              {/* Image or Placeholder - Hidden in list view */}
-                              {viewMode === "grid" &&
-                              feedItems.length > 0 &&
+                              {/* Image or Placeholder */}
+                              {feedItems.length > 0 &&
                               feedItems[currentIndex]?.image &&
                               !feedItems[currentIndex]?.image!.startsWith(
                                 "placeholder:"
@@ -1553,8 +1736,8 @@ const NewsAggregator = () => {
                                     </div>
                                   )}
                                 </div>
-                              ) : viewMode === "grid" ? (
-                                // No image available or placeholder - show styled placeholder (only in grid view)
+                              ) : (
+                                // No image available or placeholder - show styled placeholder
                                 <div
                                   className="mt-auto w-full h-36 rounded-lg flex items-center justify-center"
                                   style={{
@@ -1644,8 +1827,31 @@ const NewsAggregator = () => {
                                     </div>
                                   )}
                                 </div>
-                              ) : null}
+                              )}
                             </div>
+
+                            {/* Carousel Controls for Grid View */}
+                            {viewMode === "grid" && feedItems.length > 1 && (
+                              <div className="px-4 sm:px-6 pb-4 flex items-center justify-center gap-1">
+                                <button
+                                  onClick={() => goToPrevious(feed.name)}
+                                  disabled={feedItems.length <= 1}
+                                  className="w-5 h-5 text-xs text-gray-500 hover:text-gray-700 disabled:text-gray-300 disabled:cursor-not-allowed bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                                >
+                                  ←
+                                </button>
+                                <span className="text-xs text-gray-500 bg-white dark:bg-gray-700 px-1.5 py-0.5 rounded border border-gray-200 dark:border-gray-600">
+                                  {currentIndex + 1}/{feedItems.length}
+                                </span>
+                                <button
+                                  onClick={() => goToNext(feed.name)}
+                                  disabled={feedItems.length <= 1}
+                                  className="w-5 h-5 text-xs text-gray-500 hover:text-gray-700 disabled:text-gray-300 disabled:cursor-not-allowed bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                                >
+                                  →
+                                </button>
+                              </div>
+                            )}
                           </motion.div>
                         );
                       });
@@ -1672,11 +1878,13 @@ const NewsAggregator = () => {
                             transition={{ duration: 0.3 }}
                             className={`bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col ${
                               viewMode === "list"
-                                ? "h-auto justify-center"
+                                ? "h-auto justify-center border-l-4"
                                 : "h-[500px]"
                             }`}
                             style={
-                              viewMode === "list" ? {} : { height: "470px" }
+                              viewMode === "list"
+                                ? { borderLeftColor: "#ef4444" }
+                                : { height: "470px" }
                             }
                           >
                             {/* Custom Feed Header */}
@@ -1685,7 +1893,7 @@ const NewsAggregator = () => {
                                 viewMode === "list" ? "px-4 py-3" : "px-6 pt-6"
                               } flex-shrink-0`}
                             >
-                              {/* Top Row - Logo, Title, and Remove Button */}
+                              {/* Top Row - Source Title and Category Chip */}
                               <div
                                 className={`flex items-center justify-between ${
                                   viewMode === "list" ? "" : "mb-4"
@@ -1696,30 +1904,42 @@ const NewsAggregator = () => {
                                   {customFeed.name}
                                 </h4>
 
-                                {/* Remove Button */}
-                                <button
-                                  onClick={() => {
-                                    const feedIndex = rssFeeds.findIndex(
-                                      (f) => f.id === customFeed.id
-                                    );
-                                    if (feedIndex > -1) {
-                                      rssFeeds.splice(feedIndex, 1);
-                                      loadRSSFeeds();
-                                    }
-                                  }}
-                                  className="w-6 h-6 text-xs text-red-500 hover:text-red-700 bg-white dark:bg-gray-700 rounded border border-red-200 dark:border-red-600 flex items-center justify-center hover:bg-red-50 dark:hover:bg-red-900/20"
-                                  title="Remove this feed"
-                                >
-                                  ×
-                                </button>
-                              </div>
-
-                              {/* Category Chip - Hidden in list view */}
-                              {viewMode === "grid" && (
-                                <div className="mb-3">
-                                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#fdebe6] text-[#471305] dark:bg-[#f79d84]/30 dark:text-[#f79d84]">
+                                {/* Category Chip - Only show in grid view */}
+                                {viewMode === "grid" && (
+                                  <span
+                                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${categoryColors.custom.chip.bg} ${categoryColors.custom.chip.text}`}
+                                  >
                                     Custom Feed
                                   </span>
+                                )}
+                              </div>
+
+                              {/* Second Row - Chip and Remove Button (list view only) */}
+                              {viewMode === "list" && (
+                                <div className="flex items-center justify-between mt-2">
+                                  {/* Category Chip - Left side */}
+                                  <span
+                                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${categoryColors.custom.chip.bg} ${categoryColors.custom.chip.text} ${categoryColors.custom.chip.border} shadow-sm`}
+                                  >
+                                    Custom Feed
+                                  </span>
+
+                                  {/* Remove Button - Right side */}
+                                  <button
+                                    onClick={() => {
+                                      const feedIndex = rssFeeds.findIndex(
+                                        (f) => f.id === customFeed.id
+                                      );
+                                      if (feedIndex > -1) {
+                                        rssFeeds.splice(feedIndex, 1);
+                                        loadRSSFeeds();
+                                      }
+                                    }}
+                                    className="w-5 h-5 text-xs text-red-500 hover:text-red-700 bg-white dark:bg-gray-700 rounded border border-red-200 dark:border-red-600 flex items-center justify-center hover:bg-red-50 dark:hover:bg-red-900/20"
+                                    title="Remove this feed"
+                                  >
+                                    ×
+                                  </button>
                                 </div>
                               )}
 
@@ -1812,8 +2032,8 @@ const NewsAggregator = () => {
                                     </div>
                                   </div>
                                 </div>
-                              ) : viewMode === "grid" ? (
-                                // No image available or placeholder - show styled placeholder (only in grid view)
+                              ) : (
+                                // No image available or placeholder - show styled placeholder
                                 <div
                                   className="mt-auto w-full h-36 rounded-lg flex items-center justify-center"
                                   style={{
@@ -1853,8 +2073,40 @@ const NewsAggregator = () => {
                                     </div>
                                   )}
                                 </div>
-                              ) : null}
+                              )}
                             </div>
+
+                            {/* Carousel Controls for Custom Feeds Grid View */}
+                            {viewMode === "grid" &&
+                              customFeedItems.length > 1 && (
+                                <div className="px-4 sm:px-6 pb-4 flex items-center justify-center gap-1">
+                                  <button
+                                    onClick={() => {
+                                      // For custom feeds, we'll need to implement index tracking
+                                      // For now, this is a placeholder
+                                      console.log("Previous custom feed item");
+                                    }}
+                                    disabled={customFeedItems.length <= 1}
+                                    className="w-5 h-5 text-xs text-gray-500 hover:text-gray-700 disabled:text-gray-300 disabled:cursor-not-allowed bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                                  >
+                                    ←
+                                  </button>
+                                  <span className="text-xs text-gray-500 bg-white dark:bg-gray-700 px-1.5 py-0.5 rounded border border-gray-200 dark:border-gray-600">
+                                    1/{customFeedItems.length}
+                                  </span>
+                                  <button
+                                    onClick={() => {
+                                      // For custom feeds, we'll need to implement index tracking
+                                      // For now, this is a placeholder
+                                      console.log("Next custom feed item");
+                                    }}
+                                    disabled={customFeedItems.length <= 1}
+                                    className="w-5 h-5 text-xs text-gray-500 hover:text-gray-700 disabled:text-gray-300 disabled:cursor-not-allowed bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                                  >
+                                    →
+                                  </button>
+                                </div>
+                              )}
                           </motion.div>
                         );
                       })}
