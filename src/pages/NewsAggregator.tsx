@@ -97,12 +97,20 @@ const rssFeeds: RSSFeed[] = [
     enabled: true,
   },
   {
-    id: "morbid-facts",
-    name: "Morbid Facts",
-    url: "https://rss.app/feeds/01omUfA6c4IRWbQO.xml",
+    id: "hardlore",
+    name: "Hardlore",
+    url: "https://rss.app/feeds/7XApueAqoS0fpQ8F.xml",
     category: "entertainment",
     enabled: true,
   },
+  {
+    id: "watchmojo",
+    name: "WatchMojo",
+    url: "https://rss.app/feeds/84SmpaFg0pwHNrfz.xml",
+    category: "entertainment",
+    enabled: true,
+  },
+
   {
     id: "newsweek",
     name: "Newsweek",
@@ -238,7 +246,9 @@ const NewsAggregator = () => {
   const [techradarIndex, setTechradarIndex] = useState(0);
   const [windows11Index, setWindows11Index] = useState(0);
   const [softWhiteUnderbellyIndex, setSoftWhiteUnderbellyIndex] = useState(0);
-  const [morbidFactsIndex, setMorbidFactsIndex] = useState(0);
+  const [hardloreIndex, setHardloreIndex] = useState(0);
+  const [watchmojoIndex, setWatchmojoIndex] = useState(0);
+
   const [foxSportsIndex, setFoxSportsIndex] = useState(0);
   const [cnnSportsIndex, setCnnSportsIndex] = useState(0);
 
@@ -300,8 +310,11 @@ const NewsAggregator = () => {
         return noEchoIndex;
       case "Soft White Underbelly":
         return softWhiteUnderbellyIndex;
-      case "Morbid Facts":
-        return morbidFactsIndex;
+      case "Hardlore":
+        return hardloreIndex;
+      case "WatchMojo":
+        return watchmojoIndex;
+
       case "Newsweek":
         return newsweekIndex;
       case "New York Post":
@@ -350,9 +363,13 @@ const NewsAggregator = () => {
       case "Soft White Underbelly":
         goToPreviousSoftWhiteUnderbelly();
         break;
-      case "Morbid Facts":
-        goToPreviousMorbidFacts();
+      case "Hardlore":
+        goToPreviousHardlore();
         break;
+      case "WatchMojo":
+        goToPreviousWatchmojo();
+        break;
+
       case "Newsweek":
         goToPreviousNewsweek();
         break;
@@ -405,9 +422,13 @@ const NewsAggregator = () => {
       case "Soft White Underbelly":
         goToNextSoftWhiteUnderbelly();
         break;
-      case "Morbid Facts":
-        goToNextMorbidFacts();
+      case "Hardlore":
+        goToNextHardlore();
         break;
+      case "WatchMojo":
+        goToNextWatchmojo();
+        break;
+
       case "Newsweek":
         goToNextNewsweek();
         break;
@@ -1105,23 +1126,44 @@ const NewsAggregator = () => {
     }
   };
 
-  // Morbid Facts carousel navigation
-  const goToNextMorbidFacts = () => {
-    const morbidFactsItems = newsItems.filter(
-      (item) => item.source === "Morbid Facts"
+  // Hardlore carousel navigation
+  const goToNextHardlore = () => {
+    const hardloreItems = newsItems.filter(
+      (item) => item.source === "Hardlore"
     );
-    if (morbidFactsItems.length > 0) {
-      setMorbidFactsIndex((prev) => (prev + 1) % morbidFactsItems.length);
+    if (hardloreItems.length > 0) {
+      setHardloreIndex((prev) => (prev + 1) % hardloreItems.length);
     }
   };
 
-  const goToPreviousMorbidFacts = () => {
-    const morbidFactsItems = newsItems.filter(
-      (item) => item.source === "Morbid Facts"
+  const goToPreviousHardlore = () => {
+    const hardloreItems = newsItems.filter(
+      (item) => item.source === "Hardlore"
     );
-    if (morbidFactsItems.length > 0) {
-      setMorbidFactsIndex(
-        (prev) => (prev - 1 + morbidFactsItems.length) % morbidFactsItems.length
+    if (hardloreItems.length > 0) {
+      setHardloreIndex(
+        (prev) => (prev - 1 + hardloreItems.length) % hardloreItems.length
+      );
+    }
+  };
+
+  // WatchMojo carousel navigation
+  const goToNextWatchmojo = () => {
+    const watchmojoItems = newsItems.filter(
+      (item) => item.source === "WatchMojo"
+    );
+    if (watchmojoItems.length > 0) {
+      setWatchmojoIndex((prev) => (prev + 1) % watchmojoItems.length);
+    }
+  };
+
+  const goToPreviousWatchmojo = () => {
+    const watchmojoItems = newsItems.filter(
+      (item) => item.source === "WatchMojo"
+    );
+    if (watchmojoItems.length > 0) {
+      setWatchmojoIndex(
+        (prev) => (prev - 1 + watchmojoItems.length) % watchmojoItems.length
       );
     }
   };
