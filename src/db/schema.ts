@@ -58,6 +58,17 @@ export const newsItems = pgTable('news_items', {
   createdAt: timestamp('created_at').defaultNow(),
 });
 
+// Site configuration table for global settings
+export const siteConfig = pgTable('site_config', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  key: text('key').notNull().unique(),
+  value: jsonb('value').notNull(),
+  description: text('description'),
+  isPublic: boolean('is_public').default(false),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+});
+
 // Relations
 export const usersRelations = relations(users, ({ many }) => ({
   settings: many(userSettings),

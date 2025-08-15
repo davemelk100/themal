@@ -139,8 +139,8 @@
   /* Touch-friendly improvements for mobile */
   @media (max-width: 768px) {
 
-    button,
-    a {
+    button:not(.carousel-button),
+    a:not(.carousel-button) {
       min-height: 44px;
       min-width: 44px;
     }
