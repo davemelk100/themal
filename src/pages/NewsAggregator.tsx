@@ -68,6 +68,13 @@ const rssFeeds: RSSFeed[] = [
     enabled: true,
   },
   {
+    id: "youtube-windows11",
+    name: "YouTube - #Windows11",
+    url: "https://rss.app/feeds/LaZP1mfEYdXysbTT.xml",
+    category: "technology",
+    enabled: true,
+  },
+  {
     id: "fox-sports",
     name: "Fox Sports",
     url: "https://api.foxsports.com/v2/content/optimized-rss?partnerKey=MB0Wehpmuj2lUhuRhQaafhBjAJqaPU244mlTDK1i&size=30",
@@ -253,6 +260,8 @@ const NewsAggregator = () => {
 
   const [viceTechIndex, setViceTechIndex] = useState(0);
 
+  const [youtubeWindows11Index, setYoutubeWindows11Index] = useState(0);
+
   const [hardloreIndex, setHardloreIndex] = useState(0);
   const [watchmojoIndex, setWatchmojoIndex] = useState(0);
 
@@ -308,6 +317,8 @@ const NewsAggregator = () => {
         return windows11Index;
       case "Vice - Tech":
         return viceTechIndex;
+      case "YouTube - #Windows11":
+        return youtubeWindows11Index;
       case "Fox Sports":
         return foxSportsIndex;
       case "CNN - SPORTS":
@@ -357,6 +368,9 @@ const NewsAggregator = () => {
         break;
       case "Vice - Tech":
         goToPreviousViceTech();
+        break;
+      case "YouTube - #Windows11":
+        goToPreviousYoutubeWindows11();
         break;
       case "Fox Sports":
         goToPreviousFoxSports();
@@ -417,6 +431,9 @@ const NewsAggregator = () => {
         break;
       case "Vice - Tech":
         goToNextViceTech();
+        break;
+      case "YouTube - #Windows11":
+        goToNextYoutubeWindows11();
         break;
       case "Fox Sports":
         goToNextFoxSports();
@@ -915,6 +932,7 @@ const NewsAggregator = () => {
       setTechradarIndex(0);
       setWindows11Index(0);
       setViceTechIndex(0);
+      setYoutubeWindows11Index(0);
       setFoxSportsIndex(0);
       setCnnSportsIndex(0);
 
@@ -1048,6 +1066,31 @@ const NewsAggregator = () => {
     if (viceTechItems.length > 0) {
       setViceTechIndex(
         (prev) => (prev - 1 + viceTechItems.length) % viceTechItems.length
+      );
+    }
+  };
+
+  // YouTube - #Windows11 carousel navigation
+  const goToNextYoutubeWindows11 = () => {
+    const youtubeWindows11Items = newsItems.filter(
+      (item) => item.source === "YouTube - #Windows11"
+    );
+    if (youtubeWindows11Items.length > 0) {
+      setYoutubeWindows11Index(
+        (prev) => (prev + 1) % youtubeWindows11Items.length
+      );
+    }
+  };
+
+  const goToPreviousYoutubeWindows11 = () => {
+    const youtubeWindows11Items = newsItems.filter(
+      (item) => item.source === "YouTube - #Windows11"
+    );
+    if (youtubeWindows11Items.length > 0) {
+      setYoutubeWindows11Index(
+        (prev) =>
+          (prev - 1 + youtubeWindows11Items.length) %
+          youtubeWindows11Items.length
       );
     }
   };
@@ -1731,7 +1774,7 @@ const NewsAggregator = () => {
                                       <button
                                         onClick={() => goToPrevious(feed.name)}
                                         disabled={feedItems.length <= 1}
-                                        className="carousel-button w-5 h-5 text-xs text-gray-500 hover:text-gray-700 disabled:text-gray-300 disabled:cursor-not-allowed bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                                        className="carousel-button w-6 h-6 text-xs text-gray-500 hover:text-gray-700 disabled:text-gray-300 disabled:cursor-not-allowed bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
                                       >
                                         ←
                                       </button>
@@ -1741,7 +1784,7 @@ const NewsAggregator = () => {
                                       <button
                                         onClick={() => goToNext(feed.name)}
                                         disabled={feedItems.length <= 1}
-                                        className="carousel-button w-5 h-5 text-xs text-gray-500 hover:text-gray-700 disabled:text-gray-300 disabled:cursor-not-allowed bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                                        className="carousel-button w-6 h-6 text-xs text-gray-500 hover:text-gray-700 disabled:text-gray-300 disabled:cursor-not-allowed bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
                                       >
                                         →
                                       </button>
@@ -1810,7 +1853,7 @@ const NewsAggregator = () => {
                                     <button
                                       onClick={() => goToPrevious(feed.name)}
                                       disabled={feedItems.length <= 1}
-                                      className="carousel-button w-5 h-5 text-xs text-gray-500 hover:text-gray-700 disabled:text-gray-300 disabled:cursor-not-allowed bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 flex items-center justify-center"
+                                      className="carousel-button w-6 h-6 text-xs text-gray-500 hover:text-gray-700 disabled:text-gray-300 disabled:cursor-not-allowed bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 flex items-center justify-center"
                                     >
                                       ←
                                     </button>
@@ -1820,7 +1863,7 @@ const NewsAggregator = () => {
                                     <button
                                       onClick={() => goToNext(feed.name)}
                                       disabled={feedItems.length <= 1}
-                                      className="carousel-button w-5 h-5 text-xs text-gray-500 hover:text-gray-700 disabled:text-gray-300 disabled:cursor-not-allowed bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 flex items-center justify-center"
+                                      className="carousel-button w-6 h-6 text-xs text-gray-500 hover:text-gray-700 disabled:text-gray-300 disabled:cursor-not-allowed bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 flex items-center justify-center"
                                     >
                                       →
                                     </button>
@@ -2335,7 +2378,7 @@ const NewsAggregator = () => {
                                       console.log("Previous custom feed item");
                                     }}
                                     disabled={customFeedItems.length <= 1}
-                                    className="carousel-button w-5 h-5 text-xs text-gray-500 hover:text-gray-700 disabled:text-gray-300 disabled:cursor-not-allowed bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                                    className="carousel-button w-6 h-6 text-xs text-gray-500 hover:text-gray-700 disabled:text-gray-300 disabled:cursor-not-allowed bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
                                   >
                                     ←
                                   </button>
@@ -2349,7 +2392,7 @@ const NewsAggregator = () => {
                                       console.log("Next custom feed item");
                                     }}
                                     disabled={customFeedItems.length <= 1}
-                                    className="carousel-button w-5 h-5 text-xs text-gray-500 hover:text-gray-700 disabled:text-gray-300 disabled:cursor-not-allowed bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                                    className="carousel-button w-6 h-6 text-xs text-gray-500 hover:text-gray-700 disabled:text-gray-300 disabled:cursor-not-allowed bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
                                   >
                                     →
                                   </button>
