@@ -101,7 +101,7 @@ const rssFeeds: RSSFeed[] = [
     id: "watchmojo",
     name: "WatchMojo",
     url: "https://rss.app/feeds/84SmpaFg0pwHNrfz.xml",
-    category: "entertainment",
+    category: "video",
     enabled: true,
   },
 
@@ -206,6 +206,17 @@ const NewsAggregator = () => {
         bg: "bg-[#f3e8ff] dark:bg-[#a855f7]/30",
         text: "text-gray-800 dark:text-gray-200",
         border: "border-[#a855f7] dark:border-[#a855f7]",
+      },
+    },
+    video: {
+      bg: "bg-[#e0f2fe] dark:bg-[#0ea5e9]/30",
+      text: "text-gray-800 dark:text-gray-200",
+      border: "border-[#0ea5e9]",
+      hover: "hover:bg-[#e0f2fe] dark:hover:bg-[#0ea5e9]/20",
+      chip: {
+        bg: "bg-[#e0f2fe] dark:bg-[#0ea5e9]/30",
+        text: "text-gray-800 dark:text-gray-200",
+        border: "border-[#0ea5e9] dark:border-[#0ea5e9]",
       },
     },
     politics: {
@@ -1434,6 +1445,20 @@ const NewsAggregator = () => {
               >
                 <span className="font-medium">Entertainment</span>
               </button>
+
+              <button
+                onClick={() => {
+                  setActiveCategory("video");
+                  syncActiveCategory("video");
+                }}
+                className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${
+                  activeCategory === "video"
+                    ? `${categoryColors.video.bg} ${categoryColors.video.text} border-l-4 ${categoryColors.video.border}`
+                    : `text-gray-700 dark:text-gray-300 ${categoryColors.video.hover}`
+                }`}
+              >
+                <span className="font-medium">Video</span>
+              </button>
             </div>
 
             {/* Authentication Section - Bottom of Navigation */}
@@ -1476,6 +1501,8 @@ const NewsAggregator = () => {
                         ? "Business News"
                         : activeCategory === "entertainment"
                         ? "Entertainment News"
+                        : activeCategory === "video"
+                        ? "Video News"
                         : activeCategory === "politics"
                         ? "Politics News"
                         : "News"}
