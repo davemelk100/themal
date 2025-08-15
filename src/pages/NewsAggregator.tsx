@@ -240,6 +240,8 @@ const NewsAggregator = () => {
   const [techradarIndex, setTechradarIndex] = useState(0);
   const [windows11Index, setWindows11Index] = useState(0);
 
+  const [viceTechIndex, setViceTechIndex] = useState(0);
+
   const [hardloreIndex, setHardloreIndex] = useState(0);
   const [watchmojoIndex, setWatchmojoIndex] = useState(0);
 
@@ -293,6 +295,8 @@ const NewsAggregator = () => {
         return techradarIndex;
       case "#Windows11":
         return windows11Index;
+      case "Vice - Tech":
+        return viceTechIndex;
       case "Fox Sports":
         return foxSportsIndex;
       case "CNN - SPORTS":
@@ -339,6 +343,9 @@ const NewsAggregator = () => {
         break;
       case "#Windows11":
         goToPreviousWindows11();
+        break;
+      case "Vice - Tech":
+        goToPreviousViceTech();
         break;
       case "Fox Sports":
         goToPreviousFoxSports();
@@ -396,6 +403,9 @@ const NewsAggregator = () => {
         break;
       case "#Windows11":
         goToNextWindows11();
+        break;
+      case "Vice - Tech":
+        goToNextViceTech();
         break;
       case "Fox Sports":
         goToNextFoxSports();
@@ -892,6 +902,8 @@ const NewsAggregator = () => {
       setArsTechnicaIndex(0);
       setWiredIndex(0);
       setTechradarIndex(0);
+      setWindows11Index(0);
+      setViceTechIndex(0);
       setFoxSportsIndex(0);
       setCnnSportsIndex(0);
 
@@ -1004,6 +1016,27 @@ const NewsAggregator = () => {
     if (windows11Items.length > 0) {
       setWindows11Index(
         (prev) => (prev - 1 + windows11Items.length) % windows11Items.length
+      );
+    }
+  };
+
+  // Vice Tech carousel navigation
+  const goToNextViceTech = () => {
+    const viceTechItems = newsItems.filter(
+      (item) => item.source === "Vice - Tech"
+    );
+    if (viceTechItems.length > 0) {
+      setViceTechIndex((prev) => (prev + 1) % viceTechItems.length);
+    }
+  };
+
+  const goToPreviousViceTech = () => {
+    const viceTechItems = newsItems.filter(
+      (item) => item.source === "Vice - Tech"
+    );
+    if (viceTechItems.length > 0) {
+      setViceTechIndex(
+        (prev) => (prev - 1 + viceTechItems.length) % viceTechItems.length
       );
     }
   };

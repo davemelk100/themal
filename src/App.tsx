@@ -1879,14 +1879,14 @@ function App() {
       <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 flex flex-col gap-2 sm:gap-3">
         <motion.button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-800 backdrop-blur-sm rounded-full p-2 sm:p-3 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 border border-gray-200 dark:border-gray-700"
+          className="bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-800 backdrop-blur-sm rounded-full p-1.5 sm:p-2 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 border border-gray-200 dark:border-gray-700"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
           aria-label="Back to top"
         >
           <svg
-            className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700 dark:text-gray-300"
+            className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700 dark:text-gray-300"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -1901,7 +1901,7 @@ function App() {
           </svg>
         </motion.button>
         <motion.div
-          className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full p-2 sm:p-3 shadow-lg border border-gray-200 dark:border-gray-700 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center"
+          className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full p-1.5 sm:p-2 shadow-lg border border-gray-200 dark:border-gray-700 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.1 }}
