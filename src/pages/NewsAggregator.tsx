@@ -111,6 +111,21 @@ const rssFeeds: RSSFeed[] = [
     category: "video",
     enabled: true,
   },
+  {
+    id: "tmz",
+    name: "TMZ",
+    url: "https://rss.app/feeds/nmR2x975IlI9epfR.xml",
+    category: "entertainment",
+    enabled: true,
+  },
+
+  {
+    id: "soft-white-underbelly",
+    name: "Soft White Underbelly",
+    url: "https://rss.app/feeds/2Ocz5Ks1k69ZRnbv.xml",
+    category: "video",
+    enabled: true,
+  },
 
   {
     id: "newsweek",
@@ -262,6 +277,10 @@ const NewsAggregator = () => {
 
   const [youtubeWindows11Index, setYoutubeWindows11Index] = useState(0);
 
+  const [tmzIndex, setTmzIndex] = useState(0);
+
+  const [softWhiteUnderbellyIndex, setSoftWhiteUnderbellyIndex] = useState(0);
+
   const [hardloreIndex, setHardloreIndex] = useState(0);
   const [watchmojoIndex, setWatchmojoIndex] = useState(0);
 
@@ -319,6 +338,10 @@ const NewsAggregator = () => {
         return viceTechIndex;
       case "YouTube - #Windows11":
         return youtubeWindows11Index;
+      case "TMZ":
+        return tmzIndex;
+      case "Soft White Underbelly":
+        return softWhiteUnderbellyIndex;
       case "Fox Sports":
         return foxSportsIndex;
       case "CNN - SPORTS":
@@ -371,6 +394,12 @@ const NewsAggregator = () => {
         break;
       case "YouTube - #Windows11":
         goToPreviousYoutubeWindows11();
+        break;
+      case "TMZ":
+        goToPreviousTmz();
+        break;
+      case "Soft White Underbelly":
+        goToPreviousSoftWhiteUnderbelly();
         break;
       case "Fox Sports":
         goToPreviousFoxSports();
@@ -434,6 +463,9 @@ const NewsAggregator = () => {
         break;
       case "YouTube - #Windows11":
         goToNextYoutubeWindows11();
+        break;
+      case "TMZ":
+        goToNextTmz();
         break;
       case "Fox Sports":
         goToNextFoxSports();
@@ -733,6 +765,17 @@ const NewsAggregator = () => {
                 0,
                 50
               )}`
+            );
+            return; // Skip this item
+          }
+
+          // Special handling for Lambgoat to filter out "Hardcore News & Metal News" entry
+          if (
+            sourceName === "Lambgoat" &&
+            title === "Hardcore News & Metal News"
+          ) {
+            console.log(
+              `Filtering out "Hardcore News & Metal News" entry from Lambgoat`
             );
             return; // Skip this item
           }
@@ -1092,6 +1135,21 @@ const NewsAggregator = () => {
           (prev - 1 + youtubeWindows11Items.length) %
           youtubeWindows11Items.length
       );
+    }
+  };
+
+  // TMZ carousel navigation
+  const goToNextTmz = () => {
+    const tmzItems = newsItems.filter((item) => item.source === "TMZ");
+    if (tmzItems.length > 0) {
+      setTmzIndex((prev) => (prev + 1) % tmzItems.length);
+    }
+  };
+
+  const goToPreviousTmz = () => {
+    const tmzItems = newsItems.filter((item) => item.source === "TMZ");
+    if (tmzItems.length > 0) {
+      setTmzIndex((prev) => (prev - 1 + tmzItems.length) % tmzItems.length);
     }
   };
 
@@ -1697,7 +1755,7 @@ const NewsAggregator = () => {
                             className={`bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col ${
                               viewMode === "grid"
                                 ? "h-[470px]"
-                                : "h-auto justify-center border-l-4 min-h-[120px] sm:min-h-[140px] md:min-h-[160px] relative"
+                                : "h-auto justify-center border-l-4 min-h-[100px] sm:min-h-[110px] md:min-h-[120px] relative"
                             }`}
                             style={
                               viewMode === "list"
@@ -1774,17 +1832,17 @@ const NewsAggregator = () => {
                                       <button
                                         onClick={() => goToPrevious(feed.name)}
                                         disabled={feedItems.length <= 1}
-                                        className="carousel-button w-6 h-6 text-xs text-gray-500 hover:text-gray-700 disabled:text-gray-300 disabled:cursor-not-allowed bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                                        className="carousel-button w-8 h-8 text-sm text-white dark:text-gray-200 hover:text-white disabled:text-gray-300 disabled:cursor-not-allowed bg-gray-700 dark:bg-gray-600 rounded border border-gray-600 dark:border-gray-500 flex items-center justify-center hover:bg-gray-600 dark:hover:bg-gray-500 transition-colors"
                                       >
                                         ←
                                       </button>
-                                      <span className="text-xs text-gray-500 bg-white dark:bg-gray-700 px-1.5 py-0.5 rounded border border-gray-200 dark:border-gray-600">
+                                      <span className="text-sm text-gray-500 dark:text-gray-400 w-8 h-8 flex items-center justify-center">
                                         {currentIndex + 1}/{feedItems.length}
                                       </span>
                                       <button
                                         onClick={() => goToNext(feed.name)}
                                         disabled={feedItems.length <= 1}
-                                        className="carousel-button w-6 h-6 text-xs text-gray-500 hover:text-gray-700 disabled:text-gray-300 disabled:cursor-not-allowed bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                                        className="carousel-button w-8 h-8 text-sm text-white dark:text-gray-200 hover:text-white disabled:text-gray-300 disabled:cursor-not-allowed bg-gray-700 dark:bg-gray-600 rounded border border-gray-600 dark:border-gray-500 flex items-center justify-center hover:bg-gray-600 dark:hover:bg-gray-500 transition-colors"
                                       >
                                         →
                                       </button>
@@ -1853,17 +1911,17 @@ const NewsAggregator = () => {
                                     <button
                                       onClick={() => goToPrevious(feed.name)}
                                       disabled={feedItems.length <= 1}
-                                      className="carousel-button w-6 h-6 text-xs text-gray-500 hover:text-gray-700 disabled:text-gray-300 disabled:cursor-not-allowed bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 flex items-center justify-center"
+                                      className="carousel-button w-8 h-8 text-sm text-white dark:text-gray-200 hover:text-white disabled:text-gray-300 disabled:cursor-not-allowed bg-gray-700 dark:bg-gray-600 rounded border border-gray-600 dark:border-gray-500 flex items-center justify-center"
                                     >
                                       ←
                                     </button>
-                                    <span className="text-xs text-gray-500 bg-white dark:bg-gray-700 px-1.5 py-0.5 rounded border border-gray-200 dark:border-gray-600">
+                                    <span className="text-sm text-gray-500 dark:text-gray-400 w-8 h-8 flex items-center justify-center">
                                       {currentIndex + 1}/{feedItems.length}
                                     </span>
                                     <button
                                       onClick={() => goToNext(feed.name)}
                                       disabled={feedItems.length <= 1}
-                                      className="carousel-button w-6 h-6 text-xs text-gray-500 hover:text-gray-700 disabled:text-gray-300 disabled:cursor-not-allowed bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 flex items-center justify-center"
+                                      className="carousel-button w-8 h-8 text-sm text-white dark:text-gray-200 hover:text-white disabled:text-gray-300 disabled:cursor-not-allowed bg-gray-700 dark:bg-gray-600 rounded border border-gray-600 dark:border-gray-500 flex items-center justify-center"
                                     >
                                       →
                                     </button>
@@ -2378,11 +2436,11 @@ const NewsAggregator = () => {
                                       console.log("Previous custom feed item");
                                     }}
                                     disabled={customFeedItems.length <= 1}
-                                    className="carousel-button w-6 h-6 text-xs text-gray-500 hover:text-gray-700 disabled:text-gray-300 disabled:cursor-not-allowed bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                                    className="carousel-button w-8 h-8 text-sm text-white dark:text-gray-200 hover:text-white disabled:text-gray-300 disabled:cursor-not-allowed bg-gray-700 dark:bg-gray-600 rounded border border-gray-600 dark:border-gray-500 flex items-center justify-center hover:bg-gray-600 dark:hover:bg-gray-500 transition-colors"
                                   >
                                     ←
                                   </button>
-                                  <span className="text-xs text-gray-500 bg-white dark:bg-gray-700 px-1.5 py-0.5 rounded border border-gray-200 dark:border-gray-600">
+                                  <span className="text-sm text-gray-500 dark:text-gray-400 w-8 h-8 flex items-center justify-center">
                                     1/{customFeedItems.length}
                                   </span>
                                   <button
@@ -2392,7 +2450,7 @@ const NewsAggregator = () => {
                                       console.log("Next custom feed item");
                                     }}
                                     disabled={customFeedItems.length <= 1}
-                                    className="carousel-button w-6 h-6 text-xs text-gray-500 hover:text-gray-700 disabled:text-gray-300 disabled:cursor-not-allowed bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                                    className="carousel-button w-8 h-8 text-sm text-white dark:text-gray-200 hover:text-white disabled:text-gray-300 disabled:cursor-not-allowed bg-gray-700 dark:bg-gray-600 rounded border border-gray-600 dark:border-gray-500 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
                                   >
                                     →
                                   </button>
