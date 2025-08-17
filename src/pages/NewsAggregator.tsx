@@ -67,13 +67,7 @@ const rssFeeds: RSSFeed[] = [
     category: "technology",
     enabled: true,
   },
-  {
-    id: "youtube-windows11",
-    name: "YouTube - #Windows11",
-    url: "https://rss.app/feeds/LaZP1mfEYdXysbTT.xml",
-    category: "technology",
-    enabled: true,
-  },
+
   {
     id: "fox-sports",
     name: "Fox Sports",
@@ -275,8 +269,6 @@ const NewsAggregator = () => {
 
   const [viceTechIndex, setViceTechIndex] = useState(0);
 
-  const [youtubeWindows11Index, setYoutubeWindows11Index] = useState(0);
-
   const [tmzIndex, setTmzIndex] = useState(0);
 
   const [softWhiteUnderbellyIndex, setSoftWhiteUnderbellyIndex] = useState(0);
@@ -336,8 +328,7 @@ const NewsAggregator = () => {
         return windows11Index;
       case "Vice - Tech":
         return viceTechIndex;
-      case "YouTube - #Windows11":
-        return youtubeWindows11Index;
+
       case "TMZ":
         return tmzIndex;
       case "Soft White Underbelly":
@@ -392,9 +383,7 @@ const NewsAggregator = () => {
       case "Vice - Tech":
         goToPreviousViceTech();
         break;
-      case "YouTube - #Windows11":
-        goToPreviousYoutubeWindows11();
-        break;
+
       case "TMZ":
         goToPreviousTmz();
         break;
@@ -461,9 +450,7 @@ const NewsAggregator = () => {
       case "Vice - Tech":
         goToNextViceTech();
         break;
-      case "YouTube - #Windows11":
-        goToNextYoutubeWindows11();
-        break;
+
       case "TMZ":
         goToNextTmz();
         break;
@@ -911,7 +898,7 @@ const NewsAggregator = () => {
       setTechradarIndex(0);
       setWindows11Index(0);
       setViceTechIndex(0);
-      setYoutubeWindows11Index(0);
+
       setFoxSportsIndex(0);
       setCnnSportsIndex(0);
 
@@ -1046,31 +1033,6 @@ const NewsAggregator = () => {
     if (viceTechItems.length > 0) {
       setViceTechIndex(
         (prev) => (prev - 1 + viceTechItems.length) % viceTechItems.length
-      );
-    }
-  };
-
-  // YouTube - #Windows11 carousel navigation
-  const goToNextYoutubeWindows11 = () => {
-    const youtubeWindows11Items = newsItems.filter(
-      (item) => item.source === "YouTube - #Windows11"
-    );
-    if (youtubeWindows11Items.length > 0) {
-      setYoutubeWindows11Index(
-        (prev) => (prev + 1) % youtubeWindows11Items.length
-      );
-    }
-  };
-
-  const goToPreviousYoutubeWindows11 = () => {
-    const youtubeWindows11Items = newsItems.filter(
-      (item) => item.source === "YouTube - #Windows11"
-    );
-    if (youtubeWindows11Items.length > 0) {
-      setYoutubeWindows11Index(
-        (prev) =>
-          (prev - 1 + youtubeWindows11Items.length) %
-          youtubeWindows11Items.length
       );
     }
   };
@@ -1934,8 +1896,11 @@ const NewsAggregator = () => {
                                 "placeholder:"
                               ) ? (
                                 <div
-                                  className="relative z-0"
-                                  style={{ height: "150px", marginTop: "20px" }}
+                                  className="relative z-0 mt-auto"
+                                  style={{
+                                    height: "150px",
+                                    marginBottom: "10px",
+                                  }}
                                 >
                                   <img
                                     src={feedItems[currentIndex]?.image}
@@ -2005,11 +1970,12 @@ const NewsAggregator = () => {
                               ) : (
                                 // No image available or placeholder - show styled placeholder
                                 <div
-                                  className="mt-auto w-full h-36 rounded-lg flex items-center justify-center"
+                                  className="mt-auto w-full rounded-lg flex items-center justify-center"
                                   style={{
                                     height: "150px",
                                     minHeight: "150px",
                                     maxHeight: "150px",
+                                    marginBottom: "10px",
                                   }}
                                 >
                                   {feedItems.length > 0 &&
@@ -2313,11 +2279,12 @@ const NewsAggregator = () => {
                               ) : (
                                 // No image available or placeholder - show styled placeholder
                                 <div
-                                  className="mt-auto w-full h-36 rounded-lg flex items-center justify-center"
+                                  className="mt-auto w-full rounded-lg flex items-center justify-center"
                                   style={{
                                     height: "150px",
                                     minHeight: "150px",
                                     maxHeight: "150px",
+                                    marginBottom: "10px",
                                   }}
                                 >
                                   {customFeedItems[0]?.image &&
