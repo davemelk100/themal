@@ -121,14 +121,6 @@ const rssFeeds: RSSFeed[] = [
   },
 
   {
-    id: "soft-white-underbelly",
-    name: "Soft White Underbelly",
-    url: "https://rss.app/feeds/2Ocz5Ks1k69ZRnbv.xml",
-    category: "video",
-    enabled: true,
-  },
-
-  {
     id: "newsweek",
     name: "Newsweek",
     url: "https://feeds.newsweek.com/feeds/90oh8.rss",
@@ -276,8 +268,6 @@ const NewsAggregator = () => {
 
   const [viceTechIndex, setViceTechIndex] = useState(0);
 
-  const [softWhiteUnderbellyIndex, setSoftWhiteUnderbellyIndex] = useState(0);
-
   const [hardloreIndex, setHardloreIndex] = useState(0);
   const [watchmojoIndex, setWatchmojoIndex] = useState(0);
 
@@ -336,8 +326,6 @@ const NewsAggregator = () => {
       case "Vice - Tech":
         return viceTechIndex;
 
-      case "Soft White Underbelly":
-        return softWhiteUnderbellyIndex;
       case "Fox Sports":
         return foxSportsIndex;
       case "The Onion":
@@ -393,9 +381,6 @@ const NewsAggregator = () => {
         goToPreviousViceTech();
         break;
 
-      case "Soft White Underbelly":
-        goToPreviousSoftWhiteUnderbelly();
-        break;
       case "Fox Sports":
         goToPreviousFoxSports();
         break;
@@ -463,9 +448,6 @@ const NewsAggregator = () => {
         goToNextViceTech();
         break;
 
-      case "Soft White Underbelly":
-        goToNextSoftWhiteUnderbelly();
-        break;
       case "Fox Sports":
         goToNextFoxSports();
         break;
@@ -936,7 +918,6 @@ const NewsAggregator = () => {
       setBreitbartIndex(0); // Reset Breitbart carousel
 
       setTechcrunchIndex(0); // Reset TechCrunch carousel
-      setSoftWhiteUnderbellyIndex(0); // Reset Soft White Underbelly carousel
     } catch (error) {
       console.error("Error loading RSS feeds:", error);
       setError("Failed to load RSS feeds. Please try again later.");
@@ -1347,31 +1328,6 @@ const NewsAggregator = () => {
     if (techcrunchItems.length > 0) {
       setTechcrunchIndex(
         (prev) => (prev - 1 + techcrunchItems.length) % techcrunchItems.length
-      );
-    }
-  };
-
-  // Soft White Underbelly carousel navigation
-  const goToNextSoftWhiteUnderbelly = () => {
-    const softWhiteUnderbellyItems = newsItems.filter(
-      (item) => item.source === "Soft White Underbelly"
-    );
-    if (softWhiteUnderbellyItems.length > 0) {
-      setSoftWhiteUnderbellyIndex(
-        (prev) => (prev + 1) % softWhiteUnderbellyItems.length
-      );
-    }
-  };
-
-  const goToPreviousSoftWhiteUnderbelly = () => {
-    const softWhiteUnderbellyItems = newsItems.filter(
-      (item) => item.source === "Soft White Underbelly"
-    );
-    if (softWhiteUnderbellyItems.length > 0) {
-      setSoftWhiteUnderbellyIndex(
-        (prev) =>
-          (prev - 1 + softWhiteUnderbellyItems.length) %
-          softWhiteUnderbellyItems.length
       );
     }
   };
@@ -1966,6 +1922,40 @@ const NewsAggregator = () => {
                                       />
                                       <h4 className="font-normal text-gray-700 dark:text-gray-300 uppercase tracking-wide text-sm">
                                         NY POST
+                                      </h4>
+                                    </div>
+                                  ) : feed.name === "CBS SPORTS" ? (
+                                    /* CBS Sports Logo and Title - Stacked and aligned */
+                                    <div className="mb-2">
+                                      <img
+                                        src="/img/cbs-sports.svg"
+                                        alt="CBS Sports Logo"
+                                        className="w-full max-w-[120px] h-auto opacity-80 mb-1"
+                                        onError={(e) => {
+                                          // Hide broken logo
+                                          const target = e.currentTarget;
+                                          target.style.display = "none";
+                                        }}
+                                      />
+                                      <h4 className="font-normal text-gray-700 dark:text-gray-300 uppercase tracking-wide text-sm">
+                                        CBS SPORTS
+                                      </h4>
+                                    </div>
+                                  ) : feed.name === "CNN - SPORTS" ? (
+                                    /* CNN Sports Logo and Title - Stacked and aligned */
+                                    <div className="mb-2">
+                                      <img
+                                        src="/img/cnnsi.png"
+                                        alt="CNN Sports Logo"
+                                        className="w-full max-w-[120px] h-auto opacity-80 mb-1"
+                                        onError={(e) => {
+                                          // Hide broken logo
+                                          const target = e.currentTarget;
+                                          target.style.display = "none";
+                                        }}
+                                      />
+                                      <h4 className="font-normal text-gray-700 dark:text-gray-300 uppercase tracking-wide text-sm">
+                                        CNN SPORTS
                                       </h4>
                                     </div>
                                   ) : (
