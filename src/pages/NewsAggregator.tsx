@@ -82,6 +82,13 @@ const rssFeeds: RSSFeed[] = [
     category: "entertainment",
     enabled: true,
   },
+  {
+    id: "the-hard-times",
+    name: "The Hard Times",
+    url: "https://rss.app/feeds/wWxWK2sGD1AJ8NXu.xml",
+    category: "entertainment",
+    enabled: true,
+  },
 
   {
     id: "lambgoat",
@@ -285,6 +292,7 @@ const NewsAggregator = () => {
 
   const [foxSportsIndex, setFoxSportsIndex] = useState(0);
   const [theOnionIndex, setTheOnionIndex] = useState(0);
+  const [theHardTimesIndex, setTheHardTimesIndex] = useState(0);
   const [cnnSportsIndex, setCnnSportsIndex] = useState(0);
 
   const [lambgoatIndex, setLambgoatIndex] = useState(0);
@@ -345,6 +353,8 @@ const NewsAggregator = () => {
         return foxSportsIndex;
       case "The Onion":
         return theOnionIndex;
+      case "The Hard Times":
+        return theHardTimesIndex;
       case "CNN - SPORTS":
         return cnnSportsIndex;
 
@@ -405,6 +415,9 @@ const NewsAggregator = () => {
         break;
       case "The Onion":
         goToPreviousTheOnion();
+        break;
+      case "The Hard Times":
+        goToPreviousTheHardTimes();
         break;
       case "CNN - SPORTS":
         goToPreviousCnnSports();
@@ -475,6 +488,9 @@ const NewsAggregator = () => {
         break;
       case "The Onion":
         goToNextTheOnion();
+        break;
+      case "The Hard Times":
+        goToNextTheHardTimes();
         break;
       case "CNN - SPORTS":
         goToNextCnnSports();
@@ -925,6 +941,7 @@ const NewsAggregator = () => {
 
       setFoxSportsIndex(0);
       setTheOnionIndex(0);
+      setTheHardTimesIndex(0);
       setCnnSportsIndex(0);
 
       setLambgoatIndex(0);
@@ -1115,6 +1132,28 @@ const NewsAggregator = () => {
     if (theOnionItems.length > 0) {
       setTheOnionIndex(
         (prev) => (prev - 1 + theOnionItems.length) % theOnionItems.length
+      );
+    }
+  };
+
+  // The Hard Times carousel navigation
+  const goToNextTheHardTimes = () => {
+    const theHardTimesItems = newsItems.filter(
+      (item) => item.source === "The Hard Times"
+    );
+    if (theHardTimesItems.length > 0) {
+      setTheHardTimesIndex((prev) => (prev + 1) % theHardTimesItems.length);
+    }
+  };
+
+  const goToPreviousTheHardTimes = () => {
+    const theHardTimesItems = newsItems.filter(
+      (item) => item.source === "The Hard Times"
+    );
+    if (theHardTimesItems.length > 0) {
+      setTheHardTimesIndex(
+        (prev) =>
+          (prev - 1 + theHardTimesItems.length) % theHardTimesItems.length
       );
     }
   };
@@ -1806,6 +1845,23 @@ const NewsAggregator = () => {
                                       />
                                       <h4 className="font-normal text-gray-700 dark:text-gray-300 uppercase tracking-wide text-sm">
                                         VICE
+                                      </h4>
+                                    </div>
+                                  ) : feed.name === "The Onion" ? (
+                                    /* The Onion Logo and Title - Stacked and aligned */
+                                    <div className="mb-2">
+                                      <img
+                                        src="/img/the-onion.png"
+                                        alt="The Onion Logo"
+                                        className="w-full max-w-[120px] h-auto opacity-80 mb-1"
+                                        onError={(e) => {
+                                          // Hide broken logo
+                                          const target = e.currentTarget;
+                                          target.style.display = "none";
+                                        }}
+                                      />
+                                      <h4 className="font-normal text-gray-700 dark:text-gray-300 uppercase tracking-wide text-sm">
+                                        THE ONION
                                       </h4>
                                     </div>
                                   ) : (
