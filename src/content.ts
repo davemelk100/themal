@@ -139,7 +139,7 @@ export const content = {
         title: "Band Shirt Design",
         description: "Shirt design with vintage sports theme",
         categories: "Graphic Design, Typography, Merchandise",
-        image: "/img/hard-times.png",
+        image: "/img/ht.png",
         alt: "Band Shirt Design",
         url: "https://dribbble.com/shots/20590794-band-shirt-design",
       },
