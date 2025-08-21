@@ -16,10 +16,7 @@ export const migrateOldStorage = (): MigrationResult => {
 
   try {
     // Check for old localStorage keys and migrate them
-    const oldKeys = [
-      "adminAuthenticated",
-      "adminAuthTime",
-    ];
+    const oldKeys = ["adminAuthenticated", "adminAuthTime"];
 
     oldKeys.forEach((oldKey) => {
       try {
@@ -36,12 +33,7 @@ export const migrateOldStorage = (): MigrationResult => {
 
           // Map old keys to new storage keys
           let newKey = oldKey;
-          if (oldKey === "writingGalleryPieces") {
-            newKey = STORAGE_KEYS.WRITING_GALLERY_PIECES;
-          } else if (
-            oldKey === "adminAuthenticated" ||
-            oldKey === "adminAuthTime"
-          ) {
+          if (oldKey === "adminAuthenticated" || oldKey === "adminAuthTime") {
             // Handle admin session migration
             if (oldKey === "adminAuthenticated") {
               const authTime = localStorage.getItem("adminAuthTime");
@@ -101,10 +93,7 @@ export const migrateOldStorage = (): MigrationResult => {
 
 // Check if migration is needed
 export const needsMigration = (): boolean => {
-  const oldKeys = [
-    "adminAuthenticated",
-    "adminAuthTime",
-  ];
+  const oldKeys = ["adminAuthenticated", "adminAuthTime"];
   const hasOldData = oldKeys.some((key) => localStorage.getItem(key) !== null);
   return hasOldData;
 };
