@@ -1633,7 +1633,7 @@ const NewsAggregator = () => {
                                   : feed.category === "business"
                                   ? "#3fa7d6"
                                   : feed.category === "entertainment"
-                                  ? "#fac05e"
+                                  ? "#a855f7"
                                   : feed.category === "politics"
                                   ? "#f79d84"
                                   : "#6b7280",

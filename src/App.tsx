@@ -716,36 +716,36 @@ function App() {
                                   />
                                 </div>
                               )}
-                              <div className="absolute inset-0 flex flex-col gap-2 z-10">
+                              <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
                                 <div
-                                  className={`pt-3 pl-3 pr-2 pb-2 ${
+                                  className={`rounded-lg p-2 ${
                                     articlesView === "grid"
-                                      ? "pr-20"
+                                      ? "pr-12"
                                       : "flex items-center justify-between h-full"
                                   }`}
                                 >
-                                  <div className="flex items-center justify-between w-full">
-                                    <div className="flex items-center gap-3">
-                                      {articlesView === "list" && (
-                                        <div className="w-12 h-12 rounded overflow-hidden flex-shrink-0">
-                                          <img
-                                            src={`${
-                                              (article as any).cardImage ||
-                                              article.image
-                                            }?v=${Date.now()}`}
-                                            alt={article.title}
-                                            className="w-full h-full object-cover"
-                                            loading="lazy"
-                                          />
-                                        </div>
-                                      )}
-                                      <div className="flex flex-col">
+                                  <div className="flex flex-col gap-1">
+                                    <div className="flex items-center justify-between w-full">
+                                      <div className="flex items-center gap-3">
+                                        {articlesView === "list" && (
+                                          <div className="w-12 h-12 rounded overflow-hidden flex-shrink-0">
+                                            <img
+                                              src={`${
+                                                (article as any).cardImage ||
+                                                article.image
+                                              }?v=${Date.now()}`}
+                                              alt={article.title}
+                                              className="w-full h-full object-cover"
+                                              loading="lazy"
+                                            />
+                                          </div>
+                                        )}
                                         {article.url.startsWith("http") ? (
                                           <a
                                             href={article.url}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="text-[16px] font-medium mb-1 title-font text-black dark:text-white hover:text-primary transition-colors cursor-pointer opacity-80"
+                                            className="text-[18px] font-semibold mb-1 title-font text-black dark:text-white hover:text-primary transition-colors cursor-pointer"
                                             style={{
                                               letterSpacing: "-0.01em",
                                             }}
@@ -757,7 +757,7 @@ function App() {
                                             to={`/article/${slugify(
                                               article.title
                                             )}`}
-                                            className="text-[16px] font-medium mb-1 title-font text-black dark:text-white hover:text-primary transition-colors cursor-pointer opacity-80"
+                                            className="text-[18px] font-semibold mb-1 title-font text-black dark:text-white hover:text-primary transition-colors cursor-pointer"
                                             style={{
                                               letterSpacing: "-0.01em",
                                             }}
@@ -765,36 +765,36 @@ function App() {
                                             {article.title}
                                           </Link>
                                         )}
-                                        {articlesView === "grid" &&
-                                          article.description && (
-                                            <p className="text-xs text-gray-600 dark:text-gray-300 mb-2 opacity-70">
-                                              {article.description}
-                                            </p>
-                                          )}
                                       </div>
+                                      {articlesView === "list" &&
+                                        (article.url.startsWith("http") ? (
+                                          <a
+                                            href={article.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
+                                            aria-label={`View article: ${article.title}`}
+                                          >
+                                            <ExternalLink className="h-4 w-4 text-gray-600 dark:text-white" />
+                                          </a>
+                                        ) : (
+                                          <Link
+                                            to={`/article/${slugify(
+                                              article.title
+                                            )}`}
+                                            className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
+                                            aria-label={`View article: ${article.title}`}
+                                          >
+                                            <ExternalLink className="h-4 w-4 text-gray-600 dark:text-white" />
+                                          </Link>
+                                        ))}
                                     </div>
-                                    {articlesView === "list" &&
-                                      (article.url.startsWith("http") ? (
-                                        <a
-                                          href={article.url}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
-                                          aria-label={`View article: ${article.title}`}
-                                        >
-                                          <ExternalLink className="h-4 w-4 text-gray-600 dark:text-white" />
-                                        </a>
-                                      ) : (
-                                        <Link
-                                          to={`/article/${slugify(
-                                            article.title
-                                          )}`}
-                                          className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
-                                          aria-label={`View article: ${article.title}`}
-                                        >
-                                          <ExternalLink className="h-4 w-4 text-gray-600 dark:text-white" />
-                                        </Link>
-                                      ))}
+                                    {articlesView === "grid" &&
+                                      article.description && (
+                                        <p className="text-sm text-gray-600 dark:text-gray-300 opacity-80">
+                                          {article.description}
+                                        </p>
+                                      )}
                                   </div>
                                 </div>
                               </div>
