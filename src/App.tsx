@@ -17,7 +17,6 @@ import { BrowserRouter as Router } from "react-router-dom";
 import ArticleModal from "./components/ArticleModal";
 import { ThemeProvider } from "./context/ThemeContext";
 
-import ThemeToggle from "./components/ThemeToggle";
 import MobileTrayMenu from "./components/MobileTrayMenu";
 
 import { Routes, Route, Link, useLocation } from "react-router-dom";
@@ -1872,41 +1871,6 @@ function App() {
       {location.pathname !== "/news" && location.pathname !== "/music" && (
         <MobileTrayMenu />
       )}
-
-      {/* Back to Top Arrow and Theme Toggle */}
-      <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 flex flex-col gap-2 sm:gap-3">
-        <motion.button
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-800 backdrop-blur-sm rounded-full w-8 h-8 sm:w-10 sm:h-10 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 border border-gray-200 dark:border-gray-700 flex items-center justify-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          aria-label="Back to top"
-        >
-          <svg
-            className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700 dark:text-gray-300 flex-shrink-0"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M5 10l7-7m0 0l7 7m-7-7v18"
-            />
-          </svg>
-        </motion.button>
-        <motion.div
-          className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full w-8 h-8 sm:w-10 sm:h-10 shadow-lg border border-gray-200 dark:border-gray-700 flex items-center justify-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.1 }}
-        >
-          <ThemeToggle className="text-black dark:text-white flex-shrink-0" />
-        </motion.div>
-      </div>
     </div>
   );
 }
