@@ -273,7 +273,7 @@ const NewsAggregator = () => {
   const [techcrunchIndex, setTechcrunchIndex] = useState(0);
   const [activeCategory, setActiveCategory] = useState("all");
 
-  const [viewMode, setViewMode] = useState<"grid" | "list" | "small">("grid");
+  const [viewMode, setViewMode] = useState<"list" | "grid">("list");
   const [feedStatus, setFeedStatus] = useState<{
     [key: string]: { working: boolean; error?: string };
   }>({});
@@ -286,7 +286,12 @@ const NewsAggregator = () => {
   useEffect(() => {
     const savedSettings = getCurrentSettings();
     if (savedSettings) {
-      if (savedSettings.viewMode) setViewMode(savedSettings.viewMode);
+      if (savedSettings.viewMode) {
+        // Convert old "small" view mode to "grid"
+        const viewMode =
+          savedSettings.viewMode === "grid" ? "grid" : savedSettings.viewMode;
+        setViewMode(viewMode as "list" | "grid");
+      }
       if (savedSettings.activeCategory)
         setActiveCategory(savedSettings.activeCategory);
     }
@@ -1332,67 +1337,35 @@ const NewsAggregator = () => {
         }
       >
         <div className="flex relative">
-          {/* Floating Home Icon - Top Right Corner */}
-          <a
-            href="/"
-            className="fixed top-0 right-12 z-50 w-10 h-10 flex items-center justify-center hover:opacity-80 transition-opacity duration-200 p-2"
-          >
-            <svg
-              className="w-4 h-4 text-gray-700 dark:text-gray-300"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+          {/* Floating View Toggle - Top Right Corner */}
+          <div className="fixed top-2 right-20 z-50 flex items-center gap-2">
+            <button
+              onClick={() => {
+                setViewMode("list");
+                syncViewMode("list");
+              }}
+              className={`w-8 h-8 flex items-center justify-center text-sm font-medium transition-opacity hover:opacity-80 ${
+                viewMode === "list"
+                  ? "text-blue-600 dark:text-blue-400"
+                  : "text-gray-700 dark:text-gray-300"
+              }`}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-              />
-            </svg>
-          </a>
-
-          {/* Floating Dark Mode Toggle - Top Right Corner */}
-          <button
-            onClick={() => {
-              const html = document.documentElement;
-              if (html.classList.contains("dark")) {
-                html.classList.remove("dark");
-                localStorage.setItem("theme", "light");
-              } else {
-                html.classList.add("dark");
-                localStorage.setItem("theme", "dark");
-              }
-            }}
-            className="fixed top-0 right-0 z-50 w-10 h-10 flex items-center justify-center hover:opacity-80 transition-opacity duration-200 p-2"
-          >
-            <svg
-              className="w-4 h-4 text-gray-700 dark:text-gray-300"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+              <span className="text-sm font-bold">List</span>
+            </button>
+            <button
+              onClick={() => {
+                setViewMode("grid");
+                syncViewMode("grid");
+              }}
+              className={`w-8 h-8 flex items-center justify-center text-sm font-medium transition-opacity hover:opacity-80 ${
+                viewMode === "grid"
+                  ? "text-blue-600 dark:text-blue-400"
+                  : "text-gray-700 dark:text-gray-300"
+              }`}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-              />
-            </svg>
-            <svg
-              className="w-4 h-4 text-gray-700 dark:text-gray-300 absolute opacity-0 dark:opacity-100 transition-opacity duration-200"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-              />
-            </svg>
-          </button>
+              <span className="text-sm font-bold">Grid</span>
+            </button>
+          </div>
 
           {/* Main Content Area */}
           <div className="flex-1 pb-20">
@@ -1411,7 +1384,7 @@ const NewsAggregator = () => {
             <section className="py-4 sm:py-6 lg:py-8">
               <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
                 {/* Dynamic Category Title and View Toggle */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+                <div className="flex flex-col items-center text-center mb-6 gap-4">
                   <div className="w-full">
                     <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
                       {activeCategory === "all"
@@ -1436,52 +1409,6 @@ const NewsAggregator = () => {
                   </div>
 
                   {/* View Toggle - Hidden on mobile, visible on tablet and desktop */}
-                  <div className="hidden sm:flex items-center gap-3">
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Columns
-                    </span>
-                    <div className="flex items-center bg-gray-100 dark:bg-gray-700 rounded-lg p-0.5">
-                      <button
-                        onClick={() => {
-                          setViewMode("list");
-                          syncViewMode("list");
-                        }}
-                        className={`px-4 py-1 rounded-md text-sm font-medium transition-colors ${
-                          viewMode === "list"
-                            ? "bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm"
-                            : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
-                        }`}
-                      >
-                        <span className="text-sm font-bold">1</span>
-                      </button>
-                      <button
-                        onClick={() => {
-                          setViewMode("grid");
-                          syncViewMode("grid");
-                        }}
-                        className={`px-4 py-1 rounded-md text-sm font-medium transition-colors ${
-                          viewMode === "grid"
-                            ? "bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm"
-                            : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
-                        }`}
-                      >
-                        <span className="text-sm font-bold">2</span>
-                      </button>
-                      <button
-                        onClick={() => {
-                          setViewMode("small");
-                          syncViewMode("small");
-                        }}
-                        className={`px-4 py-1 rounded-md text-sm font-medium transition-colors ${
-                          viewMode === "small"
-                            ? "bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm"
-                            : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
-                        }`}
-                      >
-                        <span className="text-sm font-bold">3</span>
-                      </button>
-                    </div>
-                  </div>
                 </div>
 
                 {loading ? (
@@ -1510,9 +1437,7 @@ const NewsAggregator = () => {
                   <div
                     className={`${
                       viewMode === "grid"
-                        ? "grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6"
-                        : viewMode === "small"
-                        ? "grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4"
+                        ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4"
                         : "space-y-2 sm:space-y-3 md:space-y-4"
                     }`}
                   >
@@ -1537,8 +1462,6 @@ const NewsAggregator = () => {
                             key={`${feed.id}-${currentIndex}`}
                             className={`bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col border-l-4 ${
                               viewMode === "grid"
-                                ? "h-[500px]"
-                                : viewMode === "small"
                                 ? "h-[480px]"
                                 : "w-full h-auto justify-center min-h-[140px] sm:min-h-[160px] md:min-h-[180px] relative"
                             }`}
@@ -1562,7 +1485,7 @@ const NewsAggregator = () => {
                               className={`${
                                 viewMode === "list"
                                   ? "px-3 py-2 sm:px-4 sm:py-3 pr-28 sm:pr-36 md:pr-44"
-                                  : viewMode === "small"
+                                  : viewMode === "grid"
                                   ? "px-4 pt-4"
                                   : "px-6 pt-6"
                               } flex-shrink-0`}
@@ -1572,7 +1495,7 @@ const NewsAggregator = () => {
                                 className={`${
                                   viewMode === "list"
                                     ? "flex items-center justify-between"
-                                    : viewMode === "small"
+                                    : viewMode === "grid"
                                     ? "flex items-center justify-between"
                                     : "flex items-center justify-between mb-4"
                                 }`}
@@ -1582,7 +1505,7 @@ const NewsAggregator = () => {
                                   className={`flex-1 min-w-0 ${
                                     viewMode === "list"
                                       ? "flex items-center space-x-4"
-                                      : viewMode === "small"
+                                      : viewMode === "grid"
                                       ? "flex items-center space-x-3"
                                       : "flex flex-col"
                                   }`}
@@ -1591,14 +1514,14 @@ const NewsAggregator = () => {
                                   {feed.name === "WIRED" ? (
                                     <div
                                       className={
-                                        viewMode === "small" ? "" : "mb-3"
+                                        viewMode === "grid" ? "" : "mb-3"
                                       }
                                     >
                                       <img
                                         src="https://www.wired.com/verso/static/wired-us/assets/logo.svg"
                                         alt="wired"
                                         className={`w-full h-auto opacity-80 ${
-                                          viewMode === "small"
+                                          viewMode === "grid"
                                             ? "max-w-[80px]"
                                             : "max-w-[120px]"
                                         }`}
@@ -1613,14 +1536,14 @@ const NewsAggregator = () => {
                                     /* Ars Technica Logo and Title - Stacked and aligned */
                                     <div
                                       className={
-                                        viewMode === "small" ? "" : "mb-3"
+                                        viewMode === "grid" ? "" : "mb-3"
                                       }
                                     >
                                       <img
                                         src="/img/ars-technica-logo.svg"
                                         alt="ars technica"
                                         className={`w-full h-auto opacity-80 ${
-                                          viewMode === "small"
+                                          viewMode === "grid"
                                             ? "max-w-[80px]"
                                             : "max-w-[120px]"
                                         }`}
@@ -1635,14 +1558,14 @@ const NewsAggregator = () => {
                                     /* TechRadar Logo and Title - Stacked and aligned */
                                     <div
                                       className={
-                                        viewMode === "small" ? "" : "mb-3"
+                                        viewMode === "grid" ? "" : "mb-3"
                                       }
                                     >
                                       <img
                                         src="/img/techradar-logo.svg"
                                         alt="techradar"
                                         className={`w-full h-auto opacity-80 ${
-                                          viewMode === "small"
+                                          viewMode === "grid"
                                             ? "max-w-[80px]"
                                             : "max-w-[120px]"
                                         }`}
@@ -1657,14 +1580,14 @@ const NewsAggregator = () => {
                                     /* VICE Logo and Title - Stacked and aligned */
                                     <div
                                       className={
-                                        viewMode === "small" ? "" : "mb-3"
+                                        viewMode === "grid" ? "" : "mb-3"
                                       }
                                     >
                                       <img
                                         src="/img/vice-logo.png"
                                         alt="vice"
                                         className={`w-full h-auto opacity-80 ${
-                                          viewMode === "small"
+                                          viewMode === "grid"
                                             ? "max-w-[80px]"
                                             : "max-w-[120px]"
                                         }`}
@@ -1679,14 +1602,14 @@ const NewsAggregator = () => {
                                     /* The Onion Logo and Title - Stacked and aligned */
                                     <div
                                       className={
-                                        viewMode === "small" ? "" : "mb-3"
+                                        viewMode === "grid" ? "" : "mb-3"
                                       }
                                     >
                                       <img
                                         src="/img/the-onion.png"
                                         alt="the onion"
                                         className={`w-full h-auto opacity-80 ${
-                                          viewMode === "small"
+                                          viewMode === "grid"
                                             ? "max-w-[80px]"
                                             : "max-w-[120px]"
                                         }`}
@@ -1701,14 +1624,14 @@ const NewsAggregator = () => {
                                     /* The Hard Times Logo and Title - Stacked and aligned */
                                     <div
                                       className={
-                                        viewMode === "small" ? "" : "mb-3"
+                                        viewMode === "grid" ? "" : "mb-3"
                                       }
                                     >
                                       <img
                                         src="/img/hard-times.png"
                                         alt="the hard times"
                                         className={`w-full h-auto opacity-80 ${
-                                          viewMode === "small"
+                                          viewMode === "grid"
                                             ? "max-w-[80px]"
                                             : "max-w-[120px]"
                                         }`}
@@ -1723,14 +1646,14 @@ const NewsAggregator = () => {
                                     /* Windows 11 Logo and Title - Stacked and aligned */
                                     <div
                                       className={
-                                        viewMode === "small" ? "" : "mb-3"
+                                        viewMode === "grid" ? "" : "mb-3"
                                       }
                                     >
                                       <img
                                         src="/img/windows-11.svg"
                                         alt="windows 11"
                                         className={`w-full h-auto opacity-80 ${
-                                          viewMode === "small"
+                                          viewMode === "grid"
                                             ? "max-w-[80px]"
                                             : "max-w-[120px]"
                                         }`}
@@ -1745,14 +1668,14 @@ const NewsAggregator = () => {
                                     /* Fox Sports Logo and Title - Stacked and aligned */
                                     <div
                                       className={
-                                        viewMode === "small" ? "" : "mb-3"
+                                        viewMode === "grid" ? "" : "mb-3"
                                       }
                                     >
                                       <img
                                         src="/img/fox-sports.png"
                                         alt="fox sports"
                                         className={`w-full h-auto opacity-80 ${
-                                          viewMode === "small"
+                                          viewMode === "grid"
                                             ? "max-w-[80px]"
                                             : "max-w-[120px]"
                                         }`}
@@ -1767,14 +1690,14 @@ const NewsAggregator = () => {
                                     /* Lambgoat Logo and Title - Stacked and aligned */
                                     <div
                                       className={
-                                        viewMode === "small" ? "" : "mb-3"
+                                        viewMode === "grid" ? "" : "mb-3"
                                       }
                                     >
                                       <img
                                         src="/img/lambgoat.png"
                                         alt="lambgoat"
                                         className={`w-full h-auto opacity-80 ${
-                                          viewMode === "small"
+                                          viewMode === "grid"
                                             ? "max-w-[80px]"
                                             : "max-w-[120px]"
                                         }`}
@@ -1789,14 +1712,14 @@ const NewsAggregator = () => {
                                     /* No Echo Logo and Title - Stacked and aligned */
                                     <div
                                       className={
-                                        viewMode === "small" ? "" : "mb-3"
+                                        viewMode === "grid" ? "" : "mb-3"
                                       }
                                     >
                                       <img
                                         src="/img/no-echo.png"
                                         alt="no echo"
                                         className={`w-full h-auto opacity-80 ${
-                                          viewMode === "small"
+                                          viewMode === "grid"
                                             ? "max-w-[80px]"
                                             : "max-w-[120px]"
                                         }`}
@@ -1811,14 +1734,14 @@ const NewsAggregator = () => {
                                     /* Soft White Underbelly Logo and Title - Stacked and aligned */
                                     <div
                                       className={
-                                        viewMode === "small" ? "" : "mb-3"
+                                        viewMode === "grid" ? "" : "mb-3"
                                       }
                                     >
                                       <img
                                         src="/img/swu.jpg"
                                         alt="soft white underbelly"
                                         className={`w-full h-auto opacity-80 ${
-                                          viewMode === "small"
+                                          viewMode === "grid"
                                             ? "max-w-[80px]"
                                             : "max-w-[120px]"
                                         }`}
@@ -1833,14 +1756,14 @@ const NewsAggregator = () => {
                                     /* Breitbart Logo and Title - Stacked and aligned */
                                     <div
                                       className={
-                                        viewMode === "small" ? "" : "mb-3"
+                                        viewMode === "grid" ? "" : "mb-3"
                                       }
                                     >
                                       <img
                                         src="/img/breitbart.png"
                                         alt="breitbart"
                                         className={`w-full h-auto opacity-80 ${
-                                          viewMode === "small"
+                                          viewMode === "grid"
                                             ? "max-w-[80px]"
                                             : "max-w-[120px]"
                                         }`}
@@ -1855,14 +1778,14 @@ const NewsAggregator = () => {
                                     /* CNN News Logo and Title - Stacked and aligned */
                                     <div
                                       className={
-                                        viewMode === "small" ? "" : "mb-3"
+                                        viewMode === "grid" ? "" : "mb-3"
                                       }
                                     >
                                       <img
                                         src="/img/cnn.svg"
                                         alt="cnn news"
                                         className={`w-full h-auto opacity-80 ${
-                                          viewMode === "small"
+                                          viewMode === "grid"
                                             ? "max-w-[80px]"
                                             : "max-w-[120px]"
                                         }`}
@@ -1877,14 +1800,14 @@ const NewsAggregator = () => {
                                     /* Newsweek Logo and Title - Stacked and aligned */
                                     <div
                                       className={
-                                        viewMode === "small" ? "" : "mb-3"
+                                        viewMode === "grid" ? "" : "mb-3"
                                       }
                                     >
                                       <img
                                         src="/img/newsweek.svg"
                                         alt="newsweek"
                                         className={`w-full h-auto opacity-80 ${
-                                          viewMode === "small"
+                                          viewMode === "grid"
                                             ? "max-w-[80px]"
                                             : "max-w-[120px]"
                                         }`}
@@ -1899,14 +1822,14 @@ const NewsAggregator = () => {
                                     /* NY Post Logo and Title - Stacked and aligned */
                                     <div
                                       className={
-                                        viewMode === "small" ? "" : "mb-3"
+                                        viewMode === "grid" ? "" : "mb-3"
                                       }
                                     >
                                       <img
                                         src="/img/nypost.png"
                                         alt="ny post"
                                         className={`w-full h-auto opacity-80 ${
-                                          viewMode === "small"
+                                          viewMode === "grid"
                                             ? "max-w-[80px]"
                                             : "max-w-[120px]"
                                         }`}
@@ -1921,14 +1844,14 @@ const NewsAggregator = () => {
                                     /* CBS Sports Logo and Title - Stacked and aligned */
                                     <div
                                       className={
-                                        viewMode === "small" ? "" : "mb-3"
+                                        viewMode === "grid" ? "" : "mb-3"
                                       }
                                     >
                                       <img
                                         src="/img/cbs-sports.svg"
                                         alt="cbs sports"
                                         className={`w-full h-auto opacity-80 ${
-                                          viewMode === "small"
+                                          viewMode === "grid"
                                             ? "max-w-[80px]"
                                             : "max-w-[120px]"
                                         }`}
@@ -1943,14 +1866,14 @@ const NewsAggregator = () => {
                                     /* CNN Sports Logo and Title - Stacked and aligned */
                                     <div
                                       className={
-                                        viewMode === "small" ? "" : "mb-3"
+                                        viewMode === "grid" ? "" : "mb-3"
                                       }
                                     >
                                       <img
                                         src="/img/cnnsi.png"
                                         alt="cnn sports"
                                         className={`w-full h-auto opacity-80 ${
-                                          viewMode === "small"
+                                          viewMode === "grid"
                                             ? "max-w-[80px]"
                                             : "max-w-[120px]"
                                         }`}
@@ -1965,14 +1888,14 @@ const NewsAggregator = () => {
                                     /* Fox News Logo and Title - Stacked and aligned */
                                     <div
                                       className={
-                                        viewMode === "small" ? "" : "mb-3"
+                                        viewMode === "grid" ? "" : "mb-3"
                                       }
                                     >
                                       <img
                                         src="/img/fox-news.png"
                                         alt="fox news"
                                         className={`w-full h-auto opacity-80 ${
-                                          viewMode === "small"
+                                          viewMode === "grid"
                                             ? "max-w-[80px]"
                                             : "max-w-[120px]"
                                         }`}
@@ -1997,16 +1920,15 @@ const NewsAggregator = () => {
                                   )}
                                 </div>
 
-                                {/* Right side: Carousel Controls - Show in grid and small views */}
-                                {(viewMode === "grid" ||
-                                  viewMode === "small") &&
+                                {/* Right side: Carousel Controls - Show in grid view only */}
+                                {viewMode === "grid" &&
                                   feedItems.length > 1 && (
                                     <div className="flex items-center gap-2">
                                       <button
                                         onClick={() => goToPrevious(feed.name)}
                                         disabled={feedItems.length <= 1}
                                         className={`carousel-button text-sm text-gray-700 dark:text-gray-200 hover:text-gray-800 disabled:text-gray-300 disabled:cursor-not-allowed bg-gray-200 dark:bg-gray-500 rounded border border-gray-300 dark:border-gray-400 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-400 transition-colors ${
-                                          viewMode === "small"
+                                          viewMode === "grid"
                                             ? "w-8 h-6 text-xs"
                                             : "w-12 h-8"
                                         }`}
@@ -2015,7 +1937,7 @@ const NewsAggregator = () => {
                                       </button>
                                       <span
                                         className={`text-gray-500 dark:text-gray-400 flex items-center justify-center mx-1 ${
-                                          viewMode === "small"
+                                          viewMode === "grid"
                                             ? "text-xs w-6 h-6"
                                             : "text-base w-8 h-8"
                                         }`}
@@ -2026,7 +1948,7 @@ const NewsAggregator = () => {
                                         onClick={() => goToNext(feed.name)}
                                         disabled={feedItems.length <= 1}
                                         className={`carousel-button text-sm text-gray-700 dark:text-gray-200 hover:text-gray-800 disabled:text-gray-300 disabled:cursor-not-allowed bg-gray-200 dark:bg-gray-500 rounded border border-gray-300 dark:border-gray-400 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-400 transition-colors ${
-                                          viewMode === "small"
+                                          viewMode === "grid"
                                             ? "w-8 h-6 text-xs"
                                             : "w-12 h-8"
                                         }`}
@@ -2039,10 +1961,10 @@ const NewsAggregator = () => {
 
                               {/* Article Title Row - Show in all view modes */}
                               {feedItems.length > 0 && (
-                                <div className="mt-3">
+                                <div className="mt-0">
                                   <h3
                                     className={`font-semibold text-gray-900 dark:text-white leading-tight ${
-                                      viewMode === "small"
+                                      viewMode === "grid"
                                         ? "text-base"
                                         : viewMode === "list"
                                         ? "text-base sm:text-lg"
@@ -2083,7 +2005,7 @@ const NewsAggregator = () => {
                               {viewMode === "list" &&
                                 feedItems.length > 0 &&
                                 feedItems[currentIndex]?.image && (
-                                  <div className="absolute right-0 top-0 bottom-0 w-24 sm:w-32 md:w-40 h-full">
+                                  <div className="absolute right-0 top-0 bottom-0 w-24 sm:w-32 md:w-40">
                                     <img
                                       src={feedItems[currentIndex]?.image}
                                       alt={feedItems[currentIndex]?.title}
@@ -2099,7 +2021,7 @@ const NewsAggregator = () => {
 
                               {/* Third Row - Carousel Controls and Category Chip (list view only) */}
                               {viewMode === "list" && feedItems.length > 1 && (
-                                <div className="px-0 pb-3 pr-32 sm:pr-40 md:pr-48 mt-4">
+                                <div className="px-0 pb-0 pr-32 sm:pr-40 md:pr-48 mt-4">
                                   {/* Carousel Controls and Category Chip */}
                                   <div className="flex items-center gap-2">
                                     <button
@@ -2126,9 +2048,8 @@ const NewsAggregator = () => {
                               {/* Article Excerpts - Show in grid and small views */}
                               {feedItems.length > 0 ? (
                                 <>
-                                  {/* Subtitle below headline - Show in grid and small views */}
-                                  {(viewMode === "grid" ||
-                                    viewMode === "small") &&
+                                  {/* Subtitle below headline - Show in grid view only */}
+                                  {viewMode === "grid" &&
                                     feedItems[currentIndex]?.excerpt &&
                                     feed.name !== "The Hard Times" && (
                                       <div className="mt-2 flex items-center">
@@ -2139,7 +2060,7 @@ const NewsAggregator = () => {
                                           {truncateText(
                                             feedItems[currentIndex]?.excerpt ||
                                               "",
-                                            viewMode === "small" ? 120 : 400
+                                            viewMode === "grid" ? 120 : 400
                                           )}
                                         </p>
                                       </div>
@@ -2175,10 +2096,8 @@ const NewsAggregator = () => {
                             {/* Card Content */}
                             <div
                               className={`px-6 ${
-                                viewMode === "small" ? "pb-4" : "pb-6"
-                              } ${
-                                viewMode === "grid" ? "flex-1" : "flex-1"
-                              } flex flex-col justify-end ${
+                                viewMode === "grid" ? "pb-4" : "pb-6"
+                              } ${"flex-1"} flex flex-col justify-end ${
                                 viewMode === "list" ? "hidden" : ""
                               }`}
                               style={
@@ -2186,7 +2105,7 @@ const NewsAggregator = () => {
                                   ? {}
                                   : {
                                       height:
-                                        viewMode === "small"
+                                        viewMode === "grid"
                                           ? "120px"
                                           : viewMode === "grid"
                                           ? "auto"
@@ -2202,15 +2121,11 @@ const NewsAggregator = () => {
                               ) ? (
                                 <div
                                   className={`relative z-0 ${
-                                    viewMode === "small" ? "mt-2" : "mt-auto"
+                                    viewMode === "grid" ? "mt-2" : "mt-auto"
                                   }`}
                                   style={{
                                     height:
-                                      viewMode === "small"
-                                        ? "200px"
-                                        : viewMode === "grid"
-                                        ? "250px"
-                                        : "75px",
+                                      viewMode === "grid" ? "200px" : "75px",
                                     marginBottom: "15px",
                                   }}
                                 >
@@ -2218,31 +2133,17 @@ const NewsAggregator = () => {
                                     src={feedItems[currentIndex]?.image}
                                     alt={feedItems[currentIndex]?.title}
                                     className={`w-full rounded-lg ${
-                                      viewMode === "small"
-                                        ? "object-cover"
-                                        : viewMode === "grid"
+                                      viewMode === "grid"
                                         ? "object-cover"
                                         : "object-contain"
                                     }`}
                                     style={{
                                       height:
-                                        viewMode === "small"
-                                          ? "200px"
-                                          : viewMode === "grid"
-                                          ? "250px"
-                                          : "75px",
+                                        viewMode === "grid" ? "200px" : "75px",
                                       minHeight:
-                                        viewMode === "small"
-                                          ? "200px"
-                                          : viewMode === "grid"
-                                          ? "250px"
-                                          : "75px",
+                                        viewMode === "grid" ? "200px" : "75px",
                                       maxHeight:
-                                        viewMode === "small"
-                                          ? "200px"
-                                          : viewMode === "grid"
-                                          ? "250px"
-                                          : "75px",
+                                        viewMode === "grid" ? "200px" : "75px",
                                     }}
                                     onError={(e) => {
                                       // Replace broken image with placeholder
@@ -2265,19 +2166,19 @@ const NewsAggregator = () => {
                                     className="image-placeholder hidden w-full bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center"
                                     style={{
                                       height:
-                                        viewMode === "small"
+                                        viewMode === "grid"
                                           ? "100px"
                                           : viewMode === "list"
                                           ? "75px"
                                           : "150px",
                                       minHeight:
-                                        viewMode === "small"
+                                        viewMode === "grid"
                                           ? "100px"
                                           : viewMode === "list"
                                           ? "75px"
                                           : "150px",
                                       maxHeight:
-                                        viewMode === "small"
+                                        viewMode === "grid"
                                           ? "100px"
                                           : viewMode === "list"
                                           ? "75px"
@@ -2287,7 +2188,7 @@ const NewsAggregator = () => {
                                     <div className="text-center text-gray-500 dark:text-gray-400">
                                       <div
                                         className={
-                                          viewMode === "small"
+                                          viewMode === "grid"
                                             ? "text-2xl"
                                             : "text-4xl"
                                         }
@@ -2327,7 +2228,7 @@ const NewsAggregator = () => {
                                 // No image available or placeholder - show styled placeholder
                                 <div
                                   className={`w-full rounded-lg flex items-center justify-center ${
-                                    viewMode === "small" ? "mt-2" : "mt-auto"
+                                    viewMode === "grid" ? "mt-2" : "mt-auto"
                                   }`}
                                   style={{
                                     height: "150px",
@@ -2499,9 +2400,8 @@ const NewsAggregator = () => {
                                 </div>
                               )}
 
-                              {/* Article Title - Show in grid and small views */}
-                              {(viewMode === "grid" ||
-                                viewMode === "small") && (
+                              {/* Article Title - Show in grid view only */}
+                              {viewMode === "grid" && (
                                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white leading-tight">
                                   <a
                                     href={customFeedItems[0]?.url}
@@ -2534,7 +2434,7 @@ const NewsAggregator = () => {
                             {/* Custom Feed Content */}
                             <div
                               className={`px-6 ${
-                                viewMode === "small" ? "pb-0" : "pb-6"
+                                viewMode === "grid" ? "pb-0" : "pb-6"
                               } flex-1 flex flex-col ${
                                 viewMode === "list" ? "hidden" : ""
                               }`}
@@ -2543,14 +2443,12 @@ const NewsAggregator = () => {
                                   ? {}
                                   : {
                                       height:
-                                        viewMode === "small"
-                                          ? "120px"
-                                          : "200px",
+                                        viewMode === "grid" ? "120px" : "200px",
                                     }
                               }
                             >
-                              {/* Image - Show in grid and small views */}
-                              {(viewMode === "grid" || viewMode === "small") &&
+                              {/* Image - Show in grid view only */}
+                              {viewMode === "grid" &&
                               customFeedItems[0]?.image &&
                               !customFeedItems[0]?.image!.startsWith(
                                 "placeholder:"
@@ -2560,7 +2458,7 @@ const NewsAggregator = () => {
                                   style={{
                                     height: "150px",
                                     marginTop:
-                                      viewMode === "small" ? "8px" : "20px",
+                                      viewMode === "grid" ? "8px" : "20px",
                                     marginBottom: "0px",
                                   }}
                                 >
@@ -2607,7 +2505,7 @@ const NewsAggregator = () => {
                                 // No image available or placeholder - show styled placeholder
                                 <div
                                   className={`w-full rounded-lg flex items-center justify-center ${
-                                    viewMode === "small" ? "mt-2" : "mt-auto"
+                                    viewMode === "grid" ? "mt-2" : "mt-auto"
                                   }`}
                                   style={{
                                     height: "150px",
@@ -2654,8 +2552,8 @@ const NewsAggregator = () => {
                               )}
                             </div>
 
-                            {/* Carousel Controls for Custom Feeds Grid and Small Views */}
-                            {(viewMode === "grid" || viewMode === "small") &&
+                            {/* Carousel Controls for Custom Feeds Grid View Only */}
+                            {viewMode === "grid" &&
                               customFeedItems.length > 1 && (
                                 <div className="px-4 sm:px-6 pb-4 flex items-center justify-center gap-1">
                                   <button
@@ -2694,7 +2592,7 @@ const NewsAggregator = () => {
 
           {/* Bottom Tray Navigation - All Viewports */}
           <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
-            <div className="flex items-center justify-around px-2 py-3">
+            <div className="flex items-center justify-between max-w-[1200px] mx-auto px-4 sm:px-8 py-3">
               {/* Technology */}
               <button
                 onClick={() => {
