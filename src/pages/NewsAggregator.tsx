@@ -146,6 +146,13 @@ const rssFeeds: RSSFeed[] = [
     category: "business",
     enabled: true,
   },
+  {
+    id: "bloomberg",
+    name: "Bloomberg",
+    url: "https://news.google.com/rss/search?q=when:24h+allinurl:bloomberg.com&hl=en-US&gl=US&ceid=US:en",
+    category: "business",
+    enabled: true,
+  },
 
   {
     id: "cnn-sports",
@@ -167,14 +174,14 @@ const NewsAggregator = () => {
   // Centralized color system for consistent theming
   const categoryColors = {
     all: {
-      bg: "bg-blue-50 dark:bg-blue-900/30",
-      text: "text-blue-900 dark:text-blue-100",
-      border: "border-blue-300",
-      hover: "hover:bg-blue-100 dark:hover:bg-blue-700",
+      bg: "bg-gray-100 dark:bg-gray-700",
+      text: "text-gray-800 dark:text-gray-200",
+      border: "border-gray-300",
+      hover: "hover:bg-gray-200 dark:hover:bg-gray-600",
       chip: {
-        bg: "bg-blue-100 dark:bg-blue-800/50",
-        text: "text-blue-800 dark:text-blue-200",
-        border: "border-blue-300 dark:border-blue-600",
+        bg: "bg-gray-200 dark:bg-gray-600",
+        text: "text-gray-800 dark:text-gray-200",
+        border: "border-gray-300 dark:border-gray-500",
       },
     },
     technology: {
@@ -267,14 +274,19 @@ const NewsAggregator = () => {
   const [newYorkPostIndex, setNewYorkPostIndex] = useState(0);
   const [foxNewsIndex, setFoxNewsIndex] = useState(0);
   const [cbsSportsIndex, setCbsSportsIndex] = useState(0);
+
   const [breitbartIndex, setBreitbartIndex] = useState(0);
+
   const [cnnIndex, setCnnIndex] = useState(0);
+  const [bloombergIndex, setBloombergIndex] = useState(0);
 
   const [techcrunchIndex, setTechcrunchIndex] = useState(0);
   const [activeCategory, setActiveCategory] = useState("all");
 
   const [viewMode, setViewMode] = useState<"list" | "grid">("list");
   const [customFeedUrl, setCustomFeedUrl] = useState("");
+  const [customFeedName, setCustomFeedName] = useState("");
+  const [customFeedCategory, setCustomFeedCategory] = useState("technology");
   const [isCreatingFeed, setIsCreatingFeed] = useState(false);
   const [feedCreationStatus, setFeedCreationStatus] = useState<{
     type: "success" | "error";
@@ -283,7 +295,6 @@ const NewsAggregator = () => {
     siteName?: string;
   } | null>(null);
   const [isRSSModalOpen, setIsRSSModalOpen] = useState(false);
-  const [selectedCustomCategory, setSelectedCustomCategory] = useState("");
 
   const [feedStatus, setFeedStatus] = useState<{
     [key: string]: { working: boolean; error?: string };
@@ -357,6 +368,7 @@ const NewsAggregator = () => {
 
       case "Fox Sports":
         return foxSportsIndex;
+
       case "The Onion":
         return theOnionIndex;
       case "The Hard Times":
@@ -385,6 +397,9 @@ const NewsAggregator = () => {
 
       case "CNN News":
         return cnnIndex;
+
+      case "Bloomberg":
+        return bloombergIndex;
 
       case "TechCrunch":
         return techcrunchIndex;
@@ -415,6 +430,7 @@ const NewsAggregator = () => {
       case "Fox Sports":
         goToPreviousFoxSports();
         break;
+
       case "The Onion":
         goToPreviousTheOnion();
         break;
@@ -456,6 +472,10 @@ const NewsAggregator = () => {
         goToPreviousCnn();
         break;
 
+      case "Bloomberg":
+        goToPreviousBloomberg();
+        break;
+
       case "TechCrunch":
         goToPreviousTechcrunch();
         break;
@@ -483,6 +503,7 @@ const NewsAggregator = () => {
       case "Fox Sports":
         goToNextFoxSports();
         break;
+
       case "The Onion":
         goToNextTheOnion();
         break;
@@ -524,15 +545,19 @@ const NewsAggregator = () => {
         goToNextCnn();
         break;
 
+      case "Bloomberg":
+        goToNextBloomberg();
+        break;
+
       case "TechCrunch":
         goToNextTechcrunch();
         break;
     }
   };
 
-  // Custom RSS Feed Creator
-  const createCustomRSSFeed = async () => {
-    if (!customFeedUrl) return;
+  // Add Custom RSS Feed
+  const addCustomRSSFeed = async () => {
+    if (!customFeedUrl || !customFeedName || !customFeedCategory) return;
 
     setIsCreatingFeed(true);
     setFeedCreationStatus(null);
@@ -540,7 +565,7 @@ const NewsAggregator = () => {
     try {
       // Validate URL format
       if (!customFeedUrl.trim()) {
-        throw new Error("Please enter a URL");
+        throw new Error("Please enter a valid RSS feed URL");
       }
 
       // Add protocol if missing
@@ -552,146 +577,60 @@ const NewsAggregator = () => {
         urlToProcess = "https://" + urlToProcess;
       }
 
-      // Validate URL
-      const url = new URL(urlToProcess);
+      // Validate URL format
+      new URL(urlToProcess);
 
-      // Create a proxy request to fetch the HTML content
-      const response = await fetch(`/.netlify/functions/create-rss-feed`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ url: urlToProcess }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to create RSS feed");
+      // Test the RSS feed to make sure it's valid
+      const testResponse = await fetch(urlToProcess);
+      if (!testResponse.ok) {
+        throw new Error(`Failed to fetch RSS feed: ${testResponse.statusText}`);
       }
 
-      const result = await response.json();
+      const xmlText = await testResponse.text();
 
-      if (result.success) {
-        setFeedCreationStatus({
-          type: "success",
-          message: `Successfully created RSS feed for ${url.hostname}! The feed has been added to your custom feeds.`,
-          rssXml: result.rssXml,
-          siteName: url.hostname.replace("www.", ""),
-        });
-        setCustomFeedUrl("");
-
-        // Refresh the feeds to show the new one
-        loadRSSFeeds();
-      } else {
-        setFeedCreationStatus({
-          type: "error",
-          message:
-            result.error ||
-            "Failed to create RSS feed. Please try a different URL.",
-        });
+      // Basic validation that it's actually an RSS feed
+      if (
+        !xmlText.includes("<rss") &&
+        !xmlText.includes("<feed") &&
+        !xmlText.includes("<rdf")
+      ) {
+        throw new Error("The URL doesn't appear to be a valid RSS feed");
       }
-    } catch (error) {
-      console.error("Error creating RSS feed:", error);
 
-      let errorMessage =
-        "Failed to create RSS feed. The website may not be accessible or may not have parseable content.";
+      // Add the new custom feed to the list
+      const newCustomFeed: RSSFeed = {
+        id: `custom-${Date.now()}`,
+        name: customFeedName.trim(),
+        url: urlToProcess,
+        category: customFeedCategory,
+        enabled: true,
+      };
 
-      if (error instanceof Error) {
-        if (error.message === "Please enter a URL") {
-          errorMessage = "Please enter a valid URL";
-        } else if (error.message.includes("Invalid URL")) {
-          errorMessage = "Please enter a valid URL (e.g., https://example.com)";
-        } else if (error.message.includes("Failed to create RSS feed")) {
-          errorMessage =
-            "Failed to create RSS feed. The website may not be accessible or may not have parseable content.";
-        }
-      }
+      const updatedCustomFeeds = [...customFeeds, newCustomFeed];
+      syncCustomFeeds(updatedCustomFeeds);
+
+      // Clear the form
+      setCustomFeedUrl("");
+      setCustomFeedName("");
+      setCustomFeedCategory("technology");
 
       setFeedCreationStatus({
+        type: "success",
+        message: "Custom RSS feed added successfully!",
+      });
+
+      // Reload feeds to include the new one
+      await loadRSSFeeds();
+    } catch (error) {
+      console.error("Error adding RSS feed:", error);
+      setFeedCreationStatus({
         type: "error",
-        message: errorMessage,
+        message:
+          error instanceof Error ? error.message : "Failed to add RSS feed",
       });
     } finally {
       setIsCreatingFeed(false);
     }
-  };
-
-  // Helper function to download RSS feed as XML file
-  const downloadRSSFeed = (rssXml: string, filename: string) => {
-    const blob = new Blob([rssXml], { type: "application/xml" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${filename}.xml`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
-
-  // Helper function to copy RSS feed to clipboard
-  const copyRSSFeedToClipboard = async (rssXml: string) => {
-    try {
-      await navigator.clipboard.writeText(rssXml);
-      // Show a brief success message
-      setFeedCreationStatus((prev) =>
-        prev
-          ? {
-              ...prev,
-              message: prev.message + " RSS feed copied to clipboard!",
-            }
-          : null
-      );
-    } catch (error) {
-      console.error("Failed to copy to clipboard:", error);
-      setFeedCreationStatus((prev) =>
-        prev
-          ? {
-              ...prev,
-              message: prev.message + " Failed to copy to clipboard.",
-            }
-          : null
-      );
-    }
-  };
-
-  // Function to save custom RSS feed with category
-  const saveCustomFeed = () => {
-    if (!selectedCustomCategory || !feedCreationStatus?.rssXml) return;
-
-    // Create a new custom feed
-    const newCustomFeed = {
-      id: `custom-${Date.now()}`,
-      name: feedCreationStatus.siteName || "Custom Feed",
-      url: customFeedUrl,
-      category: selectedCustomCategory,
-      enabled: true,
-      rssXml: feedCreationStatus.rssXml,
-    };
-
-    // Add to custom feeds
-    const updatedCustomFeeds = [...customFeeds, newCustomFeed];
-    syncCustomFeeds(updatedCustomFeeds);
-
-    // Update success message
-    setFeedCreationStatus((prev) =>
-      prev
-        ? {
-            ...prev,
-            message: `RSS feed saved to ${selectedCustomCategory} category! The feed has been added to your custom feeds.`,
-          }
-        : null
-    );
-
-    // Reset the form
-    setCustomFeedUrl("");
-    setSelectedCustomCategory("");
-
-    // Close modal after a short delay
-    setTimeout(() => {
-      setIsRSSModalOpen(false);
-      // Refresh feeds to show the new custom feed
-      loadRSSFeeds();
-    }, 2000);
   };
 
   // Function to parse RSS XML
@@ -911,8 +850,6 @@ const NewsAggregator = () => {
             videoUrl = videoEnclosure.getAttribute("url") || "";
           }
 
-          // Log image extraction result
-
           // Skip items without essential data
           if (!title || !link) {
             return;
@@ -1040,7 +977,32 @@ const NewsAggregator = () => {
       const feedResults = await Promise.allSettled(
         rssFeeds.map(async (feed) => {
           try {
-            const items = await fetchRSSFeed(feed);
+            let items: NewsItem[] = [];
+
+            // Handle local feeds differently
+            if (feed.url.startsWith("/feeds/")) {
+              try {
+                // For local feeds, try to fetch directly from the public directory
+                const response = await fetch(feed.url);
+                if (response.ok) {
+                  const xmlText = await response.text();
+                  items = parseRSS(xmlText, feed.name, feed.category);
+                } else {
+                  console.warn(
+                    `Failed to load local feed ${feed.name}: ${response.status}`
+                  );
+                }
+              } catch (localError) {
+                console.warn(
+                  `Error loading local feed ${feed.name}:`,
+                  localError
+                );
+              }
+            } else {
+              // For external feeds, use the existing fetchRSSFeed function
+              items = await fetchRSSFeed(feed);
+            }
+
             return { feed, items, success: true };
           } catch (feedError) {
             console.warn(`Feed ${feed.name} failed:`, feedError);
@@ -1171,7 +1133,10 @@ const NewsAggregator = () => {
       setFoxNewsIndex(0); // Reset Fox News carousel
       setCbsSportsIndex(0); // Reset CBS Sports carousel
       setBreitbartIndex(0); // Reset Breitbart carousel
+
       setCnnIndex(0); // Reset CNN carousel
+
+      setBloombergIndex(0); // Reset Bloomberg carousel
 
       setTechcrunchIndex(0); // Reset TechCrunch carousel
     } catch (error) {
@@ -1544,6 +1509,27 @@ const NewsAggregator = () => {
     }
   };
 
+  // Bloomberg carousel navigation
+  const goToNextBloomberg = () => {
+    const bloombergItems = newsItems.filter(
+      (item) => item.source === "Bloomberg"
+    );
+    if (bloombergItems.length > 0) {
+      setBloombergIndex((prev) => (prev + 1) % bloombergItems.length);
+    }
+  };
+
+  const goToPreviousBloomberg = () => {
+    const bloombergItems = newsItems.filter(
+      (item) => item.source === "Bloomberg"
+    );
+    if (bloombergItems.length > 0) {
+      setBloombergIndex(
+        (prev) => (prev - 1 + bloombergItems.length) % bloombergItems.length
+      );
+    }
+  };
+
   // CBS Sports carousel navigation
   const goToNextCbsSports = () => {
     const cbsSportsItems = newsItems.filter(
@@ -1615,172 +1601,149 @@ const NewsAggregator = () => {
             {/* Top Navigation - Tablet and Desktop Only */}
             <div className="hidden md:block bg-white dark:bg-gray-800">
               <div className="max-w-[1200px] mx-auto px-4 sm:px-8 relative">
-                {/* Plus Button - Positioned to the left of navigation */}
-                <button
-                  onClick={() => {
-                    setIsRSSModalOpen(true);
-                    setSelectedCustomCategory("");
-                    setCustomFeedUrl("");
-                    setFeedCreationStatus(null);
-                  }}
-                  className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-12 w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-full flex items-center justify-center transition-colors shadow-lg"
-                  title="Create Custom RSS Feed"
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 4v16m8-8H4"
-                    />
-                  </svg>
-                </button>
-
                 <nav className="flex items-center justify-between py-4">
-                  {/* All News */}
-                  <button
-                    onClick={() => {
-                      setActiveCategory("all");
-                      syncActiveCategory("all");
-                    }}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-                      activeCategory === "all"
-                        ? `${categoryColors.all.bg} ${categoryColors.all.text}`
-                        : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700`
-                    }`}
-                  >
-                    <svg
-                      className="w-6 h-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                  {/* Left side - Category buttons */}
+                  <div className="flex items-center gap-2">
+                    {/* All News */}
+                    <button
+                      onClick={() => {
+                        setActiveCategory("all");
+                        syncActiveCategory("all");
+                      }}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                        activeCategory === "all"
+                          ? `${categoryColors.all.bg} ${categoryColors.all.text}`
+                          : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700`
+                      }`}
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                      />
-                    </svg>
-                    <span className="font-medium">All News</span>
-                  </button>
+                      <svg
+                        className="w-6 h-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                        />
+                      </svg>
+                      <span className="font-medium">All News</span>
+                    </button>
 
-                  {/* Technology */}
-                  <button
-                    onClick={() => {
-                      setActiveCategory("technology");
-                      syncActiveCategory("technology");
-                    }}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-                      activeCategory === "technology"
-                        ? `${categoryColors.technology.bg} ${categoryColors.technology.text}`
-                        : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700`
-                    }`}
-                  >
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                    {/* Technology */}
+                    <button
+                      onClick={() => {
+                        setActiveCategory("technology");
+                        syncActiveCategory("technology");
+                      }}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                        activeCategory === "technology"
+                          ? `${categoryColors.technology.bg} ${categoryColors.technology.text}`
+                          : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700`
+                      }`}
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                      />
-                    </svg>
-                    <span className="font-medium">Technology</span>
-                  </button>
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                        />
+                      </svg>
+                      <span className="font-medium">Technology</span>
+                    </button>
 
-                  {/* Sports */}
-                  <button
-                    onClick={() => {
-                      setActiveCategory("sports");
-                      syncActiveCategory("sports");
-                    }}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-                      activeCategory === "sports"
-                        ? `${categoryColors.sports.bg} ${categoryColors.sports.text}`
-                        : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700`
-                    }`}
-                  >
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                    {/* Sports */}
+                    <button
+                      onClick={() => {
+                        setActiveCategory("sports");
+                        syncActiveCategory("sports");
+                      }}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                        activeCategory === "sports"
+                          ? `${categoryColors.sports.bg} ${categoryColors.sports.text}`
+                          : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700`
+                      }`}
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m-9 0h10m-10 0a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V6a2 2 0 00-2-2M9 20h6m-6 0v-2m6 2v-2"
-                      />
-                    </svg>
-                    <span className="font-medium">Sports</span>
-                  </button>
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m-9 0h10m-10 0a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V6a2 2 0 00-2-2M9 20h6m-6 0v-2m6 2v-2"
+                        />
+                      </svg>
+                      <span className="font-medium">Sports</span>
+                    </button>
 
-                  {/* Business */}
-                  <button
-                    onClick={() => {
-                      setActiveCategory("business");
-                      syncActiveCategory("business");
-                    }}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-                      activeCategory === "business"
-                        ? `${categoryColors.business.bg} ${categoryColors.business.text}`
-                        : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700`
-                    }`}
-                  >
-                    <svg
-                      className="w-6 h-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                    {/* Business */}
+                    <button
+                      onClick={() => {
+                        setActiveCategory("business");
+                        syncActiveCategory("business");
+                      }}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                        activeCategory === "business"
+                          ? `${categoryColors.business.bg} ${categoryColors.business.text}`
+                          : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700`
+                      }`}
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
-                      />
-                    </svg>
-                    <span className="font-medium">Business</span>
-                  </button>
+                      <svg
+                        className="w-6 h-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
+                        />
+                      </svg>
+                      <span className="font-medium">Business</span>
+                    </button>
 
-                  {/* Entertainment */}
-                  <button
-                    onClick={() => {
-                      setActiveCategory("entertainment");
-                      syncActiveCategory("entertainment");
-                    }}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-                      activeCategory === "entertainment"
-                        ? `${categoryColors.entertainment.bg} ${categoryColors.entertainment.text}`
-                        : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700`
-                    }`}
-                  >
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                    {/* Entertainment */}
+                    <button
+                      onClick={() => {
+                        setActiveCategory("entertainment");
+                        syncActiveCategory("entertainment");
+                      }}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                        activeCategory === "entertainment"
+                          ? `${categoryColors.entertainment.bg} ${categoryColors.entertainment.text}`
+                          : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700`
+                      }`}
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
-                      />
-                    </svg>
-                    <span className="font-medium">Entertainment</span>
-                  </button>
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                        />
+                      </svg>
+                      <span className="font-medium">Entertainment</span>
+                    </button>
+                  </div>
                 </nav>
               </div>
             </div>
@@ -1788,7 +1751,7 @@ const NewsAggregator = () => {
             {/* Category Title - Below Navigation */}
             <div className="block bg-white dark:bg-gray-800 py-4">
               <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
-                <div className="text-left">
+                <div className="flex items-center justify-between">
                   <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
                     {activeCategory === "all"
                       ? "All News"
@@ -1849,44 +1812,83 @@ const NewsAggregator = () => {
                     </p>
 
                     <p className="text-xs text-gray-500 dark:text-gray-500 mb-6">
-                      💡 Tip: If parsing fails, the site may use JavaScript to
-                      load content or have a complex structure. Try refreshing
-                      the page or using a different URL from the same site.
+                      💡 Tip: Enter the URL of an existing RSS feed. Common
+                      formats include:
+                      <br />• https://example.com/feed
+                      <br />• https://example.com/rss
+                      <br />• https://example.com/atom
+                      <br />• https://feeds.example.com/feed.xml
                     </p>
 
                     <form
                       onSubmit={(e) => {
                         e.preventDefault();
-                        if (customFeedUrl && !isCreatingFeed) {
-                          createCustomRSSFeed();
+                        if (
+                          customFeedUrl &&
+                          customFeedName &&
+                          customFeedCategory &&
+                          !isCreatingFeed
+                        ) {
+                          addCustomRSSFeed();
                         }
                       }}
-                      className="flex flex-col sm:flex-row gap-3 mb-6"
+                      className="flex flex-col gap-3 mb-6"
                     >
-                      <input
-                        type="url"
-                        placeholder="https://example.com"
-                        value={customFeedUrl}
-                        onChange={(e) => setCustomFeedUrl(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (
-                            e.key === "Enter" &&
-                            customFeedUrl &&
-                            !isCreatingFeed
-                          ) {
-                            e.preventDefault();
-                            createCustomRSSFeed();
+                      <div className="flex flex-col sm:flex-row gap-3">
+                        <input
+                          type="text"
+                          placeholder="Feed Name (e.g., My Blog)"
+                          value={customFeedName}
+                          onChange={(e) => setCustomFeedName(e.target.value)}
+                          className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                        <select
+                          value={customFeedCategory}
+                          onChange={(e) =>
+                            setCustomFeedCategory(e.target.value)
                           }
-                        }}
-                        className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
-                      <button
-                        type="submit"
-                        disabled={!customFeedUrl || isCreatingFeed}
-                        className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors font-medium"
-                      >
-                        {isCreatingFeed ? "Creating..." : "Create Feed"}
-                      </button>
+                          className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        >
+                          <option value="technology">Technology</option>
+                          <option value="sports">Sports</option>
+                          <option value="business">Business</option>
+                          <option value="entertainment">Entertainment</option>
+                          <option value="politics">Politics</option>
+                        </select>
+                      </div>
+                      <div className="flex flex-col sm:flex-row gap-3">
+                        <input
+                          type="url"
+                          placeholder="RSS Feed URL (e.g., https://example.com/feed)"
+                          value={customFeedUrl}
+                          onChange={(e) => setCustomFeedUrl(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (
+                              e.key === "Enter" &&
+                              customFeedUrl &&
+                              customFeedName &&
+                              customFeedCategory &&
+                              !isCreatingFeed
+                            ) {
+                              e.preventDefault();
+                              addCustomRSSFeed();
+                            }
+                          }}
+                          className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                        <button
+                          type="submit"
+                          disabled={
+                            !customFeedUrl ||
+                            !customFeedName ||
+                            !customFeedCategory ||
+                            isCreatingFeed
+                          }
+                          className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors font-medium"
+                        >
+                          {isCreatingFeed ? "Adding..." : "Add Feed"}
+                        </button>
+                      </div>
                     </form>
 
                     {feedCreationStatus && (
@@ -1906,74 +1908,6 @@ const NewsAggregator = () => {
                         >
                           {feedCreationStatus.message}
                         </p>
-
-                        {feedCreationStatus.type === "success" &&
-                          feedCreationStatus.rssXml && (
-                            <>
-                              {/* Category Selection */}
-                              <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
-                                <p className="text-sm text-blue-700 dark:text-blue-300 mb-3">
-                                  📂 Select a category for this RSS feed:
-                                </p>
-                                <div className="flex flex-col sm:flex-row gap-3">
-                                  <select
-                                    value={selectedCustomCategory}
-                                    onChange={(e) =>
-                                      setSelectedCustomCategory(e.target.value)
-                                    }
-                                    className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                  >
-                                    <option value="">
-                                      Choose a category...
-                                    </option>
-                                    <option value="technology">
-                                      Technology
-                                    </option>
-                                    <option value="sports">Sports</option>
-                                    <option value="business">Business</option>
-                                    <option value="entertainment">
-                                      Entertainment
-                                    </option>
-                                    <option value="politics">Politics</option>
-                                    <option value="custom">Custom</option>
-                                  </select>
-                                  <button
-                                    onClick={() => saveCustomFeed()}
-                                    disabled={!selectedCustomCategory}
-                                    className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
-                                  >
-                                    Save Feed
-                                  </button>
-                                </div>
-                              </div>
-
-                              {/* Download Options */}
-                              <div className="mt-3 flex gap-2">
-                                <button
-                                  onClick={() =>
-                                    downloadRSSFeed(
-                                      feedCreationStatus.rssXml!,
-                                      feedCreationStatus.siteName ||
-                                        "custom-feed"
-                                    )
-                                  }
-                                  className="px-4 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 transition-colors"
-                                >
-                                  Download RSS Feed
-                                </button>
-                                <button
-                                  onClick={() =>
-                                    copyRSSFeedToClipboard(
-                                      feedCreationStatus.rssXml!
-                                    )
-                                  }
-                                  className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors"
-                                >
-                                  Copy to Clipboard
-                                </button>
-                              </div>
-                            </>
-                          )}
                       </div>
                     )}
                   </div>
@@ -2351,6 +2285,25 @@ const NewsAggregator = () => {
                                           }}
                                         />
                                       </div>
+                                    ) : feed.name === "Reuters" ? (
+                                      /* Reuters Business Text Title */
+                                      <div
+                                        className={
+                                          viewMode === "grid" ? "" : "mb-3"
+                                        }
+                                      >
+                                        <div className="text-center">
+                                          <h3
+                                            className={`font-bold text-blue-700 dark:text-blue-400 ${
+                                              viewMode === "grid"
+                                                ? "text-lg"
+                                                : "text-xl"
+                                            }`}
+                                          >
+                                            Reuters
+                                          </h3>
+                                        </div>
+                                      </div>
                                     ) : feed.name === "CNN News" ? (
                                       /* CNN News Logo and Title - Stacked and aligned */
                                       <div
@@ -2361,6 +2314,28 @@ const NewsAggregator = () => {
                                         <img
                                           src="/img/cnn.svg"
                                           alt="cnn news"
+                                          className={`w-full h-auto opacity-80 ${
+                                            viewMode === "grid"
+                                              ? "max-w-[80px]"
+                                              : "max-w-[120px]"
+                                          }`}
+                                          onError={(e) => {
+                                            // Hide broken logo
+                                            const target = e.currentTarget;
+                                            target.style.display = "none";
+                                          }}
+                                        />
+                                      </div>
+                                    ) : feed.name === "Bloomberg" ? (
+                                      /* Bloomberg Logo and Title - Stacked and aligned */
+                                      <div
+                                        className={
+                                          viewMode === "grid" ? "" : "mb-3"
+                                        }
+                                      >
+                                        <img
+                                          src="/img/bloomberg.svg"
+                                          alt="bloomberg"
                                           className={`w-full h-auto opacity-80 ${
                                             viewMode === "grid"
                                               ? "max-w-[80px]"
@@ -2924,6 +2899,9 @@ const NewsAggregator = () => {
                               activeCategory === feed.category ||
                               activeCategory === "custom")
                         )
+                        .filter(
+                          (feed) => !feed.name.toLowerCase().includes("lawn")
+                        )
                         .map((customFeed) => {
                           const customFeedItems = newsItems.filter(
                             (item) => item.source === customFeed.name
@@ -2951,7 +2929,7 @@ const NewsAggregator = () => {
                                     : "px-6 pt-6"
                                 } flex-shrink-0`}
                               >
-                                {/* Top Row - Source Title and Category Chip */}
+                                {/* Top Row - Source Title and Carousel Controls */}
                                 <div
                                   className={`flex items-center justify-between ${
                                     viewMode === "list" ? "" : "mb-4"
@@ -2962,7 +2940,35 @@ const NewsAggregator = () => {
                                     {customFeed.name}
                                   </h4>
 
-                                  {/* Category Chip - Show in grid and small views */}
+                                  {/* Carousel Controls - Show in grid view only */}
+                                  {viewMode === "grid" &&
+                                    customFeedItems.length > 1 && (
+                                      <div className="flex items-center gap-2">
+                                        <button
+                                          onClick={() => {
+                                            // For custom feeds, we'll need to implement index tracking
+                                            // For now, this is a placeholder
+                                          }}
+                                          disabled={customFeedItems.length <= 1}
+                                          className="carousel-button w-8 h-6 text-xs text-gray-700 dark:text-gray-200 hover:text-gray-800 disabled:text-gray-300 disabled:cursor-not-allowed bg-gray-200 dark:bg-gray-500 rounded border border-gray-300 dark:border-gray-400 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-400 transition-colors"
+                                        >
+                                          ←
+                                        </button>
+                                        <span className="text-gray-500 dark:text-gray-400 flex items-center justify-center mx-1 text-xs w-6 h-6">
+                                          1/{customFeedItems.length}
+                                        </span>
+                                        <button
+                                          onClick={() => {
+                                            // For custom feeds, we'll need to implement index tracking
+                                            // For now, this is a placeholder
+                                          }}
+                                          disabled={customFeedItems.length <= 1}
+                                          className="carousel-button w-8 h-6 text-xs text-gray-700 dark:text-gray-200 hover:text-gray-800 disabled:text-gray-300 disabled:cursor-not-allowed bg-gray-200 dark:bg-gray-500 rounded border border-gray-300 dark:border-gray-400 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-400 transition-colors"
+                                        >
+                                          →
+                                        </button>
+                                      </div>
+                                    )}
                                 </div>
 
                                 {/* Second Row - Remove Button (list view only) */}
@@ -3139,36 +3145,6 @@ const NewsAggregator = () => {
                                   </div>
                                 )}
                               </div>
-
-                              {/* Carousel Controls for Custom Feeds Grid View Only */}
-                              {viewMode === "grid" &&
-                                customFeedItems.length > 1 && (
-                                  <div className="px-4 sm:px-6 pb-4 flex items-center justify-center gap-1">
-                                    <button
-                                      onClick={() => {
-                                        // For custom feeds, we'll need to implement index tracking
-                                        // For now, this is a placeholder
-                                      }}
-                                      disabled={customFeedItems.length <= 1}
-                                      className="carousel-button w-12 h-8 text-sm text-gray-700 dark:text-gray-200 hover:text-gray-800 disabled:text-gray-300 disabled:cursor-not-allowed bg-gray-200 dark:bg-gray-500 rounded border border-gray-300 dark:border-gray-400 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-400 transition-colors"
-                                    >
-                                      ←
-                                    </button>
-                                    <span className="text-sm text-gray-500 dark:text-gray-400 w-8 h-8 flex items-center justify-center">
-                                      1/{customFeedItems.length}
-                                    </span>
-                                    <button
-                                      onClick={() => {
-                                        // For custom feeds, we'll need to implement index tracking
-                                        // For now, this is a placeholder
-                                      }}
-                                      disabled={customFeedItems.length <= 1}
-                                      className="carousel-button w-12 h-8 text-sm text-gray-700 dark:text-gray-200 hover:text-gray-800 disabled:text-gray-300 disabled:cursor-not-allowed bg-gray-200 dark:bg-gray-500 rounded border border-gray-300 dark:border-gray-400 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-400 transition-colors"
-                                    >
-                                      →
-                                    </button>
-                                  </div>
-                                )}
                             </div>
                           );
                         })}
