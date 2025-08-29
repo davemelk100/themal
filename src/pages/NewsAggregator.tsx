@@ -1629,7 +1629,7 @@ const NewsAggregator = () => {
             {/* Top Navigation - Tablet and Desktop Only */}
             <div className="hidden md:block bg-white dark:bg-gray-800">
               <div className="max-w-[1200px] mx-auto px-4 sm:px-8 relative">
-                <nav className="flex items-center justify-between py-4">
+                <nav className="flex items-center justify-between pt-4 pb-0">
                   {/* Category buttons - evenly distributed */}
                   <div className="flex items-center justify-between w-full">
                     {/* All News */}
@@ -1638,10 +1638,10 @@ const NewsAggregator = () => {
                         setActiveCategory("all");
                         syncActiveCategory("all");
                       }}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                      className={`flex items-center gap-2 px-4 py-2 transition-colors ${
                         activeCategory === "all"
-                          ? `${categoryColors.all.bg} ${categoryColors.all.text}`
-                          : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700`
+                          ? `${categoryColors.all.bg} ${categoryColors.all.text} rounded-t-lg`
+                          : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg`
                       }`}
                     >
                       <svg
@@ -1666,10 +1666,10 @@ const NewsAggregator = () => {
                         setActiveCategory("technology");
                         syncActiveCategory("technology");
                       }}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                      className={`flex items-center gap-2 px-4 py-2 transition-colors ${
                         activeCategory === "technology"
-                          ? `${categoryColors.technology.bg} ${categoryColors.technology.text}`
-                          : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700`
+                          ? `${categoryColors.technology.bg} ${categoryColors.technology.text} rounded-t-lg`
+                          : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg`
                       }`}
                     >
                       <svg
@@ -1694,10 +1694,10 @@ const NewsAggregator = () => {
                         setActiveCategory("sports");
                         syncActiveCategory("sports");
                       }}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                      className={`flex items-center gap-2 px-4 py-2 transition-colors ${
                         activeCategory === "sports"
-                          ? `${categoryColors.sports.bg} ${categoryColors.sports.text}`
-                          : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700`
+                          ? `${categoryColors.sports.bg} ${categoryColors.sports.text} rounded-t-lg`
+                          : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg`
                       }`}
                     >
                       <svg
@@ -1722,10 +1722,10 @@ const NewsAggregator = () => {
                         setActiveCategory("business");
                         syncActiveCategory("business");
                       }}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                      className={`flex items-center gap-2 px-4 py-2 transition-colors ${
                         activeCategory === "business"
-                          ? `${categoryColors.business.bg} ${categoryColors.business.text}`
-                          : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700`
+                          ? `${categoryColors.business.bg} ${categoryColors.business.text} rounded-t-lg`
+                          : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg`
                       }`}
                     >
                       <svg
@@ -1750,10 +1750,10 @@ const NewsAggregator = () => {
                         setActiveCategory("entertainment");
                         syncActiveCategory("entertainment");
                       }}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                      className={`flex items-center gap-2 px-4 py-2 transition-colors ${
                         activeCategory === "entertainment"
-                          ? `${categoryColors.entertainment.bg} ${categoryColors.entertainment.text}`
-                          : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700`
+                          ? `${categoryColors.entertainment.bg} ${categoryColors.entertainment.text} rounded-t-lg`
+                          : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg`
                       }`}
                     >
                       <svg
@@ -1916,7 +1916,7 @@ const NewsAggregator = () => {
             )}
 
             {/* News Grid Section */}
-            <section className="py-2 sm:py-3 lg:py-4">
+            <section className="py-2 sm:py-3 lg:py-0">
               <div
                 className={`w-full py-2 sm:py-3 lg:py-4 rounded-lg ${
                   activeCategory === "all"
@@ -3197,10 +3197,10 @@ const NewsAggregator = () => {
                   setActiveCategory("technology");
                   syncActiveCategory("technology");
                 }}
-                className={`flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-colors ${
+                className={`flex flex-col items-center gap-1 px-3 py-2 transition-colors ${
                   activeCategory === "technology"
-                    ? `${categoryColors.technology.bg} ${categoryColors.technology.text}`
-                    : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700`
+                    ? `${categoryColors.technology.bg} ${categoryColors.technology.text} rounded-t-lg`
+                    : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg`
                 }`}
               >
                 <svg
@@ -3225,10 +3225,10 @@ const NewsAggregator = () => {
                   setActiveCategory("sports");
                   syncActiveCategory("sports");
                 }}
-                className={`flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-colors ${
+                className={`flex flex-col items-center gap-1 px-3 py-2 transition-colors ${
                   activeCategory === "sports"
-                    ? `${categoryColors.sports.bg} ${categoryColors.sports.text}`
-                    : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700`
+                    ? `${categoryColors.sports.bg} ${categoryColors.sports.text} rounded-t-lg`
+                    : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg`
                 }`}
               >
                 <svg
@@ -3253,10 +3253,10 @@ const NewsAggregator = () => {
                   setActiveCategory("all");
                   syncActiveCategory("all");
                 }}
-                className={`flex flex-col items-center gap-1 px-4 py-2 rounded-lg transition-colors ${
+                className={`flex flex-col items-center gap-1 px-4 py-2 transition-colors ${
                   activeCategory === "all"
-                    ? `${categoryColors.all.bg} ${categoryColors.all.text}`
-                    : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700`
+                    ? `${categoryColors.all.bg} ${categoryColors.all.text} rounded-t-lg`
+                    : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg`
                 }`}
               >
                 <svg
