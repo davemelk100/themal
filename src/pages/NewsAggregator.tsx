@@ -185,6 +185,65 @@ const rssFeeds: RSSFeed[] = [
 ];
 
 const NewsAggregator = () => {
+  // Function to get category for a feed source
+  const getFeedCategory = (sourceName: string): string => {
+    if (
+      [
+        "Ars Technica",
+        "WIRED",
+        "TechRadar",
+        "#Windows11",
+        "Vice - Tech",
+        "BleepingComputer",
+      ].includes(sourceName)
+    ) {
+      return "technology";
+    } else if (
+      ["Fox Sports", "CNN - SPORTS", "CBS SPORTS", "ESPN"].includes(sourceName)
+    ) {
+      return "sports";
+    } else if (
+      ["Newsweek", "Fox News", "Breitbart", "CNN News", "Bloomberg"].includes(
+        sourceName
+      )
+    ) {
+      return "business";
+    } else if (
+      [
+        "The Onion",
+        "The Hard Times",
+        "Lambgoat",
+        "No Echo",
+        "Soft White Underbelly",
+        "New York Post",
+      ].includes(sourceName)
+    ) {
+      return "entertainment";
+    } else {
+      return "all";
+    }
+  };
+
+  // Function to get category icon
+  const getCategoryIcon = (category: string): string => {
+    switch (category) {
+      case "technology":
+        return "💻";
+      case "sports":
+        return "⚽";
+      case "business":
+        return "💼";
+      case "entertainment":
+        return "🎭";
+      case "politics":
+        return "🏛️";
+      case "custom":
+        return "🔗";
+      default:
+        return "📰";
+    }
+  };
+
   // Centralized color system for consistent theming
   const categoryColors = {
     all: {
@@ -2148,7 +2207,7 @@ const NewsAggregator = () => {
                                 onDragEnd={handleDragEnd}
                                 className={`bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col border-l-4 font-roboto ${
                                   viewMode === "grid"
-                                    ? "h-[400px]"
+                                    ? "min-h-[500px] h-auto"
                                     : "w-full h-auto justify-center relative"
                                 } ${
                                   draggedFeedId === feed.id
@@ -2800,7 +2859,7 @@ const NewsAggregator = () => {
                                               {truncateText(
                                                 feedItems[currentIndex]
                                                   ?.excerpt || "",
-                                                viewMode === "grid" ? 120 : 400
+                                                viewMode === "grid" ? 250 : 400
                                               )}
                                             </p>
                                           </div>
@@ -2846,11 +2905,10 @@ const NewsAggregator = () => {
                                     viewMode === "list"
                                       ? {}
                                       : {
-                                          height:
+                                          height: "auto",
+                                          minHeight:
                                             viewMode === "grid"
-                                              ? "120px"
-                                              : viewMode === "grid"
-                                              ? "auto"
+                                              ? "180px"
                                               : "auto",
                                         }
                                   }
@@ -2867,8 +2925,14 @@ const NewsAggregator = () => {
                                       }`}
                                       style={{
                                         height:
+                                          viewMode === "grid" ? "auto" : "75px",
+                                        minHeight:
                                           viewMode === "grid"
-                                            ? "200px"
+                                            ? "150px"
+                                            : "75px",
+                                        maxHeight:
+                                          viewMode === "grid"
+                                            ? "250px"
                                             : "75px",
                                         marginBottom: "15px",
                                       }}
@@ -2884,15 +2948,15 @@ const NewsAggregator = () => {
                                         style={{
                                           height:
                                             viewMode === "grid"
-                                              ? "200px"
+                                              ? "auto"
                                               : "75px",
                                           minHeight:
                                             viewMode === "grid"
-                                              ? "200px"
+                                              ? "150px"
                                               : "75px",
                                           maxHeight:
                                             viewMode === "grid"
-                                              ? "200px"
+                                              ? "250px"
                                               : "75px",
                                         }}
                                         onError={(e) => {
@@ -2917,7 +2981,7 @@ const NewsAggregator = () => {
                                         style={{
                                           height:
                                             viewMode === "grid"
-                                              ? "100px"
+                                              ? "auto"
                                               : viewMode === "list"
                                               ? "75px"
                                               : "150px",
@@ -2929,7 +2993,7 @@ const NewsAggregator = () => {
                                               : "150px",
                                           maxHeight:
                                             viewMode === "grid"
-                                              ? "100px"
+                                              ? "200px"
                                               : viewMode === "list"
                                               ? "75px"
                                               : "150px",
@@ -3143,7 +3207,14 @@ const NewsAggregator = () => {
                                           }`}
                                         >
                                           <div className="text-center text-gray-500 dark:text-gray-400">
-                                            <div className="text-4xl">📰</div>
+                                            <div className="text-6xl mb-2">
+                                              {getCategoryIcon(
+                                                getFeedCategory(
+                                                  feedItems[currentIndex]
+                                                    ?.source || ""
+                                                )
+                                              )}
+                                            </div>
                                             <div className="text-xs mt-1 font-medium">
                                               {feedItems[currentIndex]?.source}
                                             </div>
@@ -3390,7 +3461,12 @@ const NewsAggregator = () => {
                                         }}
                                       >
                                         <div className="text-center text-gray-500 dark:text-gray-400">
-                                          <div className="text-4xl">📰</div>
+                                          <div className="text-6xl mb-2">
+                                            🔗
+                                          </div>
+                                          <div className="text-xs mt-1 font-medium">
+                                            Custom Feed
+                                          </div>
                                         </div>
                                       </div>
                                     </div>
@@ -3439,7 +3515,12 @@ const NewsAggregator = () => {
                                           }`}
                                         >
                                           <div className="text-center text-gray-500 dark:text-gray-400">
-                                            <div className="text-4xl">📰</div>
+                                            <div className="text-6xl mb-2">
+                                              🔗
+                                            </div>
+                                            <div className="text-xs mt-1 font-medium">
+                                              Custom Feed
+                                            </div>
                                           </div>
                                         </div>
                                       )}
