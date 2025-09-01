@@ -154,6 +154,13 @@ const rssFeeds: RSSFeed[] = [
     enabled: true,
   },
   {
+    id: "abc-news",
+    name: "ABC News",
+    url: "https://rss.app/feeds/erfbNS2JqHjLMSQ4.xml",
+    category: "business",
+    enabled: true,
+  },
+  {
     id: "bloomberg",
     name: "Bloomberg",
     url: "https://news.google.com/rss/search?q=when:24h+allinurl:bloomberg.com&hl=en-US&gl=US&ceid=US:en",
@@ -182,6 +189,27 @@ const rssFeeds: RSSFeed[] = [
     category: "sports",
     enabled: true,
   },
+  {
+    id: "hot-peppers",
+    name: "Hot Peppers",
+    url: "https://news.google.com/rss/search?q=%22hot+peppers%22&hl=en-US&gl=US&ceid=US:en",
+    category: "food",
+    enabled: true,
+  },
+  {
+    id: "minimalist-baker",
+    name: "Minimalist Baker",
+    url: "https://minimalistbaker.com/feed/",
+    category: "food",
+    enabled: true,
+  },
+  {
+    id: "tips-for-bbq",
+    name: "Tips For BBQ",
+    url: "http://tipsforbbq.com/RSS",
+    category: "food",
+    enabled: true,
+  },
 ];
 
 const NewsAggregator = () => {
@@ -203,9 +231,14 @@ const NewsAggregator = () => {
     ) {
       return "sports";
     } else if (
-      ["Newsweek", "Fox News", "Breitbart", "CNN News", "Bloomberg"].includes(
-        sourceName
-      )
+      [
+        "Newsweek",
+        "Fox News",
+        "Breitbart",
+        "CNN News",
+        "ABC News",
+        "Bloomberg",
+      ].includes(sourceName)
     ) {
       return "business";
     } else if (
@@ -219,6 +252,10 @@ const NewsAggregator = () => {
       ].includes(sourceName)
     ) {
       return "entertainment";
+    } else if (
+      ["Hot Peppers", "Minimalist Baker", "Tips For BBQ"].includes(sourceName)
+    ) {
+      return "food";
     } else {
       return "all";
     }
@@ -235,6 +272,8 @@ const NewsAggregator = () => {
         return "💼";
       case "entertainment":
         return "🎭";
+      case "food":
+        return "🌶️";
       case "politics":
         return "🏛️";
       case "custom":
@@ -301,7 +340,17 @@ const NewsAggregator = () => {
         border: "border-[#a855f7] dark:border-[#a855f7]",
       },
     },
-
+    food: {
+      bg: "bg-[#fef2f2] dark:bg-[#ef4444]/30",
+      text: "text-gray-800 dark:text-gray-200",
+      border: "border-[#ef4444]",
+      hover: "hover:bg-[#fef2f2] dark:hover:bg-[#ef4444]/20",
+      chip: {
+        bg: "bg-[#fef2f2] dark:bg-[#ef4444]/30",
+        text: "text-gray-800 dark:text-gray-200",
+        border: "border-[#ef4444] dark:border-[#ef4444]",
+      },
+    },
     politics: {
       bg: "bg-[#fdebe6] dark:bg-[#f97316]/30",
       text: "text-gray-800 dark:text-gray-200",
@@ -347,6 +396,7 @@ const NewsAggregator = () => {
   const [newsweekIndex, setNewsweekIndex] = useState(0);
   const [newYorkPostIndex, setNewYorkPostIndex] = useState(0);
   const [foxNewsIndex, setFoxNewsIndex] = useState(0);
+  const [abcNewsIndex, setAbcNewsIndex] = useState(0);
   const [cbsSportsIndex, setCbsSportsIndex] = useState(0);
   const [espnIndex, setEspnIndex] = useState(0);
 
@@ -356,6 +406,9 @@ const NewsAggregator = () => {
   const [bloombergIndex, setBloombergIndex] = useState(0);
 
   const [techcrunchIndex, setTechcrunchIndex] = useState(0);
+  const [hotPeppersIndex, setHotPeppersIndex] = useState(0);
+  const [minimalistBakerIndex, setMinimalistBakerIndex] = useState(0);
+  const [tipsForBbqIndex, setTipsForBbqIndex] = useState(0);
 
   // Drag and drop state
   const [draggedFeedId, setDraggedFeedId] = useState<string | null>(null);
@@ -504,6 +557,8 @@ const NewsAggregator = () => {
         return newYorkPostIndex;
       case "Fox News":
         return foxNewsIndex;
+      case "ABC News":
+        return abcNewsIndex;
       case "CBS SPORTS":
         return cbsSportsIndex;
       case "ESPN":
@@ -519,6 +574,12 @@ const NewsAggregator = () => {
 
       case "TechCrunch":
         return techcrunchIndex;
+      case "Hot Peppers":
+        return hotPeppersIndex;
+      case "Minimalist Baker":
+        return minimalistBakerIndex;
+      case "Tips For BBQ":
+        return tipsForBbqIndex;
       default:
         // For custom feeds, return 0 as default index
         return 0;
@@ -580,6 +641,9 @@ const NewsAggregator = () => {
       case "Fox News":
         goToPreviousFoxNews();
         break;
+      case "ABC News":
+        goToPreviousAbcNews();
+        break;
       case "CBS SPORTS":
         goToPreviousCbsSports();
         break;
@@ -600,6 +664,15 @@ const NewsAggregator = () => {
 
       case "TechCrunch":
         goToPreviousTechcrunch();
+        break;
+      case "Hot Peppers":
+        goToPreviousHotPeppers();
+        break;
+      case "Minimalist Baker":
+        goToPreviousMinimalistBaker();
+        break;
+      case "Tips For BBQ":
+        goToPreviousTipsForBbq();
         break;
     }
   };
@@ -659,6 +732,9 @@ const NewsAggregator = () => {
       case "Fox News":
         goToNextFoxNews();
         break;
+      case "ABC News":
+        goToNextAbcNews();
+        break;
       case "CBS SPORTS":
         goToNextCbsSports();
         break;
@@ -679,6 +755,15 @@ const NewsAggregator = () => {
 
       case "TechCrunch":
         goToNextTechcrunch();
+        break;
+      case "Hot Peppers":
+        goToNextHotPeppers();
+        break;
+      case "Minimalist Baker":
+        goToNextMinimalistBaker();
+        break;
+      case "Tips For BBQ":
+        goToNextTipsForBbq();
         break;
     }
   };
@@ -1698,6 +1783,23 @@ const NewsAggregator = () => {
     }
   };
 
+  // ABC News carousel navigation
+  const goToNextAbcNews = () => {
+    const abcNewsItems = newsItems.filter((item) => item.source === "ABC News");
+    if (abcNewsItems.length > 0) {
+      setAbcNewsIndex((prev) => (prev + 1) % abcNewsItems.length);
+    }
+  };
+
+  const goToPreviousAbcNews = () => {
+    const abcNewsItems = newsItems.filter((item) => item.source === "ABC News");
+    if (abcNewsItems.length > 0) {
+      setAbcNewsIndex(
+        (prev) => (prev - 1 + abcNewsItems.length) % abcNewsItems.length
+      );
+    }
+  };
+
   // Bloomberg carousel navigation
   const goToNextBloomberg = () => {
     const bloombergItems = newsItems.filter(
@@ -1776,6 +1878,72 @@ const NewsAggregator = () => {
     }
   };
 
+  // Hot Peppers carousel navigation
+  const goToNextHotPeppers = () => {
+    const hotPeppersItems = newsItems.filter(
+      (item) => item.source === "Hot Peppers"
+    );
+    if (hotPeppersItems.length > 0) {
+      setHotPeppersIndex((prev) => (prev + 1) % hotPeppersItems.length);
+    }
+  };
+
+  const goToPreviousHotPeppers = () => {
+    const hotPeppersItems = newsItems.filter(
+      (item) => item.source === "Hot Peppers"
+    );
+    if (hotPeppersItems.length > 0) {
+      setHotPeppersIndex(
+        (prev) => (prev - 1 + hotPeppersItems.length) % hotPeppersItems.length
+      );
+    }
+  };
+
+  // Minimalist Baker carousel navigation
+  const goToNextMinimalistBaker = () => {
+    const minimalistBakerItems = newsItems.filter(
+      (item) => item.source === "Minimalist Baker"
+    );
+    if (minimalistBakerItems.length > 0) {
+      setMinimalistBakerIndex(
+        (prev) => (prev + 1) % minimalistBakerItems.length
+      );
+    }
+  };
+
+  const goToPreviousMinimalistBaker = () => {
+    const minimalistBakerItems = newsItems.filter(
+      (item) => item.source === "Minimalist Baker"
+    );
+    if (minimalistBakerItems.length > 0) {
+      setMinimalistBakerIndex(
+        (prev) =>
+          (prev - 1 + minimalistBakerItems.length) % minimalistBakerItems.length
+      );
+    }
+  };
+
+  // Tips For BBQ carousel navigation
+  const goToNextTipsForBbq = () => {
+    const tipsForBbqItems = newsItems.filter(
+      (item) => item.source === "Tips For BBQ"
+    );
+    if (tipsForBbqItems.length > 0) {
+      setTipsForBbqIndex((prev) => (prev + 1) % tipsForBbqItems.length);
+    }
+  };
+
+  const goToPreviousTipsForBbq = () => {
+    const tipsForBbqItems = newsItems.filter(
+      (item) => item.source === "Tips For BBQ"
+    );
+    if (tipsForBbqItems.length > 0) {
+      setTipsForBbqIndex(
+        (prev) => (prev - 1 + tipsForBbqItems.length) % tipsForBbqItems.length
+      );
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white text-gray-900 transition-colors duration-300 dark:bg-gray-900 dark:text-white">
       <Suspense
@@ -1802,6 +1970,8 @@ const NewsAggregator = () => {
                 ? "bg-[#d8edf7] dark:bg-[#3fa7d6]/30"
                 : activeCategory === "entertainment"
                 ? "bg-[#f3e8ff] dark:bg-[#a855f7]/30"
+                : activeCategory === "food"
+                ? "bg-[#fef2f2] dark:bg-[#ef4444]/30"
                 : activeCategory === "politics"
                 ? "bg-[#fdebe6] dark:bg-[#f79d84]/30"
                 : "bg-gray-100 dark:bg-gray-700"
@@ -1833,6 +2003,8 @@ const NewsAggregator = () => {
                       ? "Business News"
                       : activeCategory === "entertainment"
                       ? "Entertainment News"
+                      : activeCategory === "food"
+                      ? "Food News"
                       : activeCategory === "politics"
                       ? "Politics News"
                       : activeCategory === "custom"
@@ -1990,6 +2162,34 @@ const NewsAggregator = () => {
                         />
                       </svg>
                       <span className="font-medium">Entertainment</span>
+                    </button>
+
+                    {/* Food */}
+                    <button
+                      onClick={() => {
+                        setActiveCategory("food");
+                        syncActiveCategory("food");
+                      }}
+                      className={`flex items-center gap-2 px-4 py-2 transition-colors ${
+                        activeCategory === "food"
+                          ? `${categoryColors.food.bg} ${categoryColors.food.text} rounded-t-lg rounded-b-none`
+                          : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-t-lg rounded-b-none`
+                      }`}
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                        />
+                      </svg>
+                      <span className="font-medium">Food</span>
                     </button>
                   </div>
                 </nav>
@@ -2228,6 +2428,8 @@ const NewsAggregator = () => {
                                       ? "#3fa7d6"
                                       : feed.category === "entertainment"
                                       ? "#a855f7"
+                                      : feed.category === "food"
+                                      ? "#ef4444"
                                       : feed.category === "politics"
                                       ? "#f79d84"
                                       : "#6b7280",
@@ -2263,456 +2465,16 @@ const NewsAggregator = () => {
                                           : "flex flex-col"
                                       }`}
                                     >
-                                      {/* WIRED Logo and Title - Stacked and aligned */}
-                                      {feed.name === "WIRED" ? (
-                                        <div
-                                          className={
-                                            viewMode === "grid" ? "" : "mb-3"
-                                          }
-                                        >
-                                          <img
-                                            src="https://www.wired.com/verso/static/wired-us/assets/logo.svg"
-                                            alt="wired"
-                                            className={`w-full h-auto opacity-80 ${
-                                              viewMode === "grid"
-                                                ? "max-w-[80px]"
-                                                : "max-w-[120px]"
-                                            }`}
-                                            onError={(e) => {
-                                              // Hide broken logo
-                                              const target = e.currentTarget;
-                                              target.style.display = "none";
-                                            }}
-                                          />
-                                        </div>
-                                      ) : feed.name === "Ars Technica" ? (
-                                        /* Ars Technica Logo and Title - Stacked and aligned */
-                                        <div
-                                          className={
-                                            viewMode === "grid" ? "" : "mb-3"
-                                          }
-                                        >
-                                          <img
-                                            src="/img/ars-technica-logo.svg"
-                                            alt="ars technica"
-                                            className={`w-full h-auto opacity-80 ${
-                                              viewMode === "grid"
-                                                ? "max-w-[80px]"
-                                                : "max-w-[120px]"
-                                            }`}
-                                            onError={(e) => {
-                                              // Hide broken logo
-                                              const target = e.currentTarget;
-                                              target.style.display = "none";
-                                            }}
-                                          />
-                                        </div>
-                                      ) : feed.name === "TechRadar" ? (
-                                        /* TechRadar Logo and Title - Stacked and aligned */
-                                        <div
-                                          className={
-                                            viewMode === "grid" ? "" : "mb-3"
-                                          }
-                                        >
-                                          <img
-                                            src="/img/techradar-logo.svg"
-                                            alt="techradar"
-                                            className={`w-full h-auto opacity-80 ${
-                                              viewMode === "grid"
-                                                ? "max-w-[80px]"
-                                                : "max-w-[120px]"
-                                            }`}
-                                            onError={(e) => {
-                                              // Hide broken logo
-                                              const target = e.currentTarget;
-                                              target.style.display = "none";
-                                            }}
-                                          />
-                                        </div>
-                                      ) : feed.name === "Vice - Tech" ? (
-                                        /* VICE Logo and Title - Stacked and aligned */
-                                        <div
-                                          className={
-                                            viewMode === "grid" ? "" : "mb-3"
-                                          }
-                                        >
-                                          <img
-                                            src="/img/vice-logo.png"
-                                            alt="vice"
-                                            className={`w-full h-auto opacity-80 ${
-                                              viewMode === "grid"
-                                                ? "max-w-[80px]"
-                                                : "max-w-[120px]"
-                                            }`}
-                                            onError={(e) => {
-                                              // Hide broken logo
-                                              const target = e.currentTarget;
-                                              target.style.display = "none";
-                                            }}
-                                          />
-                                        </div>
-                                      ) : feed.name === "The Onion" ? (
-                                        /* The Onion Logo and Title - Stacked and aligned */
-                                        <div
-                                          className={
-                                            viewMode === "grid" ? "" : "mb-3"
-                                          }
-                                        >
-                                          <img
-                                            src="/img/the-onion.png"
-                                            alt="the onion"
-                                            className={`w-full h-auto opacity-80 ${
-                                              viewMode === "grid"
-                                                ? "max-w-[80px]"
-                                                : "max-w-[120px]"
-                                            }`}
-                                            onError={(e) => {
-                                              // Hide broken logo
-                                              const target = e.currentTarget;
-                                              target.style.display = "none";
-                                            }}
-                                          />
-                                        </div>
-                                      ) : feed.name === "The Hard Times" ? (
-                                        /* The Hard Times Logo and Title - Stacked and aligned */
-                                        <div
-                                          className={
-                                            viewMode === "grid" ? "" : "mb-3"
-                                          }
-                                        >
-                                          <img
-                                            src="/img/hard-times.png"
-                                            alt="the hard times"
-                                            className={`w-full h-auto opacity-80 ${
-                                              viewMode === "grid"
-                                                ? "max-w-[80px]"
-                                                : "max-w-[120px]"
-                                            }`}
-                                            onError={(e) => {
-                                              // Hide broken logo
-                                              const target = e.currentTarget;
-                                              target.style.display = "none";
-                                            }}
-                                          />
-                                        </div>
-                                      ) : feed.name === "#Windows11" ? (
-                                        /* Windows 11 Logo and Title - Stacked and aligned */
-                                        <div
-                                          className={
-                                            viewMode === "grid" ? "" : "mb-3"
-                                          }
-                                        >
-                                          <img
-                                            src="/img/windows-11.svg"
-                                            alt="windows 11"
-                                            className={`w-full h-auto opacity-80 ${
-                                              viewMode === "grid"
-                                                ? "max-w-[80px]"
-                                                : "max-w-[120px]"
-                                            }`}
-                                            onError={(e) => {
-                                              // Hide broken logo
-                                              const target = e.currentTarget;
-                                              target.style.display = "none";
-                                            }}
-                                          />
-                                        </div>
-                                      ) : feed.name === "Fox Sports" ? (
-                                        /* Fox Sports Logo and Title - Stacked and aligned */
-                                        <div
-                                          className={
-                                            viewMode === "grid" ? "" : "mb-3"
-                                          }
-                                        >
-                                          <img
-                                            src="/img/fox-sports.png"
-                                            alt="fox sports"
-                                            className={`w-full h-auto opacity-80 ${
-                                              viewMode === "grid"
-                                                ? "max-w-[80px]"
-                                                : "max-w-[120px]"
-                                            }`}
-                                            onError={(e) => {
-                                              // Hide broken logo
-                                              const target = e.currentTarget;
-                                              target.style.display = "none";
-                                            }}
-                                          />
-                                        </div>
-                                      ) : feed.name === "Lambgoat" ? (
-                                        /* Lambgoat Logo and Title - Stacked and aligned */
-                                        <div
-                                          className={
-                                            viewMode === "grid" ? "" : "mb-3"
-                                          }
-                                        >
-                                          <img
-                                            src="/img/lambgoat.png"
-                                            alt="lambgoat"
-                                            className={`w-full h-auto opacity-80 ${
-                                              viewMode === "grid"
-                                                ? "max-w-[80px]"
-                                                : "max-w-[120px]"
-                                            }`}
-                                            onError={(e) => {
-                                              // Hide broken logo
-                                              const target = e.currentTarget;
-                                              target.style.display = "none";
-                                            }}
-                                          />
-                                        </div>
-                                      ) : feed.name === "No Echo" ? (
-                                        /* No Echo Logo and Title - Stacked and aligned */
-                                        <div
-                                          className={
-                                            viewMode === "grid" ? "" : "mb-3"
-                                          }
-                                        >
-                                          <img
-                                            src="/img/no-echo.png"
-                                            alt="no echo"
-                                            className={`w-full h-auto opacity-80 ${
-                                              viewMode === "grid"
-                                                ? "max-w-[80px]"
-                                                : "max-w-[120px]"
-                                            }`}
-                                            onError={(e) => {
-                                              // Hide broken logo
-                                              const target = e.currentTarget;
-                                              target.style.display = "none";
-                                            }}
-                                          />
-                                        </div>
-                                      ) : feed.name ===
-                                        "Soft White Underbelly" ? (
-                                        /* Soft White Underbelly Logo and Title - Stacked and aligned */
-                                        <div
-                                          className={
-                                            viewMode === "grid" ? "" : "mb-3"
-                                          }
-                                        >
-                                          <img
-                                            src="/img/swu.jpg"
-                                            alt="soft white underbelly"
-                                            className={`w-full h-auto opacity-80 ${
-                                              viewMode === "grid"
-                                                ? "max-w-[80px]"
-                                                : "max-w-[120px]"
-                                            }`}
-                                            onError={(e) => {
-                                              // Hide broken logo
-                                              const target = e.currentTarget;
-                                              target.style.display = "none";
-                                            }}
-                                          />
-                                        </div>
-                                      ) : feed.name === "Breitbart" ? (
-                                        /* Breitbart Logo and Title - Stacked and aligned */
-                                        <div
-                                          className={
-                                            viewMode === "grid" ? "" : "mb-3"
-                                          }
-                                        >
-                                          <img
-                                            src="/img/breitbart.png"
-                                            alt="breitbart"
-                                            className={`w-full h-auto opacity-80 ${
-                                              viewMode === "grid"
-                                                ? "max-w-[80px]"
-                                                : "max-w-[120px]"
-                                            }`}
-                                            onError={(e) => {
-                                              // Hide broken logo
-                                              const target = e.currentTarget;
-                                              target.style.display = "none";
-                                            }}
-                                          />
-                                        </div>
-                                      ) : feed.name === "Reuters" ? (
-                                        /* Reuters Business Text Title */
-                                        <div
-                                          className={
-                                            viewMode === "grid" ? "" : "mb-3"
-                                          }
-                                        >
-                                          <div className="text-center">
-                                            <h3
-                                              className={`font-bold text-blue-700 dark:text-blue-400 ${
-                                                viewMode === "grid"
-                                                  ? "text-lg"
-                                                  : "text-xl"
-                                              }`}
-                                            >
-                                              Reuters
-                                            </h3>
-                                          </div>
-                                        </div>
-                                      ) : feed.name === "CNN News" ? (
-                                        /* CNN News Logo and Title - Stacked and aligned */
-                                        <div
-                                          className={
-                                            viewMode === "grid" ? "" : "mb-3"
-                                          }
-                                        >
-                                          <img
-                                            src="/img/cnn.svg"
-                                            alt="cnn news"
-                                            className={`w-full h-auto opacity-80 ${
-                                              viewMode === "grid"
-                                                ? "max-w-[80px]"
-                                                : "max-w-[120px]"
-                                            }`}
-                                            onError={(e) => {
-                                              // Hide broken logo
-                                              const target = e.currentTarget;
-                                              target.style.display = "none";
-                                            }}
-                                          />
-                                        </div>
-                                      ) : feed.name === "Bloomberg" ? (
-                                        /* Bloomberg Logo and Title - Stacked and aligned */
-                                        <div
-                                          className={
-                                            viewMode === "grid" ? "" : "mb-3"
-                                          }
-                                        >
-                                          <img
-                                            src="/img/bloomberg.svg"
-                                            alt="bloomberg"
-                                            className={`w-full h-auto opacity-80 ${
-                                              viewMode === "grid"
-                                                ? "max-w-[80px]"
-                                                : "max-w-[120px]"
-                                            }`}
-                                            onError={(e) => {
-                                              // Hide broken logo
-                                              const target = e.currentTarget;
-                                              target.style.display = "none";
-                                            }}
-                                          />
-                                        </div>
-                                      ) : feed.name === "Newsweek" ? (
-                                        /* Newsweek Logo and Title - Stacked and aligned */
-                                        <div
-                                          className={
-                                            viewMode === "grid" ? "" : "mb-3"
-                                          }
-                                        >
-                                          <img
-                                            src="/img/newsweek.svg"
-                                            alt="newsweek"
-                                            className={`w-full h-auto opacity-80 ${
-                                              viewMode === "grid"
-                                                ? "max-w-[80px]"
-                                                : "max-w-[120px]"
-                                            }`}
-                                            onError={(e) => {
-                                              // Hide broken logo
-                                              const target = e.currentTarget;
-                                              target.style.display = "none";
-                                            }}
-                                          />
-                                        </div>
-                                      ) : feed.name === "New York Post" ? (
-                                        /* NY Post Logo and Title - Stacked and aligned */
-                                        <div
-                                          className={
-                                            viewMode === "grid" ? "" : "mb-3"
-                                          }
-                                        >
-                                          <img
-                                            src="/img/nypost.png"
-                                            alt="ny post"
-                                            className={`w-full h-auto opacity-80 ${
-                                              viewMode === "grid"
-                                                ? "max-w-[80px]"
-                                                : "max-w-[120px]"
-                                            }`}
-                                            onError={(e) => {
-                                              // Hide broken logo
-                                              const target = e.currentTarget;
-                                              target.style.display = "none";
-                                            }}
-                                          />
-                                        </div>
-                                      ) : feed.name === "CBS SPORTS" ? (
-                                        /* CBS Sports Logo and Title - Stacked and aligned */
-                                        <div
-                                          className={
-                                            viewMode === "grid" ? "" : "mb-3"
-                                          }
-                                        >
-                                          <img
-                                            src="/img/cbs-sports.svg"
-                                            alt="cbs sports"
-                                            className={`w-full h-auto opacity-80 ${
-                                              viewMode === "grid"
-                                                ? "max-w-[80px]"
-                                                : "max-w-[120px]"
-                                            }`}
-                                            onError={(e) => {
-                                              // Hide broken logo
-                                              const target = e.currentTarget;
-                                              target.style.display = "none";
-                                            }}
-                                          />
-                                        </div>
-                                      ) : feed.name === "CNN - SPORTS" ? (
-                                        /* CNN Sports Logo and Title - Stacked and aligned */
-                                        <div
-                                          className={
-                                            viewMode === "grid" ? "" : "mb-3"
-                                          }
-                                        >
-                                          <img
-                                            src="/img/cnnsi.png"
-                                            alt="cnn sports"
-                                            className={`w-full h-auto opacity-80 ${
-                                              viewMode === "grid"
-                                                ? "max-w-[80px]"
-                                                : "max-w-[120px]"
-                                            }`}
-                                            onError={(e) => {
-                                              // Hide broken logo
-                                              const target = e.currentTarget;
-                                              target.style.display = "none";
-                                            }}
-                                          />
-                                        </div>
-                                      ) : feed.name === "Fox News" ? (
-                                        /* Fox News Logo and Title - Stacked and aligned */
-                                        <div
-                                          className={
-                                            viewMode === "grid" ? "" : "mb-3"
-                                          }
-                                        >
-                                          <img
-                                            src="/img/fox-news.png"
-                                            alt="fox news"
-                                            className={`w-full h-auto opacity-80 ${
-                                              viewMode === "grid"
-                                                ? "max-w-[80px]"
-                                                : "max-w-[120px]"
-                                            }`}
-                                            onError={(e) => {
-                                              // Hide broken logo
-                                              const target = e.currentTarget;
-                                              target.style.display = "none";
-                                            }}
-                                          />
-                                        </div>
-                                      ) : (
-                                        /* Source Title for other feeds */
-                                        <h4
-                                          className={`font-normal text-gray-700 dark:text-gray-300 uppercase tracking-wide flex-shrink-0 ${
-                                            viewMode === "list"
-                                              ? "text-xs sm:text-sm"
-                                              : "text-base"
-                                          }`}
-                                        >
-                                          {feed.name}
-                                        </h4>
-                                      )}
+                                      {/* Source Title for all feeds */}
+                                      <h4
+                                        className={`font-normal text-gray-700 dark:text-gray-300 uppercase tracking-wide flex-shrink-0 ${
+                                          viewMode === "list"
+                                            ? "text-xs sm:text-sm"
+                                            : "text-base"
+                                        }`}
+                                      >
+                                        {feed.name}
+                                      </h4>
                                     </div>
 
                                     {/* Carousel Controls - Show in list view only */}
@@ -2985,12 +2747,7 @@ const NewsAggregator = () => {
                                               : viewMode === "list"
                                               ? "75px"
                                               : "150px",
-                                          minHeight:
-                                            viewMode === "grid"
-                                              ? "100px"
-                                              : viewMode === "list"
-                                              ? "75px"
-                                              : "150px",
+                                          minHeight: "150px",
                                           maxHeight:
                                             viewMode === "grid"
                                               ? "200px"
@@ -3516,7 +3273,7 @@ const NewsAggregator = () => {
                                       ) : (
                                         // Show generic placeholder
                                         <div
-                                          className={`w-full bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center ${
+                                          className={`w-full bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center min-h-[150px] ${
                                             viewMode === "list"
                                               ? "h-24"
                                               : "h-48"
@@ -3687,6 +3444,34 @@ const NewsAggregator = () => {
                   />
                 </svg>
                 <span className="text-xs font-medium">Entertainment</span>
+              </button>
+
+              {/* Food */}
+              <button
+                onClick={() => {
+                  setActiveCategory("food");
+                  syncActiveCategory("food");
+                }}
+                className={`flex flex-col items-center gap-1 px-3 py-2 transition-colors ${
+                  activeCategory === "food"
+                    ? `${categoryColors.food.bg} ${categoryColors.food.text} rounded-t-lg rounded-b-none`
+                    : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-t-lg rounded-b-none`
+                }`}
+              >
+                <svg
+                  className="w-7 h-7"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                  />
+                </svg>
+                <span className="text-xs font-medium">Food</span>
               </button>
             </div>
           </nav>
