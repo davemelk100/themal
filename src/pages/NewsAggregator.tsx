@@ -267,7 +267,7 @@ const NewsAggregator = () => {
       case "technology":
         return "💻";
       case "sports":
-        return "⚽";
+        return "⚾";
       case "business":
         return "💼";
       case "entertainment":
@@ -2690,7 +2690,7 @@ const NewsAggregator = () => {
                                           viewMode === "grid" ? "auto" : "75px",
                                         minHeight:
                                           viewMode === "grid"
-                                            ? "150px"
+                                            ? "250px"
                                             : "75px",
                                         maxHeight:
                                           viewMode === "grid"
@@ -2714,12 +2714,9 @@ const NewsAggregator = () => {
                                               : "75px",
                                           minHeight:
                                             viewMode === "grid"
-                                              ? "150px"
-                                              : "75px",
-                                          maxHeight:
-                                            viewMode === "grid"
                                               ? "250px"
                                               : "75px",
+                                          maxHeight: "250px",
                                         }}
                                         onError={(e) => {
                                           // Replace broken image with placeholder
@@ -2746,14 +2743,9 @@ const NewsAggregator = () => {
                                               ? "auto"
                                               : viewMode === "list"
                                               ? "75px"
-                                              : "150px",
-                                          minHeight: "150px",
-                                          maxHeight:
-                                            viewMode === "grid"
-                                              ? "200px"
-                                              : viewMode === "list"
-                                              ? "75px"
-                                              : "150px",
+                                              : "250px",
+                                          minHeight: "250px",
+                                          maxHeight: "250px",
                                         }}
                                       >
                                         <div className="text-center text-gray-500 dark:text-gray-400">
@@ -2764,15 +2756,28 @@ const NewsAggregator = () => {
                                                 : "text-4xl mb-2"
                                             }
                                           >
-                                            {getCategoryIcon(
-                                              getFeedCategory(
-                                                feedItems[currentIndex]
-                                                  ?.source || ""
-                                              )
-                                            )}
+                                            {feedItems[currentIndex]?.source ===
+                                            "Hot Peppers"
+                                              ? "🌶️"
+                                              : feedItems[currentIndex]
+                                                  ?.source === "Tips For BBQ"
+                                              ? "♨️"
+                                              : getCategoryIcon(
+                                                  getFeedCategory(
+                                                    feedItems[currentIndex]
+                                                      ?.source || ""
+                                                  )
+                                                )}
                                           </div>
                                           <div className="text-xs mt-1 font-medium">
-                                            {feedItems[currentIndex]?.source}
+                                            {feedItems[currentIndex]?.source ===
+                                              "ESPN" ||
+                                            feedItems[currentIndex]?.source ===
+                                              "BleepingComputer" ||
+                                            feedItems[currentIndex]?.source ===
+                                              "Bloomberg"
+                                              ? ""
+                                              : feedItems[currentIndex]?.source}
                                           </div>
                                         </div>
                                       </div>
@@ -2810,9 +2815,9 @@ const NewsAggregator = () => {
                                         viewMode === "grid" ? "mt-2" : "mt-auto"
                                       }`}
                                       style={{
-                                        height: "150px",
-                                        minHeight: "150px",
-                                        maxHeight: "150px",
+                                        height: "250px",
+                                        minHeight: "250px",
+                                        maxHeight: "250px",
                                         marginBottom: "15px",
                                       }}
                                     >
@@ -2872,16 +2877,30 @@ const NewsAggregator = () => {
                                                   feedItems[currentIndex]
                                                     ?.source === "New York Post"
                                                 ? "bg-[#a855f7]"
+                                                : feedItems[currentIndex]
+                                                    ?.source ===
+                                                    "Hot Peppers" ||
+                                                  feedItems[currentIndex]
+                                                    ?.source ===
+                                                    "Tips For BBQ" ||
+                                                  feedItems[currentIndex]
+                                                    ?.source ===
+                                                    "Minimalist Baker"
+                                                ? "bg-[#e5e7eb]"
                                                 : "bg-blue-500"
                                             }`}
                                           >
-                                            <span className="text-white font-bold text-2xl">
-                                              {
-                                                (
-                                                  feedItems[currentIndex]
-                                                    ?.source || ""
-                                                ).split(" ")[0]
-                                              }
+                                            <span className="text-white font-bold text-6xl">
+                                              {feedItems[currentIndex]
+                                                ?.source === "Hot Peppers"
+                                                ? "🌶️"
+                                                : feedItems[currentIndex]
+                                                    ?.source === "Tips For BBQ"
+                                                ? "♨️"
+                                                : (
+                                                    feedItems[currentIndex]
+                                                      ?.source || ""
+                                                  ).split(" ")[0]}
                                             </span>
 
                                             {/* Video indicator if video content exists */}
@@ -2918,7 +2937,7 @@ const NewsAggregator = () => {
                                           className={`w-full rounded-lg flex items-center justify-center relative ${
                                             viewMode === "list"
                                               ? "h-24"
-                                              : "h-48"
+                                              : "h-96"
                                           } ${
                                             feedItems[currentIndex]?.source ===
                                               "Ars Technica" ||
@@ -2968,20 +2987,40 @@ const NewsAggregator = () => {
                                                 feedItems[currentIndex]
                                                   ?.source === "New York Post"
                                               ? "bg-[#f3e8ff] dark:bg-[#a855f7]/30"
+                                              : feedItems[currentIndex]
+                                                  ?.source === "Hot Peppers" ||
+                                                feedItems[currentIndex]
+                                                  ?.source === "Tips For BBQ" ||
+                                                feedItems[currentIndex]
+                                                  ?.source ===
+                                                  "Minimalist Baker"
+                                              ? "bg-[#e5e7eb] dark:bg-[#e5e7eb]"
                                               : "bg-gray-200 dark:bg-gray-700"
                                           }`}
                                         >
                                           <div className="text-center text-gray-500 dark:text-gray-400">
                                             <div className="text-6xl mb-2">
-                                              {getCategoryIcon(
-                                                getFeedCategory(
-                                                  feedItems[currentIndex]
-                                                    ?.source || ""
-                                                )
-                                              )}
+                                              {feedItems[currentIndex]
+                                                ?.source === "Hot Peppers"
+                                                ? "🌶️"
+                                                : getCategoryIcon(
+                                                    getFeedCategory(
+                                                      feedItems[currentIndex]
+                                                        ?.source || ""
+                                                    )
+                                                  )}
                                             </div>
                                             <div className="text-xs mt-1 font-medium">
-                                              {feedItems[currentIndex]?.source}
+                                              {feedItems[currentIndex]
+                                                ?.source === "ESPN" ||
+                                              feedItems[currentIndex]
+                                                ?.source ===
+                                                "BleepingComputer" ||
+                                              feedItems[currentIndex]
+                                                ?.source === "Bloomberg"
+                                                ? ""
+                                                : feedItems[currentIndex]
+                                                    ?.source}
                                             </div>
                                           </div>
 
@@ -3185,7 +3224,7 @@ const NewsAggregator = () => {
                                     <div
                                       className="relative z-0"
                                       style={{
-                                        height: "150px",
+                                        height: "250px",
                                         marginTop:
                                           viewMode === "grid" ? "8px" : "20px",
                                         marginBottom: "0px",
@@ -3194,11 +3233,11 @@ const NewsAggregator = () => {
                                       <img
                                         src={customFeedItems[0]?.image}
                                         alt={customFeedItems[0]?.title}
-                                        className="w-full h-48 object-cover rounded-lg"
+                                        className="w-full h-96 object-cover rounded-lg"
                                         style={{
-                                          height: "192px",
-                                          minHeight: "192px",
-                                          maxHeight: "192px",
+                                          height: "250px",
+                                          minHeight: "250px",
+                                          maxHeight: "250px",
                                         }}
                                         onError={(e) => {
                                           // Replace broken image with placeholder
@@ -3220,9 +3259,9 @@ const NewsAggregator = () => {
                                       <div
                                         className="image-placeholder hidden w-full bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center"
                                         style={{
-                                          height: "150px",
-                                          minHeight: "150px",
-                                          maxHeight: "150px",
+                                          height: "250px",
+                                          minHeight: "250px",
+                                          maxHeight: "250px",
                                         }}
                                       >
                                         <div className="text-center text-gray-500 dark:text-gray-400">
@@ -3242,9 +3281,9 @@ const NewsAggregator = () => {
                                         viewMode === "grid" ? "mt-2" : "mt-auto"
                                       }`}
                                       style={{
-                                        height: "150px",
-                                        minHeight: "150px",
-                                        maxHeight: "150px",
+                                        height: "250px",
+                                        minHeight: "250px",
+                                        maxHeight: "250px",
                                         marginBottom: "15px",
                                       }}
                                     >
@@ -3273,10 +3312,10 @@ const NewsAggregator = () => {
                                       ) : (
                                         // Show generic placeholder
                                         <div
-                                          className={`w-full bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center min-h-[150px] ${
+                                          className={`w-full bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center min-h-[250px] ${
                                             viewMode === "list"
                                               ? "h-24"
-                                              : "h-48"
+                                              : "h-96"
                                           }`}
                                         >
                                           <div className="text-center text-gray-500 dark:text-gray-400">
