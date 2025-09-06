@@ -140,9 +140,7 @@ function App() {
   } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const [labView, setLabView] = useState<"grid" | "list">("grid");
   const [storiesView, setStoriesView] = useState<"grid" | "list">("grid");
-  const [articlesView, setArticlesView] = useState<"grid" | "list">("grid");
   const [designView, setDesignView] = useState<"grid" | "list">("grid");
   const [currentSlide] = useState(0);
   const [currentViewMode, setCurrentViewMode] = useState<"list" | "grid">(
@@ -336,16 +334,8 @@ function App() {
                           subtitle={content.currentProjects.subtitle}
                           className="mb-6"
                           showUpArrow={false}
-                          toggleView={setLabView}
-                          viewMode={labView}
                         />
-                        <div
-                          className={
-                            labView === "grid"
-                              ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-6"
-                              : "flex flex-col gap-4"
-                          }
-                        >
+                        <div className="grid grid-cols-2 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
                           {content.currentProjects.projects
                             .filter((project) => project.title !== "Chatbots")
                             .map((project, index) => (
@@ -358,117 +348,66 @@ function App() {
                                   duration: 1.8,
                                   delay: index * 0.2,
                                 }}
-                                className={`group relative overflow-visible rounded-lg bg-transparent dark:bg-transparent border dark:border-gray-500 shadow-md ${
-                                  labView === "list"
-                                    ? "h-[50px]"
-                                    : "h-[320px] sm:h-[336px] lg:h-[352px]"
-                                }`}
+                                className="group relative overflow-hidden rounded-lg bg-transparent dark:bg-transparent border dark:border-gray-500 shadow-md h-[120px] sm:h-[320px] md:h-[336px] lg:h-[352px]"
                               >
-                                {labView === "grid" && (
-                                  <div className="absolute top-2 right-2 z-20">
-                                    <a
-                                      href={project.demo}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center relative z-20 mt-[5px] mr-[5px]"
-                                      aria-label={`View demo: ${project.title}`}
-                                    >
-                                      <ExternalLink className="h-4 w-4 text-gray-600 dark:text-white" />
-                                    </a>
-                                  </div>
-                                )}
-                                {labView === "grid" && (
-                                  <div className="absolute inset-0 overflow-hidden z-0 p-2">
-                                    <img
-                                      src={
-                                        project.title === "Design Panes"
-                                          ? `/img/design-panes-alt2.svg?v=${Date.now()}`
-                                          : project.title === "AI NUI"
-                                          ? `/img/ai-nui-alt2.svg?v=${Date.now()}`
-                                          : project.title === "HealthAware"
-                                          ? `/img/health-aware-animation.svg?v=${Date.now()}`
-                                          : project.title === "JSON AI Prompts"
-                                          ? `/img/json-ai-prompts-animation.svg?v=${Date.now()}`
-                                          : project.title ===
-                                            "User Testing Config"
-                                          ? `/img/user-testing-config-animation.svg?v=${Date.now()}`
-                                          : `/img/lab.svg?v=${Date.now()}`
-                                      }
-                                      alt={
-                                        project.title === "Design Panes"
-                                          ? "Design Panes"
-                                          : project.title === "AI NUI"
-                                          ? "Design Panes Animation"
-                                          : project.title === "HealthAware"
-                                          ? "HealthAware Animation"
-                                          : project.title === "JSON AI Prompts"
-                                          ? "JSON AI Prompts Animation"
-                                          : project.title ===
-                                            "User Testing Config"
-                                          ? "User Testing Config Animation"
-                                          : "Lab"
-                                      }
-                                      className="absolute inset-0 h-full w-full object-contain object-bottom"
-                                    />
-                                  </div>
-                                )}
-                                <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
-                                  <div
-                                    className={`rounded-lg p-2 ${
-                                      labView === "grid"
-                                        ? "pr-12"
-                                        : "flex items-center justify-between h-full"
-                                    }`}
+                                <div className="absolute top-1 right-1 sm:top-2 sm:right-2 z-20">
+                                  <a
+                                    href={project.demo}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center relative z-20"
+                                    aria-label={`View demo: ${project.title}`}
                                   >
-                                    <div className="flex flex-col gap-1">
+                                    <ExternalLink className="h-4 w-4 text-gray-600 dark:text-white" />
+                                  </a>
+                                </div>
+                                {/* Mobile background - white */}
+                                <div className="absolute inset-0 bg-white dark:bg-gray-900 sm:hidden"></div>
+
+                                {/* Desktop background - animations */}
+                                <div className="absolute inset-0 overflow-hidden z-0 p-2 hidden sm:block">
+                                  <img
+                                    src={
+                                      project.title === "Design Panes"
+                                        ? `/img/design-panes-alt2.svg?v=${Date.now()}`
+                                        : project.title === "AI NUI"
+                                        ? `/img/ai-nui-alt2.svg?v=${Date.now()}`
+                                        : project.title === "HealthAware"
+                                        ? `/img/health-aware-animation.svg?v=${Date.now()}`
+                                        : project.title === "JSON AI Prompts"
+                                        ? `/img/json-ai-prompts-animation.svg?v=${Date.now()}`
+                                        : project.title ===
+                                          "User Testing Config"
+                                        ? `/img/user-testing-config-animation.svg?v=${Date.now()}`
+                                        : `/img/lab.svg?v=${Date.now()}`
+                                    }
+                                    alt={
+                                      project.title === "Design Panes"
+                                        ? "Design Panes"
+                                        : project.title === "AI NUI"
+                                        ? "Design Panes Animation"
+                                        : project.title === "HealthAware"
+                                        ? "HealthAware Animation"
+                                        : project.title === "JSON AI Prompts"
+                                        ? "JSON AI Prompts Animation"
+                                        : project.title ===
+                                          "User Testing Config"
+                                        ? "User Testing Config Animation"
+                                        : "Lab"
+                                    }
+                                    className="absolute inset-0 h-full w-full object-contain object-bottom"
+                                  />
+                                </div>
+                                <div className="absolute inset-0 p-2 sm:p-3 flex flex-col gap-1 sm:gap-2 z-10">
+                                  <div className="rounded-lg p-1 sm:p-2 pr-10 sm:pr-12">
+                                    <div className="flex flex-col gap-0.5 sm:gap-1">
                                       <div className="flex items-center justify-between w-full">
                                         <div className="flex items-center gap-3">
-                                          {labView === "list" && (
-                                            <div className="w-12 h-12 rounded overflow-hidden flex-shrink-0">
-                                              <img
-                                                src={
-                                                  project.title ===
-                                                  "Design Panes"
-                                                    ? `/img/design-panes-alt2.svg?v=${Date.now()}`
-                                                    : project.title === "AI NUI"
-                                                    ? `/img/ai-nui-alt2.svg?v=${Date.now()}`
-                                                    : project.title ===
-                                                      "HealthAware"
-                                                    ? `/img/health-aware-animation.svg?v=${Date.now()}`
-                                                    : project.title ===
-                                                      "JSON AI Prompts"
-                                                    ? `/img/json-ai-prompts-animation.svg?v=${Date.now()}`
-                                                    : project.title ===
-                                                      "User Testing Config"
-                                                    ? `/img/user-testing-config-animation.svg?v=${Date.now()}`
-                                                    : `/img/lab.svg?v=${Date.now()}`
-                                                }
-                                                alt={
-                                                  project.title ===
-                                                  "Design Panes"
-                                                    ? "Design Panes"
-                                                    : project.title === "AI NUI"
-                                                    ? "Design Panes Animation"
-                                                    : project.title ===
-                                                      "HealthAware"
-                                                    ? "HealthAware Animation"
-                                                    : project.title ===
-                                                      "JSON AI Prompts"
-                                                    ? "JSON AI Prompts Animation"
-                                                    : project.title ===
-                                                      "User Testing Config"
-                                                    ? "User Testing Config Animation"
-                                                    : "Lab"
-                                                }
-                                                className="w-full h-full object-cover"
-                                              />
-                                            </div>
-                                          )}
                                           <a
                                             href={project.demo}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="text-[18px] font-semibold mb-1 title-font text-black dark:text-white hover:text-primary transition-colors cursor-pointer whitespace-nowrap"
+                                            className="font-semibold mb-0 title-font text-black dark:text-white hover:text-primary transition-colors cursor-pointer text-[18px] whitespace-nowrap truncate lab-card-title"
                                             style={{
                                               letterSpacing: "-0.01em",
                                             }}
@@ -476,152 +415,140 @@ function App() {
                                             {project.title}
                                           </a>
                                         </div>
-                                        {labView === "list" && (
-                                          <a
-                                            href={project.demo}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
-                                            aria-label={`View demo: ${project.title}`}
-                                          >
-                                            <ExternalLink className="h-4 w-4 text-gray-600 dark:text-white" />
-                                          </a>
-                                        )}
                                       </div>
                                       {/* Colored balls for each Lab card, now on a new row */}
-                                      {labView === "grid" && (
-                                        <div
-                                          className="flex items-center gap-1 mt-1 mb-[10px]"
-                                          role="presentation"
-                                        >
-                                          {project.title === "Design Panes" &&
-                                            [
-                                              "#ffd700", // Gold from Design Panes animation
-                                              "#355c7d", // Deep Blue from Design Panes animation
-                                              "#88d498", // Soft Green from Design Panes animation
-                                              "#e6b800", // Darker Gold from Design Panes animation
-                                              "#26425a", // Darker Blue from Design Panes animation
-                                              "#5", // Darker Green from Design Panes animation
-                                            ].map((color, i) => (
-                                              <span
-                                                key={i}
-                                                role="presentation"
-                                                aria-hidden="true"
-                                                style={{
-                                                  display: "inline-block",
-                                                  width: 12,
-                                                  height: 12,
-                                                  borderRadius: "50%",
-                                                  background: `radial-gradient(circle at 70% 70%, ${color} 0%, ${color} 60%, ${color}dd 100%)`,
-                                                  boxShadow:
-                                                    "0 1px 2px rgba(0,0,0,0.08)",
-                                                }}
-                                              />
-                                            ))}
-                                          {project.title === "AI NUI" &&
-                                            [
-                                              "#ff6b35", // Orange from AI NUI animation
-                                              "#4ecdc4", // Teal from AI NUI animation
-                                              "#6c757d", // Gray from AI NUI animation
-                                              "#e55a2b", // Darker Orange from AI NUI animation
-                                              "#457a", // Darker Teal from AI NUI animation
-                                              "#58", // Darker Gray from AI NUI animation
-                                            ].map((color, i) => (
-                                              <span
-                                                key={i}
-                                                role="presentation"
-                                                aria-hidden="true"
-                                                style={{
-                                                  display: "inline-block",
-                                                  width: 12,
-                                                  height: 12,
-                                                  borderRadius: "50%",
-                                                  background: `radial-gradient(circle at 70% 70%, ${color} 0%, ${color} 60%, ${color}dd 100%)`,
-                                                  boxShadow:
-                                                    "0 1px 2px rgba(0,0,0,0.08)",
-                                                }}
-                                              />
-                                            ))}
-                                          {project.title === "HealthAware" &&
-                                            [
-                                              "#64748b", // Slate - neutral/monitoring
-                                              "#94a3b8", // Slate Light - subtle/calm
-                                              "#475569", // Slate Dark - depth/contrast
-                                              "#cbd5e1", // Slate Lighter - soft/gentle
-                                              "#334155", // Slate Darker - sophisticated
-                                            ].map((color, i) => (
-                                              <span
-                                                key={i}
-                                                role="presentation"
-                                                aria-hidden="true"
-                                                style={{
-                                                  display: "inline-block",
-                                                  width: 12,
-                                                  height: 12,
-                                                  borderRadius: "50%",
-                                                  background: `radial-gradient(circle at 70% 70%, ${color} 0%, ${color} 60%, ${color}dd 100%)`,
-                                                  boxShadow:
-                                                    "0 1px 2px rgba(0,0,0,0.08)",
-                                                }}
-                                              />
-                                            ))}
-                                          {project.title ===
-                                            "JSON AI Prompts" &&
-                                            [
-                                              "#6366f1", // Indigo - primary
-                                              "#a5b4fc", // Indigo Light - subtle
-                                              "#4f46e5", // Indigo Dark - depth
-                                              "#c7d2fe", // Indigo Lighter - soft
-                                              "#3730a3", // Indigo Darker - sophisticated
-                                              "#06b6d4", // Cyan - third color
-                                            ].map((color, i) => (
-                                              <span
-                                                key={i}
-                                                role="presentation"
-                                                aria-hidden="true"
-                                                style={{
-                                                  display: "inline-block",
-                                                  width: 12,
-                                                  height: 12,
-                                                  borderRadius: "50%",
-                                                  background: `radial-gradient(circle at 70% 70%, ${color} 0%, ${color} 60%, ${color}dd 100%)`,
-                                                  boxShadow:
-                                                    "0 1px 2px rgba(0,0,0,0.08)",
-                                                }}
-                                              />
-                                            ))}
-                                          {project.title ===
-                                            "User Testing Config" &&
-                                            [
-                                              "#a67c52", // Brighter Warm Brown - neutral/testing
-                                              "#b8a095", // Brighter Brown Gray - subtle/calm
-                                              "#8b6b4f", // Brighter Brown Dark - depth/contrast
-                                              "#e8d5d0", // Brighter Light Beige - soft/gentle
-                                              "#d4a574", // Golden Brown - warm/accent
-                                            ].map((color, i) => (
-                                              <span
-                                                key={i}
-                                                role="presentation"
-                                                aria-hidden="true"
-                                                style={{
-                                                  display: "inline-block",
-                                                  width: 12,
-                                                  height: 12,
-                                                  borderRadius: "50%",
-                                                  background: `radial-gradient(circle at 70% 70%, ${color} 0%, ${color} 60%, ${color}dd 100%)`,
-                                                  boxShadow:
-                                                    "0 1px 2px rgba(0,0,0,0.08)",
-                                                }}
-                                              />
-                                            ))}
-                                        </div>
-                                      )}
+                                      <div
+                                        className="flex items-center gap-1 mt-0 sm:mt-1 mb-1 sm:mb-[10px]"
+                                        role="presentation"
+                                      >
+                                        {project.title === "Design Panes" &&
+                                          [
+                                            "#ffd700", // Gold from Design Panes animation
+                                            "#355c7d", // Deep Blue from Design Panes animation
+                                            "#88d498", // Soft Green from Design Panes animation
+                                            "#e6b800", // Darker Gold from Design Panes animation
+                                            "#26425a", // Darker Blue from Design Panes animation
+                                            "#5", // Darker Green from Design Panes animation
+                                          ].map((color, i) => (
+                                            <span
+                                              key={i}
+                                              role="presentation"
+                                              aria-hidden="true"
+                                              className="w-3 h-3"
+                                              style={{
+                                                display: "inline-block",
+                                                borderRadius: "50%",
+                                                background: `radial-gradient(circle at 70% 70%, ${color} 0%, ${color} 60%, ${color}dd 100%)`,
+                                                boxShadow:
+                                                  "0 1px 2px rgba(0,0,0,0.08)",
+                                              }}
+                                            />
+                                          ))}
+                                        {project.title === "AI NUI" &&
+                                          [
+                                            "#ff6b35", // Orange from AI NUI animation
+                                            "#4ecdc4", // Teal from AI NUI animation
+                                            "#6c757d", // Gray from AI NUI animation
+                                            "#e55a2b", // Darker Orange from AI NUI animation
+                                            "#457a", // Darker Teal from AI NUI animation
+                                            "#58", // Darker Gray from AI NUI animation
+                                          ].map((color, i) => (
+                                            <span
+                                              key={i}
+                                              role="presentation"
+                                              aria-hidden="true"
+                                              className="w-3 h-3"
+                                              style={{
+                                                display: "inline-block",
+                                                borderRadius: "50%",
+                                                background: `radial-gradient(circle at 70% 70%, ${color} 0%, ${color} 60%, ${color}dd 100%)`,
+                                                boxShadow:
+                                                  "0 1px 2px rgba(0,0,0,0.08)",
+                                              }}
+                                            />
+                                          ))}
+                                        {project.title === "HealthAware" &&
+                                          [
+                                            "#64748b", // Slate - neutral/monitoring
+                                            "#94a3b8", // Slate Light - subtle/calm
+                                            "#475569", // Slate Dark - depth/contrast
+                                            "#cbd5e1", // Slate Lighter - soft/gentle
+                                            "#334155", // Slate Darker - sophisticated
+                                          ].map((color, i) => (
+                                            <span
+                                              key={i}
+                                              role="presentation"
+                                              aria-hidden="true"
+                                              className="w-3 h-3"
+                                              style={{
+                                                display: "inline-block",
+                                                borderRadius: "50%",
+                                                background: `radial-gradient(circle at 70% 70%, ${color} 0%, ${color} 60%, ${color}dd 100%)`,
+                                                boxShadow:
+                                                  "0 1px 2px rgba(0,0,0,0.08)",
+                                              }}
+                                            />
+                                          ))}
+                                        {project.title === "JSON AI Prompts" &&
+                                          [
+                                            "#6366f1", // Indigo - primary
+                                            "#a5b4fc", // Indigo Light - subtle
+                                            "#4f46e5", // Indigo Dark - depth
+                                            "#c7d2fe", // Indigo Lighter - soft
+                                            "#3730a3", // Indigo Darker - sophisticated
+                                            "#06b6d4", // Cyan - third color
+                                          ].map((color, i) => (
+                                            <span
+                                              key={i}
+                                              role="presentation"
+                                              aria-hidden="true"
+                                              className="w-3 h-3"
+                                              style={{
+                                                display: "inline-block",
+                                                borderRadius: "50%",
+                                                background: `radial-gradient(circle at 70% 70%, ${color} 0%, ${color} 60%, ${color}dd 100%)`,
+                                                boxShadow:
+                                                  "0 1px 2px rgba(0,0,0,0.08)",
+                                              }}
+                                            />
+                                          ))}
+                                        {project.title ===
+                                          "User Testing Config" &&
+                                          [
+                                            "#a67c52", // Brighter Warm Brown - neutral/testing
+                                            "#b8a095", // Brighter Brown Gray - subtle/calm
+                                            "#8b6b4f", // Brighter Brown Dark - depth/contrast
+                                            "#e8d5d0", // Brighter Light Beige - soft/gentle
+                                            "#d4a574", // Golden Brown - warm/accent
+                                          ].map((color, i) => (
+                                            <span
+                                              key={i}
+                                              role="presentation"
+                                              aria-hidden="true"
+                                              className="w-3 h-3"
+                                              style={{
+                                                display: "inline-block",
+                                                borderRadius: "50%",
+                                                background: `radial-gradient(circle at 70% 70%, ${color} 0%, ${color} 60%, ${color}dd 100%)`,
+                                                boxShadow:
+                                                  "0 1px 2px rgba(0,0,0,0.08)",
+                                              }}
+                                            />
+                                          ))}
+                                      </div>
                                     </div>
-                                    {labView === "grid" && (
-                                      <p className="text-sm text-gray-600 dark:text-white mb-2 flex-1">
-                                        {project.description}
-                                      </p>
-                                    )}
+                                    <p
+                                      className="text-sm text-gray-600 dark:text-white mb-1 sm:mb-2 flex-1 overflow-hidden"
+                                      style={{
+                                        display: "-webkit-box",
+                                        WebkitLineClamp: 2,
+                                        WebkitBoxOrient: "vertical",
+                                        lineHeight: "1.2",
+                                        maxHeight: "2.4em",
+                                      }}
+                                    >
+                                      {project.description}
+                                    </p>
                                   </div>
                                 </div>
                               </motion.div>
@@ -644,8 +571,6 @@ function App() {
                         subtitle={content.articles.subtitle}
                         className="mb-6"
                         showArchiveLink={false}
-                        toggleView={setArticlesView}
-                        viewMode={articlesView}
                         icon={
                           <a
                             href="https://davemelk.substack.com/"
@@ -664,13 +589,7 @@ function App() {
                           </a>
                         }
                       />
-                      <div
-                        className={
-                          articlesView === "grid"
-                            ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-6"
-                            : "flex flex-col gap-4"
-                        }
-                      >
+                      <div className="grid grid-cols-2 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
                         {content.articles.items
                           .filter(
                             (article) =>
@@ -698,127 +617,106 @@ function App() {
                                 duration: 1.8,
                                 delay: index * 0.2,
                               }}
-                              className={`group relative overflow-hidden rounded-lg bg-transparent border border-gray-200 flex flex-col shadow-md ${
-                                articlesView === "list"
-                                  ? "h-[50px]"
-                                  : "h-[320px] sm:h-[336px] lg:h-[352px]"
-                              }`}
+                              className="group relative overflow-hidden rounded-lg bg-transparent border border-gray-200 flex flex-col shadow-md h-[120px] sm:h-[320px] md:h-[336px] lg:h-[352px]"
                             >
-                              {articlesView === "grid" && (
-                                <div className="absolute top-2 right-2 z-20">
-                                  {article.url.startsWith("http") ? (
-                                    <a
-                                      href={article.url}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center mt-[5px] mr-[5px]"
-                                      aria-label={`View article: ${article.title}`}
-                                    >
-                                      <ExternalLink className="h-4 w-4 text-gray-600 dark:text-white" />
-                                    </a>
-                                  ) : (
-                                    <Link
-                                      to={`/article/${slugify(article.title)}`}
-                                      className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center mt-[5px] mr-[5px]"
-                                      aria-label={`View article: ${article.title}`}
-                                    >
-                                      <ExternalLink className="h-4 w-4 text-gray-600 dark:text-white" />
-                                    </Link>
-                                  )}
-                                </div>
-                              )}
-                              {articlesView === "grid" && (
-                                <div className="absolute inset-0 z-0">
-                                  <img
-                                    src={`${
-                                      (article as any).cardImage ||
-                                      article.image
-                                    }?v=${Date.now()}`}
-                                    alt={article.title}
-                                    className="absolute bottom-0 left-0 right-0 h-1/2 w-full object-cover object-center"
-                                    loading="lazy"
-                                  />
-                                </div>
-                              )}
+                              <div className="absolute top-1 right-1 sm:top-2 sm:right-2 z-20">
+                                {article.url.startsWith("http") ? (
+                                  <a
+                                    href={article.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
+                                    aria-label={`View article: ${article.title}`}
+                                  >
+                                    <ExternalLink className="h-4 w-4 text-gray-600 dark:text-white" />
+                                  </a>
+                                ) : (
+                                  <Link
+                                    to={`/article/${slugify(article.title)}`}
+                                    className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
+                                    aria-label={`View article: ${article.title}`}
+                                  >
+                                    <ExternalLink className="h-4 w-4 text-gray-600 dark:text-white" />
+                                  </Link>
+                                )}
+                              </div>
+                              {/* Mobile background - semi-transparent partial image */}
+                              <div className="absolute inset-0 z-0 sm:hidden">
+                                <img
+                                  src={`${
+                                    (article as any).cardImage || article.image
+                                  }?v=${Date.now()}`}
+                                  alt={article.title}
+                                  className="absolute inset-0 w-full h-full object-cover object-center opacity-20 scale-110"
+                                  loading="lazy"
+                                />
+                              </div>
+
+                              {/* Desktop background - images */}
+                              <div className="absolute inset-0 z-0 hidden sm:block">
+                                <img
+                                  src={`${
+                                    (article as any).cardImage || article.image
+                                  }?v=${Date.now()}`}
+                                  alt={article.title}
+                                  className="absolute bottom-0 left-0 right-0 h-1/2 w-full object-cover object-center"
+                                  loading="lazy"
+                                />
+                              </div>
                               <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
-                                <div
-                                  className={`rounded-lg p-2 ${
-                                    articlesView === "grid"
-                                      ? "pr-12"
-                                      : "flex items-center justify-between h-full"
-                                  }`}
-                                >
-                                  <div className="flex flex-col gap-1">
+                                <div className="rounded-lg p-1 sm:p-2 pr-8 sm:pr-12">
+                                  <div className="flex flex-col gap-0.5">
                                     <div className="flex items-center justify-between w-full">
-                                      <div className="flex items-center gap-3">
-                                        {articlesView === "list" && (
-                                          <div className="w-12 h-12 rounded overflow-hidden flex-shrink-0">
-                                            <img
-                                              src={`${
-                                                (article as any).cardImage ||
-                                                article.image
-                                              }?v=${Date.now()}`}
-                                              alt={article.title}
-                                              className="w-full h-full object-cover"
-                                              loading="lazy"
-                                            />
-                                          </div>
-                                        )}
+                                      <div className="flex items-center gap-2 min-w-0 flex-1">
                                         {article.url.startsWith("http") ? (
                                           <a
                                             href={article.url}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="text-[18px] font-semibold mb-1 title-font text-black dark:text-white hover:text-primary transition-colors cursor-pointer"
+                                            className="text-[18px] font-semibold mb-0 title-font text-black dark:text-white hover:text-primary transition-colors cursor-pointer lab-card-title"
                                             style={{
                                               letterSpacing: "-0.01em",
+                                              lineHeight: "1.25",
                                             }}
                                           >
-                                            {article.title}
+                                            {article.title.length > 40
+                                              ? `${article.title.substring(
+                                                  0,
+                                                  40
+                                                )}...`
+                                              : article.title}
                                           </a>
                                         ) : (
                                           <Link
                                             to={`/article/${slugify(
                                               article.title
                                             )}`}
-                                            className="text-[18px] font-semibold mb-1 title-font text-black dark:text-white hover:text-primary transition-colors cursor-pointer"
+                                            className="text-[18px] font-semibold mb-0 title-font text-black dark:text-white hover:text-primary transition-colors cursor-pointer lab-card-title"
                                             style={{
                                               letterSpacing: "-0.01em",
+                                              lineHeight: "1.25",
                                             }}
                                           >
-                                            {article.title}
+                                            {article.title.length > 40
+                                              ? `${article.title.substring(
+                                                  0,
+                                                  40
+                                                )}...`
+                                              : article.title}
                                           </Link>
                                         )}
                                       </div>
-                                      {articlesView === "list" &&
-                                        (article.url.startsWith("http") ? (
-                                          <a
-                                            href={article.url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
-                                            aria-label={`View article: ${article.title}`}
-                                          >
-                                            <ExternalLink className="h-4 w-4 text-gray-600 dark:text-white" />
-                                          </a>
-                                        ) : (
-                                          <Link
-                                            to={`/article/${slugify(
-                                              article.title
-                                            )}`}
-                                            className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
-                                            aria-label={`View article: ${article.title}`}
-                                          >
-                                            <ExternalLink className="h-4 w-4 text-gray-600 dark:text-white" />
-                                          </Link>
-                                        ))}
                                     </div>
-                                    {articlesView === "grid" &&
-                                      article.description && (
-                                        <p className="text-sm text-gray-600 dark:text-gray-300 opacity-80">
-                                          {article.description}
-                                        </p>
-                                      )}
+                                    {article.description && (
+                                      <p
+                                        className="text-sm text-gray-600 dark:text-gray-300 opacity-80 overflow-hidden hidden sm:block"
+                                        style={{
+                                          lineHeight: "1.2",
+                                        }}
+                                      >
+                                        {article.description}
+                                      </p>
+                                    )}
                                   </div>
                                 </div>
                               </div>
@@ -1955,7 +1853,7 @@ function App() {
                 localStorage.setItem("theme", "dark");
               }
             }}
-            className="w-10 h-10 flex items-center justify-center hover:opacity-80 transition-opacity duration-200 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-lg"
+            className="w-10 h-10 flex items-center justify-center hover:opacity-80 transition-opacity duration-200"
           >
             <svg
               className="w-4 h-4 text-gray-700 dark:text-gray-300"

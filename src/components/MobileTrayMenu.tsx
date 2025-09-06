@@ -1,10 +1,20 @@
-import React, { useState } from "react";
-import { Menu, X } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import {
+  Menu,
+  X,
+  Home,
+  FileText,
+  Palette,
+  BookOpen,
+  Briefcase,
+  Settings,
+} from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { content } from "../content";
 
 const MobileTrayMenu: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("");
   const location = useLocation();
 
   const handleNavClick = (id: string) => {
@@ -21,21 +31,100 @@ const MobileTrayMenu: React.FC = () => {
     setIsMobileMenuOpen(false);
   };
 
+  const getNavIcon = (id: string) => {
+    switch (id) {
+      case "current-projects":
+        return <Home className="w-6 h-6" />;
+      case "articles":
+        return <FileText className="w-6 h-6" />;
+      case "work":
+        return <Palette className="w-6 h-6" />;
+      case "stories":
+        return <BookOpen className="w-6 h-6" />;
+      case "career":
+        return <Briefcase className="w-6 h-6" />;
+      case "design-system":
+        return <Settings className="w-6 h-6" />;
+      default:
+        return <Home className="w-6 h-6" />;
+    }
+  };
+
+  const isActiveSection = (id: string) => {
+    return activeSection === id;
+  };
+
+  useEffect(() => {
+    if (location.pathname !== "/") return;
+
+    const handleScroll = () => {
+      const sections = content.navigation.links.map((link) => link.id);
+      let currentSection = "";
+
+      for (const sectionId of sections) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          const windowHeight = window.innerHeight;
+          const isInView =
+            rect.top <= windowHeight / 2 && rect.bottom >= windowHeight / 2;
+          if (isInView) {
+            currentSection = sectionId;
+            break;
+          }
+        }
+      }
+
+      setActiveSection(currentSection);
+    };
+
+    // Initial check
+    handleScroll();
+
+    // Add scroll listener
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [location.pathname]);
+
   return (
     <>
-      {/* Mobile Bottom Icons Tray */}
-      <div className="fixed bottom-0 left-0 right-0 bg-gray-50/95 backdrop-blur-sm border-t border-gray-200 shadow-lg z-[9999] lg:hidden">
-        <div className="px-4 py-3">
+      {/* Mobile Bottom Navigation */}
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between max-w-[1200px] mx-auto px-2 py-2">
+          {content.navigation.links.map((link) => {
+            const isActive = isActiveSection(link.id);
+            return (
+              <button
+                key={link.id}
+                onClick={() => handleNavClick(link.id)}
+                className={`flex flex-col items-center gap-1 px-2 py-2 transition-colors ${
+                  isActive
+                    ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 rounded-lg"
+                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+                }`}
+                aria-label={`Navigate to ${link.text}`}
+              >
+                {getNavIcon(link.id)}
+                <span className="text-xs font-medium">{link.text}</span>
+              </button>
+            );
+          })}
+
+          {/* Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className={`w-full backdrop-blur-sm rounded-lg p-3 shadow-md hover:scale-[1.02] transition-all duration-200 flex items-center justify-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90`}
-            aria-label="Toggle mobile navigation menu"
+            className={`flex flex-col items-center gap-1 px-2 py-2 transition-colors ${
+              isMobileMenuOpen
+                ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 rounded-lg"
+                : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+            }`}
+            aria-label="Toggle mobile menu"
           >
-            <Menu className="h-5 w-5" />
-            <span className="text-sm font-medium">Menu</span>
+            <Menu className="w-6 h-6" />
+            <span className="text-xs font-medium">More</span>
           </button>
         </div>
-      </div>
+      </nav>
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (

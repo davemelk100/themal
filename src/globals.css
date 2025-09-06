@@ -89,17 +89,33 @@
   * {
     font-family: "Roboto Flex", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif;
   }
-  
+
   /* Ensure all text elements use Roboto Flex by default */
-  h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, select, label, a {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  div,
+  button,
+  input,
+  textarea,
+  select,
+  label,
+  a {
     font-family: "Roboto Flex", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif;
   }
-  
+
   /* Override any remaining font references */
-  .font-sans, .font-title, .font-card {
+  .font-sans,
+  .font-title,
+  .font-card {
     font-family: "Roboto Flex", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif !important;
   }
-  
+
   /* Ensure Tailwind utilities use Roboto Flex */
   [class*="font-"]:not(.font-serif):not(.font-mono):not(.roboto-serif-page *) {
     font-family: "Roboto Flex", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif !important;
@@ -154,8 +170,8 @@
   /* Touch-friendly improvements for mobile */
   @media (max-width: 768px) {
 
-    button:not(.carousel-button),
-    a:not(.carousel-button) {
+    button:not(.carousel-button):not(.lab-card-title),
+    a:not(.carousel-button):not(.lab-card-title) {
       min-height: 44px;
       min-width: 44px;
     }
@@ -164,8 +180,8 @@
 
 @layer components {
   .title-font {
-  font-family: "Roboto Flex", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif;
-}
+    font-family: "Roboto Flex", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif;
+  }
 
   .article-intro {
     @apply mb-8;

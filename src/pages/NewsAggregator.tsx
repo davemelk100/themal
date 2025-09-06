@@ -2699,7 +2699,7 @@ const NewsAggregator = () => {
                                                   : "bg-blue-500"
                                               }`}
                                             >
-                                              <span className="text-white font-bold text-2xl">
+                                              <span className="text-white font-bold text-4xl">
                                                 {feedItems[currentIndex]
                                                   ?.source === "Hot Peppers"
                                                   ? "🌶️"
@@ -2866,8 +2866,8 @@ const NewsAggregator = () => {
                                           <div
                                             className={
                                               viewMode === "grid"
-                                                ? "text-6xl mb-2"
-                                                : "text-4xl mb-2"
+                                                ? "text-8xl mb-2"
+                                                : "text-6xl mb-2"
                                             }
                                           >
                                             {feedItems[currentIndex]?.source ===
@@ -2876,64 +2876,12 @@ const NewsAggregator = () => {
                                               : feedItems[currentIndex]
                                                   ?.source === "Tips For BBQ"
                                               ? "♨️"
-                                              : feedItems[currentIndex]
-                                                  ?.source === "Ars Technica" ||
-                                                feedItems[currentIndex]
-                                                  ?.source === "WIRED" ||
-                                                feedItems[currentIndex]
-                                                  ?.source === "TechRadar" ||
-                                                feedItems[currentIndex]
-                                                  ?.source === "#Windows11" ||
-                                                feedItems[currentIndex]
-                                                  ?.source === "Vice - Tech" ||
-                                                feedItems[currentIndex]
-                                                  ?.source ===
-                                                  "BleepingComputer"
-                                              ? "💻"
-                                              : feedItems[currentIndex]
-                                                  ?.source === "Fox Sports" ||
-                                                feedItems[currentIndex]
-                                                  ?.source === "CNN - SPORTS" ||
-                                                feedItems[currentIndex]
-                                                  ?.source === "CBS SPORTS" ||
-                                                feedItems[currentIndex]
-                                                  ?.source === "ESPN" ||
-                                                feedItems[currentIndex]
-                                                  ?.source === "Mets - SNY"
-                                              ? "⚾"
-                                              : feedItems[currentIndex]
-                                                  ?.source === "Newsweek" ||
-                                                feedItems[currentIndex]
-                                                  ?.source === "Fox News" ||
-                                                feedItems[currentIndex]
-                                                  ?.source === "Breitbart" ||
-                                                feedItems[currentIndex]
-                                                  ?.source === "CNN News" ||
-                                                feedItems[currentIndex]
-                                                  ?.source === "Bloomberg"
-                                              ? "💼"
-                                              : feedItems[currentIndex]
-                                                  ?.source === "The Onion" ||
-                                                feedItems[currentIndex]
-                                                  ?.source ===
-                                                  "The Hard Times" ||
-                                                feedItems[currentIndex]
-                                                  ?.source === "Lambgoat" ||
-                                                feedItems[currentIndex]
-                                                  ?.source === "No Echo" ||
-                                                feedItems[currentIndex]
-                                                  ?.source ===
-                                                  "Soft White Underbelly" ||
-                                                feedItems[currentIndex]
-                                                  ?.source === "New York Post"
-                                              ? "🎭"
-                                              : feedItems[currentIndex]
-                                                  ?.source ===
-                                                  "Minimalist Baker" ||
-                                                feedItems[currentIndex]
-                                                  ?.source === "McDonald's"
-                                              ? "🍽️"
-                                              : "📰"}
+                                              : getCategoryIcon(
+                                                  getFeedCategory(
+                                                    feedItems[currentIndex]
+                                                      ?.source || ""
+                                                  )
+                                                )}
                                           </div>
                                           <div className="text-xs mt-1 font-medium">
                                             {feedItems[currentIndex]?.source ===
@@ -3058,7 +3006,7 @@ const NewsAggregator = () => {
                                                 : "bg-blue-500"
                                             }`}
                                           >
-                                            <span className="text-white font-bold text-6xl">
+                                            <span className="text-white font-bold text-8xl">
                                               {feedItems[currentIndex]
                                                 ?.source === "Hot Peppers"
                                                 ? "🌶️"
@@ -3169,7 +3117,7 @@ const NewsAggregator = () => {
                                           }`}
                                         >
                                           <div className="text-center text-gray-500 dark:text-gray-400">
-                                            <div className="text-6xl mb-2">
+                                            <div className="text-8xl mb-2">
                                               {feedItems[currentIndex]
                                                 ?.source === "Hot Peppers"
                                                 ? "🌶️"
@@ -3472,7 +3420,7 @@ const NewsAggregator = () => {
                                               <div
                                                 className={`w-full h-full ${bgColor} rounded-lg flex items-center justify-center`}
                                               >
-                                                <span className="text-white font-bold text-2xl">
+                                                <span className="text-white font-bold text-4xl">
                                                   {sourceName.split(" ")[0]}
                                                 </span>
                                               </div>
@@ -3489,7 +3437,7 @@ const NewsAggregator = () => {
                                           }`}
                                         >
                                           <div className="text-center text-gray-500 dark:text-gray-400">
-                                            <div className="text-6xl mb-2">
+                                            <div className="text-8xl mb-2">
                                               🔗
                                             </div>
                                             <div className="text-xs mt-1 font-medium">
