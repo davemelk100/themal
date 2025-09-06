@@ -140,8 +140,6 @@ function App() {
   } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const [storiesView, setStoriesView] = useState<"grid" | "list">("grid");
-  const [designView, setDesignView] = useState<"grid" | "list">("grid");
   const [currentSlide] = useState(0);
   const [currentViewMode, setCurrentViewMode] = useState<"list" | "grid">(
     "grid"
@@ -190,7 +188,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 transition-colors duration-300 dark:bg-gray-900 dark:text-white">
+    <div className="min-h-screen bg-white text-gray-900 transition-colors duration-300 dark:bg-gray-900 dark:text-white pb-20 sm:pb-0">
       {/* Remove Header Navigation from here */}
 
       <Suspense
@@ -647,7 +645,7 @@ function App() {
                                     (article as any).cardImage || article.image
                                   }?v=${Date.now()}`}
                                   alt={article.title}
-                                  className="absolute inset-0 w-full h-full object-cover object-center opacity-20 scale-110"
+                                  className="absolute inset-0 w-full h-full object-cover object-center opacity-10 scale-110"
                                   loading="lazy"
                                 />
                               </div>
@@ -739,8 +737,6 @@ function App() {
                         subtitle={content.work.subtitle}
                         className="mb-6"
                         showArchiveLink={false}
-                        toggleView={setDesignView}
-                        viewMode={designView}
                         icon={
                           <a
                             href={content.navigation.social.dribbble.url}
@@ -753,92 +749,53 @@ function App() {
                           </a>
                         }
                       />
-                      <div
-                        className={
-                          designView === "grid"
-                            ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-6"
-                            : "flex flex-col gap-4"
-                        }
-                      >
+                      <div className="grid grid-cols-2 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
                         {content.work.projects
                           .filter(
                             (project: any) =>
                               project.title !== "3D Conversion UX Plan"
                           )
-                          .map((project: any, index) => {
-                            const ProjectCard = (
-                              <div className="flex flex-col gap-2 flex-1">
-                                <div
-                                  className={`pt-3 pl-3 pr-2 pb-2 ${
-                                    designView === "grid"
-                                      ? "pr-20"
-                                      : "flex items-center justify-between h-full"
-                                  }`}
-                                >
-                                  <div className="flex items-center justify-between w-full">
-                                    <div className="flex items-center gap-3">
-                                      {designView === "list" && (
-                                        <div className="w-12 h-12 rounded overflow-hidden flex-shrink-0">
-                                          <img
-                                            src={project.image}
-                                            alt={project.alt || project.title}
-                                            className="w-full h-full object-cover"
-                                            loading="lazy"
-                                          />
-                                        </div>
-                                      )}
-                                      {project.url ? (
-                                        <a
-                                          href={project.url}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          className="text-[18px] font-semibold mb-1 title-font text-black dark:text-white hover:text-primary transition-colors cursor-pointer"
-                                          style={{
-                                            letterSpacing: "-0.01em",
-                                          }}
-                                        >
-                                          {project.title}
-                                        </a>
-                                      ) : (
-                                        <h3
-                                          className="text-[18px] font-semibold mb-1 title-font text-black dark:text-white"
-                                          style={{
-                                            letterSpacing: "-0.01em",
-                                          }}
-                                        >
-                                          {project.title}
-                                        </h3>
-                                      )}
-                                    </div>
-                                    {designView === "list" &&
-                                      (project.url ? (
-                                        <a
-                                          href={project.url}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
-                                          aria-label={`View project: ${project.title}`}
-                                        >
-                                          <ExternalLink className="h-4 w-4 text-gray-600 dark:text-white" />
-                                        </a>
-                                      ) : (
-                                        <div className="rounded-full p-1.5 w-8 h-8 flex items-center justify-center">
-                                          <ExternalLink className="h-4 w-4 text-gray-600 dark:text-white" />
-                                        </div>
-                                      ))}
+                          .map((project: any, index) => (
+                            <motion.div
+                              key={index}
+                              initial={{ opacity: 0, y: 20 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true }}
+                              transition={{
+                                duration: 1.8,
+                                delay: index * 0.2,
+                              }}
+                              className="group relative overflow-hidden rounded-lg bg-transparent border border-gray-200 flex flex-col shadow-md h-[120px] sm:h-[320px] md:h-[336px] lg:h-[352px]"
+                            >
+                              <div className="absolute top-1 right-1 sm:top-2 sm:right-2 z-20">
+                                {project.url ? (
+                                  <a
+                                    href={project.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
+                                    aria-label={`View project: ${project.title}`}
+                                  >
+                                    <ExternalLink className="h-4 w-4 text-gray-600 dark:text-white" />
+                                  </a>
+                                ) : (
+                                  <div className="rounded-full p-1.5 w-8 h-8 flex items-center justify-center">
+                                    <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
                                   </div>
-                                  {designView === "grid" &&
-                                    project.description && (
-                                      <p className="text-sm text-gray-600 dark:text-white mb-2">
-                                        {project.description}
-                                      </p>
-                                    )}
-                                </div>
+                                )}
                               </div>
-                            );
+                              {/* Mobile background - semi-transparent partial image */}
+                              <div className="absolute inset-0 z-0 sm:hidden">
+                                <img
+                                  src={project.image}
+                                  alt={project.alt || project.title}
+                                  className="absolute inset-0 w-full h-full object-cover object-center opacity-10 scale-110"
+                                  loading="lazy"
+                                />
+                              </div>
 
-                            const ProjectImage = designView === "grid" && (
-                              <div className="absolute inset-0 z-0">
+                              {/* Desktop background - images */}
+                              <div className="absolute inset-0 z-0 hidden sm:block">
                                 <img
                                   src={project.image}
                                   alt={project.alt || project.title}
@@ -853,92 +810,57 @@ function App() {
                                   loading="lazy"
                                 />
                               </div>
-                            );
-
-                            return project.url ? (
-                              <motion.div
-                                key={index}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{
-                                  duration: 1.8,
-                                  delay: index * 0.2,
-                                }}
-                                className={`group relative overflow-hidden rounded-lg bg-transparent border border-gray-200 flex flex-col shadow-md project-card ${
-                                  designView === "list"
-                                    ? "h-[50px]"
-                                    : "h-[330px] sm:h-[350px] lg:h-[370px]"
-                                }`}
-                              >
-                                {designView === "grid" && (
-                                  <div className="absolute top-2 right-2 z-20">
-                                    <a
-                                      href={project.url}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center mt-[5px] mr-[5px]"
-                                      aria-label={`View project: ${project.title}`}
-                                    >
-                                      <ExternalLink className="h-4 w-4 text-gray-600 dark:text-white" />
-                                    </a>
-                                  </div>
-                                )}
-                                <div
-                                  className={`absolute inset-0 z-10 ${
-                                    designView === "grid"
-                                      ? "flex flex-col gap-2"
-                                      : "flex items-center"
-                                  }`}
-                                >
-                                  {React.cloneElement(ProjectCard, {
-                                    className:
-                                      (ProjectCard.props.className || "") +
-                                      " text-black dark:text-white",
-                                  })}
-                                </div>
-                                {ProjectImage}
-                              </motion.div>
-                            ) : (
-                              <motion.div
-                                key={index}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{
-                                  duration: 1.8,
-                                  delay: index * 0.2,
-                                }}
-                                className={`group relative overflow-hidden rounded-lg bg-transparent border border-gray-200 flex flex-col shadow-md project-card ${
-                                  designView === "list"
-                                    ? "h-[50px]"
-                                    : "h-[330px] sm:h-[350px] lg:h-[370px]"
-                                }`}
-                              >
-                                {designView === "grid" && (
-                                  <div className="absolute top-2 right-2 z-20">
-                                    <div className="rounded-full p-1.5 w-8 h-8 flex items-center justify-center mt-[5px] mr-[5px]">
-                                      <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
+                              <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
+                                <div className="rounded-lg p-1 sm:p-2 pr-8 sm:pr-12">
+                                  <div className="flex flex-col gap-0.5">
+                                    <div className="flex items-center justify-between w-full">
+                                      <div className="flex items-center gap-2 min-w-0 flex-1">
+                                        {project.url ? (
+                                          <a
+                                            href={project.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-[18px] font-semibold mb-0 title-font text-black dark:text-white hover:text-primary transition-colors cursor-pointer lab-card-title"
+                                            style={{
+                                              letterSpacing: "-0.01em",
+                                              lineHeight: "1.25",
+                                            }}
+                                          >
+                                            {project.title.length > 40
+                                              ? `${project.title.substring(
+                                                  0,
+                                                  40
+                                                )}...`
+                                              : project.title}
+                                          </a>
+                                        ) : (
+                                          <h3
+                                            className="text-[18px] font-semibold mb-0 title-font text-black dark:text-white lab-card-title"
+                                            style={{
+                                              letterSpacing: "-0.01em",
+                                              lineHeight: "1.25",
+                                            }}
+                                          >
+                                            {project.title.length > 40
+                                              ? `${project.title.substring(
+                                                  0,
+                                                  40
+                                                )}...`
+                                              : project.title}
+                                          </h3>
+                                        )}
+                                      </div>
                                     </div>
+                                    {project.description && (
+                                      <p className="text-sm text-gray-600 dark:text-gray-300 opacity-80 overflow-hidden hidden sm:block">
+                                        {project.description}
+                                      </p>
+                                    )}
                                   </div>
-                                )}
-                                <div
-                                  className={`absolute inset-0 z-10 ${
-                                    designView === "grid"
-                                      ? "flex flex-col gap-2"
-                                      : "flex items-center"
-                                  }`}
-                                >
-                                  {React.cloneElement(ProjectCard, {
-                                    className:
-                                      (ProjectCard.props.className || "") +
-                                      " text-black dark:text-white",
-                                  })}
                                 </div>
-                                {ProjectImage}
-                              </motion.div>
-                            );
-                          })}
+                              </div>
+                            </motion.div>
+                          ))}
                       </div>
                     </div>
                   </div>
@@ -996,166 +918,130 @@ function App() {
                         title={content.stories.title}
                         subtitle={content.stories.subtitle}
                         className="mb-8"
-                        toggleView={setStoriesView}
-                        viewMode={storiesView}
                       />
-                      <div
-                        className={
-                          storiesView === "grid"
-                            ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-6 justify-center"
-                            : "flex flex-col gap-4"
-                        }
-                      >
+                      <div className="grid grid-cols-2 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
                         {content.stories.items
                           .filter(
                             (story) => story.title !== "Design Management"
                           )
-                          .map((story) => (
+                          .map((story, index) => (
                             <motion.div
                               key={story.title}
                               initial={{ opacity: 0, y: 20 }}
                               whileInView={{ opacity: 1, y: 0 }}
                               viewport={{ once: true }}
-                              transition={{ duration: 2.4, delay: 0.2 }}
-                              className={`group relative overflow-hidden rounded-lg bg-transparent border border-gray-200 flex flex-col shadow-md ${
-                                storiesView === "list"
-                                  ? "h-[50px]"
-                                  : "h-[320px] sm:h-[336px] lg:h-[352px]"
-                              }`}
+                              transition={{ duration: 2.4, delay: index * 0.2 }}
+                              className="group relative overflow-hidden rounded-lg bg-transparent border border-gray-200 flex flex-col shadow-md h-[120px] sm:h-[320px] md:h-[336px] lg:h-[352px]"
                             >
-                              {storiesView === "grid" && (
-                                <div className="absolute top-2 right-2 z-20">
-                                  {story.hasModal ? (
-                                    <button
-                                      onClick={() =>
-                                        setSelectedStory({
-                                          title: story.title,
-                                          content: story.content,
-                                          subtitle: story.subtitle,
-                                        })
-                                      }
-                                      className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center mt-[5px] mr-[5px]"
-                                      aria-label={`View ${story.title} story`}
-                                    >
-                                      <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
-                                    </button>
-                                  ) : (
-                                    <div className="rounded-full p-1.5 w-8 h-8 flex items-center justify-center mt-[5px] mr-[5px]">
-                                      <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
-                                    </div>
-                                  )}
-                                </div>
-                              )}
-                              <div className="absolute inset-0 flex flex-col gap-2 z-10">
-                                <div
-                                  className={`pt-3 pl-3 pr-2 pb-2 ${
-                                    storiesView === "grid"
-                                      ? "pr-20"
-                                      : "flex items-center justify-between h-full"
-                                  }`}
-                                >
-                                  <div className="flex items-center justify-between w-full">
-                                    <div className="flex items-center gap-3">
-                                      {storiesView === "list" && (
-                                        <div className="w-12 h-12 rounded overflow-hidden flex-shrink-0">
-                                          {story.image ? (
-                                            <img
-                                              src={story.image}
-                                              alt={story.title}
-                                              className="w-full h-full object-cover"
-                                              loading="lazy"
-                                            />
-                                          ) : (
-                                            <div className="w-full h-full bg-gray-200/50 flex items-center justify-center">
-                                              <div className="text-gray-400 text-xs">
-                                                No image
-                                              </div>
-                                            </div>
-                                          )}
-                                        </div>
-                                      )}
-                                      {story.hasModal ? (
-                                        <button
-                                          onClick={() =>
-                                            setSelectedStory({
-                                              title: story.title,
-                                              content: story.content,
-                                              subtitle: story.subtitle,
-                                            })
-                                          }
-                                          className="text-[18px] font-semibold mb-1 title-font text-black dark:text-white hover:text-primary transition-colors cursor-pointer whitespace-nowrap text-left"
-                                          style={{
-                                            letterSpacing: "-0.01em",
-                                          }}
-                                        >
-                                          {story.title}
-                                        </button>
-                                      ) : (
-                                        <h3
-                                          className="text-[18px] font-semibold mb-1 title-font text-black dark:text-white whitespace-nowrap"
-                                          style={{
-                                            letterSpacing: "-0.01em",
-                                          }}
-                                        >
-                                          {story.title}
-                                        </h3>
-                                      )}
-                                    </div>
-                                    {storiesView === "list" &&
-                                      (story.hasModal ? (
-                                        <button
-                                          onClick={() =>
-                                            setSelectedStory({
-                                              title: story.title,
-                                              content: story.content,
-                                              subtitle: story.subtitle,
-                                            })
-                                          }
-                                          className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
-                                          aria-label={`View ${story.title} story`}
-                                        >
-                                          <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
-                                        </button>
-                                      ) : (
-                                        <div className="rounded-full p-1.5 w-8 h-8 flex items-center justify-center">
-                                          <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
-                                        </div>
-                                      ))}
-                                  </div>
-                                  {storiesView === "grid" && story.subtitle && (
-                                    <p className="text-sm text-gray-600 dark:text-white mb-2">
-                                      {story.subtitle}
-                                    </p>
-                                  )}
-                                </div>
-                                {storiesView === "grid" && (
-                                  <div className="flex-1 flex flex-col">
-                                    {story.description && (
-                                      <p className="text-black mb-2 dark:text-white text-card-body flex-1">
-                                        {story.description}
-                                      </p>
-                                    )}
+                              <div className="absolute top-1 right-1 sm:top-2 sm:right-2 z-20">
+                                {story.hasModal ? (
+                                  <button
+                                    onClick={() =>
+                                      setSelectedStory({
+                                        title: story.title,
+                                        content: story.content,
+                                        subtitle: story.subtitle,
+                                      })
+                                    }
+                                    className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
+                                    aria-label={`View ${story.title} story`}
+                                  >
+                                    <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
+                                  </button>
+                                ) : (
+                                  <div className="rounded-full p-1.5 w-8 h-8 flex items-center justify-center">
+                                    <Eye className="h-4 w-4 text-gray-600 dark:text-white" />
                                   </div>
                                 )}
                               </div>
-                              {storiesView === "grid" && (
-                                <div className="absolute inset-0 z-0">
-                                  {story.image ? (
-                                    <img
-                                      src={story.image}
-                                      alt={story.title}
-                                      className="absolute bottom-0 left-0 right-0 h-1/2 w-full object-cover object-center"
-                                      loading="lazy"
-                                    />
-                                  ) : (
-                                    <div className="absolute bottom-0 left-0 right-0 h-1/2 w-full bg-gray-200/50 flex items-center justify-center">
-                                      <div className="text-gray-400 text-sm">
-                                        No image
+                              {/* Mobile background - semi-transparent partial image */}
+                              <div className="absolute inset-0 z-0 sm:hidden">
+                                {story.image ? (
+                                  <img
+                                    src={story.image}
+                                    alt={story.title}
+                                    className="absolute inset-0 w-full h-full object-cover object-center opacity-10 scale-110"
+                                    loading="lazy"
+                                  />
+                                ) : (
+                                  <div className="absolute inset-0 w-full h-full bg-gray-200/50 flex items-center justify-center opacity-10">
+                                    <div className="text-gray-400 text-sm">
+                                      No image
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Desktop background - images */}
+                              <div className="absolute inset-0 z-0 hidden sm:block">
+                                {story.image ? (
+                                  <img
+                                    src={story.image}
+                                    alt={story.title}
+                                    className="absolute bottom-0 left-0 right-0 h-1/2 w-full object-cover object-center"
+                                    loading="lazy"
+                                  />
+                                ) : (
+                                  <div className="absolute bottom-0 left-0 right-0 h-1/2 w-full bg-gray-200/50 flex items-center justify-center">
+                                    <div className="text-gray-400 text-sm">
+                                      No image
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                              <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
+                                <div className="rounded-lg p-1 sm:p-2 pr-8 sm:pr-12">
+                                  <div className="flex flex-col gap-0.5">
+                                    <div className="flex items-center justify-between w-full">
+                                      <div className="flex items-center gap-2 min-w-0 flex-1">
+                                        {story.hasModal ? (
+                                          <button
+                                            onClick={() =>
+                                              setSelectedStory({
+                                                title: story.title,
+                                                content: story.content,
+                                                subtitle: story.subtitle,
+                                              })
+                                            }
+                                            className="text-[18px] font-semibold mb-0 title-font text-black dark:text-white hover:text-primary transition-colors cursor-pointer lab-card-title"
+                                            style={{
+                                              letterSpacing: "-0.01em",
+                                              lineHeight: "1.25",
+                                            }}
+                                          >
+                                            {story.title.length > 40
+                                              ? `${story.title.substring(
+                                                  0,
+                                                  40
+                                                )}...`
+                                              : story.title}
+                                          </button>
+                                        ) : (
+                                          <h3
+                                            className="text-[18px] font-semibold mb-0 title-font text-black dark:text-white lab-card-title"
+                                            style={{
+                                              letterSpacing: "-0.01em",
+                                              lineHeight: "1.25",
+                                            }}
+                                          >
+                                            {story.title.length > 40
+                                              ? `${story.title.substring(
+                                                  0,
+                                                  40
+                                                )}...`
+                                              : story.title}
+                                          </h3>
+                                        )}
                                       </div>
                                     </div>
-                                  )}
+                                    {story.subtitle && (
+                                      <p className="text-sm text-gray-600 dark:text-gray-300 opacity-80 overflow-hidden hidden sm:block">
+                                        {story.subtitle}
+                                      </p>
+                                    )}
+                                  </div>
                                 </div>
-                              )}
+                              </div>
                             </motion.div>
                           ))}
                       </div>
