@@ -265,14 +265,7 @@ function App() {
                           <p className="text-sm sm:text-base text-muted-foreground leading-relaxed text-left">
                             Senior UX and Product Designer with 15+ years of
                             experience delivering accessible, user-centered
-                            digital solutions across industries. Skilled in
-                            end-to-end design - from research to polished UIs -
-                            for dashboards, onboarding flows, and e-commerce.
-                            Expert in cross-functional collaboration, AI-driven
-                            problem solving, and inclusive innovation. Also an
-                            experienced technical writer, translating complex
-                            ideas into clear, engaging content for users and
-                            stakeholders.
+                            digital solutions across industries.
                           </p>
                         </motion.div>
                       </div>
