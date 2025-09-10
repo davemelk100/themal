@@ -2748,10 +2748,6 @@ const NewsAggregator = () => {
                                                   ? "♨️"
                                                   : feedItems[currentIndex]
                                                       ?.source ===
-                                                    "Pride of Lions"
-                                                  ? "🏈"
-                                                  : feedItems[currentIndex]
-                                                      ?.source ===
                                                     "White Sox - SI"
                                                   ? "⚾"
                                                   : getCategoryIcon(
@@ -2918,29 +2914,54 @@ const NewsAggregator = () => {
                                                   : "text-6xl mb-2"
                                               }
                                             >
-                                              <span className="text-gray-600 dark:text-gray-300 font-bold">
-                                                {feedItems[currentIndex]
-                                                  ?.source === "Hot Peppers"
-                                                  ? "🌶️"
-                                                  : feedItems[currentIndex]
-                                                      ?.source ===
-                                                    "Tips For BBQ"
-                                                  ? "♨️"
-                                                  : feedItems[currentIndex]
-                                                      ?.source ===
-                                                    "Pride of Lions"
-                                                  ? "🏈"
-                                                  : feedItems[currentIndex]
-                                                      ?.source ===
-                                                    "White Sox - SI"
-                                                  ? "⚾"
-                                                  : getCategoryIcon(
-                                                      getFeedCategory(
-                                                        feedItems[currentIndex]
-                                                          ?.source || ""
-                                                      )
-                                                    )}
-                                              </span>
+                                              {feedItems[currentIndex]
+                                                ?.source === "ESPN" ? (
+                                                <img
+                                                  src="/img/espn.svg"
+                                                  alt="ESPN"
+                                                  className="mx-auto"
+                                                />
+                                              ) : feedItems[currentIndex]
+                                                  ?.source ===
+                                                "Pride of Lions" ? (
+                                                <img
+                                                  src="/img/lions.png"
+                                                  alt="Pride of Lions"
+                                                  className="mx-auto"
+                                                />
+                                              ) : feedItems[currentIndex]
+                                                  ?.source === "Bloomberg" ? (
+                                                <img
+                                                  src="/img/bloomberg.svg"
+                                                  alt="Bloomberg"
+                                                  className="mx-auto"
+                                                  style={{
+                                                    width: "200px",
+                                                    height: "auto",
+                                                  }}
+                                                />
+                                              ) : (
+                                                <span className="text-gray-600 dark:text-gray-300 font-bold">
+                                                  {feedItems[currentIndex]
+                                                    ?.source === "Hot Peppers"
+                                                    ? "🌶️"
+                                                    : feedItems[currentIndex]
+                                                        ?.source ===
+                                                      "Tips For BBQ"
+                                                    ? "♨️"
+                                                    : feedItems[currentIndex]
+                                                        ?.source ===
+                                                      "White Sox - SI"
+                                                    ? "⚾"
+                                                    : getCategoryIcon(
+                                                        getFeedCategory(
+                                                          feedItems[
+                                                            currentIndex
+                                                          ]?.source || ""
+                                                        )
+                                                      )}
+                                                </span>
+                                              )}
                                             </div>
                                             {feedItems[currentIndex]?.source !==
                                               "ESPN" &&
@@ -3012,26 +3033,39 @@ const NewsAggregator = () => {
                                           <div className="w-full h-full rounded-lg flex items-center justify-center relative">
                                             <div className="text-center flex flex-col justify-center h-full">
                                               <div className="text-8xl mb-2">
-                                                <span className="text-gray-600 dark:text-gray-300 font-bold">
-                                                  {feedItems[currentIndex]
-                                                    ?.source === "Hot Peppers"
-                                                    ? "🌶️"
-                                                    : feedItems[currentIndex]
-                                                        ?.source ===
-                                                      "Tips For BBQ"
-                                                    ? "♨️"
-                                                    : feedItems[currentIndex]
-                                                        ?.source ===
-                                                      "Pride of Lions"
-                                                    ? "🏈"
-                                                    : getCategoryIcon(
-                                                        getFeedCategory(
-                                                          feedItems[
-                                                            currentIndex
-                                                          ]?.source || ""
-                                                        )
-                                                      )}
-                                                </span>
+                                                {feedItems[currentIndex]
+                                                  ?.source === "ESPN" ? (
+                                                  <img
+                                                    src="/img/espn.svg"
+                                                    alt="ESPN"
+                                                    className="w-16 h-16 mx-auto"
+                                                  />
+                                                ) : (
+                                                  <span className="text-gray-600 dark:text-gray-300 font-bold">
+                                                    {feedItems[currentIndex]
+                                                      ?.source === "Hot Peppers"
+                                                      ? "🌶️"
+                                                      : feedItems[currentIndex]
+                                                          ?.source ===
+                                                        "Tips For BBQ"
+                                                      ? "♨️"
+                                                      : feedItems[currentIndex]
+                                                          ?.source ===
+                                                        "Pride of Lions"
+                                                      ? "🏈"
+                                                      : feedItems[currentIndex]
+                                                          ?.source ===
+                                                        "White Sox - SI"
+                                                      ? "⚾"
+                                                      : getCategoryIcon(
+                                                          getFeedCategory(
+                                                            feedItems[
+                                                              currentIndex
+                                                            ]?.source || ""
+                                                          )
+                                                        )}
+                                                  </span>
+                                                )}
                                               </div>
                                               {feedItems[currentIndex]
                                                 ?.source !== "ESPN" &&
@@ -3093,18 +3127,53 @@ const NewsAggregator = () => {
                                           <div className="text-center text-gray-500 dark:text-gray-400">
                                             <div className="text-8xl mb-2">
                                               {feedItems[currentIndex]
-                                                ?.source === "Hot Peppers"
-                                                ? "🌶️"
-                                                : feedItems[currentIndex]
-                                                    ?.source ===
-                                                  "Pride of Lions"
-                                                ? "🏈"
-                                                : getCategoryIcon(
-                                                    getFeedCategory(
-                                                      feedItems[currentIndex]
-                                                        ?.source || ""
-                                                    )
-                                                  )}
+                                                ?.source === "ESPN" ? (
+                                                <img
+                                                  src="/img/espn.svg"
+                                                  alt="ESPN"
+                                                  className="mx-auto"
+                                                />
+                                              ) : feedItems[currentIndex]
+                                                  ?.source ===
+                                                "Pride of Lions" ? (
+                                                <img
+                                                  src="/img/lions.png"
+                                                  alt="Pride of Lions"
+                                                  className="mx-auto"
+                                                />
+                                              ) : feedItems[currentIndex]
+                                                  ?.source === "Bloomberg" ? (
+                                                <img
+                                                  src="/img/bloomberg.svg"
+                                                  alt="Bloomberg"
+                                                  className="mx-auto"
+                                                  style={{
+                                                    width: "200px",
+                                                    height: "auto",
+                                                  }}
+                                                />
+                                              ) : (
+                                                <span className="text-gray-600 dark:text-gray-300 font-bold">
+                                                  {feedItems[currentIndex]
+                                                    ?.source === "Hot Peppers"
+                                                    ? "🌶️"
+                                                    : feedItems[currentIndex]
+                                                        ?.source ===
+                                                      "Tips For BBQ"
+                                                    ? "♨️"
+                                                    : feedItems[currentIndex]
+                                                        ?.source ===
+                                                      "White Sox - SI"
+                                                    ? "⚾"
+                                                    : getCategoryIcon(
+                                                        getFeedCategory(
+                                                          feedItems[
+                                                            currentIndex
+                                                          ]?.source || ""
+                                                        )
+                                                      )}
+                                                </span>
+                                              )}
                                             </div>
                                             {feedItems[currentIndex]?.source !==
                                               "ESPN" &&
