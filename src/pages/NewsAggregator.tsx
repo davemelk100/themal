@@ -1,4 +1,5 @@
 import { Suspense, useState, useEffect } from "react";
+import { ExternalLink } from "lucide-react";
 
 import { useSettingsSync } from "../hooks/useSettingsSync";
 
@@ -2679,9 +2680,10 @@ const NewsAggregator = () => {
                                           href={feedItems[currentIndex]?.url}
                                           target="_blank"
                                           rel="noopener noreferrer"
-                                          className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer break-words block"
+                                          className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer break-words block flex items-center gap-1"
                                         >
                                           {feedItems[currentIndex]?.title || ""}
+                                          <ExternalLink className="w-3 h-3 flex-shrink-0" />
                                         </a>
                                       </h3>
 
@@ -3328,12 +3330,13 @@ const NewsAggregator = () => {
                                         href={customFeedItems[0]?.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                                        className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer flex items-center gap-1"
                                       >
                                         {truncateText(
                                           customFeedItems[0]?.title || "",
                                           90
                                         )}
+                                        <ExternalLink className="w-3 h-3 flex-shrink-0" />
                                       </a>
                                     </h3>
                                   )}

@@ -206,9 +206,16 @@ export const content = {
     subtitle: "Organizations that have supported my career",
     positions: [
       {
+        title: "User Experience Lead",
+        company: "SOULCHI - Global",
+        period: "August 2025 - present",
+        description:
+          "Performed user research for a wellness application. Performed market research. Created Figma and React comps for mobile application flow. Build executive demo using React/Typescript/Vite/Tailwind. Performed heuristic evaluations on mobile and web applications.",
+      },
+      {
         title: "Senior Product Designer",
         company: "Powerley Inc., Detroit, MI",
-        period: "January 2025 – Present",
+        period: "January 2025 – August 2025",
         description:
           "Designed mobile and desktop bill analysis dashboard. Used AI tools for accessibility testing and language optimization. Conducted user testing and market research. Built interactive prototypes and design system components in Figma and React.",
       },

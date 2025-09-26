@@ -210,7 +210,7 @@ function App() {
                   <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 gap-6 sm:gap-8">
                       {/* Hero Content */}
-                      <div className="border border-gray-300 dark:border-gray-600 p-4 sm:p-6 rounded-lg">
+                      <div className="p-4 sm:p-6 rounded-lg">
                         {/* Title */}
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
@@ -261,9 +261,7 @@ function App() {
                           className="mt-4 sm:mt-6"
                         >
                           <p className="text-sm sm:text-base text-muted-foreground leading-relaxed text-left">
-                            Senior UX and Product Designer with 15+ years of
-                            experience delivering accessible, user-centered
-                            digital solutions across industries.
+                          I’m David Melkonian, a UX and front-end leader with over 15 years of experience. I specialize in design systems, accessibility, and bridging design with React and modern front-end development. I’ve led teams of up to 30, built UX practices from scratch, and improved accessibility compliance to nearly 100% at multiple organizations. What I bring is a mix of hands-on design, code, and team leadership to deliver products that are engaging, consistent, and inclusive.
                           </p>
                         </motion.div>
                       </div>
