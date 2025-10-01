@@ -64,6 +64,13 @@ const SectionHeader = ({
           <h2 className="text-[clamp(1.25rem,3vw,2.5rem)] font-bold title-font leading-tight">
             {title}
           </h2>
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="bg-black text-white dark:bg-white/10 dark:text-white p-2 rounded-full shadow-lg hover:opacity-80 transition-opacity flex-shrink-0"
+            aria-label="Scroll to top"
+          >
+            <ArrowUp className="h-4 w-4 text-white dark:text-white" />
+          </button>
           {icon && <div className="flex items-center gap-2">{icon}</div>}
           {showUpArrow && (
             <button
