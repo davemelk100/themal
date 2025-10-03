@@ -31,6 +31,7 @@ const MusicPlayer = lazy(() => import("./pages/MusicPlayer"));
 const JsonAiPrompts = lazy(() => import("./pages/JsonAiPrompts"));
 const AudioTranscript = lazy(() => import("./pages/AudioTranscript"));
 const NewsAggregator = lazy(() => import("./pages/NewsAggregator"));
+const Specs = lazy(() => import("./pages/Specs"));
 
 import { slugify } from "./utils/slugify";
 import LazyVideo from "./components/LazyVideo";
@@ -1590,6 +1591,7 @@ function App() {
           <Route path="/json-ai-prompts" element={<JsonAiPrompts />} />
           <Route path="/audio-transcript" element={<AudioTranscript />} />
           <Route path="/news" element={<NewsAggregator />} />
+          <Route path="/specs" element={<Specs />} />
         </Routes>
       </Suspense>
 
