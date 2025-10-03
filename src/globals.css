@@ -164,6 +164,20 @@
     font-size: 1rem !important;
   }
 
+  /* Responsive paragraph sizing for small screens */
+  @media (max-width: 410px) {
+
+    p,
+    p.text-sm,
+    p.text-base,
+    p.text-lg,
+    .article-intro p,
+    .point-section p,
+    .counter-point-section p {
+      font-size: 0.75rem !important;
+    }
+  }
+
   /* Override any remaining font references */
   .font-sans,
   .font-card {
@@ -189,6 +203,122 @@
   }
 
   /* Responsive improvements */
+  @media (max-width: 410px) {
+    body {
+      font-size: 12px;
+    }
+
+    /* Make all text elements smaller on very small screens */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-size: 0.875rem !important;
+    }
+
+    p,
+    span,
+    div,
+    button,
+    input,
+    textarea,
+    select,
+    label,
+    a {
+      font-size: 0.75rem !important;
+    }
+
+    /* Specific adjustments for common text classes */
+    .text-xs {
+      font-size: 0.625rem !important;
+    }
+
+    .text-sm {
+      font-size: 0.6875rem !important;
+    }
+
+    .text-base {
+      font-size: 0.75rem !important;
+    }
+
+    .text-lg {
+      font-size: 0.8125rem !important;
+    }
+
+    .text-xl {
+      font-size: 0.875rem !important;
+    }
+
+    .text-2xl {
+      font-size: 1rem !important;
+    }
+
+    .text-3xl {
+      font-size: 1.125rem !important;
+    }
+
+    .text-4xl {
+      font-size: 1.25rem !important;
+    }
+
+    .text-5xl {
+      font-size: 1.5rem !important;
+    }
+
+    /* Card and component specific adjustments */
+    .card-title {
+      font-size: 0.875rem !important;
+    }
+
+    .card-body {
+      font-size: 0.6875rem !important;
+    }
+
+    .nav {
+      font-size: 0.6875rem !important;
+    }
+
+    .caption {
+      font-size: 0.625rem !important;
+    }
+
+    /* Article content adjustments */
+    .article-content h2 {
+      font-size: 1rem !important;
+    }
+
+    .article-content h3 {
+      font-size: 0.875rem !important;
+    }
+
+    .article-content p {
+      font-size: 0.75rem !important;
+    }
+
+    /* Point sections */
+    .point-section h3,
+    .counter-point-section h3 {
+      font-size: 0.8125rem !important;
+    }
+
+    .point-section p,
+    .counter-point-section p {
+      font-size: 0.75rem !important;
+    }
+
+    /* Article intro */
+    .article-intro p {
+      font-size: 0.75rem !important;
+    }
+
+    /* Article date */
+    .article-date {
+      font-size: 0.625rem !important;
+    }
+  }
+
   @media (max-width: 640px) {
     body {
       font-size: 14px;
