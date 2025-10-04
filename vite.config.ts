@@ -44,6 +44,7 @@ export default defineConfig({
         drop_debugger: true,
       },
     },
+    cssMinify: false,
     chunkSizeWarningLimit: 1000,
   },
   optimizeDeps: {

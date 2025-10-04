@@ -11,6 +11,7 @@ import {
   Settings,
   Shield,
   ArrowLeft,
+  ExternalLink,
 } from "lucide-react";
 import {
   techCategories,
@@ -166,7 +167,7 @@ const Specs = () => {
                           {category.title}
                         </h3>
                       </div>
-                      <div className="space-y-3">
+                      <div className="space-y-4">
                         {category.items.map((item, itemIndex) => (
                           <div
                             key={itemIndex}
@@ -175,9 +176,33 @@ const Specs = () => {
                             <h4 className="font-medium text-gray-900 dark:text-white">
                               {item.name}
                             </h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                               {item.description}
                             </p>
+                            {item.example && (
+                              <div className="bg-white dark:bg-gray-700 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
+                                <div className="flex items-center justify-between mb-2">
+                                  <h5 className="text-sm font-semibold text-primary">
+                                    {item.example.title}
+                                  </h5>
+                                  <Link
+                                    to={item.example.link}
+                                    className="text-xs text-gray-500 hover:text-primary transition-colors flex items-center gap-1"
+                                  >
+                                    View Example
+                                    <ExternalLink className="w-3 h-3" />
+                                  </Link>
+                                </div>
+                                <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                                  {item.example.description}
+                                </p>
+                                <div className="bg-gray-50 dark:bg-gray-800 rounded px-2 py-1">
+                                  <code className="text-xs text-gray-700 dark:text-gray-300 font-mono">
+                                    {item.example.code}
+                                  </code>
+                                </div>
+                              </div>
+                            )}
                           </div>
                         ))}
                       </div>
