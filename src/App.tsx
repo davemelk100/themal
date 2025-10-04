@@ -1588,7 +1588,7 @@ function App() {
 
           <Route path="/music" element={<MusicPlayer />} />
 
-          <Route path="/json-ai-prompts" element={<JsonAiPrompts />} />
+          <Route path="/json" element={<JsonAiPrompts />} />
           <Route path="/audio-transcript" element={<AudioTranscript />} />
           <Route path="/news" element={<NewsAggregator />} />
           <Route path="/specs" element={<Specs />} />
