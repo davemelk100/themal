@@ -2566,7 +2566,7 @@ const NewsAggregator = () => {
                                               goToPrevious(feed.name)
                                             }
                                             disabled={feedItems.length <= 1}
-                                            className="carousel-button w-10 h-7 text-xs text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 disabled:text-gray-300 disabled:cursor-not-allowed bg-gray-200 dark:bg-gray-500 rounded border border-gray-300 dark:border-gray-400 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-400 transition-colors"
+                                            className="carousel-button w-10 h-7 text-xs text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 disabled:text-gray-300 disabled:cursor-not-allowed bg-gray-200 dark:bg-gray-500 rounded border border-gray-300 dark:border-gray-400 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-400 transition-colors leading-none"
                                           >
                                             ←
                                           </button>
@@ -2577,7 +2577,7 @@ const NewsAggregator = () => {
                                           <button
                                             onClick={() => goToNext(feed.name)}
                                             disabled={feedItems.length <= 1}
-                                            className="carousel-button w-10 h-7 text-xs text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 disabled:text-gray-300 disabled:cursor-not-allowed bg-gray-200 dark:bg-gray-500 rounded border border-gray-300 dark:border-gray-400 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-400 transition-colors"
+                                            className="carousel-button w-10 h-7 text-xs text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 disabled:text-gray-300 disabled:cursor-not-allowed bg-gray-200 dark:bg-gray-500 rounded border border-gray-300 dark:border-gray-400 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-400 transition-colors leading-none"
                                           >
                                             →
                                           </button>
@@ -2593,7 +2593,7 @@ const NewsAggregator = () => {
                                               goToPrevious(feed.name)
                                             }
                                             disabled={feedItems.length <= 1}
-                                            className={`carousel-button text-sm text-gray-700 dark:text-gray-200 hover:text-gray-800 disabled:text-gray-300 disabled:cursor-not-allowed bg-gray-200 dark:bg-gray-500 rounded border border-gray-300 dark:border-gray-400 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-400 transition-colors ${
+                                            className={`carousel-button text-sm text-gray-700 dark:text-gray-200 hover:text-gray-800 disabled:text-gray-300 disabled:cursor-not-allowed bg-gray-200 dark:bg-gray-500 rounded border border-gray-300 dark:border-gray-400 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-400 transition-colors leading-none ${
                                               viewMode === "grid"
                                                 ? "w-8 h-6 text-xs"
                                                 : "w-12 h-8"
@@ -2614,7 +2614,7 @@ const NewsAggregator = () => {
                                           <button
                                             onClick={() => goToNext(feed.name)}
                                             disabled={feedItems.length <= 1}
-                                            className={`carousel-button text-sm text-gray-700 dark:text-gray-200 hover:text-gray-800 disabled:text-gray-300 disabled:cursor-not-allowed bg-gray-200 dark:bg-gray-500 rounded border border-gray-300 dark:border-gray-400 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-400 transition-colors ${
+                                            className={`carousel-button text-sm text-gray-700 dark:text-gray-200 hover:text-gray-800 disabled:text-gray-300 disabled:cursor-not-allowed bg-gray-200 dark:bg-gray-500 rounded border border-gray-300 dark:border-gray-400 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-400 transition-colors leading-none ${
                                               viewMode === "grid"
                                                 ? "w-8 h-6 text-xs"
                                                 : "w-12 h-8"
@@ -3241,7 +3241,7 @@ const NewsAggregator = () => {
                                             disabled={
                                               customFeedItems.length <= 1
                                             }
-                                            className="carousel-button w-8 h-6 text-xs text-gray-700 dark:text-gray-200 hover:text-gray-800 disabled:text-gray-300 disabled:cursor-not-allowed bg-gray-200 dark:bg-gray-500 rounded border border-gray-300 dark:border-gray-400 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-400 transition-colors"
+                                            className="carousel-button w-8 h-6 text-xs text-gray-700 dark:text-gray-200 hover:text-gray-800 disabled:text-gray-300 disabled:cursor-not-allowed bg-gray-200 dark:bg-gray-500 rounded border border-gray-300 dark:border-gray-400 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-400 transition-colors leading-none"
                                           >
                                             ←
                                           </button>
@@ -3256,7 +3256,7 @@ const NewsAggregator = () => {
                                             disabled={
                                               customFeedItems.length <= 1
                                             }
-                                            className="carousel-button w-8 h-6 text-xs text-gray-700 dark:text-gray-200 hover:text-gray-800 disabled:text-gray-300 disabled:cursor-not-allowed bg-gray-200 dark:bg-gray-500 rounded border border-gray-300 dark:border-gray-400 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-400 transition-colors"
+                                            className="carousel-button w-8 h-6 text-xs text-gray-700 dark:text-gray-200 hover:text-gray-800 disabled:text-gray-300 disabled:cursor-not-allowed bg-gray-200 dark:bg-gray-500 rounded border border-gray-300 dark:border-gray-400 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-400 transition-colors leading-none"
                                           >
                                             →
                                           </button>
