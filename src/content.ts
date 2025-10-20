@@ -1164,7 +1164,7 @@ There isn't always a clear way to select a technology. The newest, shiniest prod
         id: "cultivating-development-growth",
         title: "Cultivating Development Growth",
         description:
-          "Strategies for fostering professional growth and development in software engineering teams.",
+          "Strategies for still delivering with shrinking software engineering teams.",
         url: "https://open.substack.com/pub/davemelk/p/cultivating-development-growth-in?r=1jgk3k&utm_campaign=post&utm_medium=web&showWelcomeOnShare=false",
         content: `
 <h2>Cultivating Development Growth</h2>
