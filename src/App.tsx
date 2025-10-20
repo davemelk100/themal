@@ -720,7 +720,12 @@ function App() {
                                         "Figma Mobile Prototype"
                                       ? "h-3/4 w-3/4 mx-auto"
                                       : project.title === "Design Panes"
-                                      ? "h-auto w-4/5 mx-auto"
+                                      ? "h-auto w-3/5 mx-auto"
+                                      : project.title === "Hex Code Pop Art"
+                                      ? "h-4/5 w-4/5 mx-auto"
+                                      : project.title ===
+                                        "Logos for Sports Podcast"
+                                      ? "h-4/5 w-4/5 mx-auto"
                                       : "h-full w-full"
                                   }`}
                                   loading="lazy"
@@ -1348,7 +1353,6 @@ function App() {
                       </h2>
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-6">
                         <div className="group relative overflow-hidden rounded-lg bg-gray-100/80">
-
                           <div className="p-4 sm:p-6">
                             <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-2">
                               Background Card
