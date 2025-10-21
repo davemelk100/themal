@@ -200,6 +200,28 @@ const MusicPlayer: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8"
         >
+          {/* Header */}
+          <div className="text-left mb-8">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+              BALM
+            </h1>
+            <p className="text-lg text-gray-600 dark:text-gray-400 mb-4">
+              Music and Composition: Dave Melkonian
+            </p>
+            <div className="text-sm text-gray-500 dark:text-gray-400 space-y-1">
+              <p className="mb-4">
+                <span className="font-medium">Contributors:</span> Bryan
+                Caspers, Chris Olson, Michael O'Reilly
+              </p>
+              <p>
+                <span className="font-medium">Samples:</span> Fiend, Waka Flocka
+                Flame, Motorhead, Knocked Loose, Youth of Today, Alice In
+                Chains, Pink Floyd, Notorious B.I.G., Eagles, Big Tuck, Tommy
+                LaSorda, Slayer, Method Man
+              </p>
+            </div>
+          </div>
+
           {/* View Toggle */}
           <div className="flex justify-center mb-6">
             <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
