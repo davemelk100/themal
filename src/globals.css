@@ -160,7 +160,7 @@
   .article-intro p,
   .point-section p,
   .counter-point-section p {
-    line-height: 1.7 !important;
+    line-height: 1.25 !important;
     font-size: 1rem !important;
   }
 
@@ -433,7 +433,6 @@
 
   .article-content p {
     @apply mb-4 text-gray-700 dark:text-gray-300;
-    line-height: 1.7 !important;
   }
 
   .article-content ul,

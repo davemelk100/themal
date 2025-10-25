@@ -2800,7 +2800,9 @@ const NewsAggregator = () => {
                                           <div className="mt-2">
                                             <p
                                               className="text-sm text-gray-600 dark:text-gray-400"
-                                              style={{ lineHeight: "1.5" }}
+                                              style={{
+                                                lineHeight: "normal !important",
+                                              }}
                                             >
                                               {truncateText(
                                                 feedItems[currentIndex]
@@ -2881,7 +2883,9 @@ const NewsAggregator = () => {
                                           <div className="mt-2 flex items-center">
                                             <p
                                               className="text-gray-600 dark:text-gray-400 text-sm"
-                                              style={{ lineHeight: "1.5" }}
+                                              style={{
+                                                lineHeight: "normal !important",
+                                              }}
                                             >
                                               {truncateText(
                                                 feedItems[currentIndex]
@@ -3451,7 +3455,12 @@ const NewsAggregator = () => {
                                   {viewMode === "grid" &&
                                     customFeedItems[0]?.excerpt && (
                                       <div className="mt-3 flex items-center">
-                                        <p className="text-xs leading-relaxed text-gray-600 dark:text-gray-400">
+                                        <p
+                                          className="text-xs text-gray-600 dark:text-gray-400"
+                                          style={{
+                                            lineHeight: "normal !important",
+                                          }}
+                                        >
                                           {truncateText(
                                             customFeedItems[0]?.excerpt || "",
                                             400
