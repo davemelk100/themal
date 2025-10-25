@@ -2704,7 +2704,9 @@ const NewsAggregator = () => {
                                             disabled={feedItems.length <= 1}
                                             className="carousel-button w-10 h-7 text-xs text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 disabled:text-gray-300 disabled:cursor-not-allowed bg-gray-200 dark:bg-gray-500 rounded border border-gray-300 dark:border-gray-400 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-400 transition-colors leading-none"
                                           >
-                                            ←
+                                            <span className="flex items-center justify-center h-full translate-y-[2px]">
+                                              ←
+                                            </span>
                                           </button>
                                           <span className="text-xs text-gray-500 dark:text-gray-400 w-6 h-6 flex items-center justify-center">
                                             {currentIndex + 1}/
@@ -2715,7 +2717,9 @@ const NewsAggregator = () => {
                                             disabled={feedItems.length <= 1}
                                             className="carousel-button w-10 h-7 text-xs text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 disabled:text-gray-300 disabled:cursor-not-allowed bg-gray-200 dark:bg-gray-500 rounded border border-gray-300 dark:border-gray-400 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-400 transition-colors leading-none"
                                           >
-                                            →
+                                            <span className="flex items-center justify-center h-full translate-y-[2px]">
+                                              →
+                                            </span>
                                           </button>
                                         </div>
                                       )}
@@ -2735,7 +2739,9 @@ const NewsAggregator = () => {
                                                 : "w-12 h-8"
                                             }`}
                                           >
-                                            ←
+                                            <span className="flex items-center justify-center h-full translate-y-[2px]">
+                                              ←
+                                            </span>
                                           </button>
                                           <span
                                             className={`text-gray-500 dark:text-gray-400 flex items-center justify-center mx-1 ${
@@ -2756,7 +2762,9 @@ const NewsAggregator = () => {
                                                 : "w-12 h-8"
                                             }`}
                                           >
-                                            →
+                                            <span className="flex items-center justify-center h-full translate-y-[2px]">
+                                              →
+                                            </span>
                                           </button>
                                         </div>
                                       )}
