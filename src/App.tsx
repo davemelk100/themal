@@ -1403,17 +1403,17 @@ function App() {
                         <div className="group relative overflow-hidden rounded-2xl aspect-[1/1] bg-black">
                           {/* Gradient Background Blobs */}
                           <div className="absolute inset-0">
-                            {/* Orange/Pink blob - top left */}
-                            <div className="absolute -top-20 -left-20 w-64 h-64 bg-gradient-to-br from-orange-500 via-pink-500 to-transparent rounded-full blur-3xl opacity-60"></div>
-                            {/* Hot Pink blob - bottom left */}
-                            <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-gradient-to-tr from-pink-500 via-rose-500 to-transparent rounded-full blur-3xl opacity-70"></div>
-                            {/* Cyan/Blue blob - top right */}
-                            <div className="absolute -top-16 -right-16 w-72 h-72 bg-gradient-to-bl from-cyan-500 via-blue-500 to-transparent rounded-full blur-3xl opacity-65"></div>
+                            {/* Light gray blob - top left */}
+                            <div className="absolute -top-20 -left-20 w-64 h-64 bg-gradient-to-br from-gray-300 via-gray-400 to-transparent rounded-full blur-3xl opacity-60"></div>
+                            {/* Medium gray blob - bottom left */}
+                            <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-gradient-to-tr from-gray-400 via-gray-500 to-transparent rounded-full blur-3xl opacity-70"></div>
+                            {/* Dark gray blob - top right */}
+                            <div className="absolute -top-16 -right-16 w-72 h-72 bg-gradient-to-bl from-gray-500 via-gray-600 to-transparent rounded-full blur-3xl opacity-65"></div>
                           </div>
 
                           {/* Glassmorphic Card */}
                           <div className="absolute inset-4 rounded-2xl bg-white/40 backdrop-blur-xl border border-white/50 shadow-2xl">
-                            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-pink-500/20 via-transparent to-cyan-500/20"></div>
+                            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-gray-400/20 via-transparent to-gray-600/20"></div>
                             {/* Static/Noise Effect */}
                             <div
                               className="absolute inset-0 rounded-2xl opacity-30 mix-blend-overlay pointer-events-none"
