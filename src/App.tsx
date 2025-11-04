@@ -318,8 +318,10 @@ function App() {
                                   duration: 1.8,
                                   delay: index * 0.2,
                                 }}
-                                className="group relative overflow-visible sm:overflow-hidden rounded-lg bg-white/20 backdrop-blur-lg border border-white/30 flex flex-col shadow-xl h-[140px] sm:h-[320px] md:h-[336px] lg:h-[352px]"
+                                className="group relative overflow-visible sm:overflow-hidden rounded-lg bg-white/40 backdrop-blur-xl border border-white/50 flex flex-col shadow-2xl h-[140px] sm:h-[320px] md:h-[336px] lg:h-[352px]"
                               >
+                                {/* Gradient overlay for glassmorphic effect */}
+                                <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-gray-400/10 via-transparent to-gray-600/10 pointer-events-none"></div>
                                 <div className="absolute top-1 right-1 sm:top-2 sm:right-2 z-20 hidden sm:block">
                                   <a
                                     href={project.demo}
@@ -331,9 +333,6 @@ function App() {
                                     <ExternalLink className="h-4 w-4 text-gray-600 dark:text-white" />
                                   </a>
                                 </div>
-                                {/* Mobile background - white */}
-                                <div className="absolute inset-0 bg-white dark:bg-gray-900 sm:hidden"></div>
-
                                 {/* Desktop background - animations */}
                                 {(project.title === "AI NUI" ||
                                   project.title === "JSON AI Prompts" ||
@@ -687,17 +686,7 @@ function App() {
                   className="py-4 sm:py-6 lg:py-8 xl:py-12 relative"
                 >
                   <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-                    <div
-                      className="border border-gray-300 dark:border-gray-600 p-4 sm:p-6 rounded-lg relative overflow-hidden"
-                      style={{
-                        background: `
-                          radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
-                          radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.1) 0%, transparent 50%),
-                          radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%),
-                          linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)
-                        `,
-                      }}
-                    >
+                    <div className="border border-gray-300 dark:border-gray-600 p-4 sm:p-6 rounded-lg relative overflow-hidden bg-white">
                       <SectionHeader
                         title="Design"
                         subtitle={content.work.subtitle}
