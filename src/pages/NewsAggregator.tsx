@@ -2623,7 +2623,7 @@ const NewsAggregator = () => {
                                 onDragEnd={handleDragEnd}
                                 className={`bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col border-l-4 ${
                                   viewMode === "grid"
-                                    ? "min-h-[500px] h-auto"
+                                    ? "min-h-[650px] h-auto"
                                     : "w-full h-auto justify-center relative"
                                 } ${
                                   draggedFeedId === feed.id
@@ -2959,11 +2959,11 @@ const NewsAggregator = () => {
                                           viewMode === "grid" ? "auto" : "75px",
                                         minHeight:
                                           viewMode === "grid"
-                                            ? "250px"
+                                            ? "350px"
                                             : "75px",
                                         maxHeight:
                                           viewMode === "grid"
-                                            ? "250px"
+                                            ? "350px"
                                             : "75px",
                                         marginBottom: "15px",
                                       }}
@@ -2983,9 +2983,9 @@ const NewsAggregator = () => {
                                               : "75px",
                                           minHeight:
                                             viewMode === "grid"
-                                              ? "250px"
+                                              ? "350px"
                                               : "75px",
-                                          maxHeight: "250px",
+                                          maxHeight: "350px",
                                         }}
                                         onError={(e) => {
                                           // Replace broken image with placeholder
@@ -3012,9 +3012,9 @@ const NewsAggregator = () => {
                                               ? "auto"
                                               : viewMode === "list"
                                               ? "75px"
-                                              : "250px",
-                                          minHeight: "250px",
-                                          maxHeight: "250px",
+                                              : "350px",
+                                          minHeight: "350px",
+                                          maxHeight: "350px",
                                         }}
                                       >
                                         <div className="w-full h-full rounded-lg flex items-center justify-center">
@@ -3129,9 +3129,9 @@ const NewsAggregator = () => {
                                         viewMode === "grid" ? "mt-2" : "mt-auto"
                                       }`}
                                       style={{
-                                        height: "250px",
-                                        minHeight: "250px",
-                                        maxHeight: "250px",
+                                        height: "350px",
+                                        minHeight: "350px",
+                                        maxHeight: "350px",
                                         marginBottom: "15px",
                                       }}
                                     >
@@ -3350,12 +3350,12 @@ const NewsAggregator = () => {
                                 className={`bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col ${
                                   viewMode === "list"
                                     ? "h-auto justify-center border-l-4"
-                                    : "h-[500px]"
+                                    : "h-[650px]"
                                 }`}
                                 style={
                                   viewMode === "list"
                                     ? { borderLeftColor: "#ef4444" }
-                                    : { height: "500px" }
+                                    : { height: "650px" }
                                 }
                               >
                                 {/* Custom Feed Header */}
@@ -3497,7 +3497,7 @@ const NewsAggregator = () => {
                                     <div
                                       className="relative z-0"
                                       style={{
-                                        height: "250px",
+                                        height: "350px",
                                         marginTop:
                                           viewMode === "grid" ? "8px" : "20px",
                                         marginBottom: "0px",
@@ -3508,9 +3508,9 @@ const NewsAggregator = () => {
                                         alt={customFeedItems[0]?.title}
                                         className="w-full h-96 object-cover rounded-lg"
                                         style={{
-                                          height: "250px",
-                                          minHeight: "250px",
-                                          maxHeight: "250px",
+                                          height: "350px",
+                                          minHeight: "350px",
+                                          maxHeight: "350px",
                                         }}
                                         onError={(e) => {
                                           // Replace broken image with placeholder
@@ -3532,9 +3532,9 @@ const NewsAggregator = () => {
                                       <div
                                         className="image-placeholder hidden w-full bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center"
                                         style={{
-                                          height: "250px",
-                                          minHeight: "250px",
-                                          maxHeight: "250px",
+                                          height: "350px",
+                                          minHeight: "350px",
+                                          maxHeight: "350px",
                                         }}
                                       >
                                         <div className="text-center text-gray-500 dark:text-gray-400">
@@ -3554,9 +3554,9 @@ const NewsAggregator = () => {
                                         viewMode === "grid" ? "mt-2" : "mt-auto"
                                       }`}
                                       style={{
-                                        height: "250px",
-                                        minHeight: "250px",
-                                        maxHeight: "250px",
+                                        height: "350px",
+                                        minHeight: "350px",
+                                        maxHeight: "350px",
                                         marginBottom: "15px",
                                       }}
                                     >

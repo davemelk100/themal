@@ -306,7 +306,10 @@ function App() {
                               (project) =>
                                 project.title !== "Chatbots" &&
                                 project.title !== "Design Panes" &&
-                                project.title !== "HealthAware"
+                                project.title !== "HealthAware" &&
+                                project.title !== "AI NUI" &&
+                                project.title !==
+                                  "Configurable Multivariate Testing"
                             )
                             .map((project, index) => (
                               <motion.div
@@ -334,37 +337,29 @@ function App() {
                                   </a>
                                 </div>
                                 {/* Desktop background - animations */}
-                                {(project.title === "AI NUI" ||
-                                  project.title === "JSON AI Prompts" ||
+                                {(project.title === "JSON AI Prompts" ||
                                   project.title === "User Testing Config" ||
-                                  project.title ===
-                                    "Configurable Multivariate Testing") && (
+                                  project.title === "RAG App") && (
                                   <div className="absolute inset-0 overflow-hidden z-0 p-2 hidden sm:block">
                                     <img
                                       src={
-                                        project.title === "AI NUI"
-                                          ? `/img/ai-nui-alt2.svg?v=${Date.now()}`
-                                          : project.title === "JSON AI Prompts"
+                                        project.title === "JSON AI Prompts"
                                           ? `/img/json-ai-prompts-animation.svg?v=${Date.now()}`
                                           : project.title ===
                                             "User Testing Config"
                                           ? `/img/user-testing-config-animation.svg?v=${Date.now()}`
-                                          : project.title ===
-                                            "Configurable Multivariate Testing"
-                                          ? `/img/multivariate-testing-animation.svg?v=${Date.now()}`
+                                          : project.title === "RAG App"
+                                          ? `/img/rag-app-animation.svg?v=${Date.now()}`
                                           : ""
                                       }
                                       alt={
-                                        project.title === "AI NUI"
-                                          ? "AI NUI Animation"
-                                          : project.title === "JSON AI Prompts"
+                                        project.title === "JSON AI Prompts"
                                           ? "JSON AI Prompts Animation"
                                           : project.title ===
                                             "User Testing Config"
                                           ? "User Testing Config Animation"
-                                          : project.title ===
-                                            "Configurable Multivariate Testing"
-                                          ? "Configurable Multivariate Testing Animation"
+                                          : project.title === "RAG App"
+                                          ? "RAG App Animation"
                                           : ""
                                       }
                                       className="absolute inset-0 h-full w-full object-contain object-bottom"
@@ -391,28 +386,6 @@ function App() {
                                         className="flex items-center gap-1"
                                         role="presentation"
                                       >
-                                        {project.title === "AI NUI" &&
-                                          [
-                                            "#ff6b35", // Orange from AI NUI animation
-                                            "#4ecdc4", // Teal from AI NUI animation
-                                            "#6c757d", // Gray from AI NUI animation
-                                            "#e55a2b", // Darker Orange from AI NUI animation
-                                            "#457a", // Darker Teal from AI NUI animation
-                                          ].map((color, i) => (
-                                            <span
-                                              key={i}
-                                              role="presentation"
-                                              aria-hidden="true"
-                                              className="w-3 h-3"
-                                              style={{
-                                                display: "inline-block",
-                                                borderRadius: "50%",
-                                                background: `radial-gradient(circle at 70% 70%, ${color} 0%, ${color} 60%, ${color}dd 100%)`,
-                                                boxShadow:
-                                                  "0 1px 2px rgba(0,0,0,0.08)",
-                                              }}
-                                            />
-                                          ))}
                                         {project.title === "JSON AI Prompts" &&
                                           [
                                             "#6366f1", // Indigo - primary
@@ -458,14 +431,13 @@ function App() {
                                               }}
                                             />
                                           ))}
-                                        {project.title ===
-                                          "Configurable Multivariate Testing" &&
+                                        {project.title === "RAG App" &&
                                           [
-                                            "#9333ea", // Purple - primary
-                                            "#a855f7", // Purple Light - vibrant
-                                            "#7c3aed", // Purple Dark - depth
-                                            "#c084fc", // Purple Lighter - soft
-                                            "#6d28d9", // Purple Darker - sophisticated
+                                            "#06b6d4", // Cyan - primary
+                                            "#22d3ee", // Cyan Light - vibrant
+                                            "#0891b2", // Cyan Dark - depth
+                                            "#67e8f9", // Cyan Lighter - soft
+                                            "#0e7490", // Cyan Darker - sophisticated
                                           ].map((color, i) => (
                                             <span
                                               key={i}
@@ -500,181 +472,6 @@ function App() {
                               </motion.div>
                             ))}
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-
-                {/* Articles Section */}
-                <section
-                  id="articles"
-                  className="py-4 sm:py-6 lg:py-8 xl:py-12 relative"
-                >
-                  <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="border border-gray-300 dark:border-gray-600 p-4 sm:p-6 rounded-lg relative overflow-hidden bg-white dark:bg-gray-900">
-                      <SectionHeader
-                        title="Articles"
-                        subtitle={content.articles.subtitle}
-                        className="mb-6"
-                        showArchiveLink={false}
-                        icon={
-                          <a
-                            href="https://davemelk.substack.com/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
-                            aria-label="Substack"
-                          >
-                            <svg
-                              className="h-5 w-5 text-black"
-                              viewBox="0 0 24 24"
-                              fill="currentColor"
-                            >
-                              <path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z" />
-                            </svg>
-                          </a>
-                        }
-                      />
-                      <div className="grid grid-cols-2 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
-                        {content.articles.items
-                          .filter(
-                            (article) =>
-                              article.title !== "Commit Message Fatigue" &&
-                              article.title !==
-                                "Information Architecture Is Not Sacred" &&
-                              article.title !==
-                                "AI is hydrated with user research data" &&
-                              article.title !==
-                                "Prompting for Heuristic Evaluations" &&
-                              article.title !== "Vibe Coding v Vibe Engineering"
-                          )
-                          .sort(
-                            (a, b) =>
-                              new Date(b.date).getTime() -
-                              new Date(a.date).getTime()
-                          )
-                          .map((article, index) => (
-                            <motion.div
-                              key={index}
-                              initial={{ opacity: 0, y: 20 }}
-                              whileInView={{ opacity: 1, y: 0 }}
-                              viewport={{ once: true }}
-                              transition={{
-                                duration: 1.8,
-                                delay: index * 0.2,
-                              }}
-                              className="group relative overflow-visible sm:overflow-hidden rounded-lg bg-white/20 backdrop-blur-lg border border-white/30 flex flex-col shadow-xl h-[180px] sm:h-[320px] md:h-[336px] lg:h-[352px]"
-                            >
-                              {/* Static/Noise Effect */}
-                              <div
-                                className="absolute inset-0 rounded-lg opacity-30 mix-blend-overlay pointer-events-none z-[5]"
-                                style={{
-                                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-                                  backgroundSize: "200%",
-                                  backgroundRepeat: "repeat",
-                                }}
-                              ></div>
-                              <div className="absolute top-1 right-1 sm:top-2 sm:right-2 z-20 hidden sm:block">
-                                {article.url.startsWith("http") ? (
-                                  <a
-                                    href={article.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
-                                    aria-label={`View article: ${article.title}`}
-                                  >
-                                    <ExternalLink className="h-4 w-4 text-gray-600 dark:text-white" />
-                                  </a>
-                                ) : (
-                                  <Link
-                                    to={`/article/${slugify(article.title)}`}
-                                    className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
-                                    aria-label={`View article: ${article.title}`}
-                                  >
-                                    <ExternalLink className="h-4 w-4 text-gray-600 dark:text-white" />
-                                  </Link>
-                                )}
-                              </div>
-                              {/* Mobile background - semi-transparent partial image */}
-                              <div className="absolute inset-0 z-0 sm:hidden">
-                                <img
-                                  src={`${
-                                    (article as any).cardImage || article.image
-                                  }?v=${Date.now()}`}
-                                  alt={article.title}
-                                  className="absolute inset-0 w-full h-full object-cover object-center opacity-10"
-                                  loading="lazy"
-                                />
-                              </div>
-
-                              {/* Desktop background - images */}
-                              <div className="absolute inset-0 z-0 hidden sm:block">
-                                <img
-                                  src={`${
-                                    (article as any).cardImage || article.image
-                                  }?v=${Date.now()}`}
-                                  alt={article.title}
-                                  className="absolute bottom-0 left-0 right-0 h-1/2 w-full object-cover object-center"
-                                  loading="lazy"
-                                />
-                              </div>
-                              <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
-                                <div className="rounded-lg p-1 sm:p-2 pr-8 sm:pr-12">
-                                  <div className="flex flex-col gap-0.5">
-                                    <div className="flex items-center justify-between w-full">
-                                      <div className="flex items-center gap-2 min-w-0 flex-1">
-                                        {article.url.startsWith("http") ? (
-                                          <a
-                                            href={article.url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="text-[18px] font-semibold mb-0 title-font text-black dark:text-white hover:text-primary transition-colors cursor-pointer lab-card-title"
-                                            style={{
-                                              lineHeight: "1.25",
-                                            }}
-                                          >
-                                            {article.title.length > 40
-                                              ? `${article.title.substring(
-                                                  0,
-                                                  40
-                                                )}...`
-                                              : article.title}
-                                          </a>
-                                        ) : (
-                                          <Link
-                                            to={`/article/${slugify(
-                                              article.title
-                                            )}`}
-                                            className="text-[18px] font-semibold mb-0 title-font text-black dark:text-white hover:text-primary transition-colors cursor-pointer lab-card-title"
-                                            style={{
-                                              lineHeight: "1.25",
-                                            }}
-                                          >
-                                            {article.title.length > 40
-                                              ? `${article.title.substring(
-                                                  0,
-                                                  40
-                                                )}...`
-                                              : article.title}
-                                          </Link>
-                                        )}
-                                      </div>
-                                    </div>
-                                    {article.description && (
-                                      <p
-                                        className="text-sm text-gray-600 dark:text-gray-300 opacity-80 hidden sm:block"
-                                        style={{
-                                          lineHeight: "1.2",
-                                        }}
-                                      >
-                                        {article.description}
-                                      </p>
-                                    )}
-                                  </div>
-                                </div>
-                              </div>
-                            </motion.div>
-                          ))}
                       </div>
                     </div>
                   </div>
@@ -1050,9 +847,17 @@ function App() {
                           <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
                             {position.period}
                           </p>
-                          <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                            {position.description}
-                          </p>
+                          {Array.isArray(position.description) ? (
+                            <ul className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1">
+                              {position.description.map((item, index) => (
+                                <li key={index}>{item}</li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                              {position.description}
+                            </p>
+                          )}
                         </div>
                       ))}
                     </div>
@@ -1078,6 +883,181 @@ function App() {
                         Bachelor of Arts in English
                         <br />
                         Minor in Public Relations
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                {/* Articles Section */}
+                <section
+                  id="articles"
+                  className="py-4 sm:py-6 lg:py-8 xl:py-12 relative"
+                >
+                  <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="border border-gray-300 dark:border-gray-600 p-4 sm:p-6 rounded-lg relative overflow-hidden bg-white dark:bg-gray-900">
+                      <SectionHeader
+                        title="Articles"
+                        subtitle={content.articles.subtitle}
+                        className="mb-6"
+                        showArchiveLink={false}
+                        icon={
+                          <a
+                            href="https://davemelk.substack.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                            aria-label="Substack"
+                          >
+                            <svg
+                              className="h-5 w-5 text-black"
+                              viewBox="0 0 24 24"
+                              fill="currentColor"
+                            >
+                              <path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z" />
+                            </svg>
+                          </a>
+                        }
+                      />
+                      <div className="grid grid-cols-2 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
+                        {content.articles.items
+                          .filter(
+                            (article) =>
+                              article.title !== "Commit Message Fatigue" &&
+                              article.title !==
+                                "Information Architecture Is Not Sacred" &&
+                              article.title !==
+                                "AI is hydrated with user research data" &&
+                              article.title !==
+                                "Prompting for Heuristic Evaluations" &&
+                              article.title !== "Vibe Coding v Vibe Engineering"
+                          )
+                          .sort(
+                            (a, b) =>
+                              new Date(b.date).getTime() -
+                              new Date(a.date).getTime()
+                          )
+                          .map((article, index) => (
+                            <motion.div
+                              key={index}
+                              initial={{ opacity: 0, y: 20 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true }}
+                              transition={{
+                                duration: 1.8,
+                                delay: index * 0.2,
+                              }}
+                              className="group relative overflow-visible sm:overflow-hidden rounded-lg bg-white/20 backdrop-blur-lg border border-white/30 flex flex-col shadow-xl h-[180px] sm:h-[320px] md:h-[336px] lg:h-[352px]"
+                            >
+                              {/* Static/Noise Effect */}
+                              <div
+                                className="absolute inset-0 rounded-lg opacity-30 mix-blend-overlay pointer-events-none z-[5]"
+                                style={{
+                                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+                                  backgroundSize: "200%",
+                                  backgroundRepeat: "repeat",
+                                }}
+                              ></div>
+                              <div className="absolute top-1 right-1 sm:top-2 sm:right-2 z-20 hidden sm:block">
+                                {article.url.startsWith("http") ? (
+                                  <a
+                                    href={article.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
+                                    aria-label={`View article: ${article.title}`}
+                                  >
+                                    <ExternalLink className="h-4 w-4 text-gray-600 dark:text-white" />
+                                  </a>
+                                ) : (
+                                  <Link
+                                    to={`/article/${slugify(article.title)}`}
+                                    className="rounded-full p-1.5 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
+                                    aria-label={`View article: ${article.title}`}
+                                  >
+                                    <ExternalLink className="h-4 w-4 text-gray-600 dark:text-white" />
+                                  </Link>
+                                )}
+                              </div>
+                              {/* Mobile background - semi-transparent partial image */}
+                              <div className="absolute inset-0 z-0 sm:hidden">
+                                <img
+                                  src={`${
+                                    (article as any).cardImage || article.image
+                                  }?v=${Date.now()}`}
+                                  alt={article.title}
+                                  className="absolute inset-0 w-full h-full object-cover object-center opacity-10"
+                                  loading="lazy"
+                                />
+                              </div>
+
+                              {/* Desktop background - images */}
+                              <div className="absolute inset-0 z-0 hidden sm:block">
+                                <img
+                                  src={`${
+                                    (article as any).cardImage || article.image
+                                  }?v=${Date.now()}`}
+                                  alt={article.title}
+                                  className="absolute bottom-0 left-0 right-0 h-1/2 w-full object-cover object-center"
+                                  loading="lazy"
+                                />
+                              </div>
+                              <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
+                                <div className="rounded-lg p-1 sm:p-2 pr-8 sm:pr-12">
+                                  <div className="flex flex-col gap-0.5">
+                                    <div className="flex items-center justify-between w-full">
+                                      <div className="flex items-center gap-2 min-w-0 flex-1">
+                                        {article.url.startsWith("http") ? (
+                                          <a
+                                            href={article.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-[18px] font-semibold mb-0 title-font text-black dark:text-white hover:text-primary transition-colors cursor-pointer lab-card-title"
+                                            style={{
+                                              lineHeight: "1.25",
+                                            }}
+                                          >
+                                            {article.title.length > 40
+                                              ? `${article.title.substring(
+                                                  0,
+                                                  40
+                                                )}...`
+                                              : article.title}
+                                          </a>
+                                        ) : (
+                                          <Link
+                                            to={`/article/${slugify(
+                                              article.title
+                                            )}`}
+                                            className="text-[18px] font-semibold mb-0 title-font text-black dark:text-white hover:text-primary transition-colors cursor-pointer lab-card-title"
+                                            style={{
+                                              lineHeight: "1.25",
+                                            }}
+                                          >
+                                            {article.title.length > 40
+                                              ? `${article.title.substring(
+                                                  0,
+                                                  40
+                                                )}...`
+                                              : article.title}
+                                          </Link>
+                                        )}
+                                      </div>
+                                    </div>
+                                    {article.description && (
+                                      <p
+                                        className="text-sm text-gray-600 dark:text-gray-300 opacity-80 hidden sm:block"
+                                        style={{
+                                          lineHeight: "1.2",
+                                        }}
+                                      >
+                                        {article.description}
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            </motion.div>
+                          ))}
                       </div>
                     </div>
                   </div>
