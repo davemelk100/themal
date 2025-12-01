@@ -43,6 +43,17 @@ async def health_check():
     return {"status": "healthy"}
 
 
+@app.get("/admin", response_class=HTMLResponse)
+async def admin_panel():
+    """Serve the admin panel page"""
+    from pathlib import Path
+    admin_file = Path(__file__).parent.parent / "admin_panel.html"
+    if admin_file.exists():
+        with open(admin_file, 'r', encoding='utf-8') as f:
+            return f.read()
+    return "<h1>Admin panel not found</h1>"
+
+
 @app.get("/login", response_class=HTMLResponse)
 async def login_page():
     """Serve the admin login page"""
@@ -292,16 +303,17 @@ async def login_page():
                 }
                 
                 // Success
-                successDiv.textContent = 'Login successful!';
+                successDiv.textContent = 'Login successful! Redirecting...';
                 successDiv.classList.add('show');
                 
                 // Store token
                 localStorage.setItem('admin_token', data.access_token);
                 localStorage.setItem('token_type', data.token_type);
                 
-                // Display token
-                tokenValue.textContent = data.access_token;
-                tokenDisplay.classList.add('show');
+                // Redirect to admin panel
+                setTimeout(() => {
+                    window.location.href = '/admin';
+                }, 1000);
                 
             } catch (error) {
                 errorDiv.textContent = error.message || 'An error occurred during login';
