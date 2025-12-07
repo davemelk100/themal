@@ -152,6 +152,14 @@ function App() {
   const [currentViewMode, setCurrentViewMode] = useState<"list" | "grid">(
     "grid"
   );
+  const [designViewMode, setDesignViewMode] = useState<"list" | "grid">("grid");
+  const [labViewMode, setLabViewMode] = useState<"list" | "grid">("grid");
+  const [storiesViewMode, setStoriesViewMode] = useState<"list" | "grid">(
+    "grid"
+  );
+  const [articlesViewMode, setArticlesViewMode] = useState<"list" | "grid">(
+    "grid"
+  );
 
   const location = useLocation();
 
@@ -321,74 +329,151 @@ function App() {
                             subtitle={content.currentProjects.subtitle}
                             className="mb-6"
                             showUpArrow={false}
+                            toggleView={(mode) => setLabViewMode(mode)}
+                            viewMode={labViewMode}
                           />
-                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                            {content.currentProjects.projects
-                              .filter(
-                                (project) =>
-                                  project.title !== "Chatbots" &&
-                                  project.title !== "Design Panes" &&
-                                  project.title !== "HealthAware" &&
-                                  project.title !== "AI NUI" &&
-                                  project.title !==
-                                    "Configurable Multivariate Testing"
-                              )
-                              .map((project, index) => (
-                                <motion.a
-                                  key={index}
-                                  href={project.demo}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  initial={{ opacity: 0, y: 20 }}
-                                  whileInView={{ opacity: 1, y: 0 }}
-                                  viewport={{ once: true }}
-                                  transition={{
-                                    duration: 1.8,
-                                    delay: index * 0.2,
-                                  }}
-                                  className="group relative overflow-hidden rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex flex-col shadow-md hover:shadow-lg transition-shadow cursor-pointer"
-                                >
-                                  {/* Card Image */}
-                                  <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-gray-100 dark:bg-gray-900">
-                                    {project.title === "JSON AI Prompts" ||
-                                    project.title === "User Testing Config" ||
-                                    project.title === "RAG App" ? (
-                                      <img
-                                        src={
-                                          project.title === "JSON AI Prompts"
-                                            ? `/img/json-ai-prompts-animation.svg?v=${Date.now()}`
-                                            : project.title ===
-                                              "User Testing Config"
-                                            ? `/img/user-testing-config-animation.svg?v=${Date.now()}`
-                                            : project.title === "RAG App"
-                                            ? `/img/rag-app-animation.svg?v=${Date.now()}`
-                                            : ""
-                                        }
-                                        alt={project.title}
-                                        className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-300"
-                                        loading="lazy"
-                                      />
-                                    ) : (
-                                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800">
-                                        <span className="text-gray-400 dark:text-gray-500 text-sm">
-                                          {(project as any).title || "Project"}
-                                        </span>
-                                      </div>
-                                    )}
-                                  </div>
+                          {labViewMode === "grid" ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                              {content.currentProjects.projects
+                                .filter(
+                                  (project) =>
+                                    project.title !== "Chatbots" &&
+                                    project.title !== "Design Panes" &&
+                                    project.title !== "HealthAware" &&
+                                    project.title !== "AI NUI" &&
+                                    project.title !==
+                                      "Configurable Multivariate Testing"
+                                )
+                                .map((project, index) => (
+                                  <motion.a
+                                    key={index}
+                                    href={project.demo}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{
+                                      duration: 1.8,
+                                      delay: index * 0.2,
+                                    }}
+                                    className="group relative overflow-hidden rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex flex-col shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                                  >
+                                    {/* Card Image */}
+                                    <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-gray-100 dark:bg-gray-900">
+                                      {project.title === "JSON AI Prompts" ||
+                                      project.title === "User Testing Config" ||
+                                      project.title === "RAG App" ? (
+                                        <img
+                                          src={
+                                            project.title === "JSON AI Prompts"
+                                              ? `/img/json-ai-prompts-animation.svg?v=${Date.now()}`
+                                              : project.title ===
+                                                "User Testing Config"
+                                              ? `/img/user-testing-config-animation.svg?v=${Date.now()}`
+                                              : project.title === "RAG App"
+                                              ? `/img/rag-app-animation.svg?v=${Date.now()}`
+                                              : ""
+                                          }
+                                          alt={project.title}
+                                          className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-300"
+                                          loading="lazy"
+                                        />
+                                      ) : (
+                                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800">
+                                          <span className="text-gray-400 dark:text-gray-500 text-sm">
+                                            {(project as any).title ||
+                                              "Project"}
+                                          </span>
+                                        </div>
+                                      )}
+                                    </div>
 
-                                  {/* Card Content */}
-                                  <div className="p-4 sm:p-6 flex flex-col gap-2 flex-1">
-                                    <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
-                                      {project.title}
-                                    </h3>
-                                    <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
-                                      {project.description}
-                                    </p>
-                                  </div>
-                                </motion.a>
-                              ))}
-                          </div>
+                                    {/* Card Content */}
+                                    <div className="p-4 sm:p-6 flex flex-col gap-2 flex-1">
+                                      <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                                        {project.title}
+                                      </h3>
+                                      <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
+                                        {project.description}
+                                      </p>
+                                    </div>
+                                  </motion.a>
+                                ))}
+                            </div>
+                          ) : (
+                            <div className="space-y-3">
+                              {content.currentProjects.projects
+                                .filter(
+                                  (project) =>
+                                    project.title !== "Chatbots" &&
+                                    project.title !== "Design Panes" &&
+                                    project.title !== "HealthAware" &&
+                                    project.title !== "AI NUI" &&
+                                    project.title !==
+                                      "Configurable Multivariate Testing"
+                                )
+                                .map((project, index) => (
+                                  <motion.a
+                                    key={index}
+                                    href={project.demo}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    initial={{ opacity: 0, x: -20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{
+                                      duration: 0.5,
+                                      delay: index * 0.05,
+                                    }}
+                                    className="group flex items-center gap-4 p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all cursor-pointer"
+                                  >
+                                    {/* Compact Image */}
+                                    <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 overflow-hidden rounded bg-gray-100 dark:bg-gray-900">
+                                      {project.title === "JSON AI Prompts" ||
+                                      project.title === "User Testing Config" ||
+                                      project.title === "RAG App" ? (
+                                        <img
+                                          src={
+                                            project.title === "JSON AI Prompts"
+                                              ? `/img/json-ai-prompts-animation.svg?v=${Date.now()}`
+                                              : project.title ===
+                                                "User Testing Config"
+                                              ? `/img/user-testing-config-animation.svg?v=${Date.now()}`
+                                              : project.title === "RAG App"
+                                              ? `/img/rag-app-animation.svg?v=${Date.now()}`
+                                              : ""
+                                          }
+                                          alt={project.title}
+                                          className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-300"
+                                          loading="lazy"
+                                        />
+                                      ) : (
+                                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800">
+                                          <span className="text-gray-400 dark:text-gray-500 text-xs">
+                                            {(project as any).title ||
+                                              "Project"}
+                                          </span>
+                                        </div>
+                                      )}
+                                    </div>
+
+                                    {/* Compact Content */}
+                                    <div className="flex-1 min-w-0">
+                                      <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors truncate">
+                                        {project.title}
+                                      </h3>
+                                      <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-1 mt-1">
+                                        {project.description}
+                                      </p>
+                                    </div>
+
+                                    {/* External Link Icon */}
+                                    <ExternalLink className="h-4 w-4 text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors flex-shrink-0" />
+                                  </motion.a>
+                                ))}
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -524,67 +609,137 @@ function App() {
                           title={content.stories.title}
                           subtitle={content.stories.subtitle}
                           className="mb-8"
+                          toggleView={(mode) => setStoriesViewMode(mode)}
+                          viewMode={storiesViewMode}
                         />
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                          {content.stories.items
-                            .filter(
-                              (story) => story.title !== "Design Management"
-                            )
-                            .map((story, index) => (
-                              <motion.div
-                                key={story.title}
-                                onClick={() => {
-                                  if (story.hasModal) {
-                                    setSelectedStory({
-                                      title: story.title,
-                                      content: story.content,
-                                      subtitle: story.subtitle,
-                                    });
-                                  }
-                                }}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{
-                                  duration: 2.4,
-                                  delay: index * 0.2,
-                                }}
-                                className={`group relative overflow-hidden rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex flex-col shadow-md hover:shadow-lg transition-shadow ${
-                                  story.hasModal ? "cursor-pointer" : ""
-                                }`}
-                              >
-                                {/* Card Image */}
-                                <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-gray-100 dark:bg-gray-900">
-                                  {story.image ? (
-                                    <img
-                                      src={story.image}
-                                      alt={story.title}
-                                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                      loading="lazy"
-                                    />
-                                  ) : (
-                                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800">
-                                      <span className="text-gray-400 dark:text-gray-500 text-sm">
-                                        No image
-                                      </span>
-                                    </div>
-                                  )}
-                                </div>
+                        {storiesViewMode === "grid" ? (
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                            {content.stories.items
+                              .filter(
+                                (story) => story.title !== "Design Management"
+                              )
+                              .map((story, index) => (
+                                <motion.div
+                                  key={story.title}
+                                  onClick={() => {
+                                    if (story.hasModal) {
+                                      setSelectedStory({
+                                        title: story.title,
+                                        content: story.content,
+                                        subtitle: story.subtitle,
+                                      });
+                                    }
+                                  }}
+                                  initial={{ opacity: 0, y: 20 }}
+                                  whileInView={{ opacity: 1, y: 0 }}
+                                  viewport={{ once: true }}
+                                  transition={{
+                                    duration: 2.4,
+                                    delay: index * 0.2,
+                                  }}
+                                  className={`group relative overflow-hidden rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex flex-col shadow-md hover:shadow-lg transition-shadow ${
+                                    story.hasModal ? "cursor-pointer" : ""
+                                  }`}
+                                >
+                                  {/* Card Image */}
+                                  <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-gray-100 dark:bg-gray-900">
+                                    {story.image ? (
+                                      <img
+                                        src={story.image}
+                                        alt={story.title}
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                        loading="lazy"
+                                      />
+                                    ) : (
+                                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800">
+                                        <span className="text-gray-400 dark:text-gray-500 text-sm">
+                                          No image
+                                        </span>
+                                      </div>
+                                    )}
+                                  </div>
 
-                                {/* Card Content */}
-                                <div className="p-4 sm:p-6 flex flex-col gap-2 flex-1">
-                                  <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
-                                    {story.title}
-                                  </h3>
-                                  {story.subtitle && (
-                                    <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
-                                      {story.subtitle}
-                                    </p>
+                                  {/* Card Content */}
+                                  <div className="p-4 sm:p-6 flex flex-col gap-2 flex-1">
+                                    <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                                      {story.title}
+                                    </h3>
+                                    {story.subtitle && (
+                                      <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
+                                        {story.subtitle}
+                                      </p>
+                                    )}
+                                  </div>
+                                </motion.div>
+                              ))}
+                          </div>
+                        ) : (
+                          <div className="space-y-3">
+                            {content.stories.items
+                              .filter(
+                                (story) => story.title !== "Design Management"
+                              )
+                              .map((story, index) => (
+                                <motion.div
+                                  key={story.title}
+                                  onClick={() => {
+                                    if (story.hasModal) {
+                                      setSelectedStory({
+                                        title: story.title,
+                                        content: story.content,
+                                        subtitle: story.subtitle,
+                                      });
+                                    }
+                                  }}
+                                  initial={{ opacity: 0, x: -20 }}
+                                  whileInView={{ opacity: 1, x: 0 }}
+                                  viewport={{ once: true }}
+                                  transition={{
+                                    duration: 0.5,
+                                    delay: index * 0.05,
+                                  }}
+                                  className={`group flex items-center gap-4 p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all ${
+                                    story.hasModal ? "cursor-pointer" : ""
+                                  }`}
+                                >
+                                  {/* Compact Image */}
+                                  <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 overflow-hidden rounded bg-gray-100 dark:bg-gray-900">
+                                    {story.image ? (
+                                      <img
+                                        src={story.image}
+                                        alt={story.title}
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                        loading="lazy"
+                                      />
+                                    ) : (
+                                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800">
+                                        <span className="text-gray-400 dark:text-gray-500 text-xs">
+                                          No image
+                                        </span>
+                                      </div>
+                                    )}
+                                  </div>
+
+                                  {/* Compact Content */}
+                                  <div className="flex-1 min-w-0">
+                                    <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors truncate">
+                                      {story.title}
+                                    </h3>
+                                    {story.subtitle && (
+                                      <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-1 mt-1">
+                                        {story.subtitle}
+                                      </p>
+                                    )}
+                                  </div>
+
+                                  {/* External Link Icon (only show if clickable) */}
+                                  {story.hasModal && (
+                                    <ExternalLink className="h-4 w-4 text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors flex-shrink-0" />
                                   )}
-                                </div>
-                              </motion.div>
-                            ))}
-                        </div>
+                                </motion.div>
+                              ))}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </section>
@@ -601,6 +756,8 @@ function App() {
                           subtitle={content.work.subtitle}
                           className="mb-6"
                           showArchiveLink={false}
+                          toggleView={(mode) => setDesignViewMode(mode)}
+                          viewMode={designViewMode}
                           icon={
                             <a
                               href={content.navigation.social.dribbble.url}
@@ -613,51 +770,102 @@ function App() {
                             </a>
                           }
                         />
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                          {content.work.projects
-                            .filter(
-                              (project: any) =>
-                                project.title !== "3D Conversion UX Plan"
-                            )
-                            .map((project: any, index) => (
-                              <motion.a
-                                key={index}
-                                href={project.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{
-                                  duration: 1.8,
-                                  delay: index * 0.2,
-                                }}
-                                className="group relative overflow-hidden rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex flex-col shadow-md hover:shadow-lg transition-shadow cursor-pointer"
-                              >
-                                {/* Card Image */}
-                                <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-gray-100 dark:bg-gray-900">
-                                  <img
-                                    src={project.image}
-                                    alt={project.alt || project.title}
-                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                    loading="lazy"
-                                  />
-                                </div>
+                        {designViewMode === "grid" ? (
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                            {content.work.projects
+                              .filter(
+                                (project: any) =>
+                                  project.title !== "3D Conversion UX Plan"
+                              )
+                              .map((project: any, index) => (
+                                <motion.a
+                                  key={index}
+                                  href={project.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  initial={{ opacity: 0, y: 20 }}
+                                  whileInView={{ opacity: 1, y: 0 }}
+                                  viewport={{ once: true }}
+                                  transition={{
+                                    duration: 1.8,
+                                    delay: index * 0.2,
+                                  }}
+                                  className="group relative overflow-hidden rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex flex-col shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                                >
+                                  {/* Card Image */}
+                                  <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-gray-100 dark:bg-gray-900">
+                                    <img
+                                      src={project.image}
+                                      alt={project.alt || project.title}
+                                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                      loading="lazy"
+                                    />
+                                  </div>
 
-                                {/* Card Content */}
-                                <div className="p-4 sm:p-6 flex flex-col gap-2 flex-1">
-                                  <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
-                                    {project.title}
-                                  </h3>
-                                  {project.description && (
-                                    <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
-                                      {project.description}
-                                    </p>
-                                  )}
-                                </div>
-                              </motion.a>
-                            ))}
-                        </div>
+                                  {/* Card Content */}
+                                  <div className="p-4 sm:p-6 flex flex-col gap-2 flex-1">
+                                    <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                                      {project.title}
+                                    </h3>
+                                    {project.description && (
+                                      <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
+                                        {project.description}
+                                      </p>
+                                    )}
+                                  </div>
+                                </motion.a>
+                              ))}
+                          </div>
+                        ) : (
+                          <div className="space-y-3">
+                            {content.work.projects
+                              .filter(
+                                (project: any) =>
+                                  project.title !== "3D Conversion UX Plan"
+                              )
+                              .map((project: any, index) => (
+                                <motion.a
+                                  key={index}
+                                  href={project.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  initial={{ opacity: 0, x: -20 }}
+                                  whileInView={{ opacity: 1, x: 0 }}
+                                  viewport={{ once: true }}
+                                  transition={{
+                                    duration: 0.5,
+                                    delay: index * 0.05,
+                                  }}
+                                  className="group flex items-center gap-4 p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all cursor-pointer"
+                                >
+                                  {/* Compact Image */}
+                                  <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 overflow-hidden rounded bg-gray-100 dark:bg-gray-900">
+                                    <img
+                                      src={project.image}
+                                      alt={project.alt || project.title}
+                                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                      loading="lazy"
+                                    />
+                                  </div>
+
+                                  {/* Compact Content */}
+                                  <div className="flex-1 min-w-0">
+                                    <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors truncate">
+                                      {project.title}
+                                    </h3>
+                                    {project.description && (
+                                      <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-1 mt-1">
+                                        {project.description}
+                                      </p>
+                                    )}
+                                  </div>
+
+                                  {/* External Link Icon */}
+                                  <ExternalLink className="h-4 w-4 text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors flex-shrink-0" />
+                                </motion.a>
+                              ))}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </section>
@@ -674,6 +882,8 @@ function App() {
                           subtitle={content.articles.subtitle}
                           className="mb-6"
                           showArchiveLink={false}
+                          toggleView={(mode) => setArticlesViewMode(mode)}
+                          viewMode={articlesViewMode}
                           icon={
                             <a
                               href="https://davemelk.substack.com/"
@@ -692,81 +902,162 @@ function App() {
                             </a>
                           }
                         />
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                          {content.articles.items
-                            .filter(
-                              (article) =>
-                                article.title !== "Commit Message Fatigue" &&
-                                article.title !==
-                                  "Information Architecture Is Not Sacred" &&
-                                article.title !==
-                                  "AI is hydrated with user research data" &&
-                                article.title !==
-                                  "Prompting for Heuristic Evaluations" &&
-                                article.title !==
-                                  "Vibe Coding v Vibe Engineering"
-                            )
-                            .sort(
-                              (a, b) =>
-                                new Date(b.date).getTime() -
-                                new Date(a.date).getTime()
-                            )
-                            .map((article, index) => {
-                              const handleClick = () => {
-                                if (article.url.startsWith("http")) {
-                                  window.open(
-                                    article.url,
-                                    "_blank",
-                                    "noopener,noreferrer"
-                                  );
-                                } else {
-                                  navigate(
-                                    `/article/${slugify(article.title)}`
-                                  );
-                                }
-                              };
+                        {articlesViewMode === "grid" ? (
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                            {content.articles.items
+                              .filter(
+                                (article) =>
+                                  article.title !== "Commit Message Fatigue" &&
+                                  article.title !==
+                                    "Information Architecture Is Not Sacred" &&
+                                  article.title !==
+                                    "AI is hydrated with user research data" &&
+                                  article.title !==
+                                    "Prompting for Heuristic Evaluations" &&
+                                  article.title !==
+                                    "Vibe Coding v Vibe Engineering"
+                              )
+                              .sort(
+                                (a, b) =>
+                                  new Date(b.date).getTime() -
+                                  new Date(a.date).getTime()
+                              )
+                              .map((article, index) => {
+                                const handleClick = () => {
+                                  if (article.url.startsWith("http")) {
+                                    window.open(
+                                      article.url,
+                                      "_blank",
+                                      "noopener,noreferrer"
+                                    );
+                                  } else {
+                                    navigate(
+                                      `/article/${slugify(article.title)}`
+                                    );
+                                  }
+                                };
 
-                              return (
-                                <motion.div
-                                  key={index}
-                                  onClick={handleClick}
-                                  initial={{ opacity: 0, y: 20 }}
-                                  whileInView={{ opacity: 1, y: 0 }}
-                                  viewport={{ once: true }}
-                                  transition={{
-                                    duration: 1.8,
-                                    delay: index * 0.2,
-                                  }}
-                                  className="group relative overflow-hidden rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex flex-col shadow-md hover:shadow-lg transition-shadow cursor-pointer"
-                                >
-                                  {/* Card Image */}
-                                  <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-gray-100 dark:bg-gray-900">
-                                    <img
-                                      src={`${
-                                        (article as any).cardImage ||
-                                        article.image
-                                      }?v=${Date.now()}`}
-                                      alt={article.title}
-                                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                      loading="lazy"
-                                    />
-                                  </div>
+                                return (
+                                  <motion.div
+                                    key={index}
+                                    onClick={handleClick}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{
+                                      duration: 1.8,
+                                      delay: index * 0.2,
+                                    }}
+                                    className="group relative overflow-hidden rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex flex-col shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                                  >
+                                    {/* Card Image */}
+                                    <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-gray-100 dark:bg-gray-900">
+                                      <img
+                                        src={`${
+                                          (article as any).cardImage ||
+                                          article.image
+                                        }?v=${Date.now()}`}
+                                        alt={article.title}
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                        loading="lazy"
+                                      />
+                                    </div>
 
-                                  {/* Card Content */}
-                                  <div className="p-4 sm:p-6 flex flex-col gap-2 flex-1">
-                                    <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
-                                      {article.title}
-                                    </h3>
-                                    {article.description && (
-                                      <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
-                                        {article.description}
-                                      </p>
-                                    )}
-                                  </div>
-                                </motion.div>
-                              );
-                            })}
-                        </div>
+                                    {/* Card Content */}
+                                    <div className="p-4 sm:p-6 flex flex-col gap-2 flex-1">
+                                      <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                                        {article.title}
+                                      </h3>
+                                      {article.description && (
+                                        <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
+                                          {article.description}
+                                        </p>
+                                      )}
+                                    </div>
+                                  </motion.div>
+                                );
+                              })}
+                          </div>
+                        ) : (
+                          <div className="space-y-3">
+                            {content.articles.items
+                              .filter(
+                                (article) =>
+                                  article.title !== "Commit Message Fatigue" &&
+                                  article.title !==
+                                    "Information Architecture Is Not Sacred" &&
+                                  article.title !==
+                                    "AI is hydrated with user research data" &&
+                                  article.title !==
+                                    "Prompting for Heuristic Evaluations" &&
+                                  article.title !==
+                                    "Vibe Coding v Vibe Engineering"
+                              )
+                              .sort(
+                                (a, b) =>
+                                  new Date(b.date).getTime() -
+                                  new Date(a.date).getTime()
+                              )
+                              .map((article, index) => {
+                                const handleClick = () => {
+                                  if (article.url.startsWith("http")) {
+                                    window.open(
+                                      article.url,
+                                      "_blank",
+                                      "noopener,noreferrer"
+                                    );
+                                  } else {
+                                    navigate(
+                                      `/article/${slugify(article.title)}`
+                                    );
+                                  }
+                                };
+
+                                return (
+                                  <motion.div
+                                    key={index}
+                                    onClick={handleClick}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{
+                                      duration: 0.5,
+                                      delay: index * 0.05,
+                                    }}
+                                    className="group flex items-center gap-4 p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all cursor-pointer"
+                                  >
+                                    {/* Compact Image */}
+                                    <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 overflow-hidden rounded bg-gray-100 dark:bg-gray-900">
+                                      <img
+                                        src={`${
+                                          (article as any).cardImage ||
+                                          article.image
+                                        }?v=${Date.now()}`}
+                                        alt={article.title}
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                        loading="lazy"
+                                      />
+                                    </div>
+
+                                    {/* Compact Content */}
+                                    <div className="flex-1 min-w-0">
+                                      <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors truncate">
+                                        {article.title}
+                                      </h3>
+                                      {article.description && (
+                                        <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-1 mt-1">
+                                          {article.description}
+                                        </p>
+                                      )}
+                                    </div>
+
+                                    {/* External Link Icon */}
+                                    <ExternalLink className="h-4 w-4 text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors flex-shrink-0" />
+                                  </motion.div>
+                                );
+                              })}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </section>
