@@ -152,6 +152,14 @@ function App() {
   const [currentViewMode, setCurrentViewMode] = useState<"list" | "grid">(
     "grid"
   );
+  const [designViewMode, setDesignViewMode] = useState<"list" | "grid">("grid");
+  const [labViewMode, setLabViewMode] = useState<"list" | "grid">("grid");
+  const [storiesViewMode, setStoriesViewMode] = useState<"list" | "grid">(
+    "grid"
+  );
+  const [articlesViewMode, setArticlesViewMode] = useState<"list" | "grid">(
+    "grid"
+  );
 
   const location = useLocation();
 
@@ -217,7 +225,7 @@ function App() {
                 <>
                   {/* Hero Section */}
                   <section className="py-4 sm:py-4xl:py-4 relative">
-                    <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
                       <div className="grid grid-cols-1 gap-6 sm:gap-8">
                         {/* Hero Content */}
                         <div className="pt-4 rounded-lg">
@@ -248,6 +256,22 @@ function App() {
                           >
                             {content.navigation.links
                               .filter((link) => link.id !== "design-system")
+                              .sort((a, b) => {
+                                // Define the desired order: Lab, Storytelling, Design, Articles, Career
+                                const order = [
+                                  "current-projects",
+                                  "stories",
+                                  "work",
+                                  "articles",
+                                  "career",
+                                ];
+                                const indexA = order.indexOf(a.id);
+                                const indexB = order.indexOf(b.id);
+                                return (
+                                  (indexA === -1 ? 999 : indexA) -
+                                  (indexB === -1 ? 999 : indexB)
+                                );
+                              })
                               .map((link) => (
                                 <button
                                   key={link.id}
@@ -309,7 +333,7 @@ function App() {
 
                   {/* Lab Section */}
                   <section className="py-2 sm:py-3 lg:py-4 xl:py-6 relative">
-                    <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
                       <div className="grid grid-cols-1 gap-6 sm:gap-8">
                         {/* Lab Section */}
                         <div
@@ -321,74 +345,151 @@ function App() {
                             subtitle={content.currentProjects.subtitle}
                             className="mb-6"
                             showUpArrow={false}
+                            toggleView={(mode) => setLabViewMode(mode)}
+                            viewMode={labViewMode}
                           />
-                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                            {content.currentProjects.projects
-                              .filter(
-                                (project) =>
-                                  project.title !== "Chatbots" &&
-                                  project.title !== "Design Panes" &&
-                                  project.title !== "HealthAware" &&
-                                  project.title !== "AI NUI" &&
-                                  project.title !==
-                                    "Configurable Multivariate Testing"
-                              )
-                              .map((project, index) => (
-                                <motion.a
-                                  key={index}
-                                  href={project.demo}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  initial={{ opacity: 0, y: 20 }}
-                                  whileInView={{ opacity: 1, y: 0 }}
-                                  viewport={{ once: true }}
-                                  transition={{
-                                    duration: 1.8,
-                                    delay: index * 0.2,
-                                  }}
-                                  className="group relative overflow-hidden rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex flex-col shadow-md hover:shadow-lg transition-shadow cursor-pointer"
-                                >
-                                  {/* Card Image */}
-                                  <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-gray-100 dark:bg-gray-900">
-                                    {project.title === "JSON AI Prompts" ||
-                                    project.title === "User Testing Config" ||
-                                    project.title === "RAG App" ? (
-                                      <img
-                                        src={
-                                          project.title === "JSON AI Prompts"
-                                            ? `/img/json-ai-prompts-animation.svg?v=${Date.now()}`
-                                            : project.title ===
-                                              "User Testing Config"
-                                            ? `/img/user-testing-config-animation.svg?v=${Date.now()}`
-                                            : project.title === "RAG App"
-                                            ? `/img/rag-app-animation.svg?v=${Date.now()}`
-                                            : ""
-                                        }
-                                        alt={project.title}
-                                        className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-300"
-                                        loading="lazy"
-                                      />
-                                    ) : (
-                                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800">
-                                        <span className="text-gray-400 dark:text-gray-500 text-sm">
-                                          {(project as any).title || "Project"}
-                                        </span>
-                                      </div>
-                                    )}
-                                  </div>
+                          {labViewMode === "grid" ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                              {content.currentProjects.projects
+                                .filter(
+                                  (project) =>
+                                    project.title !== "Chatbots" &&
+                                    project.title !== "Design Panes" &&
+                                    project.title !== "HealthAware" &&
+                                    project.title !== "AI NUI" &&
+                                    project.title !==
+                                      "Configurable Multivariate Testing"
+                                )
+                                .map((project, index) => (
+                                  <motion.a
+                                    key={index}
+                                    href={project.demo}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{
+                                      duration: 1.8,
+                                      delay: index * 0.2,
+                                    }}
+                                    className="group relative overflow-hidden rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex flex-col shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                                  >
+                                    {/* Card Image */}
+                                    <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-gray-100 dark:bg-gray-900">
+                                      {project.title === "JSON AI Prompts" ||
+                                      project.title === "User Testing Config" ||
+                                      project.title === "RAG App" ? (
+                                        <img
+                                          src={
+                                            project.title === "JSON AI Prompts"
+                                              ? `/img/json-ai-prompts-animation.svg?v=${Date.now()}`
+                                              : project.title ===
+                                                "User Testing Config"
+                                              ? `/img/user-testing-config-animation.svg?v=${Date.now()}`
+                                              : project.title === "RAG App"
+                                              ? `/img/rag-app-animation.svg?v=${Date.now()}`
+                                              : ""
+                                          }
+                                          alt={project.title}
+                                          className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-300"
+                                          loading="lazy"
+                                        />
+                                      ) : (
+                                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800">
+                                          <span className="text-gray-400 dark:text-gray-500 text-sm">
+                                            {(project as any).title ||
+                                              "Project"}
+                                          </span>
+                                        </div>
+                                      )}
+                                    </div>
 
-                                  {/* Card Content */}
-                                  <div className="p-4 sm:p-6 flex flex-col gap-2 flex-1">
-                                    <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
-                                      {project.title}
-                                    </h3>
-                                    <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
-                                      {project.description}
-                                    </p>
-                                  </div>
-                                </motion.a>
-                              ))}
-                          </div>
+                                    {/* Card Content */}
+                                    <div className="p-4 sm:p-6 flex flex-col gap-2 flex-1">
+                                      <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                                        {project.title}
+                                      </h3>
+                                      <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
+                                        {project.description}
+                                      </p>
+                                    </div>
+                                  </motion.a>
+                                ))}
+                            </div>
+                          ) : (
+                            <div className="space-y-3">
+                              {content.currentProjects.projects
+                                .filter(
+                                  (project) =>
+                                    project.title !== "Chatbots" &&
+                                    project.title !== "Design Panes" &&
+                                    project.title !== "HealthAware" &&
+                                    project.title !== "AI NUI" &&
+                                    project.title !==
+                                      "Configurable Multivariate Testing"
+                                )
+                                .map((project, index) => (
+                                  <motion.a
+                                    key={index}
+                                    href={project.demo}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    initial={{ opacity: 0, x: -20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{
+                                      duration: 0.5,
+                                      delay: index * 0.05,
+                                    }}
+                                    className="group flex items-center gap-4 p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all cursor-pointer"
+                                  >
+                                    {/* Compact Image */}
+                                    <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 overflow-hidden rounded bg-gray-100 dark:bg-gray-900">
+                                      {project.title === "JSON AI Prompts" ||
+                                      project.title === "User Testing Config" ||
+                                      project.title === "RAG App" ? (
+                                        <img
+                                          src={
+                                            project.title === "JSON AI Prompts"
+                                              ? `/img/json-ai-prompts-animation.svg?v=${Date.now()}`
+                                              : project.title ===
+                                                "User Testing Config"
+                                              ? `/img/user-testing-config-animation.svg?v=${Date.now()}`
+                                              : project.title === "RAG App"
+                                              ? `/img/rag-app-animation.svg?v=${Date.now()}`
+                                              : ""
+                                          }
+                                          alt={project.title}
+                                          className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-300"
+                                          loading="lazy"
+                                        />
+                                      ) : (
+                                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800">
+                                          <span className="text-gray-400 dark:text-gray-500 text-xs">
+                                            {(project as any).title ||
+                                              "Project"}
+                                          </span>
+                                        </div>
+                                      )}
+                                    </div>
+
+                                    {/* Compact Content */}
+                                    <div className="flex-1 min-w-0">
+                                      <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors truncate">
+                                        {project.title}
+                                      </h3>
+                                      <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-1 mt-1">
+                                        {project.description}
+                                      </p>
+                                    </div>
+
+                                    {/* External Link Icon */}
+                                    <ExternalLink className="h-4 w-4 text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors flex-shrink-0" />
+                                  </motion.a>
+                                ))}
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -397,7 +498,7 @@ function App() {
                   {/* Testimonials Section */}
                   {/**
                 <section id="testimonials" className="py-12 sm:py-16 lg:py-20">
-                  <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
+                  <div className="max-w-[1000px] mx-auto px-4 sm:px-8">
                     <SectionHeader
                       title={content.testimonials.title}
                       subtitle={content.testimonials.subtitle}
@@ -435,12 +536,476 @@ function App() {
                 </section>
                 */}
 
+                  {/* Storytelling Section */}
+                  <section
+                    id="stories"
+                    className="py-4 sm:py-6 lg:py-8 xl:py-12 relative"
+                  >
+                    <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
+                      <div className="border border-gray-300 dark:border-gray-600 p-4 sm:p-6 rounded-lg relative overflow-hidden bg-white dark:bg-gray-900">
+                        <SectionHeader
+                          title={content.stories.title}
+                          subtitle={content.stories.subtitle}
+                          className="mb-8"
+                          toggleView={(mode) => setStoriesViewMode(mode)}
+                          viewMode={storiesViewMode}
+                        />
+                        {storiesViewMode === "grid" ? (
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                            {content.stories.items
+                              .filter(
+                                (story) => story.title !== "Design Management"
+                              )
+                              .map((story, index) => (
+                                <motion.div
+                                  key={story.title}
+                                  onClick={() => {
+                                    if (story.hasModal) {
+                                      setSelectedStory({
+                                        title: story.title,
+                                        content: story.content,
+                                        subtitle: story.subtitle,
+                                      });
+                                    }
+                                  }}
+                                  initial={{ opacity: 0, y: 20 }}
+                                  whileInView={{ opacity: 1, y: 0 }}
+                                  viewport={{ once: true }}
+                                  transition={{
+                                    duration: 2.4,
+                                    delay: index * 0.2,
+                                  }}
+                                  className={`group relative overflow-hidden rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex flex-col shadow-md hover:shadow-lg transition-shadow ${
+                                    story.hasModal ? "cursor-pointer" : ""
+                                  }`}
+                                >
+                                  {/* Card Image */}
+                                  <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-gray-100 dark:bg-gray-900">
+                                    {story.image ? (
+                                      <img
+                                        src={story.image}
+                                        alt={story.title}
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                        loading="lazy"
+                                      />
+                                    ) : (
+                                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800">
+                                        <span className="text-gray-400 dark:text-gray-500 text-sm">
+                                          No image
+                                        </span>
+                                      </div>
+                                    )}
+                                  </div>
+
+                                  {/* Card Content */}
+                                  <div className="p-4 sm:p-6 flex flex-col gap-2 flex-1">
+                                    <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                                      {story.title}
+                                    </h3>
+                                    {story.subtitle && (
+                                      <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
+                                        {story.subtitle}
+                                      </p>
+                                    )}
+                                  </div>
+                                </motion.div>
+                              ))}
+                          </div>
+                        ) : (
+                          <div className="space-y-3">
+                            {content.stories.items
+                              .filter(
+                                (story) => story.title !== "Design Management"
+                              )
+                              .map((story, index) => (
+                                <motion.div
+                                  key={story.title}
+                                  onClick={() => {
+                                    if (story.hasModal) {
+                                      setSelectedStory({
+                                        title: story.title,
+                                        content: story.content,
+                                        subtitle: story.subtitle,
+                                      });
+                                    }
+                                  }}
+                                  initial={{ opacity: 0, x: -20 }}
+                                  whileInView={{ opacity: 1, x: 0 }}
+                                  viewport={{ once: true }}
+                                  transition={{
+                                    duration: 0.5,
+                                    delay: index * 0.05,
+                                  }}
+                                  className={`group flex items-center gap-4 p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all ${
+                                    story.hasModal ? "cursor-pointer" : ""
+                                  }`}
+                                >
+                                  {/* Compact Image */}
+                                  <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 overflow-hidden rounded bg-gray-100 dark:bg-gray-900">
+                                    {story.image ? (
+                                      <img
+                                        src={story.image}
+                                        alt={story.title}
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                        loading="lazy"
+                                      />
+                                    ) : (
+                                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800">
+                                        <span className="text-gray-400 dark:text-gray-500 text-xs">
+                                          No image
+                                        </span>
+                                      </div>
+                                    )}
+                                  </div>
+
+                                  {/* Compact Content */}
+                                  <div className="flex-1 min-w-0">
+                                    <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors truncate">
+                                      {story.title}
+                                    </h3>
+                                    {story.subtitle && (
+                                      <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-1 mt-1">
+                                        {story.subtitle}
+                                      </p>
+                                    )}
+                                  </div>
+
+                                  {/* External Link Icon (only show if clickable) */}
+                                  {story.hasModal && (
+                                    <ExternalLink className="h-4 w-4 text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors flex-shrink-0" />
+                                  )}
+                                </motion.div>
+                              ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </section>
+
+                  {/* Design Section */}
+                  <section
+                    id="work"
+                    className="py-4 sm:py-6 lg:py-8 xl:py-12 relative"
+                  >
+                    <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
+                      <div className="border border-gray-300 dark:border-gray-600 p-4 sm:p-6 rounded-lg relative overflow-hidden bg-white dark:bg-gray-900">
+                        <SectionHeader
+                          title="Design"
+                          subtitle={content.work.subtitle}
+                          className="mb-6"
+                          showArchiveLink={false}
+                          toggleView={(mode) => setDesignViewMode(mode)}
+                          viewMode={designViewMode}
+                          icon={
+                            <a
+                              href={content.navigation.social.dribbble.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="bg-white/80 dark:bg-gray-800/80 hover:bg-white dark:hover:bg-gray-700 backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                              aria-label="Dribbble"
+                            >
+                              <Dribbble className="h-5 w-5 text-black dark:text-white" />
+                            </a>
+                          }
+                        />
+                        {designViewMode === "grid" ? (
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                            {content.work.projects
+                              .filter(
+                                (project: any) =>
+                                  project.title !== "3D Conversion UX Plan"
+                              )
+                              .map((project: any, index) => (
+                                <motion.a
+                                  key={index}
+                                  href={project.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  initial={{ opacity: 0, y: 20 }}
+                                  whileInView={{ opacity: 1, y: 0 }}
+                                  viewport={{ once: true }}
+                                  transition={{
+                                    duration: 1.8,
+                                    delay: index * 0.2,
+                                  }}
+                                  className="group relative overflow-hidden rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex flex-col shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                                >
+                                  {/* Card Image */}
+                                  <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-gray-100 dark:bg-gray-900">
+                                    <img
+                                      src={project.image}
+                                      alt={project.alt || project.title}
+                                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                      loading="lazy"
+                                    />
+                                  </div>
+
+                                  {/* Card Content */}
+                                  <div className="p-4 sm:p-6 flex flex-col gap-2 flex-1">
+                                    <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                                      {project.title}
+                                    </h3>
+                                    {project.description && (
+                                      <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
+                                        {project.description}
+                                      </p>
+                                    )}
+                                  </div>
+                                </motion.a>
+                              ))}
+                          </div>
+                        ) : (
+                          <div className="space-y-3">
+                            {content.work.projects
+                              .filter(
+                                (project: any) =>
+                                  project.title !== "3D Conversion UX Plan"
+                              )
+                              .map((project: any, index) => (
+                                <motion.a
+                                  key={index}
+                                  href={project.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  initial={{ opacity: 0, x: -20 }}
+                                  whileInView={{ opacity: 1, x: 0 }}
+                                  viewport={{ once: true }}
+                                  transition={{
+                                    duration: 0.5,
+                                    delay: index * 0.05,
+                                  }}
+                                  className="group flex items-center gap-4 p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all cursor-pointer"
+                                >
+                                  {/* Compact Image */}
+                                  <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 overflow-hidden rounded bg-gray-100 dark:bg-gray-900">
+                                    <img
+                                      src={project.image}
+                                      alt={project.alt || project.title}
+                                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                      loading="lazy"
+                                    />
+                                  </div>
+
+                                  {/* Compact Content */}
+                                  <div className="flex-1 min-w-0">
+                                    <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors truncate">
+                                      {project.title}
+                                    </h3>
+                                    {project.description && (
+                                      <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-1 mt-1">
+                                        {project.description}
+                                      </p>
+                                    )}
+                                  </div>
+
+                                  {/* External Link Icon */}
+                                  <ExternalLink className="h-4 w-4 text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors flex-shrink-0" />
+                                </motion.a>
+                              ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </section>
+
+                  {/* Articles Section */}
+                  <section
+                    id="articles"
+                    className="py-4 sm:py-6 lg:py-8 xl:py-12 relative"
+                  >
+                    <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
+                      <div className="border border-gray-300 dark:border-gray-600 p-4 sm:p-6 rounded-lg relative overflow-hidden bg-white dark:bg-gray-900">
+                        <SectionHeader
+                          title="Articles"
+                          subtitle={content.articles.subtitle}
+                          className="mb-6"
+                          showArchiveLink={false}
+                          toggleView={(mode) => setArticlesViewMode(mode)}
+                          viewMode={articlesViewMode}
+                          icon={
+                            <a
+                              href="https://davemelk.substack.com/"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+                              aria-label="Substack"
+                            >
+                              <svg
+                                className="h-5 w-5 text-black"
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                              >
+                                <path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z" />
+                              </svg>
+                            </a>
+                          }
+                        />
+                        {articlesViewMode === "grid" ? (
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                            {content.articles.items
+                              .filter(
+                                (article) =>
+                                  article.title !== "Commit Message Fatigue" &&
+                                  article.title !==
+                                    "Information Architecture Is Not Sacred" &&
+                                  article.title !==
+                                    "AI is hydrated with user research data" &&
+                                  article.title !==
+                                    "Prompting for Heuristic Evaluations" &&
+                                  article.title !==
+                                    "Vibe Coding v Vibe Engineering"
+                              )
+                              .sort(
+                                (a, b) =>
+                                  new Date(b.date).getTime() -
+                                  new Date(a.date).getTime()
+                              )
+                              .map((article, index) => {
+                                const handleClick = () => {
+                                  if (article.url.startsWith("http")) {
+                                    window.open(
+                                      article.url,
+                                      "_blank",
+                                      "noopener,noreferrer"
+                                    );
+                                  } else {
+                                    navigate(
+                                      `/article/${slugify(article.title)}`
+                                    );
+                                  }
+                                };
+
+                                return (
+                                  <motion.div
+                                    key={index}
+                                    onClick={handleClick}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{
+                                      duration: 1.8,
+                                      delay: index * 0.2,
+                                    }}
+                                    className="group relative overflow-hidden rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex flex-col shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                                  >
+                                    {/* Card Image */}
+                                    <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-gray-100 dark:bg-gray-900">
+                                      <img
+                                        src={`${
+                                          (article as any).cardImage ||
+                                          article.image
+                                        }?v=${Date.now()}`}
+                                        alt={article.title}
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                        loading="lazy"
+                                      />
+                                    </div>
+
+                                    {/* Card Content */}
+                                    <div className="p-4 sm:p-6 flex flex-col gap-2 flex-1">
+                                      <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                                        {article.title}
+                                      </h3>
+                                      {article.description && (
+                                        <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
+                                          {article.description}
+                                        </p>
+                                      )}
+                                    </div>
+                                  </motion.div>
+                                );
+                              })}
+                          </div>
+                        ) : (
+                          <div className="space-y-3">
+                            {content.articles.items
+                              .filter(
+                                (article) =>
+                                  article.title !== "Commit Message Fatigue" &&
+                                  article.title !==
+                                    "Information Architecture Is Not Sacred" &&
+                                  article.title !==
+                                    "AI is hydrated with user research data" &&
+                                  article.title !==
+                                    "Prompting for Heuristic Evaluations" &&
+                                  article.title !==
+                                    "Vibe Coding v Vibe Engineering"
+                              )
+                              .sort(
+                                (a, b) =>
+                                  new Date(b.date).getTime() -
+                                  new Date(a.date).getTime()
+                              )
+                              .map((article, index) => {
+                                const handleClick = () => {
+                                  if (article.url.startsWith("http")) {
+                                    window.open(
+                                      article.url,
+                                      "_blank",
+                                      "noopener,noreferrer"
+                                    );
+                                  } else {
+                                    navigate(
+                                      `/article/${slugify(article.title)}`
+                                    );
+                                  }
+                                };
+
+                                return (
+                                  <motion.div
+                                    key={index}
+                                    onClick={handleClick}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{
+                                      duration: 0.5,
+                                      delay: index * 0.05,
+                                    }}
+                                    className="group flex items-center gap-4 p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all cursor-pointer"
+                                  >
+                                    {/* Compact Image */}
+                                    <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 overflow-hidden rounded bg-gray-100 dark:bg-gray-900">
+                                      <img
+                                        src={`${
+                                          (article as any).cardImage ||
+                                          article.image
+                                        }?v=${Date.now()}`}
+                                        alt={article.title}
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                        loading="lazy"
+                                      />
+                                    </div>
+
+                                    {/* Compact Content */}
+                                    <div className="flex-1 min-w-0">
+                                      <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors truncate">
+                                        {article.title}
+                                      </h3>
+                                      {article.description && (
+                                        <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-1 mt-1">
+                                          {article.description}
+                                        </p>
+                                      )}
+                                    </div>
+
+                                    {/* External Link Icon */}
+                                    <ExternalLink className="h-4 w-4 text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors flex-shrink-0" />
+                                  </motion.div>
+                                );
+                              })}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </section>
+
                   {/* Career Timeline Section */}
                   <section
                     id="career"
                     className="py-4 sm:py-6 lg:py-8 xl:py-12"
                   >
-                    <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
                       <SectionHeader
                         title={content.career.title}
                         subtitle={content.career.subtitle}
@@ -488,9 +1053,9 @@ function App() {
                       </div>
                       {/* Certifications & Education */}
                       <div className="mt-4 pt-2 max-w-3xl">
-                        <div className="mb-2 font-semibold text-gray-800 dark:text-gray-200">
+                        <h3 className="mb-2 font-semibold text-gray-800 dark:text-gray-200">
                           Certifications
-                        </div>
+                        </h3>
                         <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 mb-4">
                           <li>Certified ScrumMaster (Scrum Alliance)</li>
                           <li>
@@ -499,281 +1064,21 @@ function App() {
                           </li>
                           <li>ITIL Foundation Certificate (Axelos)</li>
                         </ul>
-                        <div className="mb-2 font-semibold text-gray-800 dark:text-gray-200">
+                        <h3 className="mb-2 font-semibold text-gray-800 dark:text-gray-200">
                           Education
-                        </div>
-                        <div className="text-gray-700 dark:text-gray-300">
-                          Oakland University | Rochester MI
-                          <br />
-                          Bachelor of Arts in English
-                          <br />
-                          Minor in Public Relations
-                        </div>
-                      </div>
-                    </div>
-                  </section>
-
-                  {/* Storytelling Section */}
-                  <section
-                    id="stories"
-                    className="py-4 sm:py-6 lg:py-8 xl:py-12 relative"
-                  >
-                    <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-                      <div className="border border-gray-300 dark:border-gray-600 p-4 sm:p-6 rounded-lg relative overflow-hidden bg-white dark:bg-gray-900">
-                        <SectionHeader
-                          title={content.stories.title}
-                          subtitle={content.stories.subtitle}
-                          className="mb-8"
-                        />
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                          {content.stories.items
-                            .filter(
-                              (story) => story.title !== "Design Management"
-                            )
-                            .map((story, index) => (
-                              <motion.div
-                                key={story.title}
-                                onClick={() => {
-                                  if (story.hasModal) {
-                                    setSelectedStory({
-                                      title: story.title,
-                                      content: story.content,
-                                      subtitle: story.subtitle,
-                                    });
-                                  }
-                                }}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{
-                                  duration: 2.4,
-                                  delay: index * 0.2,
-                                }}
-                                className={`group relative overflow-hidden rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex flex-col shadow-md hover:shadow-lg transition-shadow ${
-                                  story.hasModal ? "cursor-pointer" : ""
-                                }`}
-                              >
-                                {/* Card Image */}
-                                <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-gray-100 dark:bg-gray-900">
-                                  {story.image ? (
-                                    <img
-                                      src={story.image}
-                                      alt={story.title}
-                                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                      loading="lazy"
-                                    />
-                                  ) : (
-                                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800">
-                                      <span className="text-gray-400 dark:text-gray-500 text-sm">
-                                        No image
-                                      </span>
-                                    </div>
-                                  )}
-                                </div>
-
-                                {/* Card Content */}
-                                <div className="p-4 sm:p-6 flex flex-col gap-2 flex-1">
-                                  <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
-                                    {story.title}
-                                  </h3>
-                                  {story.subtitle && (
-                                    <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
-                                      {story.subtitle}
-                                    </p>
-                                  )}
-                                </div>
-                              </motion.div>
-                            ))}
-                        </div>
-                      </div>
-                    </div>
-                  </section>
-
-                  {/* Design Section */}
-                  <section
-                    id="work"
-                    className="py-4 sm:py-6 lg:py-8 xl:py-12 relative"
-                  >
-                    <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-                      <div className="border border-gray-300 dark:border-gray-600 p-4 sm:p-6 rounded-lg relative overflow-hidden bg-white dark:bg-gray-900">
-                        <SectionHeader
-                          title="Design"
-                          subtitle={content.work.subtitle}
-                          className="mb-6"
-                          showArchiveLink={false}
-                          icon={
-                            <a
-                              href={content.navigation.social.dribbble.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="bg-white/80 dark:bg-gray-800/80 hover:bg-white dark:hover:bg-gray-700 backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
-                              aria-label="Dribbble"
-                            >
-                              <Dribbble className="h-5 w-5 text-black dark:text-white" />
-                            </a>
-                          }
-                        />
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                          {content.work.projects
-                            .filter(
-                              (project: any) =>
-                                project.title !== "3D Conversion UX Plan"
-                            )
-                            .map((project: any, index) => (
-                              <motion.a
-                                key={index}
-                                href={project.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{
-                                  duration: 1.8,
-                                  delay: index * 0.2,
-                                }}
-                                className="group relative overflow-hidden rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex flex-col shadow-md hover:shadow-lg transition-shadow cursor-pointer"
-                              >
-                                {/* Card Image */}
-                                <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-gray-100 dark:bg-gray-900">
-                                  <img
-                                    src={project.image}
-                                    alt={project.alt || project.title}
-                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                    loading="lazy"
-                                  />
-                                </div>
-
-                                {/* Card Content */}
-                                <div className="p-4 sm:p-6 flex flex-col gap-2 flex-1">
-                                  <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
-                                    {project.title}
-                                  </h3>
-                                  {project.description && (
-                                    <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
-                                      {project.description}
-                                    </p>
-                                  )}
-                                </div>
-                              </motion.a>
-                            ))}
-                        </div>
-                      </div>
-                    </div>
-                  </section>
-
-                  {/* Articles Section */}
-                  <section
-                    id="articles"
-                    className="py-4 sm:py-6 lg:py-8 xl:py-12 relative"
-                  >
-                    <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-                      <div className="border border-gray-300 dark:border-gray-600 p-4 sm:p-6 rounded-lg relative overflow-hidden bg-white dark:bg-gray-900">
-                        <SectionHeader
-                          title="Articles"
-                          subtitle={content.articles.subtitle}
-                          className="mb-6"
-                          showArchiveLink={false}
-                          icon={
-                            <a
-                              href="https://davemelk.substack.com/"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
-                              aria-label="Substack"
-                            >
-                              <svg
-                                className="h-5 w-5 text-black"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                              >
-                                <path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z" />
-                              </svg>
-                            </a>
-                          }
-                        />
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                          {content.articles.items
-                            .filter(
-                              (article) =>
-                                article.title !== "Commit Message Fatigue" &&
-                                article.title !==
-                                  "Information Architecture Is Not Sacred" &&
-                                article.title !==
-                                  "AI is hydrated with user research data" &&
-                                article.title !==
-                                  "Prompting for Heuristic Evaluations" &&
-                                article.title !==
-                                  "Vibe Coding v Vibe Engineering"
-                            )
-                            .sort(
-                              (a, b) =>
-                                new Date(b.date).getTime() -
-                                new Date(a.date).getTime()
-                            )
-                            .map((article, index) => {
-                              const handleClick = () => {
-                                if (article.url.startsWith("http")) {
-                                  window.open(
-                                    article.url,
-                                    "_blank",
-                                    "noopener,noreferrer"
-                                  );
-                                } else {
-                                  navigate(
-                                    `/article/${slugify(article.title)}`
-                                  );
-                                }
-                              };
-
-                              return (
-                                <motion.div
-                                  key={index}
-                                  onClick={handleClick}
-                                  initial={{ opacity: 0, y: 20 }}
-                                  whileInView={{ opacity: 1, y: 0 }}
-                                  viewport={{ once: true }}
-                                  transition={{
-                                    duration: 1.8,
-                                    delay: index * 0.2,
-                                  }}
-                                  className="group relative overflow-hidden rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex flex-col shadow-md hover:shadow-lg transition-shadow cursor-pointer"
-                                >
-                                  {/* Card Image */}
-                                  <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-gray-100 dark:bg-gray-900">
-                                    <img
-                                      src={`${
-                                        (article as any).cardImage ||
-                                        article.image
-                                      }?v=${Date.now()}`}
-                                      alt={article.title}
-                                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                      loading="lazy"
-                                    />
-                                  </div>
-
-                                  {/* Card Content */}
-                                  <div className="p-4 sm:p-6 flex flex-col gap-2 flex-1">
-                                    <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
-                                      {article.title}
-                                    </h3>
-                                    {article.description && (
-                                      <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
-                                        {article.description}
-                                      </p>
-                                    )}
-                                  </div>
-                                </motion.div>
-                              );
-                            })}
-                        </div>
+                        </h3>
+                        <ul className="list-disc list-inside text-gray-700 dark:text-gray-300">
+                          <li>Oakland University | Rochester MI</li>
+                          <li>Bachelor of Arts in English</li>
+                          <li>Minor in Public Relations</li>
+                        </ul>
                       </div>
                     </div>
                   </section>
 
                   {/* Personal Section */}
                   {/* <section id="personal" className="py-12 sm:py-16 lg:py-20">
-                  <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
+                  <div className="max-w-[1000px] mx-auto px-4 sm:px-8">
                     <SectionHeader
                       title="Personal"
                       subtitle="Personal projects and interests"
@@ -866,7 +1171,7 @@ function App() {
                       id="design-system"
                       className="py-4 sm:py-6 lg:py-8 xl:py-12"
                     >
-                      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+                      <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
                         <SectionHeader
                           title="Design System"
                           subtitle="Component library and design tokens"
