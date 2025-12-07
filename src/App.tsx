@@ -7,7 +7,7 @@ import {
   List,
 } from "lucide-react";
 import { LinkedInLogoIcon } from "@radix-ui/react-icons";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { content } from "./content";
 import Preloader from "./components/Preloader";
@@ -161,6 +161,9 @@ function App() {
     "grid"
   );
 
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [parallaxOffset, setParallaxOffset] = useState(0);
+
   const location = useLocation();
 
   // Scroll to top on route change (but not for internal navigation)
@@ -199,15 +202,47 @@ function App() {
     };
   }, []);
 
+  // Parallax scroll effect for video background
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      // Subtle parallax: move video at 20% of scroll speed for a gentle effect
+      setParallaxOffset(scrollY * 0.2);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   if (isLoading) {
     return <Preloader onComplete={() => setIsLoading(false)} />;
   }
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 transition-colors duration-300 dark:bg-gray-900 dark:text-white pb-20 sm:pb-0 flex flex-col">
+    <div className="min-h-screen bg-white text-gray-900 transition-colors duration-300 dark:bg-gray-900 dark:text-white pb-20 sm:pb-0 flex flex-col relative">
+      {/* Background Video with Parallax - Full Page */}
+      <div className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
+        <video
+          ref={videoRef}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover opacity-30 dark:opacity-20"
+          style={{
+            transform: `translateY(${parallaxOffset}px) scale(1.1)`,
+            willChange: "transform",
+            minHeight: "100vh",
+            height: "100%",
+          }}
+        >
+          <source src="/video/geo.mp4" type="video/mp4" />
+        </video>
+      </div>
+
       {/* Remove Header Navigation from here */}
 
-      <div className="flex-1">
+      <div className="flex-1 relative z-10">
         <Suspense
           fallback={
             <div className="min-h-screen bg-white flex items-center justify-center">
@@ -225,7 +260,7 @@ function App() {
                 <>
                   {/* Hero Section */}
                   <section className="py-4 sm:py-4xl:py-4 relative">
-                    <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                       <div className="grid grid-cols-1 gap-6 sm:gap-8">
                         {/* Hero Content */}
                         <div className="pt-4 rounded-lg">
