@@ -175,15 +175,8 @@
 
   /* Hero intro text - allow Tailwind classes to work */
   .hero-intro {
-    font-size: 1rem !important;
-    line-height: inherit !important;
-  }
-
-  @media (min-width: 640px) {
-    .hero-intro {
-      font-size: 34px !important;
-      line-height: 50px !important;
-    }
+    font-size: 1.5rem !important;
+    line-height: 2.25rem !important;
   }
 
   /* Responsive paragraph sizing for small screens */

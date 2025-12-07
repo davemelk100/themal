@@ -229,67 +229,63 @@ function App() {
                       <div className="grid grid-cols-1 gap-6 sm:gap-8">
                         {/* Hero Content */}
                         <div className="pt-4 rounded-lg">
-                          {/* Title */}
+                          {/* Title and Navigation Row */}
                           <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 1.8, delay: 0.2 }}
-                            className="mb-6 sm:mb-8"
+                            className="mb-6 sm:mb-8 flex flex-col lg:flex-row lg:items-start lg:justify-between lg:gap-4"
                           >
-                            <h1 className="tracking-tighter text-5xl font-bold mb-1 title-font leading-none relative z-10 text-left">
-                              {content.siteInfo.subtitle}
-                            </h1>
-                            <a
-                              href="mailto:davemelk@gmail.com"
-                              className="text-base sm:text-lg text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors mt-2 block"
-                            >
-                              davemelk@gmail.com
-                            </a>
-                          </motion.div>
+                            <div className="flex-1">
+                              <h1 className="tracking-tighter text-5xl font-bold mb-1 title-font leading-none relative z-10 text-left">
+                                {content.siteInfo.subtitle}
+                              </h1>
+                            </div>
 
-                          {/* Navigation Links */}
-                          <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 1.8, delay: 0.4 }}
-                            className="hidden lg:flex flex-wrap justify-start gap-2 sm:gap-3 mb-2 sm:mb-4"
-                          >
-                            {content.navigation.links
-                              .filter((link) => link.id !== "design-system")
-                              .sort((a, b) => {
-                                // Define the desired order: Lab, Storytelling, Design, Articles, Career
-                                const order = [
-                                  "current-projects",
-                                  "stories",
-                                  "work",
-                                  "articles",
-                                  "career",
-                                ];
-                                const indexA = order.indexOf(a.id);
-                                const indexB = order.indexOf(b.id);
-                                return (
-                                  (indexA === -1 ? 999 : indexA) -
-                                  (indexB === -1 ? 999 : indexB)
-                                );
-                              })
-                              .map((link) => (
-                                <button
-                                  key={link.id}
-                                  onClick={() => {
-                                    const element = document.getElementById(
-                                      link.id
-                                    );
-                                    if (element) {
-                                      element.scrollIntoView({
-                                        behavior: "smooth",
-                                      });
-                                    }
-                                  }}
-                                  className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
-                                >
-                                  {link.text}
-                                </button>
-                              ))}
+                            {/* Navigation Links */}
+                            <motion.div
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 1.8, delay: 0.4 }}
+                              className="hidden lg:flex flex-wrap justify-end gap-2 sm:gap-3 mt-2 lg:mt-0"
+                            >
+                              {content.navigation.links
+                                .filter((link) => link.id !== "design-system")
+                                .sort((a, b) => {
+                                  // Define the desired order: Lab, Storytelling, Design, Articles, Career
+                                  const order = [
+                                    "current-projects",
+                                    "stories",
+                                    "work",
+                                    "articles",
+                                    "career",
+                                  ];
+                                  const indexA = order.indexOf(a.id);
+                                  const indexB = order.indexOf(b.id);
+                                  return (
+                                    (indexA === -1 ? 999 : indexA) -
+                                    (indexB === -1 ? 999 : indexB)
+                                  );
+                                })
+                                .map((link) => (
+                                  <button
+                                    key={link.id}
+                                    onClick={() => {
+                                      const element = document.getElementById(
+                                        link.id
+                                      );
+                                      if (element) {
+                                        element.scrollIntoView({
+                                          behavior: "smooth",
+                                        });
+                                      }
+                                    }}
+                                    className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
+                                  >
+                                    {link.text}
+                                  </button>
+                                ))}
+                            </motion.div>
                           </motion.div>
 
                           {/* Summary Text */}

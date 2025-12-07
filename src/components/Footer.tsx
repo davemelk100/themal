@@ -7,7 +7,7 @@ export const Footer = () => {
 
   return (
     <footer className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 mt-auto">
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-6">
           {/* Left side - Email and Copyright */}
           <div className="flex flex-col items-center sm:items-start gap-2">
