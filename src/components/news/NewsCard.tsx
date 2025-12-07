@@ -1,7 +1,6 @@
 import { ExternalLink } from "lucide-react";
 import { NewsItem, RSSFeed, ViewMode } from "../../types/news";
 import { getCategoryIcon, getFeedCategory, truncateText } from "../../utils/newsUtils";
-import { categoryColors } from "../../utils/newsUtils";
 
 interface NewsCardProps {
   feed: RSSFeed;
@@ -36,7 +35,6 @@ export const NewsCard = ({
   if (!currentItem) return null;
 
   const category = getFeedCategory(feed.name);
-  const colors = categoryColors[category] || categoryColors.all;
   const icon = getCategoryIcon(category);
 
   const borderColor =
