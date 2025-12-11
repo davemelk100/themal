@@ -1,6 +1,6 @@
 // import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
+import AppWithRouter from "./App";
 import "./globals.css";
 
 // Register service worker for caching and offline support
@@ -9,8 +9,6 @@ if ("serviceWorker" in navigator) {
     navigator.serviceWorker
       .register("/sw.js")
       .then((registration) => {
-        console.log("Service worker registered successfully:", registration);
-
         // Check for updates
         registration.addEventListener("updatefound", () => {
           const newWorker = registration.installing;
@@ -36,6 +34,24 @@ if ("serviceWorker" in navigator) {
   });
 }
 
+// Fix back/forward cache restoration
+window.addEventListener("pageshow", (event) => {
+  if (event.persisted) {
+    // Page was restored from back/forward cache
+    // Trigger visibility change to refresh any state-dependent components
+    const visibilityEvent = new Event("visibilitychange", { bubbles: true });
+    document.dispatchEvent(visibilityEvent);
+  }
+});
+
+// Optimize page unload for better back/forward cache
+window.addEventListener("pagehide", (event) => {
+  // Clean up any timers or listeners that might prevent bfcache
+  if (event.persisted) {
+    // Page is entering bfcache - minimal cleanup
+  }
+});
+
 // Add error boundary for unhandled errors
 window.addEventListener("error", (event) => {
   console.error("Unhandled error:", event.error);
@@ -45,4 +61,4 @@ window.addEventListener("unhandledrejection", (event) => {
   console.error("Unhandled promise rejection:", event.reason);
 });
 
-ReactDOM.createRoot(document.getElementById("root")!).render(<App />);
+ReactDOM.createRoot(document.getElementById("root")!).render(<AppWithRouter />);

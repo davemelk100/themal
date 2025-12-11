@@ -1,25 +1,14 @@
 import { motion } from "framer-motion";
-import {
-  Dribbble,
-  ArrowUp,
-  ExternalLink,
-  LayoutGrid,
-  List,
-} from "lucide-react";
-import { LinkedInLogoIcon } from "@radix-ui/react-icons";
 import React, { useState, useEffect, useRef } from "react";
 
 import { content } from "./content";
-import Preloader from "./components/Preloader";
-
-import { BrowserRouter as Router } from "react-router-dom";
-import ArticleModal from "./components/ArticleModal";
 import { ThemeProvider } from "./context/ThemeContext";
 
 import MobileTrayMenu from "./components/MobileTrayMenu";
 import { Footer } from "./components/Footer";
 
 import {
+  BrowserRouter as Router,
   Routes,
   Route,
   Link,
@@ -39,9 +28,48 @@ const Specs = lazy(() => import("./pages/Specs"));
 const Story = lazy(() => import("./pages/Story"));
 
 import { slugify } from "./utils/slugify";
-import { ADMIN_LOGIN_URL } from "./config/api";
 
 import "./utils/storageMigration"; // Import to trigger migration if needed
+
+// Lazy load icons to reduce initial bundle size
+const LazyArrowUp = React.lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.ArrowUp }))
+);
+const LazyLayoutGrid = React.lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.LayoutGrid }))
+);
+const LazyList = React.lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.List }))
+);
+const LazyExternalLink = React.lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.ExternalLink }))
+);
+const LazyDribbble = React.lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Dribbble }))
+);
+const LazyLinkedInLogoIcon = React.lazy(() =>
+  import("@radix-ui/react-icons").then((mod) => ({
+    default: mod.LinkedInLogoIcon,
+  }))
+);
+
+// Lazy load ArticleModal
+const ArticleModal = lazy(() => import("./components/ArticleModal"));
+
+// Icon wrapper with Suspense fallback
+const IconWrapper = ({
+  Icon,
+  className,
+  fallback = "↗",
+}: {
+  Icon: React.LazyExoticComponent<React.ComponentType<any>>;
+  className?: string;
+  fallback?: string;
+}) => (
+  <React.Suspense fallback={<span className={className}>{fallback}</span>}>
+    <Icon className={className} />
+  </React.Suspense>
+);
 
 // Add SectionHeader component
 const SectionHeader = ({
@@ -75,7 +103,10 @@ const SectionHeader = ({
             className="bg-black text-white dark:bg-white/10 dark:text-white rounded-full shadow-lg hover:opacity-80 transition-opacity flex-shrink-0 flex items-center justify-center w-8 h-8 p-0 min-w-8 min-h-8"
             aria-label="Scroll to top"
           >
-            <ArrowUp className="h-4 w-4 m-0 flex-shrink-0" />
+            <IconWrapper
+              Icon={LazyArrowUp}
+              className="h-4 w-4 m-0 flex-shrink-0"
+            />
           </button>
           {icon && <div className="flex items-center gap-2">{icon}</div>}
           {showUpArrow && (
@@ -84,7 +115,10 @@ const SectionHeader = ({
               className="bg-black text-white dark:bg-white/10 dark:text-white p-2 rounded-full shadow-lg hover:opacity-80 transition-opacity"
               aria-label="Scroll to top"
             >
-              <ArrowUp className="h-4 w-4 text-white dark:text-white" />
+              <IconWrapper
+                Icon={LazyArrowUp}
+                className="h-4 w-4 text-white dark:text-white"
+              />
             </button>
           )}
         </div>
@@ -100,7 +134,7 @@ const SectionHeader = ({
                 }`}
                 onClick={() => toggleView("grid")}
               >
-                <LayoutGrid className="h-4 w-4" />
+                <IconWrapper Icon={LazyLayoutGrid} className="h-4 w-4" />
               </button>
               <button
                 aria-label="List view"
@@ -111,7 +145,7 @@ const SectionHeader = ({
                 }`}
                 onClick={() => toggleView("list")}
               >
-                <List className="h-4 w-4" />
+                <IconWrapper Icon={LazyList} className="h-4 w-4" />
               </button>
             </div>
           )}
@@ -136,6 +170,7 @@ const SectionHeader = ({
 
 function App() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [selectedArticle, setSelectedArticle] = useState<{
     title: string;
     content: string;
@@ -147,7 +182,6 @@ function App() {
     content: string;
     subtitle?: string;
   } | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
 
   const [currentViewMode, setCurrentViewMode] = useState<"list" | "grid">(
     "grid"
@@ -164,8 +198,6 @@ function App() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [parallaxOffset, setParallaxOffset] = useState(0);
 
-  const location = useLocation();
-
   // Scroll to top on route change (but not for internal navigation)
   useEffect(() => {
     // Only scroll to top if we're not navigating to a specific section
@@ -173,9 +205,6 @@ function App() {
       window.scrollTo(0, 0);
     }
   }, [location.pathname]);
-
-  // Close mobile menu when route changes
-  useEffect(() => {}, [location.pathname]);
 
   // Listen for view mode changes from NewsAggregator
   useEffect(() => {
@@ -214,10 +243,6 @@ function App() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  if (isLoading) {
-    return <Preloader onComplete={() => setIsLoading(false)} />;
-  }
-
   return (
     <div className="min-h-screen text-gray-900 transition-colors duration-300 dark:text-white pb-20 sm:pb-0 flex flex-col relative">
       {/* Background Video with Parallax - Full Page */}
@@ -242,7 +267,7 @@ function App() {
 
       {/* Remove Header Navigation from here */}
 
-      <div className="flex-1 relative z-10">
+      <main className="flex-1 relative z-10">
         <Suspense
           fallback={
             <div className="min-h-screen bg-white flex items-center justify-center">
@@ -265,12 +290,7 @@ function App() {
                         {/* Hero Content */}
                         <div className="pt-4 rounded-lg">
                           {/* Title and Navigation Row */}
-                          <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 1.8, delay: 0.2 }}
-                            className="mb-6 sm:mb-8 flex flex-col lg:flex-row lg:items-start lg:justify-between lg:gap-4"
-                          >
+                          <div className="mb-6 sm:mb-8 flex flex-col lg:flex-row lg:items-start lg:justify-between lg:gap-4">
                             <div className="flex-1">
                               <h1 className="tracking-tighter text-5xl font-bold mb-1 title-font leading-none relative z-10 text-left">
                                 {content.siteInfo.subtitle}
@@ -278,12 +298,7 @@ function App() {
                             </div>
 
                             {/* Navigation Links */}
-                            <motion.div
-                              initial={{ opacity: 0, y: 20 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ duration: 1.8, delay: 0.4 }}
-                              className="hidden lg:flex flex-wrap justify-end gap-2 sm:gap-3 mt-2 lg:mt-0"
-                            >
+                            <div className="hidden lg:flex flex-wrap justify-end gap-2 sm:gap-3 mt-2 lg:mt-0">
                               {content.navigation.links
                                 .filter((link) => link.id !== "design-system")
                                 .sort((a, b) => {
@@ -320,16 +335,11 @@ function App() {
                                     {link.text}
                                   </button>
                                 ))}
-                            </motion.div>
-                          </motion.div>
+                            </div>
+                          </div>
 
                           {/* Summary Text */}
-                          <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 1.8, delay: 0.6 }}
-                            className="mt-4 sm:mt-6"
-                          >
+                          <div className="mt-4 sm:mt-6">
                             <p className="hero-intro text-base sm:text-5xl text-muted-foreground leading-relaxed text-left">
                               I'm David Melkonian, a technical product and
                               experience leader with over a decade of work at
@@ -345,7 +355,7 @@ function App() {
                               and established enterprise-wide standards for
                               processes and digital experience delivery.
                             </p>
-                          </motion.div>
+                          </div>
                           <p className="my-4">
                             <a
                               href="https://rococo-paprenjak-da1be1.netlify.app/samples"
@@ -354,7 +364,10 @@ function App() {
                               className="text-gray-900 dark:text-white hover:text-primary transition-colors inline-flex items-center gap-2 underline decoration-1 underline-offset-2 hover:decoration-2"
                             >
                               Previous Portfolio with OpenAI integration
-                              <ExternalLink className="w-4 h-4" />
+                              <IconWrapper
+                                Icon={LazyExternalLink}
+                                className="w-4 h-4"
+                              />
                             </a>
                           </p>
                         </div>
@@ -516,7 +529,10 @@ function App() {
                                     </div>
 
                                     {/* External Link Icon */}
-                                    <ExternalLink className="h-4 w-4 text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors flex-shrink-0" />
+                                    <IconWrapper
+                                      Icon={LazyExternalLink}
+                                      className="h-4 w-4 text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors flex-shrink-0"
+                                    />
                                   </motion.a>
                                 ))}
                             </div>
@@ -703,7 +719,10 @@ function App() {
 
                                   {/* External Link Icon (only show if clickable) */}
                                   {story.hasModal && (
-                                    <ExternalLink className="h-4 w-4 text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors flex-shrink-0" />
+                                    <IconWrapper
+                                      Icon={LazyExternalLink}
+                                      className="h-4 w-4 text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors flex-shrink-0"
+                                    />
                                   )}
                                 </motion.div>
                               ))}
@@ -735,7 +754,10 @@ function App() {
                               className="bg-white/80 dark:bg-gray-800/80 hover:bg-white dark:hover:bg-gray-700 backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
                               aria-label="Dribbble"
                             >
-                              <Dribbble className="h-5 w-5 text-black dark:text-white" />
+                              <IconWrapper
+                                Icon={LazyDribbble}
+                                className="h-5 w-5 text-black dark:text-white"
+                              />
                             </a>
                           }
                         />
@@ -830,7 +852,10 @@ function App() {
                                   </div>
 
                                   {/* External Link Icon */}
-                                  <ExternalLink className="h-4 w-4 text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors flex-shrink-0" />
+                                  <IconWrapper
+                                    Icon={LazyExternalLink}
+                                    className="h-4 w-4 text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors flex-shrink-0"
+                                  />
                                 </motion.a>
                               ))}
                           </div>
@@ -1021,7 +1046,10 @@ function App() {
                                     </div>
 
                                     {/* External Link Icon */}
-                                    <ExternalLink className="h-4 w-4 text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors flex-shrink-0" />
+                                    <IconWrapper
+                                      Icon={LazyExternalLink}
+                                      className="h-4 w-4 text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors flex-shrink-0"
+                                    />
                                   </motion.div>
                                 );
                               })}
@@ -1049,7 +1077,10 @@ function App() {
                             className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
                             aria-label="LinkedIn"
                           >
-                            <LinkedInLogoIcon className="h-5 w-5 text-black" />
+                            <IconWrapper
+                              Icon={LazyLinkedInLogoIcon}
+                              className="h-5 w-5 text-black"
+                            />
                           </a>
                         }
                       />
@@ -1583,57 +1614,34 @@ function App() {
             />
             <Route path="/article/:slug" element={<Article />} />
             <Route path="/archive" element={<Archive />} />
-
             <Route path="/json" element={<JsonAiPrompts />} />
             <Route path="/audio-transcript" element={<AudioTranscript />} />
             <Route path="/news" element={<NewsAggregator />} />
             <Route path="/specs" element={<Specs />} />
             <Route path="/story" element={<Story />} />
-            <Route
-              path="/login"
-              element={
-                <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center p-8">
-                  <div className="max-w-md w-full text-center">
-                    <h1 className="text-2xl font-bold mb-4 dark:text-white">
-                      Admin Login
-                    </h1>
-                    <p className="text-gray-600 dark:text-gray-400 mb-6">
-                      The admin login is hosted on the backend server.
-                    </p>
-                    <a
-                      href={ADMIN_LOGIN_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                    >
-                      Open Admin Login
-                    </a>
-                    <p className="text-sm text-gray-500 dark:text-gray-500 mt-4">
-                      Make sure the backend server is running on port 8000
-                    </p>
-                  </div>
-                </div>
-              }
-            />
           </Routes>
         </Suspense>
-      </div>
+      </main>
 
       {selectedArticle && (
-        <ArticleModal
-          title={selectedArticle.title}
-          content={selectedArticle.content}
-          image={selectedArticle.image}
-          onClose={() => setSelectedArticle(null)}
-        />
+        <Suspense fallback={null}>
+          <ArticleModal
+            title={selectedArticle.title}
+            content={selectedArticle.content}
+            image={selectedArticle.image}
+            onClose={() => setSelectedArticle(null)}
+          />
+        </Suspense>
       )}
 
       {selectedStory && (
-        <ArticleModal
-          title={selectedStory.title}
-          content={selectedStory.content}
-          onClose={() => setSelectedStory(null)}
-        />
+        <Suspense fallback={null}>
+          <ArticleModal
+            title={selectedStory.title}
+            content={selectedStory.content}
+            onClose={() => setSelectedStory(null)}
+          />
+        </Suspense>
       )}
       {/* Hide MobileTrayMenu on news page */}
       {location.pathname !== "/news" && <MobileTrayMenu />}
@@ -1661,7 +1669,7 @@ function App() {
               }`}
               aria-label="List view"
             >
-              <List className="w-4 h-4" />
+              <IconWrapper Icon={LazyList} className="w-4 h-4" />
             </button>
             <button
               onClick={() => {
@@ -1678,7 +1686,7 @@ function App() {
               }`}
               aria-label="Grid view"
             >
-              <LayoutGrid className="w-4 h-4" />
+              <IconWrapper Icon={LazyLayoutGrid} className="w-4 h-4" />
             </button>
           </div>
         )}
