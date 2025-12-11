@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import React, { useState, useEffect, useRef } from "react";
 
 import { content } from "./content";
@@ -196,7 +195,6 @@ function App() {
   );
 
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [parallaxOffset, setParallaxOffset] = useState(0);
 
   // Scroll to top on route change (but not for internal navigation)
   useEffect(() => {
@@ -212,11 +210,18 @@ function App() {
       setCurrentViewMode(event.detail);
     };
 
-    // Initialize view mode from localStorage
-    const savedViewMode = localStorage.getItem("viewMode") as "list" | "grid";
-    if (savedViewMode) {
-      setCurrentViewMode(savedViewMode);
-    }
+    // Defer localStorage read to avoid blocking initial render
+    requestIdleCallback(
+      () => {
+        const savedViewMode = localStorage.getItem("viewMode") as
+          | "list"
+          | "grid";
+        if (savedViewMode) {
+          setCurrentViewMode(savedViewMode);
+        }
+      },
+      { timeout: 100 }
+    );
 
     window.addEventListener(
       "viewModeChanged",
@@ -231,21 +236,9 @@ function App() {
     };
   }, []);
 
-  // Parallax scroll effect for video background
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      // Subtle parallax: move video at 20% of scroll speed for a gentle effect
-      setParallaxOffset(scrollY * 0.2);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
     <div className="min-h-screen text-gray-900 transition-colors duration-300 dark:text-white pb-20 sm:pb-0 flex flex-col relative">
-      {/* Background Video with Parallax - Full Page */}
+      {/* Background Video - Full Page */}
       <div className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
         <video
           ref={videoRef}
@@ -255,8 +248,6 @@ function App() {
           playsInline
           className="absolute inset-0 w-full h-full object-cover opacity-30 dark:opacity-35"
           style={{
-            transform: `translateY(${parallaxOffset}px) scale(1.1)`,
-            willChange: "transform",
             minHeight: "100vh",
             height: "100%",
           }}
@@ -268,16 +259,7 @@ function App() {
       {/* Remove Header Navigation from here */}
 
       <main className="flex-1 relative z-10">
-        <Suspense
-          fallback={
-            <div className="min-h-screen bg-white flex items-center justify-center">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
-                <p className="text-gray-600">Loading...</p>
-              </div>
-            </div>
-          }
-        >
+        <Suspense fallback={null}>
           <Routes>
             <Route
               path="/"
@@ -405,18 +387,11 @@ function App() {
                                       "Configurable Multivariate Testing"
                                 )
                                 .map((project, index) => (
-                                  <motion.a
+                                  <a
                                     key={index}
                                     href={project.demo}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{
-                                      duration: 1.8,
-                                      delay: index * 0.2,
-                                    }}
                                     className="group relative overflow-hidden rounded-lg bg-white/10 backdrop-blur-2xl border-white/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_0_rgba(255,255,255,0.1)] border border-gray-200/50 dark:border-gray-700/50 flex flex-col hover:shadow-[0_12px_40px_0_rgba(0,0,0,0.15)] dark:hover:shadow-[0_12px_40px_0_rgba(255,255,255,0.15)] transition-shadow cursor-pointer"
                                   >
                                     {/* Card Image */}
@@ -458,7 +433,7 @@ function App() {
                                         {project.description}
                                       </p>
                                     </div>
-                                  </motion.a>
+                                  </a>
                                 ))}
                             </div>
                           ) : (
@@ -474,18 +449,11 @@ function App() {
                                       "Configurable Multivariate Testing"
                                 )
                                 .map((project, index) => (
-                                  <motion.a
+                                  <a
                                     key={index}
                                     href={project.demo}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    initial={{ opacity: 0, x: -20 }}
-                                    whileInView={{ opacity: 1, x: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{
-                                      duration: 0.5,
-                                      delay: index * 0.05,
-                                    }}
                                     className="group flex items-center gap-4 p-3 rounded-lg bg-white/10 backdrop-blur-2xl border-white/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_0_rgba(255,255,255,0.1)] border border-gray-200/50 dark:border-gray-700/50 hover:shadow-[0_12px_40px_0_rgba(0,0,0,0.15)] dark:hover:shadow-[0_12px_40px_0_rgba(255,255,255,0.15)] transition-all cursor-pointer"
                                   >
                                     {/* Compact Image */}
@@ -533,7 +501,7 @@ function App() {
                                       Icon={LazyExternalLink}
                                       className="h-4 w-4 text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors flex-shrink-0"
                                     />
-                                  </motion.a>
+                                  </a>
                                 ))}
                             </div>
                           )}
@@ -553,12 +521,8 @@ function App() {
                     />
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {content.testimonials.items.map((testimonial, index) => (
-                        <motion.div
+                        <div
                           key={index}
-                          initial={{ opacity: 0, y: 20 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 1.8, delay: index * 0.2 }}
                           className="group relative overflow-hidden rounded-lg bg-gray-100/80 shadow-md p-6"
                         >
                           <div className="flex flex-col h-full">
@@ -576,7 +540,7 @@ function App() {
                               </p>
                             </div>
                           </div>
-                        </motion.div>
+                        </div>
                       ))}
                     </div>
                   </div>
@@ -603,8 +567,8 @@ function App() {
                               .filter(
                                 (story) => story.title !== "Design Management"
                               )
-                              .map((story, index) => (
-                                <motion.div
+                              .map((story) => (
+                                <div
                                   key={story.title}
                                   onClick={() => {
                                     if (story.hasModal) {
@@ -614,13 +578,6 @@ function App() {
                                         subtitle: story.subtitle,
                                       });
                                     }
-                                  }}
-                                  initial={{ opacity: 0, y: 20 }}
-                                  whileInView={{ opacity: 1, y: 0 }}
-                                  viewport={{ once: true }}
-                                  transition={{
-                                    duration: 2.4,
-                                    delay: index * 0.2,
                                   }}
                                   className={`group relative overflow-hidden rounded-lg bg-white/10 backdrop-blur-2xl border-white/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_0_rgba(255,255,255,0.1)] border border-gray-200/50 dark:border-gray-700/50 flex flex-col hover:shadow-[0_12px_40px_0_rgba(0,0,0,0.15)] dark:hover:shadow-[0_12px_40px_0_rgba(255,255,255,0.15)] transition-shadow ${
                                     story.hasModal ? "cursor-pointer" : ""
@@ -655,7 +612,7 @@ function App() {
                                       </p>
                                     )}
                                   </div>
-                                </motion.div>
+                                </div>
                               ))}
                           </div>
                         ) : (
@@ -664,8 +621,8 @@ function App() {
                               .filter(
                                 (story) => story.title !== "Design Management"
                               )
-                              .map((story, index) => (
-                                <motion.div
+                              .map((story) => (
+                                <div
                                   key={story.title}
                                   onClick={() => {
                                     if (story.hasModal) {
@@ -675,13 +632,6 @@ function App() {
                                         subtitle: story.subtitle,
                                       });
                                     }
-                                  }}
-                                  initial={{ opacity: 0, x: -20 }}
-                                  whileInView={{ opacity: 1, x: 0 }}
-                                  viewport={{ once: true }}
-                                  transition={{
-                                    duration: 0.5,
-                                    delay: index * 0.05,
                                   }}
                                   className={`group flex items-center gap-4 p-3 rounded-lg bg-white/10 backdrop-blur-2xl border-white/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_0_rgba(255,255,255,0.1)] border border-gray-200/50 dark:border-gray-700/50 hover:shadow-[0_12px_40px_0_rgba(0,0,0,0.15)] dark:hover:shadow-[0_12px_40px_0_rgba(255,255,255,0.15)] transition-all ${
                                     story.hasModal ? "cursor-pointer" : ""
@@ -724,7 +674,7 @@ function App() {
                                       className="h-4 w-4 text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors flex-shrink-0"
                                     />
                                   )}
-                                </motion.div>
+                                </div>
                               ))}
                           </div>
                         )}
@@ -769,18 +719,11 @@ function App() {
                                   project.title !== "3D Conversion UX Plan"
                               )
                               .map((project: any, index) => (
-                                <motion.a
+                                <a
                                   key={index}
                                   href={project.url}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  initial={{ opacity: 0, y: 20 }}
-                                  whileInView={{ opacity: 1, y: 0 }}
-                                  viewport={{ once: true }}
-                                  transition={{
-                                    duration: 1.8,
-                                    delay: index * 0.2,
-                                  }}
                                   className="group relative overflow-hidden rounded-lg bg-transparent dark:backdrop-blur-xl dark:border-white/20 border border-gray-200 dark:border-gray-700 flex flex-col shadow-md hover:shadow-lg transition-shadow cursor-pointer"
                                 >
                                   {/* Card Image */}
@@ -804,7 +747,7 @@ function App() {
                                       </p>
                                     )}
                                   </div>
-                                </motion.a>
+                                </a>
                               ))}
                           </div>
                         ) : (
@@ -815,18 +758,11 @@ function App() {
                                   project.title !== "3D Conversion UX Plan"
                               )
                               .map((project: any, index) => (
-                                <motion.a
+                                <a
                                   key={index}
                                   href={project.url}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  initial={{ opacity: 0, x: -20 }}
-                                  whileInView={{ opacity: 1, x: 0 }}
-                                  viewport={{ once: true }}
-                                  transition={{
-                                    duration: 0.5,
-                                    delay: index * 0.05,
-                                  }}
                                   className="group flex items-center gap-4 p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all cursor-pointer"
                                 >
                                   {/* Compact Image */}
@@ -856,7 +792,7 @@ function App() {
                                     Icon={LazyExternalLink}
                                     className="h-4 w-4 text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors flex-shrink-0"
                                   />
-                                </motion.a>
+                                </a>
                               ))}
                           </div>
                         )}
@@ -932,16 +868,9 @@ function App() {
                                 };
 
                                 return (
-                                  <motion.div
+                                  <div
                                     key={index}
                                     onClick={handleClick}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{
-                                      duration: 1.8,
-                                      delay: index * 0.2,
-                                    }}
                                     className="group relative overflow-hidden rounded-lg bg-white/10 backdrop-blur-2xl border-white/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_0_rgba(255,255,255,0.1)] border border-gray-200/50 dark:border-gray-700/50 flex flex-col hover:shadow-[0_12px_40px_0_rgba(0,0,0,0.15)] dark:hover:shadow-[0_12px_40px_0_rgba(255,255,255,0.15)] transition-shadow cursor-pointer"
                                   >
                                     {/* Card Image */}
@@ -968,7 +897,7 @@ function App() {
                                         </p>
                                       )}
                                     </div>
-                                  </motion.div>
+                                  </div>
                                 );
                               })}
                           </div>
@@ -1008,16 +937,9 @@ function App() {
                                 };
 
                                 return (
-                                  <motion.div
+                                  <div
                                     key={index}
                                     onClick={handleClick}
-                                    initial={{ opacity: 0, x: -20 }}
-                                    whileInView={{ opacity: 1, x: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{
-                                      duration: 0.5,
-                                      delay: index * 0.05,
-                                    }}
                                     className="group flex items-center gap-4 p-3 rounded-lg bg-white/10 backdrop-blur-2xl border-white/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_0_rgba(255,255,255,0.1)] border border-gray-200/50 dark:border-gray-700/50 hover:shadow-[0_12px_40px_0_rgba(0,0,0,0.15)] dark:hover:shadow-[0_12px_40px_0_rgba(255,255,255,0.15)] transition-all cursor-pointer"
                                   >
                                     {/* Compact Image */}
@@ -1050,7 +972,7 @@ function App() {
                                       Icon={LazyExternalLink}
                                       className="h-4 w-4 text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors flex-shrink-0"
                                     />
-                                  </motion.div>
+                                  </div>
                                 );
                               })}
                           </div>
@@ -1147,11 +1069,7 @@ function App() {
                       className="mb-8"
                     />
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1.8, delay: 0.2 }}
+                      <div
                         className="group relative overflow-visible rounded-lg bg-gray-100/80 shadow-md aspect-[3/4]"
                       >
                         <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
@@ -1172,12 +1090,8 @@ function App() {
                         <div className="absolute inset-0 overflow-hidden z-0">
                           <LazyVideo src="/video/violet.mp4" />
                         </div>
-                      </motion.div>
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1.8, delay: 0.4 }}
+                      </div>
+                      <div
                         className="group relative overflow-visible rounded-lg bg-gray-100/80 shadow-md aspect-[3/4]"
                       >
                         <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
@@ -1197,12 +1111,8 @@ function App() {
                         <div className="absolute inset-0 overflow-hidden z-0">
                           <LazyVideo src="/video/sam.mp4" />
                         </div>
-                      </motion.div>
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1.8, delay: 0.6 }}
+                      </div>
+                      <div
                         className="group relative overflow-visible rounded-lg bg-gray-100/80 shadow-md aspect-[3/4]"
                       >
                         <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
@@ -1222,7 +1132,7 @@ function App() {
                         <div className="absolute inset-0 overflow-hidden z-0">
                           <LazyVideo src="/video/golfnew.mp4" />
                         </div>
-                      </motion.div>
+                      </div>
                     </div>
                   </div>
                 </section> */}

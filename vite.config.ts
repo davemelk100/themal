@@ -82,8 +82,8 @@ export default defineConfig({
     chunkSizeWarningLimit: 1000,
   },
   optimizeDeps: {
-    include: ["react", "react-dom", "react-router-dom"],
-    // Exclude framer-motion from pre-bundling since it's large and lazy loaded
-    exclude: ["framer-motion"],
+    include: ["react", "react-dom", "react-router-dom", "framer-motion"],
+    // Pre-bundle framer-motion to avoid long dependency chains in dev mode
+    // Production build still chunks it separately for better code splitting
   },
 });

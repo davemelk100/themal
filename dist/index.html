@@ -95,8 +95,25 @@
       }
     </style>
     <script>
-      // Font loading detection
+      // Font loading detection - deferred to avoid blocking initial render
+      // Fallback for browsers without requestIdleCallback
+      if (!window.requestIdleCallback) {
+        window.requestIdleCallback = function (cb, opts) {
+          return setTimeout(cb, (opts && opts.timeout) || 1);
+        };
+      }
+
+      // Defer font loading to after first paint
       if ("fonts" in document) {
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", initFonts);
+        } else {
+          // Use requestIdleCallback to defer after initial render
+          requestIdleCallback(initFonts, { timeout: 2000 });
+        }
+      }
+
+      function initFonts() {
         Promise.all([
           document.fonts.load("400 1em 'Roboto Serif'"),
           document.fonts.load("700 1em 'Roboto Serif'"),
@@ -113,7 +130,7 @@
           });
       }
     </script>
-    <script type="module" crossorigin src="/assets/index-CFNWGpF3.js"></script>
+    <script type="module" crossorigin src="/assets/index-CCxQJGt8.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/vendor-CO-d7u0-.js">
     <link rel="modulepreload" crossorigin href="/assets/vendor-react-core-CVtdNYNK.js">
     <link rel="modulepreload" crossorigin href="/assets/vendor-react-runtime-BizCVpBn.js">
@@ -122,10 +139,53 @@
     <link rel="modulepreload" crossorigin href="/assets/vendor-router-DfBaw7Oq.js">
     <link rel="modulepreload" crossorigin href="/assets/vendor-icons-lucide-CL7pFDKq.js">
     <link rel="modulepreload" crossorigin href="/assets/vendor-icons-radix-jMVqzad3.js">
-    <link rel="modulepreload" crossorigin href="/assets/vendor-motion-MB6QyTRX.js">
     <link rel="stylesheet" crossorigin href="/assets/index-BSMZM_aj.css">
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Minimal loading skeleton for faster FCP -->
+      <div
+        style="
+          min-height: 100vh;
+          background: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        "
+      >
+        <div style="text-align: center">
+          <div
+            style="
+              width: 48px;
+              height: 48px;
+              border: 3px solid #f3f3f3;
+              border-top: 3px solid #333;
+              border-radius: 50%;
+              animation: spin 1s linear infinite;
+              margin: 0 auto 16px;
+            "
+          ></div>
+          <p
+            style="
+              color: #666;
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial,
+                sans-serif;
+            "
+          >
+            Loading...
+          </p>
+        </div>
+      </div>
+      <style>
+        @keyframes spin {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+      </style>
+    </div>
   </body>
 </html>
