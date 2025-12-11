@@ -3,56 +3,53 @@ import ReactDOM from "react-dom/client";
 import AppWithRouter from "./App";
 import "./globals.css";
 
-// Defer storage migration to avoid blocking initial render
-// Load after page is fully interactive
-setTimeout(() => {
+// Storage migration removed - no longer needed
+// Migration system was removed with authentication system
+
+// Register service worker for caching and offline support
+// Defer to after page is interactive to avoid blocking critical path
+if ("serviceWorker" in navigator) {
+  // Use requestIdleCallback with fallback to defer registration
   if (typeof requestIdleCallback !== "undefined") {
     requestIdleCallback(
       () => {
-        import("./utils/storageMigration").catch(() => {
-          // Silently fail if migration can't be loaded
-        });
+        navigator.serviceWorker
+          .register("/sw.js")
+          .then((registration) => {
+            // Check for updates
+            registration.addEventListener("updatefound", () => {
+              const newWorker = registration.installing;
+              if (newWorker) {
+                newWorker.addEventListener("statechange", () => {
+                  if (
+                    newWorker.state === "installed" &&
+                    navigator.serviceWorker.controller
+                  ) {
+                    // New service worker available
+                    if (
+                      confirm("A new version is available. Reload to update?")
+                    ) {
+                      window.location.reload();
+                    }
+                  }
+                });
+              }
+            });
+          })
+          .catch(() => {
+            // Silently fail - app will still work without service worker
+          });
       },
-      { timeout: 2000 }
+      { timeout: 3000 }
     );
   } else {
+    // Fallback: defer with setTimeout
     setTimeout(() => {
-      import("./utils/storageMigration").catch(() => {
-        // Silently fail if migration can't be loaded
+      navigator.serviceWorker.register("/sw.js").catch(() => {
+        // Silently fail
       });
     }, 2000);
   }
-}, 0);
-
-// Register service worker for caching and offline support
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker
-      .register("/sw.js")
-      .then((registration) => {
-        // Check for updates
-        registration.addEventListener("updatefound", () => {
-          const newWorker = registration.installing;
-          if (newWorker) {
-            newWorker.addEventListener("statechange", () => {
-              if (
-                newWorker.state === "installed" &&
-                navigator.serviceWorker.controller
-              ) {
-                // New service worker available
-                if (confirm("A new version is available. Reload to update?")) {
-                  window.location.reload();
-                }
-              }
-            });
-          }
-        });
-      })
-      .catch((error) => {
-        console.error("Service worker registration failed:", error);
-        // Continue without service worker - app will still work
-      });
-  });
 }
 
 // Fix back/forward cache restoration

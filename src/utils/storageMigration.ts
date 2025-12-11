@@ -33,9 +33,5 @@ export const forceMigration = (): MigrationResult => {
   return migrateOldStorage();
 };
 
-// Auto-migrate on import
-if (typeof window !== "undefined") {
-  if (needsMigration()) {
-    migrateOldStorage();
-  }
-}
+// Migration auto-execution removed - no longer needed
+// File kept for potential future migrations but with no side effects

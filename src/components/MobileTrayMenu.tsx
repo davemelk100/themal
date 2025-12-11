@@ -56,35 +56,53 @@ const MobileTrayMenu: React.FC = () => {
   useEffect(() => {
     if (location.pathname !== "/") return;
 
-    const handleScroll = () => {
-      const sections = content.navigation.links
-        .filter((link) => link.id !== "design-system")
-        .map((link) => link.id);
-      let currentSection = "";
+    let rafId: number | null = null;
+    let ticking = false;
 
-      for (const sectionId of sections) {
-        const element = document.getElementById(sectionId);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          const windowHeight = window.innerHeight;
-          const isInView =
-            rect.top <= windowHeight / 2 && rect.bottom >= windowHeight / 2;
-          if (isInView) {
-            currentSection = sectionId;
-            break;
+    const handleScroll = () => {
+      if (ticking) return;
+      ticking = true;
+
+      rafId = requestAnimationFrame(() => {
+        const sections = content.navigation.links
+          .filter((link) => link.id !== "design-system")
+          .map((link) => link.id);
+        let currentSection = "";
+
+        // Batch all DOM reads together to avoid forced reflows
+        const windowHeight = window.innerHeight;
+
+        for (const sectionId of sections) {
+          const element = document.getElementById(sectionId);
+          if (element) {
+            // Use getBoundingClientRect within requestAnimationFrame to batch reads
+            const rect = element.getBoundingClientRect();
+            const isInView =
+              rect.top <= windowHeight / 2 && rect.bottom >= windowHeight / 2;
+            if (isInView) {
+              currentSection = sectionId;
+              break;
+            }
           }
         }
-      }
 
-      setActiveSection(currentSection);
+        setActiveSection(currentSection);
+        ticking = false;
+      });
     };
 
-    // Initial check
-    handleScroll();
+    // Initial check after a frame to avoid blocking initial render
+    requestAnimationFrame(() => {
+      handleScroll();
+    });
 
-    // Add scroll listener
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
+    };
   }, [location.pathname]);
 
   return (

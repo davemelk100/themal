@@ -6,6 +6,20 @@
     <link rel="manifest" href="/manifest.json" />
     <meta name="theme-color" content="#000000" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Set theme class immediately to prevent flash and forced reflow -->
+    <script>
+      (function () {
+        if (typeof window === "undefined") return;
+        try {
+          const theme = localStorage.getItem("theme");
+          if (theme === "dark") {
+            document.documentElement.classList.add("dark");
+          }
+        } catch (e) {
+          // localStorage might not be available
+        }
+      })();
+    </script>
     <title>Dave Melkonian | Digital Design</title>
     <meta name="email" content="davemelk@gmail.com" />
     <meta

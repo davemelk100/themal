@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 
 type ThemeContextType = {
   isDarkMode: boolean;
@@ -15,16 +15,17 @@ export const useTheme = () => useContext(ThemeContext);
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  useEffect(() => {
-    // Check for saved theme preference
+  // Initialize theme synchronously before first render to avoid forced reflow
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    if (typeof window === "undefined") return false;
+    // Read theme before React renders to prevent layout shift
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "dark") {
-      setIsDarkMode(true);
       document.documentElement.classList.add("dark");
+      return true;
     }
-  }, []);
+    return false;
+  });
 
   const toggleDarkMode = () => {
     setIsDarkMode((prev) => {
@@ -46,4 +47,3 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     </ThemeContext.Provider>
   );
 };
- 
