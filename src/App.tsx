@@ -30,7 +30,10 @@ const Footer = lazy(() =>
 );
 
 import { slugify } from "./utils/slugify";
-import { getOptimizedImage } from "./utils/imageOptimizer";
+import {
+  getCardImageProps,
+  getThumbnailImageProps,
+} from "./utils/imageOptimizer";
 
 // Lazy load icons to reduce initial bundle size
 const LazyArrowUp = React.lazy(() =>
@@ -595,16 +598,11 @@ function App() {
                                   <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-transparent">
                                     {story.image ? (
                                       <img
-                                        src={getOptimizedImage(
-                                          story.image,
-                                          512
-                                        )}
+                                        {...getCardImageProps(story.image)}
                                         alt={story.title}
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                         loading="lazy"
                                         decoding="async"
-                                        width="512"
-                                        height="512"
                                       />
                                     ) : (
                                       <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800">
@@ -655,16 +653,11 @@ function App() {
                                   <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 overflow-hidden rounded bg-transparent">
                                     {story.image ? (
                                       <img
-                                        src={getOptimizedImage(
-                                          story.image,
-                                          512
-                                        )}
+                                        {...getThumbnailImageProps(story.image)}
                                         alt={story.title}
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                         loading="lazy"
                                         decoding="async"
-                                        width="512"
-                                        height="512"
                                       />
                                     ) : (
                                       <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800">
@@ -749,16 +742,11 @@ function App() {
                                   {/* Card Image */}
                                   <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-transparent">
                                     <img
-                                      src={getOptimizedImage(
-                                        project.image,
-                                        512
-                                      )}
+                                      {...getCardImageProps(project.image)}
                                       alt={project.alt || project.title}
                                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                       loading="lazy"
                                       decoding="async"
-                                      width="512"
-                                      height="512"
                                     />
                                   </div>
 
@@ -794,16 +782,11 @@ function App() {
                                   {/* Compact Image */}
                                   <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 overflow-hidden rounded bg-transparent">
                                     <img
-                                      src={getOptimizedImage(
-                                        project.image,
-                                        512
-                                      )}
+                                      {...getThumbnailImageProps(project.image)}
                                       alt={project.alt || project.title}
                                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                       loading="lazy"
                                       decoding="async"
-                                      width="512"
-                                      height="512"
                                     />
                                   </div>
 
@@ -908,17 +891,14 @@ function App() {
                                     {/* Card Image */}
                                     <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-transparent">
                                       <img
-                                        src={getOptimizedImage(
+                                        {...getCardImageProps(
                                           (article as any).cardImage ||
-                                            article.image,
-                                          512
+                                            article.image
                                         )}
                                         alt={article.title}
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                         loading="lazy"
                                         decoding="async"
-                                        width="512"
-                                        height="512"
                                       />
                                     </div>
 
@@ -981,17 +961,14 @@ function App() {
                                     {/* Compact Image */}
                                     <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 overflow-hidden rounded bg-transparent">
                                       <img
-                                        src={getOptimizedImage(
+                                        {...getThumbnailImageProps(
                                           (article as any).cardImage ||
-                                            article.image,
-                                          512
+                                            article.image
                                         )}
                                         alt={article.title}
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                         loading="lazy"
                                         decoding="async"
-                                        width="512"
-                                        height="512"
                                       />
                                     </div>
 
