@@ -55,7 +55,7 @@ After deploying to Netlify:
 
 ## Testing
 
-To see production behavior:
+To see the production behavior, run the following:
 
 ```bash
 npm run build
