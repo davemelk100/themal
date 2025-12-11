@@ -2014,7 +2014,7 @@ const NewsAggregator = () => {
 
   return (
     <div
-      className="min-h-screen bg-white text-gray-900 transition-colors duration-300 dark:bg-gray-900 dark:text-gray-600 dark:text-gray-300"
+      className="news-page min-h-screen bg-white text-gray-900 transition-colors duration-300 dark:bg-gray-900 dark:text-gray-600 dark:text-gray-300"
       style={{ fontFamily: "Courier New, monospace" }}
     >
       <Suspense
@@ -2649,12 +2649,7 @@ const NewsAggregator = () => {
                                         feedItems[currentIndex]?.excerpt &&
                                         feed.name !== "The Hard Times" && (
                                           <div className="mt-2 flex items-center">
-                                            <p
-                                              className="text-gray-600 dark:text-gray-400 text-sm news-card-excerpt"
-                                              style={{
-                                                lineHeight: "normal !important",
-                                              }}
-                                            >
+                                            <p className="text-gray-600 dark:text-gray-400 text-sm news-card-excerpt">
                                               {truncateText(
                                                 feedItems[currentIndex]
                                                   ?.excerpt || "",

@@ -148,12 +148,7 @@ export const NewsCard = ({
         {/* Subtitle below headline - Show in grid view only */}
         {viewMode === "grid" && currentItem.excerpt && (
           <div className="mt-3 flex items-center">
-            <p
-              className="text-xs text-gray-600 dark:text-white news-card-excerpt"
-              style={{
-                lineHeight: "normal !important",
-              }}
-            >
+            <p className="text-xs text-gray-600 dark:text-white news-card-excerpt">
               {truncateText(currentItem.excerpt, 400)}
             </p>
           </div>

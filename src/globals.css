@@ -173,6 +173,12 @@
     font-size: 1.25rem !important;
   }
 
+  /* News page paragraph line-height */
+  .news-page p,
+  .news-page .news-card-excerpt {
+    line-height: 1.75rem !important;
+  }
+
   /* Hero intro text - allow Tailwind classes to work */
   .hero-intro {
     font-size: 1.5rem !important;

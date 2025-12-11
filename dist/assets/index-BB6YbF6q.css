@@ -555,6 +555,12 @@ video {
     font-size: 1.25rem !important;
   }
 
+  /* News page paragraph line-height */
+  .news-page p,
+  .news-page .news-card-excerpt {
+    line-height: 1.75rem !important;
+  }
+
   /* Hero intro text - allow Tailwind classes to work */
   .hero-intro {
     font-size: 1.5rem !important;
@@ -3568,6 +3574,13 @@ video {
   border-color: rgb(255 255 255 / 0.2);
 }
 
+<<<<<<<< HEAD:dist/assets/index-DfB384kS.css
+========
+:is(.dark .dark\:border-white\/30) {
+  border-color: rgb(255 255 255 / 0.3);
+}
+
+>>>>>>>> 4097988 (lots):dist/assets/index-BB6YbF6q.css
 :is(.dark .dark\:bg-\[\#3fa7d6\]\/30) {
   background-color: rgb(63 167 214 / 0.3);
 }
@@ -3818,6 +3831,14 @@ video {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
+<<<<<<<< HEAD:dist/assets/index-DfB384kS.css
+========
+:is(.dark .dark\:backdrop-blur-2xl) {
+  --tw-backdrop-blur: blur(40px);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+
+>>>>>>>> 4097988 (lots):dist/assets/index-BB6YbF6q.css
 :is(.dark .dark\:backdrop-blur-xl) {
   --tw-backdrop-blur: blur(24px);
   backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
