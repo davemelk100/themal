@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 
 import { content } from "./content";
 import { ThemeProvider } from "./context/ThemeContext";
@@ -199,8 +199,6 @@ function App() {
     "grid"
   );
 
-  const videoRef = useRef<HTMLVideoElement>(null);
-
   // Scroll to top on route change (but not for internal navigation)
   useEffect(() => {
     // Only scroll to top if we're not navigating to a specific section
@@ -243,41 +241,6 @@ function App() {
 
   return (
     <div className="min-h-screen text-gray-900 transition-colors duration-300 dark:text-white pb-20 sm:pb-0 flex flex-col relative">
-      {/* Background Video - Full Page */}
-      <div className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
-        <video
-          ref={videoRef}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          className="absolute inset-0 w-full h-full object-cover opacity-30 dark:opacity-35"
-          style={{
-            minHeight: "100vh",
-            height: "100%",
-          }}
-          onError={(e) => {
-            console.error("Video loading error:", e);
-            const video = e.currentTarget;
-            console.error("Video error details:", {
-              error: video.error,
-              networkState: video.networkState,
-              readyState: video.readyState,
-              src: video.currentSrc,
-            });
-          }}
-          onLoadStart={() => {
-            console.log("Video load started: /video/new-geo.mp4");
-          }}
-          onCanPlay={() => {
-            console.log("Video can play: /video/new-geo.mp4");
-          }}
-        >
-          <source src="/video/new-geo.mp4" type="video/mp4" />
-        </video>
-      </div>
-
       {/* Remove Header Navigation from here */}
 
       <main className="flex-1 relative z-10">
@@ -344,7 +307,7 @@ function App() {
 
                           {/* Summary Text */}
                           <div className="mt-4 sm:mt-6">
-                            <p className="hero-intro text-base sm:text-5xl text-muted-foreground leading-relaxed text-left">
+                            <p className="hero-intro text-muted-foreground text-left">
                               I'm David Melkonian, a technical product and
                               experience leader with over a decade of work at
                               the intersection of UX, front-end engineering, and
@@ -380,13 +343,13 @@ function App() {
                   </section>
 
                   {/* Lab Section */}
-                  <section className="py-2 sm:py-3 lg:py-4 xl:py-6 relative">
-                    <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
+                  <section className="py-2 sm:py-3 lg:py-4 xl:py-6 relative lab-section-narrow">
+                    <div className="max-w-[980px] mx-auto px-4 sm:px-6 lg:px-8">
                       <div className="grid grid-cols-1 gap-6 sm:gap-8">
                         {/* Lab Section */}
                         <div
                           id="current-projects"
-                          className="border border-gray-300 dark:border-gray-600 p-4 sm:p-6 rounded-lg relative overflow-hidden bg-transparent"
+                          className="pt-4 px-4 sm:pt-6 sm:px-6 relative bg-transparent"
                         >
                           <SectionHeader
                             title={content.currentProjects.title}
@@ -414,7 +377,7 @@ function App() {
                                     href={project.demo}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="group relative overflow-hidden rounded-lg bg-white/10 backdrop-blur-2xl border-white/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_0_rgba(255,255,255,0.1)] border border-gray-200/50 dark:border-gray-700/50 flex flex-col hover:shadow-[0_12px_40px_0_rgba(0,0,0,0.15)] dark:hover:shadow-[0_12px_40px_0_rgba(255,255,255,0.15)] transition-shadow cursor-pointer"
+                                    className="group relative rounded-lg bg-white/20 backdrop-blur-lg flex flex-col cursor-pointer shadow-xl"
                                   >
                                     {/* Card Image */}
                                     <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-transparent">
@@ -479,7 +442,7 @@ function App() {
                                     href={project.demo}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="group flex items-center gap-4 p-3 rounded-lg bg-white/10 backdrop-blur-2xl border-white/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_0_rgba(255,255,255,0.1)] border border-gray-200/50 dark:border-gray-700/50 hover:shadow-[0_12px_40px_0_rgba(0,0,0,0.15)] dark:hover:shadow-[0_12px_40px_0_rgba(255,255,255,0.15)] transition-all cursor-pointer"
+                                    className="group flex items-center gap-4 p-3 rounded-lg bg-white/20 backdrop-blur-lg transition-all cursor-pointer shadow-xl"
                                   >
                                     {/* Compact Image */}
                                     <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 overflow-hidden rounded bg-transparent">
@@ -581,7 +544,7 @@ function App() {
                     className="py-4 sm:py-6 lg:py-8 xl:py-12 relative"
                   >
                     <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
-                      <div className="border border-gray-300 dark:border-gray-600 p-4 sm:p-6 rounded-lg relative overflow-hidden bg-transparent">
+                      <div className="pt-4 px-4 sm:pt-6 sm:px-6 relative bg-transparent">
                         <SectionHeader
                           title={content.stories.title}
                           subtitle={content.stories.subtitle}
@@ -607,7 +570,7 @@ function App() {
                                       });
                                     }
                                   }}
-                                  className={`group relative overflow-hidden rounded-lg bg-white/10 backdrop-blur-2xl border-white/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_0_rgba(255,255,255,0.1)] border border-gray-200/50 dark:border-gray-700/50 flex flex-col hover:shadow-[0_12px_40px_0_rgba(0,0,0,0.15)] dark:hover:shadow-[0_12px_40px_0_rgba(255,255,255,0.15)] transition-shadow ${
+                                  className={`group relative rounded-lg bg-white/20 backdrop-blur-lg flex flex-col shadow-xl hover:shadow-2xl transition-shadow ${
                                     story.hasModal ? "cursor-pointer" : ""
                                   }`}
                                 >
@@ -662,7 +625,7 @@ function App() {
                                       });
                                     }
                                   }}
-                                  className={`group flex items-center gap-4 p-3 rounded-lg bg-white/10 backdrop-blur-2xl border-white/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_0_rgba(255,255,255,0.1)] border border-gray-200/50 dark:border-gray-700/50 hover:shadow-[0_12px_40px_0_rgba(0,0,0,0.15)] dark:hover:shadow-[0_12px_40px_0_rgba(255,255,255,0.15)] transition-all ${
+                                  className={`group flex items-center gap-4 p-3 rounded-lg bg-white/20 backdrop-blur-lg transition-all shadow-xl hover:shadow-2xl ${
                                     story.hasModal ? "cursor-pointer" : ""
                                   }`}
                                 >
@@ -718,7 +681,7 @@ function App() {
                     className="py-4 sm:py-6 lg:py-8 xl:py-12 relative"
                   >
                     <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
-                      <div className="border border-gray-300 dark:border-gray-600 p-4 sm:p-6 rounded-lg relative overflow-hidden bg-transparent">
+                      <div className="pt-4 px-4 sm:pt-6 sm:px-6 relative bg-transparent">
                         <SectionHeader
                           title="Design"
                           subtitle={content.work.subtitle}
@@ -754,7 +717,7 @@ function App() {
                                   href={project.url}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="group relative overflow-hidden rounded-lg bg-transparent dark:backdrop-blur-xl dark:border-white/20 border border-gray-200 dark:border-gray-700 flex flex-col shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                                  className="group relative rounded-lg bg-white/20 backdrop-blur-lg flex flex-col shadow-xl hover:shadow-2xl transition-shadow cursor-pointer"
                                 >
                                   {/* Card Image */}
                                   <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-transparent">
@@ -794,7 +757,7 @@ function App() {
                                   href={project.url}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="group flex items-center gap-4 p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all cursor-pointer"
+                                  className="group flex items-center gap-4 p-3 rounded-lg bg-white/20 backdrop-blur-lg hover:shadow-xl transition-all cursor-pointer shadow-xl"
                                 >
                                   {/* Compact Image */}
                                   <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 overflow-hidden rounded bg-transparent">
@@ -838,7 +801,7 @@ function App() {
                     className="py-4 sm:py-6 lg:py-8 xl:py-12 relative"
                   >
                     <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
-                      <div className="border border-gray-300 dark:border-gray-600 p-4 sm:p-6 rounded-lg relative overflow-hidden bg-transparent">
+                      <div className="pt-4 px-4 sm:pt-6 sm:px-6 relative bg-transparent">
                         <SectionHeader
                           title="Articles"
                           subtitle={content.articles.subtitle}
@@ -903,7 +866,7 @@ function App() {
                                   <div
                                     key={index}
                                     onClick={handleClick}
-                                    className="group relative overflow-hidden rounded-lg bg-white/10 backdrop-blur-2xl border-white/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_0_rgba(255,255,255,0.1)] border border-gray-200/50 dark:border-gray-700/50 flex flex-col hover:shadow-[0_12px_40px_0_rgba(0,0,0,0.15)] dark:hover:shadow-[0_12px_40px_0_rgba(255,255,255,0.15)] transition-shadow cursor-pointer"
+                                    className="group relative rounded-lg bg-white/20 backdrop-blur-lg flex flex-col shadow-xl hover:shadow-2xl transition-shadow cursor-pointer"
                                   >
                                     {/* Card Image */}
                                     <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-transparent">
@@ -973,7 +936,7 @@ function App() {
                                   <div
                                     key={index}
                                     onClick={handleClick}
-                                    className="group flex items-center gap-4 p-3 rounded-lg bg-white/10 backdrop-blur-2xl border-white/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_0_rgba(255,255,255,0.1)] border border-gray-200/50 dark:border-gray-700/50 hover:shadow-[0_12px_40px_0_rgba(0,0,0,0.15)] dark:hover:shadow-[0_12px_40px_0_rgba(255,255,255,0.15)] transition-all cursor-pointer"
+                                    className="group flex items-center gap-4 p-3 rounded-lg bg-white/20 backdrop-blur-lg transition-all cursor-pointer shadow-xl hover:shadow-2xl"
                                   >
                                     {/* Compact Image */}
                                     <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 overflow-hidden rounded bg-transparent">
@@ -1018,7 +981,7 @@ function App() {
                   {/* Career Timeline Section */}
                   <section
                     id="career"
-                    className="py-4 sm:py-6 lg:py-8 xl:py-12"
+                    className="py-4 sm:py-6 lg:py-8 xl:py-12 relative"
                   >
                     <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
                       <SectionHeader
@@ -1685,6 +1648,16 @@ function App() {
             </svg>
           </button>
         )}
+
+        {/* Fixed background image in bottom left */}
+        <div className="fixed bottom-0 left-0 z-[5] pointer-events-none">
+          <img
+            src="/img/section-edge.png"
+            alt=""
+            className="w-auto h-[640px] opacity-100 dark:opacity-100"
+            loading="lazy"
+          />
+        </div>
       </div>
     </div>
   );
