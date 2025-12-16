@@ -13,7 +13,7 @@ import {
 } from "react-router-dom";
 import { lazy, Suspense } from "react";
 
-// Lazy load components for better performance
+// Lazy load components
 const Article = lazy(() => import("./pages/Article"));
 const Archive = lazy(() => import("./pages/Archive"));
 
@@ -22,6 +22,7 @@ const AudioTranscript = lazy(() => import("./pages/AudioTranscript"));
 const NewsAggregator = lazy(() => import("./pages/NewsAggregator"));
 const Specs = lazy(() => import("./pages/Specs"));
 const Story = lazy(() => import("./pages/Story"));
+const MusicPlayer = lazy(() => import("./pages/MusicPlayer"));
 
 // Lazy load non-critical UI components to reduce critical path
 const MobileTrayMenu = lazy(() => import("./components/MobileTrayMenu"));
@@ -30,6 +31,7 @@ const Footer = lazy(() =>
 );
 
 import { slugify } from "./utils/slugify";
+import { getOptimizedImage } from "./utils/imageOptimizer";
 import {
   getCardImageProps,
   getThumbnailImageProps,
@@ -60,7 +62,7 @@ const LazyLinkedInLogoIcon = React.lazy(() =>
 // Lazy load ArticleModal
 const ArticleModal = lazy(() => import("./components/ArticleModal"));
 
-// Icon wrapper with Suspense fallback
+// Icon wrapper with Suspense
 const IconWrapper = ({
   Icon,
   className,
@@ -397,7 +399,12 @@ function App() {
                                           }
                                           alt={project.title}
                                           className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-300"
-                                          loading="lazy"
+                                          loading={
+                                            index === 0 ? "eager" : "lazy"
+                                          }
+                                          {...(index === 0
+                                            ? { fetchPriority: "high" as const }
+                                            : {})}
                                           decoding="async"
                                           width="512"
                                           height="512"
@@ -1522,10 +1529,11 @@ function App() {
             <Route path="/article/:slug" element={<Article />} />
             <Route path="/archive" element={<Archive />} />
             <Route path="/json" element={<JsonAiPrompts />} />
-            <Route path="/audio-transcript" element={<AudioTranscript />} />
+            <Route path="/zaven" element={<AudioTranscript />} />
             <Route path="/news" element={<NewsAggregator />} />
             <Route path="/specs" element={<Specs />} />
             <Route path="/story" element={<Story />} />
+            <Route path="/music" element={<MusicPlayer />} />
           </Routes>
         </Suspense>
       </main>
@@ -1650,14 +1658,20 @@ function App() {
         )}
 
         {/* Fixed background image in bottom left */}
-        <div className="fixed bottom-0 left-0 z-[5] pointer-events-none">
-          <img
-            src="/img/section-edge.png"
-            alt=""
-            className="w-auto h-[640px] opacity-100 dark:opacity-100"
-            loading="lazy"
-          />
-        </div>
+        {location.pathname !== "/specs" && (
+          <div className="fixed bottom-0 left-0 z-[5] pointer-events-none">
+            <img
+              src={getOptimizedImage("/img/section-edge.png", 640, 65)}
+              alt=""
+              className="w-auto h-[640px] opacity-100 dark:opacity-100"
+              {...({
+                fetchPriority: "high",
+              } as React.ImgHTMLAttributes<HTMLImageElement>)}
+              width={640}
+              height={640}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

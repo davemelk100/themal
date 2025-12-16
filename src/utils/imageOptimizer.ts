@@ -20,7 +20,7 @@ let isNetlify = false;
 export function getOptimizedImage(
   src: string,
   width?: number,
-  quality: number = 75
+  quality: number = 70 // Lower quality for better compression (70 is still high quality)
 ): string {
   // Fast path: Skip optimization for SVGs
   if (src.endsWith(".svg")) {
@@ -45,7 +45,8 @@ export function getOptimizedImage(
     const params = new URLSearchParams({
       url: src,
       q: quality.toString(),
-      fm: "webp",
+      fm: "webp", // Use WebP format for better compression
+      fit: "cover", // Ensure proper cropping
     });
 
     if (width) {
@@ -68,7 +69,7 @@ export function getOptimizedImage(
 export function getResponsiveImage(
   src: string,
   sizes: number[] = [400, 800, 1200],
-  quality: number = 75
+  quality: number = 70 // Lower quality for better compression
 ): { src: string; srcSet: string } {
   // Skip for SVGs
   if (src.endsWith(".svg")) {
@@ -101,24 +102,31 @@ export function getResponsiveImage(
  * Optimized for 3-column grid: mobile (1 col), tablet (2 col), desktop (3 col)
  * @param src - Original image path
  * @param quality - Quality 0-100 (optional, defaults to 75 for better compression)
- * @returns Object with image props including src, srcSet, and sizes
+ * @returns Object with image props including src, srcSet, sizes, width, and height
  */
 export function getCardImageProps(
   src: string,
-  quality: number = 75
+  quality: number = 70 // Lower quality for better compression
 ): {
   src: string;
   srcSet: string;
   sizes: string;
+  width: number;
+  height: number;
 } {
   // Grid layout: 1 col mobile (~400px), 2 col tablet (~450px), 3 col desktop (~333px)
   // But we use larger sizes to account for high-DPI displays (2x)
   const widths = [400, 600, 800];
   const responsive = getResponsiveImage(src, widths, quality);
+  // Standard aspect ratio for card images (16:9)
+  const width = 800;
+  const height = 450;
 
   return {
     ...responsive,
     sizes: "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw",
+    width,
+    height,
   };
 }
 
@@ -126,23 +134,62 @@ export function getCardImageProps(
  * Get responsive image props for compact list images
  * Optimized for small thumbnail images (80-96px width)
  * @param src - Original image path
- * @param quality - Quality 0-100 (optional, defaults to 75)
- * @returns Object with image props including src, srcSet, and sizes
+ * @param quality - Quality 0-100 (optional, defaults to 70)
+ * @returns Object with image props including src, srcSet, sizes, width, and height
  */
 export function getThumbnailImageProps(
   src: string,
-  quality: number = 75
+  quality: number = 70 // Lower quality for better compression
 ): {
   src: string;
   srcSet: string;
   sizes: string;
+  width: number;
+  height: number;
 } {
   // Small thumbnails: 96px base, 192px for 2x displays
   const widths = [96, 192];
   const responsive = getResponsiveImage(src, widths, quality);
+  // Standard aspect ratio for thumbnails (16:9)
+  const width = 96;
+  const height = 54;
 
   return {
     ...responsive,
     sizes: "96px",
+    width,
+    height,
+  };
+}
+
+/**
+ * Get responsive image props for hero/large images
+ * Optimized for full-width hero images and large article images
+ * @param src - Original image path
+ * @param quality - Quality 0-100 (optional, defaults to 70)
+ * @returns Object with image props including src, srcSet, sizes, width, and height
+ */
+export function getHeroImageProps(
+  src: string,
+  quality: number = 70 // Lower quality for better compression
+): {
+  src: string;
+  srcSet: string;
+  sizes: string;
+  width: number;
+  height: number;
+} {
+  // Hero images: responsive widths for mobile, tablet, desktop
+  const widths = [600, 900, 1200, 1600];
+  const responsive = getResponsiveImage(src, widths, quality);
+  // Standard aspect ratio for hero images (16:9)
+  const width = 1600;
+  const height = 900;
+
+  return {
+    ...responsive,
+    sizes: "(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 80vw",
+    width,
+    height,
   };
 }
