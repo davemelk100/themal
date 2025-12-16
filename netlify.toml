@@ -6,7 +6,6 @@ publish = "dist"
 
 # Environment variables can be set in Netlify dashboard:
 # Site settings > Environment variables
-# Add: VITE_API_URL = https://your-backend-url.railway.app
 
 [[redirects]]
 from = "/api/*"
