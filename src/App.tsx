@@ -61,7 +61,7 @@ const LazyLinkedInLogoIcon = React.lazy(() =>
 // Lazy load ArticleModal
 const ArticleModal = lazy(() => import("./components/ArticleModal"));
 
-// Icon wrapper with Suspense fallback
+// Icon wrapper with Suspense
 const IconWrapper = ({
   Icon,
   className,
