@@ -2477,6 +2477,10 @@ const NewsAggregator = () => {
                                                 feedItems[currentIndex]?.title
                                               }
                                               className="w-full h-full object-cover rounded-r-lg"
+                                              width={160}
+                                              height={120}
+                                              loading="lazy"
+                                              decoding="async"
                                               onError={(e) => {
                                                 // Hide broken images
                                                 const target = e.currentTarget;

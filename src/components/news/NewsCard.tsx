@@ -154,6 +154,8 @@ export const NewsCard = ({
             className="w-full h-full object-cover"
             loading="lazy"
             decoding="async"
+            width={512}
+            height={384}
             onError={(e) => {
               const target = e.currentTarget;
               target.style.display = "none";

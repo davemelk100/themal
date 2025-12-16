@@ -1,3 +1,5 @@
+// This file exports application content data
+// It must not be tree-shaken away - marked as having side effects in vite.config.ts
 export const content = {
   siteInfo: {
     title: "Dave Melkonian",
@@ -1273,3 +1275,8 @@ There isn't always a clear way to select a technology. The newest, shiniest prod
     // Add more as needed
   },
 } as const;
+
+// Side-effect guard: ensure this module is not tree-shaken away
+// This statement creates a side effect that prevents the module from being removed
+// The content object must be preserved for the application to function
+export default content;

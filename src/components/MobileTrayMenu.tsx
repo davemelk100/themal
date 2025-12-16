@@ -1,15 +1,29 @@
-import React, { useState, useEffect } from "react";
-import {
-  X,
-  Home,
-  FileText,
-  Palette,
-  BookOpen,
-  Briefcase,
-  Settings,
-} from "lucide-react";
+import React, { useState, useEffect, Suspense, lazy } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { content } from "../content";
+
+// Lazy load all icons to avoid blocking critical path
+const LazyX = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.X }))
+);
+const LazyHome = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Home }))
+);
+const LazyFileText = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.FileText }))
+);
+const LazyPalette = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Palette }))
+);
+const LazyBookOpen = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.BookOpen }))
+);
+const LazyBriefcase = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Briefcase }))
+);
+const LazySettings = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Settings }))
+);
 
 const MobileTrayMenu: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -31,21 +45,52 @@ const MobileTrayMenu: React.FC = () => {
   };
 
   const getNavIcon = (id: string) => {
+    const iconProps = { className: "w-6 h-6" };
+    const fallback = <span className="w-6 h-6">•</span>;
+
     switch (id) {
       case "current-projects":
-        return <Home className="w-6 h-6" />;
+        return (
+          <Suspense fallback={fallback}>
+            <LazyHome {...iconProps} />
+          </Suspense>
+        );
       case "articles":
-        return <FileText className="w-6 h-6" />;
+        return (
+          <Suspense fallback={fallback}>
+            <LazyFileText {...iconProps} />
+          </Suspense>
+        );
       case "work":
-        return <Palette className="w-6 h-6" />;
+        return (
+          <Suspense fallback={fallback}>
+            <LazyPalette {...iconProps} />
+          </Suspense>
+        );
       case "stories":
-        return <BookOpen className="w-6 h-6" />;
+        return (
+          <Suspense fallback={fallback}>
+            <LazyBookOpen {...iconProps} />
+          </Suspense>
+        );
       case "career":
-        return <Briefcase className="w-6 h-6" />;
+        return (
+          <Suspense fallback={fallback}>
+            <LazyBriefcase {...iconProps} />
+          </Suspense>
+        );
       case "design-system":
-        return <Settings className="w-6 h-6" />;
+        return (
+          <Suspense fallback={fallback}>
+            <LazySettings {...iconProps} />
+          </Suspense>
+        );
       default:
-        return <Home className="w-6 h-6" />;
+        return (
+          <Suspense fallback={fallback}>
+            <LazyHome {...iconProps} />
+          </Suspense>
+        );
     }
   };
 
@@ -56,52 +101,69 @@ const MobileTrayMenu: React.FC = () => {
   useEffect(() => {
     if (location.pathname !== "/") return;
 
-    let rafId: number | null = null;
-    let ticking = false;
+    // Use IntersectionObserver to avoid forced reflows
+    // This is more efficient than getBoundingClientRect in scroll handlers
+    const sections = content.navigation.links
+      .filter((link) => link.id !== "design-system")
+      .map((link) => link.id);
 
-    const handleScroll = () => {
-      if (ticking) return;
-      ticking = true;
+    const sectionElements: Map<string, HTMLElement> = new Map();
 
-      rafId = requestAnimationFrame(() => {
-        const sections = content.navigation.links
-          .filter((link) => link.id !== "design-system")
-          .map((link) => link.id);
-        let currentSection = "";
-
-        // Batch all DOM reads together to avoid forced reflows
-        const windowHeight = window.innerHeight;
-
-        for (const sectionId of sections) {
-          const element = document.getElementById(sectionId);
-          if (element) {
-            // Use getBoundingClientRect within requestAnimationFrame to batch reads
-            const rect = element.getBoundingClientRect();
-            const isInView =
-              rect.top <= windowHeight / 2 && rect.bottom >= windowHeight / 2;
-            if (isInView) {
-              currentSection = sectionId;
-              break;
-            }
-          }
-        }
-
-        setActiveSection(currentSection);
-        ticking = false;
-      });
-    };
-
-    // Initial check after a frame to avoid blocking initial render
-    requestAnimationFrame(() => {
-      handleScroll();
+    // Cache section elements to avoid repeated DOM queries
+    sections.forEach((sectionId) => {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        sectionElements.set(sectionId, element);
+      }
     });
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      if (rafId !== null) {
-        cancelAnimationFrame(rafId);
+    // Use IntersectionObserver with rootMargin to detect sections near viewport center
+    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+      // Find the section that's most visible in the center of the viewport
+      type VisibleSection = {
+        id: string;
+        ratio: number;
+      };
+      let mostVisible: VisibleSection | null = null;
+
+      for (const entry of entries) {
+        if (entry.isIntersecting && entry.intersectionRatio > 0) {
+          const target = entry.target as HTMLElement;
+          const targetId = target.id;
+          if (!targetId) continue;
+
+          const rect = entry.boundingClientRect;
+          const viewportCenter = window.innerHeight / 2;
+          const elementCenter = rect.top + rect.height / 2;
+          const distanceFromCenter = Math.abs(elementCenter - viewportCenter);
+          const visibility = 1 - distanceFromCenter / window.innerHeight;
+
+          if (mostVisible === null || visibility > mostVisible.ratio) {
+            mostVisible = {
+              id: targetId,
+              ratio: visibility,
+            };
+          }
+        }
       }
+
+      if (mostVisible !== null) {
+        setActiveSection(mostVisible.id);
+      }
+    };
+
+    const observer = new IntersectionObserver(handleIntersection, {
+      rootMargin: "-40% 0px -40% 0px", // Only trigger when section is in center 20% of viewport
+      threshold: [0, 0.1, 0.5, 1],
+    });
+
+    // Observe all section elements
+    sectionElements.forEach((element) => {
+      observer.observe(element);
+    });
+
+    return () => {
+      observer.disconnect();
     };
   }, [location.pathname]);
 
@@ -161,7 +223,9 @@ const MobileTrayMenu: React.FC = () => {
                 className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                 aria-label="Close mobile navigation menu"
               >
-                <X className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+                <Suspense fallback={<span className="h-5 w-5">×</span>}>
+                  <LazyX className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+                </Suspense>
               </button>
             </div>
 

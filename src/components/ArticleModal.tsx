@@ -130,6 +130,8 @@ export default function ArticleModal({
                   className="w-full h-full object-cover"
                   loading="lazy"
                   decoding="async"
+                  width={800}
+                  height={450}
                 />
               </div>
             )}

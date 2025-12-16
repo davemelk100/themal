@@ -1659,6 +1659,8 @@ function App() {
               alt=""
               className="w-auto h-[640px] opacity-100 dark:opacity-100"
               loading="lazy"
+              width={640}
+              height={640}
             />
           </div>
         )}

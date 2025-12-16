@@ -101,7 +101,7 @@ export function getResponsiveImage(
  * Optimized for 3-column grid: mobile (1 col), tablet (2 col), desktop (3 col)
  * @param src - Original image path
  * @param quality - Quality 0-100 (optional, defaults to 75 for better compression)
- * @returns Object with image props including src, srcSet, and sizes
+ * @returns Object with image props including src, srcSet, sizes, width, and height
  */
 export function getCardImageProps(
   src: string,
@@ -110,15 +110,22 @@ export function getCardImageProps(
   src: string;
   srcSet: string;
   sizes: string;
+  width: number;
+  height: number;
 } {
   // Grid layout: 1 col mobile (~400px), 2 col tablet (~450px), 3 col desktop (~333px)
   // But we use larger sizes to account for high-DPI displays (2x)
   const widths = [400, 600, 800];
   const responsive = getResponsiveImage(src, widths, quality);
+  // Standard aspect ratio for card images (16:9)
+  const width = 800;
+  const height = 450;
 
   return {
     ...responsive,
     sizes: "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw",
+    width,
+    height,
   };
 }
 
@@ -127,7 +134,7 @@ export function getCardImageProps(
  * Optimized for small thumbnail images (80-96px width)
  * @param src - Original image path
  * @param quality - Quality 0-100 (optional, defaults to 75)
- * @returns Object with image props including src, srcSet, and sizes
+ * @returns Object with image props including src, srcSet, sizes, width, and height
  */
 export function getThumbnailImageProps(
   src: string,
@@ -136,13 +143,20 @@ export function getThumbnailImageProps(
   src: string;
   srcSet: string;
   sizes: string;
+  width: number;
+  height: number;
 } {
   // Small thumbnails: 96px base, 192px for 2x displays
   const widths = [96, 192];
   const responsive = getResponsiveImage(src, widths, quality);
+  // Standard aspect ratio for thumbnails (16:9)
+  const width = 96;
+  const height = 54;
 
   return {
     ...responsive,
     sizes: "96px",
+    width,
+    height,
   };
 }

@@ -54,9 +54,24 @@ if ("serviceWorker" in navigator) {
 window.addEventListener("pageshow", (event) => {
   if (event.persisted) {
     // Page was restored from back/forward cache
-    // Trigger visibility change to refresh any state-dependent components
-    const visibilityEvent = new Event("visibilitychange", { bubbles: true });
-    document.dispatchEvent(visibilityEvent);
+    // Use requestIdleCallback to avoid blocking bfcache restoration
+    if (typeof requestIdleCallback !== "undefined") {
+      requestIdleCallback(() => {
+        // Refresh any state-dependent components asynchronously
+        const visibilityEvent = new Event("visibilitychange", {
+          bubbles: true,
+        });
+        document.dispatchEvent(visibilityEvent);
+      });
+    } else {
+      // Fallback: use setTimeout with minimal delay
+      setTimeout(() => {
+        const visibilityEvent = new Event("visibilitychange", {
+          bubbles: true,
+        });
+        document.dispatchEvent(visibilityEvent);
+      }, 0);
+    }
   }
 });
 

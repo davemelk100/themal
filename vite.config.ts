@@ -28,7 +28,35 @@ export default defineConfig({
     target: "esnext", // Use modern JS for better tree-shaking
     rollupOptions: {
       treeshake: {
-        moduleSideEffects: false, // Enable aggressive tree-shaking
+        moduleSideEffects: (id) => {
+          // Normalize path separators for cross-platform compatibility
+          const normalizedId = id.replace(/\\/g, "/");
+
+          // Preserve all node_modules - they may have side effects
+          // This prevents empty vendor chunks
+          if (normalizedId.includes("node_modules")) {
+            return true;
+          }
+
+          // Preserve content.ts as it has side effects (data exports)
+          // This is critical - content.ts must not be tree-shaken away
+          if (
+            (normalizedId.includes("/content.ts") ||
+              normalizedId.endsWith("content.ts")) &&
+            !normalizedId.includes("node_modules")
+          ) {
+            return true;
+          }
+          // Preserve other data files
+          if (
+            normalizedId.includes("/data/") &&
+            !normalizedId.includes("node_modules")
+          ) {
+            return true;
+          }
+          // Aggressive tree-shaking for application code only
+          return false;
+        },
         propertyReadSideEffects: false,
         tryCatchDeoptimization: false,
       },
@@ -70,10 +98,9 @@ export default defineConfig({
             // Other node_modules
             return "vendor";
           }
-          // Split content.ts into its own chunk to allow better caching
-          if (id.includes("/content.ts")) {
-            return "content";
-          }
+          // Don't split content.ts into its own chunk - it causes empty chunk issues
+          // with aggressive tree-shaking. Let it be included in the main bundle or
+          // shared chunks where it will be properly preserved.
         },
       },
     },
@@ -93,7 +120,7 @@ export default defineConfig({
         comments: false, // Remove all comments
       },
     },
-    cssMinify: true, // Enable CSS minification with esbuild
+    cssMinify: false, // Disable CSS minification - esbuild minifier has issues with Tailwind @layer/@apply
     chunkSizeWarningLimit: 1000,
     reportCompressedSize: false, // Disable to speed up builds
   },
@@ -106,5 +133,9 @@ export default defineConfig({
       "@radix-ui/react-icons",
       "framer-motion", // Only used in lazy-loaded pages/components
     ],
+    // Force exclude to prevent pre-bundling even if imported
+    esbuildOptions: {
+      // This helps ensure excluded packages aren't pre-bundled
+    },
   },
 });
