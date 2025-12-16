@@ -13,7 +13,7 @@ import {
 } from "react-router-dom";
 import { lazy, Suspense } from "react";
 
-// Lazy load components for better performance
+// Lazy load components
 const Article = lazy(() => import("./pages/Article"));
 const Archive = lazy(() => import("./pages/Archive"));
 
