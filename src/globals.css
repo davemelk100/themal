@@ -86,22 +86,22 @@
   }
 
   /* Force Nunito Sans to load */
-  * {
+  *:not(.store-page .title-font) {
     font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif;
   }
 
   /* Use Aeonik for headings */
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+  h1:not(.store-page *),
+  h2:not(.store-page *),
+  h3:not(.store-page *),
+  h4:not(.store-page *),
+  h5:not(.store-page *),
+  h6:not(.store-page *) {
     font-family: "Aeonik", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif;
   }
 
   /* Use Nunito Sans for body text and other elements */
-  p,
+  p:not(.store-page .title-font),
   span,
   div,
   button,
@@ -214,16 +214,16 @@
   }
 
   /* Ensure Tailwind utilities use appropriate fonts */
-  h1[class*="font-"]:not(.font-serif):not(.font-mono):not(.roboto-serif-page *),
-  h2[class*="font-"]:not(.font-serif):not(.font-mono):not(.roboto-serif-page *),
-  h3[class*="font-"]:not(.font-serif):not(.font-mono):not(.roboto-serif-page *),
-  h4[class*="font-"]:not(.font-serif):not(.font-mono):not(.roboto-serif-page *),
-  h5[class*="font-"]:not(.font-serif):not(.font-mono):not(.roboto-serif-page *),
-  h6[class*="font-"]:not(.font-serif):not(.font-mono):not(.roboto-serif-page *) {
+  h1[class*="font-"]:not(.font-serif):not(.font-mono):not(.roboto-serif-page *):not(.store-page *),
+  h2[class*="font-"]:not(.font-serif):not(.font-mono):not(.roboto-serif-page *):not(.store-page *),
+  h3[class*="font-"]:not(.font-serif):not(.font-mono):not(.roboto-serif-page *):not(.store-page *),
+  h4[class*="font-"]:not(.font-serif):not(.font-mono):not(.roboto-serif-page *):not(.store-page *),
+  h5[class*="font-"]:not(.font-serif):not(.font-mono):not(.roboto-serif-page *):not(.store-page *),
+  h6[class*="font-"]:not(.font-serif):not(.font-mono):not(.roboto-serif-page *):not(.store-page *) {
     font-family: "Aeonik", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif !important;
   }
 
-  [class*="font-"]:not(.font-serif):not(.font-mono):not(.roboto-serif-page *):not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) {
+  [class*="font-"]:not(.font-serif):not(.font-mono):not(.roboto-serif-page *):not(.store-page *):not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) {
     font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif !important;
   }
 
@@ -543,6 +543,28 @@
     font-family: "Roboto Serif", serif !important;
   }
 
+  /* Story Script font for Store page titles - must override all global heading styles with higher specificity */
+  /* Exclude h3 tags from Story Script - all h3s use Nunito Sans */
+  .store-page h1,
+  .store-page h2,
+  .store-page h4,
+  .store-page h5,
+  .store-page h6,
+  .store-page h1[class*="font-"]:not(.font-serif):not(.font-mono),
+  .store-page h2[class*="font-"]:not(.font-serif):not(.font-mono),
+  .store-page h4[class*="font-"]:not(.font-serif):not(.font-mono),
+  .store-page h5[class*="font-"]:not(.font-serif):not(.font-mono),
+  .store-page h6[class*="font-"]:not(.font-serif):not(.font-mono),
+  .store-page h1.title-font,
+  .store-page h2.title-font,
+  .store-page h4.title-font,
+  .store-page h5.title-font,
+  .store-page h6.title-font,
+  .store-page p.title-font,
+  .store-page .title-font {
+    font-family: "Story Script", cursive !important;
+  }
+
   /* Custom breakpoint for 1400px */
   @media (min-width: 1400px) {
     .grid-cols-3-at-1400 {
@@ -550,4 +572,115 @@
     }
   }
 
+}
+
+/* Story Script font for Store page - placed outside @layer for maximum priority */
+/* Exclude h3 tags - all h3s use Nunito Sans */
+.store-page .title-font,
+.store-page h1.title-font,
+.store-page h2.title-font,
+.store-page p.title-font,
+.store-page span.title-font {
+  font-family: "Story Script", cursive !important;
+}
+
+/* Override ALL font sizes in store cards - placed at end for maximum priority */
+/* Target all text elements within product cards using the store-card-content wrapper */
+.store-page .store-card-content h3,
+.store-page .store-card-content p,
+.store-page .store-card-content span,
+.store-page .store-card-content button,
+.store-page .group h3.store-card-text,
+.store-page .group p.store-card-text,
+.store-page .group span.store-card-text,
+.store-page .group button.store-card-button,
+.store-page [class*="group"] h3.store-card-text,
+.store-page [class*="group"] p.store-card-text,
+.store-page [class*="group"] span.store-card-text,
+.store-page [class*="group"] button.store-card-button,
+.store-page h3.store-card-text,
+.store-page p.store-card-text,
+.store-page span.store-card-text,
+.store-page button.store-card-button,
+.store-page .store-card-text,
+.store-page .store-card-button {
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+}
+
+/* CRITICAL: Ensure ALL h3 tags on Store site use Helvetica, not Story Script */
+/* This rule MUST come after all Story Script rules and have maximum specificity */
+.store-page h3,
+.store-page h3[class*="font-"]:not(.font-serif):not(.font-mono),
+.store-page h3.title-font,
+.store-page .group .store-card-content h3.store-card-h3,
+.store-page [class*="group"] .store-card-content h3.store-card-h3,
+.store-page .store-card-content h3.store-card-h3,
+.store-page .group h3.store-card-h3,
+.store-page [class*="group"] h3.store-card-h3,
+.store-page h3.store-card-h3,
+.store-page .group .store-card-content h3.store-card-text,
+.store-page [class*="group"] .store-card-content h3.store-card-text,
+.store-page .store-card-content h3.store-card-text,
+.store-page .group h3.store-card-text,
+.store-page [class*="group"] h3.store-card-text,
+.store-page h3.store-card-text,
+.store-page .group .store-card-content h3,
+.store-page [class*="group"] .store-card-content h3,
+.store-page .store-card-content h3 {
+  font-family: "Helvetica", "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif !important;
+}
+
+/* Additional override for elements inside product cards - catch all */
+.store-page .group h3,
+.store-page .group p,
+.store-page .group span,
+.store-page .group button,
+.store-page [class*="group"] h3,
+.store-page [class*="group"] p,
+.store-page [class*="group"] span,
+.store-page [class*="group"] button {
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+}
+
+/* Store page font override - Helvetica with DM Sans fallback */
+.store-page,
+.store-page *,
+.store-page body,
+.store-page h1,
+.store-page h2,
+.store-page h3,
+.store-page h4,
+.store-page h5,
+.store-page h6,
+.store-page p,
+.store-page span,
+.store-page div,
+.store-page button,
+.store-page input,
+.store-page textarea,
+.store-page select,
+.store-page label,
+.store-page a,
+.store-page li,
+.store-page ul,
+.store-page ol {
+  font-family: "Helvetica", "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif !important;
+}
+
+/* Ensure avatar span doesn't appear red - override any inline styles */
+span.flex.h-full.w-full.items-center.justify-center.rounded-full.bg-gray-200,
+span.flex.h-full.w-full.items-center.justify-center.rounded-full.bg-gray-700 {
+  color: rgb(55, 65, 81) !important;
+  /* text-gray-700 */
+  background-color: rgb(229, 231, 235) !important;
+  /* bg-gray-200 */
+}
+
+.dark span.flex.h-full.w-full.items-center.justify-center.rounded-full.bg-gray-700 {
+  color: rgb(209, 213, 219) !important;
+  /* text-gray-300 */
+  background-color: rgb(55, 65, 81) !important;
+  /* bg-gray-700 */
 }
