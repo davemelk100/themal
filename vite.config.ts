@@ -26,6 +26,9 @@ export default defineConfig({
   },
   build: {
     target: "esnext", // Use modern JS for better tree-shaking and performance improvement
+    modulePreload: {
+      polyfill: true,
+    },
     rollupOptions: {
       treeshake: {
         moduleSideEffects: (id) => {
@@ -71,19 +74,16 @@ export default defineConfig({
         manualChunks: (id) => {
           // Vendor chunks - split more granularly to reduce critical path
           if (id.includes("node_modules")) {
-            // Keep React together to prevent loading order issues
+            // Keep React and React Router together to prevent loading order issues
             // React must load as a single chunk to ensure proper initialization
             if (
               id.includes("/react/") ||
               id.includes("react-dom") ||
               id.includes("react/jsx-runtime") ||
-              id.includes("react/jsx-dev-runtime")
+              id.includes("react/jsx-dev-runtime") ||
+              id.includes("react-router")
             ) {
               return "vendor-react";
-            }
-            // React Router - separate from React core to allow parallel loading
-            if (id.includes("react-router")) {
-              return "vendor-router";
             }
             // Framer Motion - large, defer loading
             if (id.includes("framer-motion")) {
