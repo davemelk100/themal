@@ -36,7 +36,8 @@ export function Toaster() {
             open={open}
             onOpenChange={onOpenChange}
             duration={duration}
-            className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-xl"
+            variant="default"
+            className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-xl z-[10000]"
             {...props}
           >
             <div className="grid gap-1">

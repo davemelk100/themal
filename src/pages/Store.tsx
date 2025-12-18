@@ -517,6 +517,7 @@ const Store = () => {
                                     title: "Added to cart",
                                     description: product.title,
                                     duration: 3000,
+                                    variant: "default",
                                   });
                                 }}
                                 className="w-full px-2 py-3 font-semibold rounded-md transition-all hover:scale-105 store-card-button"
