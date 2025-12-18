@@ -32,7 +32,7 @@ export function Toaster() {
             onOpenChange={onOpenChange}
             duration={Infinity}
             variant="default"
-            className="bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 shadow-2xl"
+            className="bg-green-50 dark:bg-green-900/20 border-2 border-green-200 dark:border-green-800 shadow-2xl"
             style={{
               zIndex: 99999,
               position: "fixed",

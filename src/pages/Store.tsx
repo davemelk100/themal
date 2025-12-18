@@ -382,7 +382,7 @@ const Store = () => {
                 <h2
                   className="text-3xl font-bold"
                   style={{
-                    color: "black",
+                    color: "#dbdbdb",
                     letterSpacing: "-1.25px",
                   }}
                 >
