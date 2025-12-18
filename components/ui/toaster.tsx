@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from "@/hooks/use-toast";
 import {
   Toast,
   ToastClose,
@@ -8,16 +8,37 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from '@/components/ui/toast';
+} from "@/components/ui/toast";
 
 export function Toaster() {
   const { toasts } = useToast();
 
+  // Debug: log toasts
+  if (toasts.length > 0) {
+    console.log("Toaster: Rendering toasts", toasts);
+  }
+
   return (
-    <ToastProvider>
-      {toasts.map(function ({ id, title, description, action, ...props }) {
+    <ToastProvider swipeDirection="right">
+      {toasts.map(function ({
+        id,
+        title,
+        description,
+        action,
+        open,
+        onOpenChange,
+        duration = 3000,
+        ...props
+      }) {
         return (
-          <Toast key={id} {...props}>
+          <Toast
+            key={id}
+            open={open}
+            onOpenChange={onOpenChange}
+            duration={duration}
+            className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-xl"
+            {...props}
+          >
             <div className="grid gap-1">
               {title && <ToastTitle>{title}</ToastTitle>}
               {description && (
