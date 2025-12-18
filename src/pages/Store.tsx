@@ -53,15 +53,18 @@ const ProductImageCarousel = ({
     return (
       <div
         onClick={onImageClick}
-        className="relative aspect-square overflow-hidden bg-gray-100 dark:bg-gray-700 cursor-pointer"
+        className="relative aspect-square overflow-hidden bg-transparent cursor-pointer rounded-t-lg"
+        style={{ padding: "10px", paddingBottom: "0" }}
       >
-        <img
-          src={images[0]}
-          alt={product.title}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-          loading="lazy"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <div className="relative w-full h-full rounded-lg overflow-hidden">
+          <img
+            src={images[0]}
+            alt={product.title}
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        </div>
       </div>
     );
   }
@@ -69,10 +72,11 @@ const ProductImageCarousel = ({
   return (
     <div
       onClick={onImageClick}
-      className="relative aspect-square overflow-hidden bg-gray-100 dark:bg-gray-700 cursor-pointer group"
+      className="relative aspect-square overflow-hidden bg-transparent cursor-pointer group rounded-t-lg"
+      style={{ padding: "10px", paddingBottom: "0" }}
     >
       {/* Images */}
-      <div className="relative w-full h-full">
+      <div className="relative w-full h-full rounded-lg overflow-hidden">
         {images.map((image, index) => (
           <img
             key={index}
@@ -91,14 +95,14 @@ const ProductImageCarousel = ({
         <>
           <button
             onClick={goToPrevious}
-            className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 dark:bg-gray-800/80 hover:bg-white dark:hover:bg-gray-800 rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-10"
+            className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/40 dark:bg-white/20 backdrop-blur-xl hover:bg-white/60 dark:hover:bg-white/30 border border-white/50 dark:border-white/30 rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-all shadow-lg z-10"
             aria-label="Previous image"
           >
             <ChevronLeft className="h-4 w-4 text-gray-900 dark:text-white" />
           </button>
           <button
             onClick={goToNext}
-            className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 dark:bg-gray-800/80 hover:bg-white dark:hover:bg-gray-800 rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-10"
+            className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/40 dark:bg-white/20 backdrop-blur-xl hover:bg-white/60 dark:hover:bg-white/30 border border-white/50 dark:border-white/30 rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-all shadow-lg z-10"
             aria-label="Next image"
           >
             <ChevronRight className="h-4 w-4 text-gray-900 dark:text-white" />
@@ -125,14 +129,14 @@ const ProductImageCarousel = ({
         </>
       )}
 
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+      {/* Subtle gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
     </div>
   );
 };
 
 const Store = () => {
-  const { activeCategory, setActiveCategory } = useStore();
+  const { activeCategory } = useStore();
   const navigate = useNavigate();
   const { addItem, getTotalItems } = useCart();
 
@@ -179,9 +183,84 @@ const Store = () => {
 
   return (
     <div
-      className="min-h-screen text-gray-900 dark:text-white store-page pb-16"
-      style={{ backgroundColor: "#f0f0f0" }}
+      className="min-h-screen text-gray-900 dark:text-white store-page pb-16 relative overflow-hidden"
+      style={{
+        background:
+          "linear-gradient(135deg, #d0d0d0 0%, #e0e0e0 20%, #c8c8c8 40%, #e5e5e5 60%, #d5d5d5 80%, #dddddd 100%)",
+        backgroundSize: "400% 400%",
+        animation: "gradient 15s ease infinite",
+      }}
     >
+      <style>{`
+        @keyframes gradient {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        @keyframes float {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          33% { transform: translate(30px, -30px) scale(1.1); }
+          66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+        @keyframes floatReverse {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          33% { transform: translate(-30px, 30px) scale(0.9); }
+          66% { transform: translate(20px, -20px) scale(1.1); }
+        }
+      `}</style>
+
+      {/* Animated Background Blobs for Glass Effect */}
+      <div
+        className="absolute inset-0 pointer-events-none overflow-hidden"
+        style={{ zIndex: 0 }}
+      >
+        {/* Large animated blobs - darker for visibility */}
+        <div
+          className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-gray-600/40 to-gray-500/30 rounded-full blur-3xl"
+          style={{ animation: "float 20s ease-in-out infinite" }}
+        ></div>
+        <div
+          className="absolute top-1/4 right-0 w-80 h-80 bg-gradient-to-bl from-gray-700/35 to-gray-600/25 rounded-full blur-3xl"
+          style={{ animation: "floatReverse 25s ease-in-out infinite" }}
+        ></div>
+        <div
+          className="absolute bottom-0 left-1/3 w-[500px] h-[500px] bg-gradient-to-tr from-gray-500/30 to-gray-600/35 rounded-full blur-3xl"
+          style={{ animation: "float 30s ease-in-out infinite" }}
+        ></div>
+        <div
+          className="absolute top-1/2 right-1/4 w-72 h-72 bg-gradient-to-r from-gray-600/30 to-gray-700/25 rounded-full blur-3xl"
+          style={{ animation: "floatReverse 22s ease-in-out infinite" }}
+        ></div>
+
+        {/* Medium blobs */}
+        <div
+          className="absolute top-1/3 left-1/4 w-64 h-64 bg-gradient-to-br from-gray-700/25 to-transparent rounded-full blur-2xl"
+          style={{ animation: "float 18s ease-in-out infinite" }}
+        ></div>
+        <div
+          className="absolute bottom-1/4 right-1/3 w-56 h-56 bg-gradient-to-tl from-gray-500/30 to-transparent rounded-full blur-2xl"
+          style={{ animation: "floatReverse 24s ease-in-out infinite" }}
+        ></div>
+
+        {/* Additional smaller blobs for more depth */}
+        <div
+          className="absolute top-2/3 left-1/2 w-48 h-48 bg-gradient-to-r from-gray-600/20 to-gray-500/15 rounded-full blur-2xl"
+          style={{ animation: "float 16s ease-in-out infinite" }}
+        ></div>
+        <div
+          className="absolute bottom-1/3 right-1/2 w-52 h-52 bg-gradient-to-l from-gray-700/20 to-gray-600/15 rounded-full blur-2xl"
+          style={{ animation: "floatReverse 19s ease-in-out infinite" }}
+        ></div>
+
+        {/* Subtle pattern overlay */}
+        <div
+          className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage: `radial-gradient(circle at 2px 2px, rgba(0,0,0,0.2) 1px, transparent 0)`,
+            backgroundSize: "40px 40px",
+          }}
+        ></div>
+      </div>
       {/* Top Header with DM, Nav, Cart, and Profile */}
       <section className="py-1" style={{ backgroundColor: "#f0f0f0" }}>
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -286,7 +365,10 @@ const Store = () => {
       </section>
 
       {/* Store Content */}
-      <section className="py-2 sm:py-3 lg:py-4 xl:py-6 relative z-10">
+      <section
+        className="py-2 sm:py-3 lg:py-4 xl:py-6 relative"
+        style={{ zIndex: 10, position: "relative" }}
+      >
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial="initial"
@@ -300,9 +382,8 @@ const Store = () => {
                 <h2
                   className="text-3xl font-bold"
                   style={{
-                    color: "#f0f0f0",
-                    textShadow:
-                      "rgba(255, 255, 255, 0.9) -1px -1px 1px, rgba(0, 0, 0, 0.2) 1px 1px 2px, rgba(255, 255, 255, 0.5) 0px 0px 1px",
+                    color: "black",
+                    letterSpacing: "-1.25px",
                   }}
                 >
                   {activeCategory === null
@@ -310,108 +391,149 @@ const Store = () => {
                     : mainCategories.find((cat) => cat.id === activeCategory)
                         ?.title || "Products"}
                 </h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="text-sm" style={{ color: "black" }}>
                   {filteredProducts.length}{" "}
                   {filteredProducts.length === 1 ? "item" : "items"}
                 </p>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+              <div className="flex flex-wrap justify-evenly gap-4">
                 {filteredProducts.map((product) => {
                   return (
                     <motion.div
                       key={product.id}
                       variants={fadeInUp}
                       whileHover={{ y: -4, scale: 1.02 }}
-                      className="group bg-white dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all flex flex-col cursor-pointer"
+                      className="group relative overflow-hidden rounded-lg flex flex-col cursor-pointer max-w-[280px] w-full"
                       onClick={() => navigate(`/store/product/${product.id}`)}
                     >
-                      {/* Product Image Carousel - Clickable */}
-                      <ProductImageCarousel
-                        product={product}
-                        onImageClick={() =>
-                          navigate(`/store/product/${product.id}`)
-                        }
-                      />
+                      {/* Clear Liquid Glass Background Blobs */}
+                      <div className="absolute inset-0 overflow-hidden rounded-lg">
+                        {/* Clear glass blobs for liquid effect */}
+                        <div className="absolute -top-24 -left-24 w-80 h-80 bg-white/20 rounded-full blur-3xl opacity-40"></div>
+                        <div className="absolute -bottom-28 -right-28 w-96 h-96 bg-white/15 rounded-full blur-3xl opacity-35"></div>
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-white/10 rounded-full blur-3xl opacity-30"></div>
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-white/18 rounded-full blur-3xl opacity-32"></div>
+                      </div>
 
-                      {/* Product Info */}
-                      <div
-                        className="p-2 store-card-content flex flex-col flex-grow"
-                        style={{
-                          fontFamily:
-                            '"Helvetica", "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-                        }}
-                      >
-                        <h3
-                          className="font-bold mb-1 text-gray-900 dark:text-white line-clamp-1 cursor-pointer hover:underline store-card-text store-card-h3"
-                          style={{
-                            fontFamily:
-                              '"Helvetica", "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif !important',
-                            fontSize: "14px",
-                          }}
-                        >
-                          {product.title}
-                        </h3>
-                        <p
-                          className="text-gray-600 dark:text-gray-400 mb-2 line-clamp-2 store-card-text"
-                          style={{
-                            fontFamily:
-                              '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-                            fontSize: "14px",
-                          }}
-                        >
-                          {product.description}
-                        </p>
-                        <div className="mb-2">
-                          <span
-                            className="font-bold text-gray-900 dark:text-white store-card-text"
-                            style={{
-                              fontFamily:
-                                '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-                              fontSize: "14px",
-                            }}
-                          >
-                            ${product.price}
-                          </span>
-                        </div>
+                      {/* Clear Liquid Glass Card */}
+                      <div className="relative rounded-lg backdrop-blur-2xl border border-white/40 dark:border-white/25 shadow-[0_8px_32px_0_rgba(255,255,255,0.2)] overflow-hidden flex flex-col">
+                        {/* Fluid gradient overlays - muted colors */}
+                        <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-gray-400/8 via-transparent to-gray-300/5"></div>
+                        <div className="absolute inset-0 rounded-lg bg-gradient-to-tl from-transparent via-gray-500/6 to-gray-400/8"></div>
+                        <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-gray-300/4 via-transparent to-gray-400/6"></div>
+
+                        {/* Flowing animated gradient */}
                         <div
-                          className="mt-auto"
-                          style={{ marginBottom: "10px" }}
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              addItem({
-                                id: product.id,
-                                title: product.title,
-                                price: product.price,
-                                image: product.image,
-                                description: product.description,
-                              });
-                              try {
-                                toast({
-                                  title: "Added to cart",
-                                  description: product.title,
-                                });
-                              } catch (error) {
-                                console.error("Toast error:", error);
-                              }
-                            }}
-                            className="w-full px-2 py-1 font-semibold rounded-md transition-all hover:scale-105 store-card-button"
+                          className="absolute inset-0 rounded-lg opacity-20 pointer-events-none"
+                          style={{
+                            background:
+                              "radial-gradient(ellipse at 30% 20%, rgba(100, 100, 100, 0.15) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(120, 120, 120, 0.12) 0%, transparent 50%)",
+                            backgroundSize: "200% 200%",
+                            animation: "gradient 20s ease infinite",
+                          }}
+                        ></div>
+
+                        {/* Reflective highlights - multiple angles */}
+                        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent"></div>
+                        <div className="absolute top-0 left-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/60 to-transparent"></div>
+                        <div className="absolute top-0 right-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/40 to-transparent"></div>
+
+                        {/* Inner glow effect - muted */}
+                        <div className="absolute inset-[1px] rounded-lg bg-gradient-to-br from-gray-300/8 via-transparent to-transparent pointer-events-none"></div>
+
+                        {/* Subtle inner shadow for depth */}
+                        <div className="absolute inset-0 rounded-lg shadow-[inset_0_1px_2px_0_rgba(255,255,255,0.2)] pointer-events-none"></div>
+
+                        {/* Content */}
+                        <div className="relative z-10 flex flex-col">
+                          {/* Product Image Carousel - Clickable */}
+                          <ProductImageCarousel
+                            product={product}
+                            onImageClick={() =>
+                              navigate(`/store/product/${product.id}`)
+                            }
+                          />
+
+                          {/* Product Info */}
+                          <div
+                            className="store-card-content flex flex-col flex-grow"
                             style={{
                               fontFamily:
-                                '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-                              fontSize: "14px",
-                              backgroundColor: "#f0f0f0",
-                              color: "rgb(168, 168, 168)",
-                              textShadow:
-                                "rgba(255, 255, 255, 0.9) -1px -1px 1px, rgba(0, 0, 0, 0.2) 1px 1px 2px, rgba(255, 255, 255, 0.5) 0px 0px 1px",
-                              boxShadow:
-                                "rgba(255, 255, 255, 0.9) -1px -1px 1px, rgba(0, 0, 0, 0.2) 1px 1px 2px, rgba(255, 255, 255, 0.5) 0px 0px 1px",
+                                '"Helvetica", "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
+                              padding: "10px",
                             }}
                           >
-                            Add to Cart
-                          </button>
+                            <h3
+                              className="font-bold mb-1 line-clamp-1 cursor-pointer hover:underline store-card-text store-card-h3"
+                              style={{
+                                fontFamily:
+                                  '"Helvetica", "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif !important',
+                                fontSize: "14px",
+                                color: "black",
+                              }}
+                            >
+                              {product.title}
+                            </h3>
+                            <p
+                              className="mb-2 line-clamp-2 store-card-text"
+                              style={{
+                                fontFamily:
+                                  '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
+                                fontSize: "14px",
+                                color: "black",
+                              }}
+                            >
+                              {product.description}
+                            </p>
+                            <div className="mb-2">
+                              <span
+                                className="font-bold store-card-text"
+                                style={{
+                                  fontFamily:
+                                    '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
+                                  fontSize: "14px",
+                                  color: "black",
+                                }}
+                              >
+                                ${product.price}
+                              </span>
+                            </div>
+                            <div
+                              className="mt-auto"
+                              style={{ marginBottom: "10px" }}
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  addItem({
+                                    id: product.id,
+                                    title: product.title,
+                                    price: product.price,
+                                    image: product.image,
+                                    description: product.description,
+                                  });
+                                  toast({
+                                    title: "Added to cart",
+                                    description: product.title,
+                                    duration: 3000,
+                                  });
+                                }}
+                                className="w-full px-2 py-3 font-semibold rounded-md transition-all hover:scale-105 store-card-button"
+                                style={{
+                                  fontFamily:
+                                    '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
+                                  fontSize: "14px",
+                                  backgroundColor: "#f0f0f0",
+                                  color: "rgb(80, 80, 80)",
+                                  boxShadow:
+                                    "rgba(255, 255, 255, 0.9) -1px -1px 1px, rgba(0, 0, 0, 0.2) 1px 1px 2px, rgba(255, 255, 255, 0.5) 0px 0px 1px",
+                                }}
+                              >
+                                Add to Cart
+                              </button>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </motion.div>
@@ -422,93 +544,6 @@ const Store = () => {
           </motion.div>
         </div>
       </section>
-
-      {/* Bottom Header - Replica of Top Header without Cart and Avatar */}
-      <section
-        className="py-1 md:pb-1 pb-20"
-        style={{ backgroundColor: "#f0f0f0" }}
-      >
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="flex items-center justify-between"
-          >
-            {/* MELKONIAN INDUSTRIES - Left Side */}
-            <div className="flex items-center gap-3">
-              <span
-                className="font-bold tracking-tight md:hidden"
-                style={{
-                  color: "#f0f0f0",
-                  fontSize: "48px",
-                  textShadow:
-                    "rgba(255, 255, 255, 0.9) -1px -1px 1px, rgba(0, 0, 0, 0.2) 1px 1px 2px, rgba(255, 255, 255, 0.5) 0px 0px 1px",
-                }}
-              >
-                MI
-              </span>
-              <span
-                className="font-bold tracking-tight hidden md:block"
-                style={{
-                  color: "#f0f0f0",
-                  fontSize: "48px",
-                  textShadow:
-                    "rgba(255, 255, 255, 0.9) -1px -1px 1px, rgba(0, 0, 0, 0.2) 1px 1px 2px, rgba(255, 255, 255, 0.5) 0px 0px 1px",
-                }}
-              >
-                MELKONIAN INDUSTRIES
-              </span>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Footer Tray Navigation - Mobile Only */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 z-50 safe-area-inset-bottom">
-        <div className="flex items-center justify-around px-2 py-2">
-          <button
-            onClick={() => setActiveCategory(null)}
-            className={`flex flex-col items-center justify-center gap-1 px-3 py-2 transition-colors ${
-              activeCategory === null
-                ? "rounded-none text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800"
-                : "rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50"
-            }`}
-          >
-            <span className="text-xs font-medium uppercase">All</span>
-          </button>
-          {mainCategories.map((category) => {
-            const IconComponent = category.icon;
-            const isActive = activeCategory === category.id;
-            return (
-              <button
-                key={category.id}
-                onClick={() =>
-                  setActiveCategory(
-                    activeCategory === category.id ? null : category.id
-                  )
-                }
-                className={`flex flex-col items-center justify-center gap-1 px-3 py-2 transition-colors ${
-                  isActive
-                    ? "rounded-none text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800"
-                    : "rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50"
-                }`}
-              >
-                <IconComponent
-                  className={`h-5 w-5 ${
-                    isActive
-                      ? "text-gray-600 dark:text-gray-400"
-                      : "text-gray-700 dark:text-gray-300"
-                  }`}
-                />
-                <span className="text-xs font-medium uppercase">
-                  {category.title}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      </nav>
     </div>
   );
 };

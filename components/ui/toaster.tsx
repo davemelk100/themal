@@ -19,7 +19,7 @@ export function Toaster() {
   }
 
   return (
-    <ToastProvider duration={Infinity}>
+    <ToastProvider swipeDirection="right">
       {toasts.map(function ({
         id,
         title,
@@ -27,6 +27,7 @@ export function Toaster() {
         action,
         open,
         onOpenChange,
+        duration = 3000,
         ...props
       }) {
         return (
@@ -34,7 +35,8 @@ export function Toaster() {
             key={id}
             open={open}
             onOpenChange={onOpenChange}
-            duration={Infinity}
+            duration={duration}
+            className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-xl"
             {...props}
           >
             <div className="grid gap-1">
