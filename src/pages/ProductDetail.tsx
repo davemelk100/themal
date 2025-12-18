@@ -108,7 +108,10 @@ const ProductDetail = () => {
             className="flex items-center justify-between"
           >
             {/* MELKONIAN INDUSTRIES - Left Side */}
-            <div className="flex items-center gap-3">
+            <button
+              onClick={() => navigate("/store")}
+              className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
+            >
               <span
                 className="font-bold tracking-tight md:hidden"
                 style={{
@@ -131,7 +134,7 @@ const ProductDetail = () => {
               >
                 MELKONIAN INDUSTRIES
               </span>
-            </div>
+            </button>
 
             {/* Cart and Profile - Right Side */}
             <div className="flex items-center gap-4">
@@ -325,7 +328,6 @@ const ProductDetail = () => {
                 toast({
                   title: "Added to cart",
                   description: product.title,
-                  duration: 3000,
                 });
               }}
               className="w-full bg-gray-900 dark:bg-gray-700 text-white py-4 px-6 rounded-lg font-semibold text-lg hover:bg-gray-800 dark:hover:bg-gray-600 transition-all flex items-center justify-center gap-2"

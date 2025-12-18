@@ -62,10 +62,31 @@ const Checkout = () => {
         }
       );
 
-      const data = await response.json();
+      // Check if response has content before parsing
+      const text = await response.text();
+      let data;
+
+      if (!text) {
+        console.error("Empty response from server. Status:", response.status);
+        throw new Error(
+          `Server returned empty response (${response.status}). Check Netlify function logs.`
+        );
+      }
+
+      try {
+        data = JSON.parse(text);
+      } catch (parseError) {
+        console.error("Failed to parse response:", text);
+        throw new Error(
+          `Invalid response from server: ${text.substring(0, 100)}`
+        );
+      }
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to create checkout session");
+        const errorMsg =
+          data?.error || data?.message || `Server error (${response.status})`;
+        console.error("Checkout error response:", data);
+        throw new Error(errorMsg);
       }
 
       // Redirect to Stripe Checkout
@@ -102,7 +123,10 @@ const Checkout = () => {
             className="flex items-center justify-between"
           >
             {/* MELKONIAN INDUSTRIES - Left Side */}
-            <div className="flex items-center gap-3">
+            <button
+              onClick={() => navigate("/store")}
+              className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
+            >
               <span
                 className="font-bold tracking-tight md:hidden"
                 style={{
@@ -125,7 +149,7 @@ const Checkout = () => {
               >
                 MELKONIAN INDUSTRIES
               </span>
-            </div>
+            </button>
 
             {/* Cart and Profile - Right Side */}
             <div className="flex items-center gap-4">
@@ -192,7 +216,7 @@ const Checkout = () => {
         </div>
       </section>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -307,47 +331,6 @@ const Checkout = () => {
           </div>
         </motion.div>
       </div>
-
-      {/* Bottom Header - Replica of Top Header without Cart and Avatar */}
-      <section
-        className="py-1 md:pb-1 pb-20"
-        style={{ backgroundColor: "#f0f0f0" }}
-      >
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="flex items-center justify-between"
-          >
-            {/* MELKONIAN INDUSTRIES - Left Side */}
-            <div className="flex items-center gap-3">
-              <span
-                className="font-bold tracking-tight md:hidden"
-                style={{
-                  color: "#f0f0f0",
-                  fontSize: "48px",
-                  textShadow:
-                    "rgba(255, 255, 255, 0.9) -1px -1px 1px, rgba(0, 0, 0, 0.2) 1px 1px 2px, rgba(255, 255, 255, 0.5) 0px 0px 1px",
-                }}
-              >
-                MI
-              </span>
-              <span
-                className="font-bold tracking-tight hidden md:block"
-                style={{
-                  color: "#f0f0f0",
-                  fontSize: "48px",
-                  textShadow:
-                    "rgba(255, 255, 255, 0.9) -1px -1px 1px, rgba(0, 0, 0, 0.2) 1px 1px 2px, rgba(255, 255, 255, 0.5) 0px 0px 1px",
-                }}
-              >
-                MELKONIAN INDUSTRIES
-              </span>
-            </div>
-          </motion.div>
-        </div>
-      </section>
     </div>
   );
 };

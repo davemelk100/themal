@@ -18,7 +18,11 @@ export const storeProducts: Product[] = [
     title: "BALM Chest Print Button-Up",
     price: 29.99,
     image: "/img/grey-on-grey.png",
-    images: ["/img/grey-on-grey.png", "/img/skater-40.png"],
+    images: [
+      "/img/grey-on-grey.png",
+      "/img/skater-40.png",
+      "/img/standing.png",
+    ],
     description: "Bold abstract design on premium cotton",
     fullDescription:
       "Express your artistic side with this bold abstract design t-shirt. Made from premium 100% cotton, this comfortable tee features a unique abstract art pattern that stands out. Perfect for art lovers and creative individuals who want to make a statement.",
@@ -31,7 +35,11 @@ export const storeProducts: Product[] = [
     title: "BALM Chest Print Button-Up",
     price: 32.99,
     image: "/img/grey-on-grey.png",
-    images: ["/img/grey-on-grey.png", "/img/skater-40.png"],
+    images: [
+      "/img/grey-on-grey.png",
+      "/img/skater-40.png",
+      "/img/standing.png",
+    ],
     description: "Modern geometric patterns",
     fullDescription:
       "Contemporary geometric patterns meet classic comfort in this stylish t-shirt. The intricate design features clean lines and bold shapes, perfect for those who appreciate modern aesthetics.",
@@ -69,7 +77,11 @@ export const storeProducts: Product[] = [
     title: "BALM Chest Print Button-Up",
     price: 34.99,
     image: "/img/grey-on-grey.png",
-    images: ["/img/grey-on-grey.png", "/img/skater-40.png"],
+    images: [
+      "/img/grey-on-grey.png",
+      "/img/skater-40.png",
+      "/img/standing.png",
+    ],
     description: "Classic rock design",
     fullDescription: "BALM Screenprinted Button-Up Shirts",
     sizes: ["L", "XL"],
@@ -81,7 +93,11 @@ export const storeProducts: Product[] = [
     title: "BALM Chest Print Button-Up",
     price: 31.99,
     image: "/img/grey-on-grey.png",
-    images: ["/img/grey-on-grey.png", "/img/skater-40.png"],
+    images: [
+      "/img/grey-on-grey.png",
+      "/img/skater-40.png",
+      "/img/standing.png",
+    ],
     description: "Vintage vinyl inspired",
     fullDescription:
       "Pay homage to the vinyl era with this vintage-inspired t-shirt. The design features classic record imagery, perfect for vinyl collectors and music purists.",
@@ -120,7 +136,11 @@ export const storeProducts: Product[] = [
     title: "BALM Chest Print Button-Up",
     price: 27.99,
     image: "/img/grey-on-grey.png",
-    images: ["/img/grey-on-grey.png", "/img/skater-40.png"],
+    images: [
+      "/img/grey-on-grey.png",
+      "/img/skater-40.png",
+      "/img/standing.png",
+    ],
     description: "Show your team pride",
     fullDescription:
       "Support your team in style with this team spirit t-shirt. Made from breathable, moisture-wicking fabric, it's perfect for game day or everyday wear.",
@@ -133,7 +153,11 @@ export const storeProducts: Product[] = [
     title: "BALM Chest Print Button-Up",
     price: 35.99,
     image: "/img/grey-on-grey.png",
-    images: ["/img/grey-on-grey.png", "/img/skater-40.png"],
+    images: [
+      "/img/grey-on-grey.png",
+      "/img/skater-40.png",
+      "/img/standing.png",
+    ],
     description: "Performance fabric design",
     fullDescription:
       "Elevate your athletic performance with this high-tech t-shirt. Featuring advanced moisture-wicking technology and a comfortable fit, it's designed for active lifestyles.",

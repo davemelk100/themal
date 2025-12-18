@@ -19,10 +19,26 @@ interface LineItem {
 }
 
 export const handler: Handler = async (event, context) => {
+  // Handle CORS preflight requests
+  if (event.httpMethod === "OPTIONS") {
+    return {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+      } as Record<string, string>,
+      body: "",
+    };
+  }
+
   // Only allow POST requests
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      } as Record<string, string>,
       body: JSON.stringify({ error: "Method not allowed" }),
     };
   }
@@ -33,15 +49,27 @@ export const handler: Handler = async (event, context) => {
     if (!items || !Array.isArray(items) || items.length === 0) {
       return {
         statusCode: 400,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        } as Record<string, string>,
         body: JSON.stringify({ error: "Items are required" }),
       };
     }
 
     // Validate Stripe secret key
     if (!process.env.STRIPE_SECRET_KEY) {
+      console.error("Stripe secret key not configured");
       return {
         statusCode: 500,
-        body: JSON.stringify({ error: "Stripe secret key not configured" }),
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        } as Record<string, string>,
+        body: JSON.stringify({
+          error:
+            "Stripe secret key not configured. Please set STRIPE_SECRET_KEY environment variable.",
+        }),
       };
     }
 
@@ -96,14 +124,22 @@ export const handler: Handler = async (event, context) => {
     };
   } catch (error: any) {
     console.error("Stripe checkout error:", error);
+    const errorMessage =
+      error?.message ||
+      error?.toString() ||
+      "Failed to create checkout session";
     return {
       statusCode: 500,
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
       } as Record<string, string>,
       body: JSON.stringify({
-        error: error.message || "Failed to create checkout session",
+        error: errorMessage,
+        details:
+          process.env.NODE_ENV === "development" ? error?.stack : undefined,
       }),
     };
   }

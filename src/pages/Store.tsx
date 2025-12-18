@@ -192,7 +192,10 @@ const Store = () => {
             className="flex items-center justify-between"
           >
             {/* MELKONIAN INDUSTRIES - Left Side */}
-            <div className="flex items-center gap-3">
+            <button
+              onClick={() => navigate("/store")}
+              className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
+            >
               <span
                 className="font-bold tracking-tight md:hidden"
                 style={{
@@ -215,7 +218,7 @@ const Store = () => {
               >
                 MELKONIAN INDUSTRIES
               </span>
-            </div>
+            </button>
 
             {/* Cart and Profile - Right Side */}
             <div className="flex items-center gap-4">
@@ -385,11 +388,14 @@ const Store = () => {
                                 image: product.image,
                                 description: product.description,
                               });
-                              toast({
-                                title: "Added to cart",
-                                description: product.title,
-                                duration: 3000,
-                              });
+                              try {
+                                toast({
+                                  title: "Added to cart",
+                                  description: product.title,
+                                });
+                              } catch (error) {
+                                console.error("Toast error:", error);
+                              }
                             }}
                             className="w-full px-2 py-1 font-semibold rounded-md transition-all hover:scale-105 store-card-button"
                             style={{

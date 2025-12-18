@@ -39,7 +39,10 @@ const CheckoutSuccess = () => {
             className="flex items-center justify-between"
           >
             {/* MELKONIAN INDUSTRIES - Left Side */}
-            <div className="flex items-center gap-3">
+            <button
+              onClick={() => navigate("/store")}
+              className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
+            >
               <span
                 className="font-bold tracking-tight md:hidden"
                 style={{
@@ -62,7 +65,7 @@ const CheckoutSuccess = () => {
               >
                 MELKONIAN INDUSTRIES
               </span>
-            </div>
+            </button>
 
             {/* Cart and Profile - Right Side */}
             <div className="flex items-center gap-4">

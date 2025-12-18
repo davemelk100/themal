@@ -6,7 +6,7 @@ import * as React from "react";
 import type { ToastActionElement, ToastProps } from "@/components/ui/toast";
 
 const TOAST_LIMIT = 1;
-const TOAST_REMOVE_DELAY = 3000;
+const TOAST_REMOVE_DELAY = 5000; // Increased to 5 seconds for better visibility
 
 type ToasterToast = ToastProps & {
   id: string;
@@ -54,6 +54,7 @@ interface State {
 }
 
 const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
+const manuallyDismissedToasts = new Set<string>();
 
 const addToRemoveQueue = (toastId: string) => {
   if (toastTimeouts.has(toastId)) {
@@ -62,10 +63,25 @@ const addToRemoveQueue = (toastId: string) => {
 
   const timeout = setTimeout(() => {
     toastTimeouts.delete(toastId);
-    dispatch({
-      type: "REMOVE_TOAST",
-      toastId: toastId,
-    });
+    // Only dismiss if it wasn't manually dismissed
+    if (!manuallyDismissedToasts.has(toastId)) {
+      // First dismiss the toast
+      dispatch({
+        type: "DISMISS_TOAST",
+        toastId: toastId,
+      });
+      // Then remove it after a short delay for animation
+      setTimeout(() => {
+        dispatch({
+          type: "REMOVE_TOAST",
+          toastId: toastId,
+        });
+        manuallyDismissedToasts.delete(toastId);
+      }, 500);
+    } else {
+      // If it was manually dismissed, just clean up
+      manuallyDismissedToasts.delete(toastId);
+    }
   }, TOAST_REMOVE_DELAY);
 
   toastTimeouts.set(toastId, timeout);
@@ -90,16 +106,8 @@ export const reducer = (state: State, action: Action): State => {
     case "DISMISS_TOAST": {
       const { toastId } = action;
 
-      // ! Side effects ! - This could be extracted into a dismissToast() action,
-      // but I'll keep it here for simplicity
-      if (toastId) {
-        addToRemoveQueue(toastId);
-      } else {
-        state.toasts.forEach((toast) => {
-          addToRemoveQueue(toast.id);
-        });
-      }
-
+      // Just set open to false - don't call addToRemoveQueue again
+      // The removal will be handled by the timeout in addToRemoveQueue
       return {
         ...state,
         toasts: state.toasts.map((t) =>
@@ -147,7 +155,19 @@ function toast({ ...props }: Toast) {
       type: "UPDATE_TOAST",
       toast: { ...props, id },
     });
-  const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id });
+  const dismiss = () => {
+    manuallyDismissedToasts.add(id);
+    // Clear the timeout if it exists
+    if (toastTimeouts.has(id)) {
+      clearTimeout(toastTimeouts.get(id));
+      toastTimeouts.delete(id);
+    }
+    dispatch({ type: "DISMISS_TOAST", toastId: id });
+  };
+
+  // Schedule auto-dismiss BEFORE adding the toast
+  // This ensures toastTimeouts.has(id) is true when Radix might call onOpenChange
+  addToRemoveQueue(id);
 
   dispatch({
     type: "ADD_TOAST",
@@ -156,13 +176,27 @@ function toast({ ...props }: Toast) {
       id,
       open: true,
       onOpenChange: (open) => {
-        if (!open) dismiss();
+        // If Radix is trying to close the toast but we have a timeout scheduled,
+        // prevent it from closing by ignoring the close call
+        if (!open && toastTimeouts.has(id)) {
+          // Radix is trying to auto-dismiss, but we control that - ignore it
+          // Force the toast to stay open by dispatching an update
+          dispatch({
+            type: "UPDATE_TOAST",
+            toast: { id, open: true },
+          });
+          return;
+        }
+
+        // Only handle manual closes (user clicked X or swiped)
+        // when we don't have a timeout scheduled
+        if (!open && !toastTimeouts.has(id)) {
+          // This is a manual close, so dismiss immediately
+          dismiss();
+        }
       },
     },
   });
-
-  // Auto-dismiss after delay
-  addToRemoveQueue(id);
 
   return {
     id: id,
@@ -175,6 +209,10 @@ function useToast() {
   const [state, setState] = React.useState<State>(memoryState);
 
   React.useEffect(() => {
+    // Sync initial state
+    setState(memoryState);
+
+    // Add listener
     listeners.push(setState);
     return () => {
       const index = listeners.indexOf(setState);
@@ -182,7 +220,7 @@ function useToast() {
         listeners.splice(index, 1);
       }
     };
-  }, [state]);
+  }, []);
 
   return {
     ...state,
