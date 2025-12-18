@@ -13,11 +13,6 @@ import {
 export function Toaster() {
   const { toasts } = useToast();
 
-  // Debug: log toasts
-  if (toasts.length > 0) {
-    console.log("Toaster: Rendering toasts", toasts);
-  }
-
   return (
     <ToastProvider swipeDirection="right">
       {toasts.map(function ({
@@ -37,7 +32,8 @@ export function Toaster() {
             onOpenChange={onOpenChange}
             duration={duration}
             variant="default"
-            className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-xl z-[10000]"
+            className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-2xl"
+            style={{ zIndex: 99999 }}
             {...props}
           >
             <div className="grid gap-1">

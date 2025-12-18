@@ -516,7 +516,7 @@ const Store = () => {
                                   toast({
                                     title: "Added to cart",
                                     description: product.title,
-                                    duration: 3000,
+                                    duration: 5000,
                                     variant: "default",
                                   });
                                 }}
