@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { content } from "./content";
 import { ThemeProvider } from "./context/ThemeContext";
-import { CartProvider } from "./context/CartContext";
-import { StoreProvider } from "./context/StoreContext";
+import { CartProvider, StoreProvider } from "./store";
 import { Toaster } from "@/components/ui/toaster";
 
 import {
@@ -26,10 +25,10 @@ const NewsAggregator = lazy(() => import("./pages/NewsAggregator"));
 const Specs = lazy(() => import("./pages/Specs"));
 const Story = lazy(() => import("./pages/Story"));
 const MusicPlayer = lazy(() => import("./pages/MusicPlayer"));
-const Store = lazy(() => import("./pages/Store"));
-const ProductDetail = lazy(() => import("./pages/ProductDetail"));
-const Checkout = lazy(() => import("./pages/Checkout"));
-const CheckoutSuccess = lazy(() => import("./pages/CheckoutSuccess"));
+const Store = lazy(() => import("./store/pages/Store"));
+const ProductDetail = lazy(() => import("./store/pages/ProductDetail"));
+const Checkout = lazy(() => import("./store/pages/Checkout"));
+const CheckoutSuccess = lazy(() => import("./store/pages/CheckoutSuccess"));
 
 // Lazy load non-critical UI components to reduce critical path
 const MobileTrayMenu = lazy(() => import("./components/MobileTrayMenu"));
