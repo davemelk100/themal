@@ -183,7 +183,7 @@ const Store = () => {
 
   return (
     <div
-      className="min-h-screen text-gray-900 dark:text-white store-page pb-16 relative overflow-hidden"
+      className="min-h-screen text-gray-900 dark:text-white store-page pb-16 relative"
       style={{
         background:
           "linear-gradient(135deg, #d0d0d0 0%, #e0e0e0 20%, #c8c8c8 40%, #e5e5e5 60%, #d5d5d5 80%, #dddddd 100%)",
@@ -262,7 +262,10 @@ const Store = () => {
         ></div>
       </div>
       {/* Top Header with DM, Nav, Cart, and Profile */}
-      <section className="py-1" style={{ backgroundColor: "#f0f0f0" }}>
+      <section
+        className="sticky top-0 z-50 py-1"
+        style={{ backgroundColor: "rgba(240, 240, 240, 0.75)" }}
+      >
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: -20 }}

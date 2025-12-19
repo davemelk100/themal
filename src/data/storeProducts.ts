@@ -35,7 +35,7 @@ export const storeProducts: Product[] = [
     title: "BALM Jays Shirt",
     price: 22.0,
     image: "/img/balm-jays.png",
-    images: ["/img/balm-jays.png"],
+    images: ["/img/balm-jays.png", "/img/jays-guy.png"],
     description: "",
     fullDescription:
       "Materials: 100% cotton. Fit: Regular fit. Care: Machine wash cold, tumble dry low. Do not bleach.",
@@ -48,7 +48,7 @@ export const storeProducts: Product[] = [
     title: "BALM Chicago Shirt",
     price: 22.0,
     image: "/img/chicago.png",
-    images: ["/img/chicago.png"],
+    images: ["/img/chicago.png", "/img/chicago-van.png"],
     description: "",
     fullDescription:
       "Materials: 100% cotton. Fit: Regular fit. Care: Machine wash cold, tumble dry low. Do not bleach.",
