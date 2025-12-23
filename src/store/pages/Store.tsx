@@ -399,14 +399,14 @@ const Store = () => {
                   {filteredProducts.length === 1 ? "item" : "items"}
                 </p>
               </div>
-              <div className="flex flex-wrap justify-evenly gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 {filteredProducts.map((product) => {
                   return (
                     <motion.div
                       key={product.id}
                       variants={fadeInUp}
                       whileHover={{ y: -4, scale: 1.02 }}
-                      className="group relative overflow-hidden rounded-lg flex flex-col cursor-pointer max-w-[280px] w-full"
+                      className="group relative overflow-hidden rounded-lg flex flex-col cursor-pointer w-full"
                       onClick={() => navigate(`/store/product/${product.id}`)}
                     >
                       {/* Clear Liquid Glass Background Blobs */}
