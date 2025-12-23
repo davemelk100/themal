@@ -1,8 +1,21 @@
 import express from "express";
 import cors from "cors";
+import dotenv from "dotenv";
+import Stripe from "stripe";
+
+dotenv.config();
 
 const app = express();
 const PORT = 8888;
+let stripe;
+
+if (process.env.STRIPE_SECRET_KEY) {
+  stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: "2025-11-17.clover",
+  });
+} else {
+  console.warn("⚠️  STRIPE_SECRET_KEY is not set. Checkout session creation will fail.");
+}
 
 // Middleware
 app.use(
@@ -23,6 +36,51 @@ app.get("/", (req, res) => {
     message: "Development server running",
     timestamp: new Date().toISOString(),
   });
+});
+
+// create-checkout-session endpoint
+app.post("/create-checkout-session", async (req, res) => {
+  try {
+    const { items, successUrl, cancelUrl } = req.body;
+
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ error: "Items are required" });
+    }
+
+    if (!process.env.STRIPE_SECRET_KEY) {
+      console.error("STRIPE_SECRET_KEY is not set in .env");
+      return res.status(500).json({ error: "Stripe secret key not configured locally" });
+    }
+
+    const lineItems = items.map((item) => ({
+      price_data: {
+        currency: item.price_data.currency || "usd",
+        product_data: {
+          name: item.price_data.product_data.name,
+          description: item.price_data.product_data.description,
+          images: item.price_data.product_data.images,
+        },
+        unit_amount: item.price_data.unit_amount,
+      },
+      quantity: item.quantity,
+    }));
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: lineItems,
+      mode: "payment",
+      success_url: successUrl || `${req.headers.origin}/store/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: cancelUrl || `${req.headers.origin}/store/checkout`,
+    });
+
+    res.json({
+      sessionId: session.id,
+      url: session.url,
+    });
+  } catch (error) {
+    console.error("Stripe error:", error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // RSS feed creation endpoint

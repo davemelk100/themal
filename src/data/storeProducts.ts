@@ -40,6 +40,7 @@ export const storeProducts: Product[] = [
       "/img/balm-cursive-band.png",
       "/img/balm-cursive-skate.png",
       "/img/balm-hike.png",
+      "/img/balm-cursive-club.png",
     ],
     description: "",
     fullDescription:
