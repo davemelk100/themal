@@ -325,9 +325,8 @@ const ProductDetail = () => {
                     key={index}
                     src={image}
                     alt={`${product.title} - Image ${index + 1}`}
-                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
-                      index === currentImageIndex ? "opacity-100" : "opacity-0"
-                    }`}
+                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${index === currentImageIndex ? "opacity-100" : "opacity-0"
+                      }`}
                     loading={index === 0 ? "eager" : "lazy"}
                   />
                 ))}
@@ -357,11 +356,10 @@ const ProductDetail = () => {
                       <button
                         key={index}
                         onClick={() => setCurrentImageIndex(index)}
-                        className={`h-2 rounded-full transition-all ${
-                          index === currentImageIndex
+                        className={`h-2 rounded-full transition-all ${index === currentImageIndex
                             ? "w-8 bg-white dark:bg-gray-200"
                             : "w-2 bg-white/50 dark:bg-gray-200/50"
-                        }`}
+                          }`}
                         aria-label={`Go to image ${index + 1}`}
                       />
                     ))}
@@ -474,9 +472,8 @@ const ProductDetail = () => {
                         <button
                           key={size}
                           onClick={() => setSelectedSize(size)}
-                          className={`px-2 py-3 font-semibold rounded-md transition-all hover:scale-105 ${
-                            selectedSize === size ? "" : ""
-                          }`}
+                          className={`px-6 py-3 font-semibold rounded-md transition-all hover:scale-105 ${selectedSize === size ? "" : ""
+                            }`}
                           style={{
                             fontFamily:
                               '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
