@@ -399,14 +399,14 @@ const Store = () => {
                   {filteredProducts.length === 1 ? "item" : "items"}
                 </p>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="flex justify-center gap-4">
                 {filteredProducts.map((product) => {
                   return (
                     <motion.div
                       key={product.id}
                       variants={fadeInUp}
                       whileHover={{ y: -4, scale: 1.02 }}
-                      className="group relative overflow-hidden rounded-lg flex flex-col cursor-pointer w-full"
+                      className="group relative overflow-hidden rounded-lg flex flex-col cursor-pointer w-full max-w-md"
                       onClick={() => navigate(`/store/product/${product.id}`)}
                     >
                       {/* Clear Liquid Glass Background Blobs */}
@@ -419,7 +419,7 @@ const Store = () => {
                       </div>
 
                       {/* Clear Liquid Glass Card */}
-                      <div className="relative rounded-lg backdrop-blur-2xl border border-white/40 dark:border-white/25 shadow-[0_8px_32px_0_rgba(255,255,255,0.2)] overflow-hidden flex flex-col">
+                      <div className="relative rounded-lg backdrop-blur-2xl shadow-[0_8px_32px_0_rgba(255,255,255,0.2)] overflow-hidden flex flex-col">
                         {/* Fluid gradient overlays - muted colors */}
                         <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-gray-400/8 via-transparent to-gray-300/5"></div>
                         <div className="absolute inset-0 rounded-lg bg-gradient-to-tl from-transparent via-gray-500/6 to-gray-400/8"></div>
