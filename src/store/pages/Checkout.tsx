@@ -333,7 +333,7 @@ const Checkout = () => {
           {/* Header */}
           <div>
             <h1 className="text-4xl sm:text-5xl font-bold mb-2 text-black">
-              Checkout
+              CHECKOUT
             </h1>
             {/* <p className="text-black">
               Review your order and complete your purchase
@@ -398,102 +398,92 @@ const Checkout = () => {
                   {items.map((item) => (
                     <div
                       key={item.id}
-                      className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 pb-4 border-b border-white/20 last:border-0"
+                      className="relative flex flex-row gap-3 pb-4 border-b border-white/20 last:border-0"
                     >
-                      <div className="flex items-center gap-3 sm:gap-4 flex-1">
+                      {/* Left Column - Image */}
+                      <div className="flex-shrink-0 overflow-visible">
                         <img
                           src={item.image}
                           alt={item.title}
-                          className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg flex-shrink-0"
+                          className="w-full object-contain rounded-lg"
+                          style={{ height: "170px", width: "100%" }}
                         />
-                        <div className="flex-1 min-w-0">
-                          <h3
-                            className="text-base sm:text-lg mb-2 sm:mb-0"
-                            style={{ color: "black" }}
+                      </div>
+                      {/* Right Column - Content */}
+                      <div className="flex-1 flex flex-col gap-3 min-w-0 relative">
+                        {/* X Button - Top Right */}
+                        <div className="flex justify-end absolute top-0 right-0">
+                          <button
+                            onClick={() => removeItem(item.id)}
+                            className="p-2 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition-colors flex-shrink-0"
+                            aria-label="Remove item"
                           >
+                            <X className="h-5 w-5" />
+                          </button>
+                        </div>
+                        {/* Description */}
+                        <div className="w-full pt-8">
+                          <h3 className="text-base" style={{ color: "black" }}>
                             {item.title}
                           </h3>
-                          <div className="flex items-center justify-between sm:justify-start sm:gap-3">
-                            <div className="flex items-center gap-1">
-                              <button
-                                onClick={() =>
-                                  updateQuantity(item.id, item.quantity - 1)
-                                }
-                                className="quantity-toggle flex items-center justify-center w-6 h-6 rounded-md transition-all hover:scale-105"
-                                style={{
-                                  backgroundColor: "#f0f0f0",
-                                  color: "rgb(80, 80, 80)",
-                                  boxShadow:
-                                    "rgba(255, 255, 255, 0.9) -1px -1px 1px, rgba(0, 0, 0, 0.2) 1px 1px 2px, rgba(255, 255, 255, 0.5) 0px 0px 1px",
-                                  minWidth: "24px",
-                                  minHeight: "24px",
-                                  maxWidth: "24px",
-                                  maxHeight: "24px",
-                                }}
-                                aria-label="Decrease quantity"
-                              >
-                                <Minus className="h-3 w-3" />
-                              </button>
-                              <span
-                                className="font-semibold min-w-[1.5rem] text-center text-lg"
-                                style={{
-                                  color: "black",
-                                }}
-                              >
-                                {item.quantity}
-                              </span>
-                              <button
-                                onClick={() =>
-                                  updateQuantity(item.id, item.quantity + 1)
-                                }
-                                className="quantity-toggle flex items-center justify-center w-6 h-6 rounded-md transition-all hover:scale-105"
-                                style={{
-                                  backgroundColor: "#f0f0f0",
-                                  color: "rgb(80, 80, 80)",
-                                  boxShadow:
-                                    "rgba(255, 255, 255, 0.9) -1px -1px 1px, rgba(0, 0, 0, 0.2) 1px 1px 2px, rgba(255, 255, 255, 0.5) 0px 0px 1px",
-                                  minWidth: "24px",
-                                  minHeight: "24px",
-                                  maxWidth: "24px",
-                                  maxHeight: "24px",
-                                }}
-                                aria-label="Increase quantity"
-                              >
-                                <Plus className="h-3 w-3" />
-                              </button>
-                            </div>
-                            <div className="flex items-center gap-3 sm:hidden">
-                              <p
-                                className="font-bold text-base"
-                                style={{ color: "black" }}
-                              >
-                                ${(item.price * item.quantity).toFixed(2)}
-                              </p>
-                              <button
-                                onClick={() => removeItem(item.id)}
-                                className="p-2 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
-                                aria-label="Remove item"
-                              >
-                                <X className="h-5 w-5" />
-                              </button>
-                            </div>
+                        </div>
+                        {/* Price and Toggler */}
+                        <div className="flex flex-col gap-3 mt-auto">
+                          <p
+                            className="font-bold text-lg"
+                            style={{ color: "black" }}
+                          >
+                            ${(item.price * item.quantity).toFixed(2)}
+                          </p>
+                          <div className="flex items-center gap-1">
+                            <button
+                              onClick={() =>
+                                updateQuantity(item.id, item.quantity - 1)
+                              }
+                              className="quantity-toggle flex items-center justify-center w-6 h-6 rounded-full transition-all hover:scale-105"
+                              style={{
+                                backgroundColor: "#f0f0f0",
+                                color: "rgb(80, 80, 80)",
+                                boxShadow:
+                                  "rgba(255, 255, 255, 0.9) -1px -1px 1px, rgba(0, 0, 0, 0.2) 1px 1px 2px, rgba(255, 255, 255, 0.5) 0px 0px 1px",
+                                minWidth: "24px",
+                                minHeight: "24px",
+                                maxWidth: "24px",
+                                maxHeight: "24px",
+                              }}
+                              aria-label="Decrease quantity"
+                            >
+                              <Minus className="h-3 w-3" />
+                            </button>
+                            <span
+                              className="font-semibold min-w-[1.5rem] text-center text-lg"
+                              style={{
+                                color: "black",
+                              }}
+                            >
+                              {item.quantity}
+                            </span>
+                            <button
+                              onClick={() =>
+                                updateQuantity(item.id, item.quantity + 1)
+                              }
+                              className="quantity-toggle flex items-center justify-center w-6 h-6 rounded-full transition-all hover:scale-105"
+                              style={{
+                                backgroundColor: "#f0f0f0",
+                                color: "rgb(80, 80, 80)",
+                                boxShadow:
+                                  "rgba(255, 255, 255, 0.9) -1px -1px 1px, rgba(0, 0, 0, 0.2) 1px 1px 2px, rgba(255, 255, 255, 0.5) 0px 0px 1px",
+                                minWidth: "24px",
+                                minHeight: "24px",
+                                maxWidth: "24px",
+                                maxHeight: "24px",
+                              }}
+                              aria-label="Increase quantity"
+                            >
+                              <Plus className="h-3 w-3" />
+                            </button>
                           </div>
                         </div>
-                      </div>
-                      <div className="hidden sm:flex sm:text-right sm:items-center gap-4">
-                        <p
-                          className="font-bold text-lg"
-                          style={{ color: "black" }}
-                        >
-                          ${(item.price * item.quantity).toFixed(2)}
-                        </p>
-                        <button
-                          onClick={() => removeItem(item.id)}
-                          className="p-2 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
-                          aria-label="Remove item"
-                        >
-                          <X className="h-5 w-5" />
-                        </button>
                       </div>
                     </div>
                   ))}

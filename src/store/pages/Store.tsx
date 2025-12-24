@@ -1,8 +1,5 @@
 import { motion } from "framer-motion";
 import {
-  Music,
-  Activity,
-  Palette,
   ShoppingCart,
   User,
   ChevronLeft,
@@ -139,26 +136,26 @@ const Store = () => {
     },
   };
 
-  const mainCategories = [
-    {
-      id: "art",
-      title: "Art",
-      icon: Palette,
-      color: "orange",
-    },
-    {
-      id: "music",
-      title: "Music",
-      icon: Music,
-      color: "purple",
-    },
-    {
-      id: "sports",
-      title: "Sports",
-      icon: Activity,
-      color: "emerald",
-    },
-  ];
+  // const mainCategories = [
+  //   {
+  //     id: "art",
+  //     title: "Art",
+  //     icon: Palette,
+  //     color: "orange",
+  //   },
+  //   {
+  //     id: "music",
+  //     title: "Music",
+  //     icon: Music,
+  //     color: "purple",
+  //   },
+  //   {
+  //     id: "sports",
+  //     title: "Sports",
+  //     icon: Activity,
+  //     color: "emerald",
+  //   },
+  // ];
 
   const products = storeProducts;
 
