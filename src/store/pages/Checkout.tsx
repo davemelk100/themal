@@ -26,26 +26,62 @@ const Checkout = () => {
     }
   }, [items, navigate]);
 
-  const handleCheckout = async () => {
-    if (items.length === 0) return;
+  const handleCheckout = async (e?: React.MouseEvent) => {
+    console.log("Button clicked! Items:", items.length, "Loading:", loading);
+    e?.preventDefault();
+    e?.stopPropagation();
+
+    if (items.length === 0) {
+      console.log("Cart is empty, cannot checkout");
+      setError("Your cart is empty");
+      return;
+    }
 
     setLoading(true);
     setError(null);
 
     try {
       // Prepare line items for Stripe
-      const lineItems = items.map((item) => ({
-        price_data: {
-          currency: "usd",
-          product_data: {
-            name: item.title,
-            description: item.description,
-            images: [item.image],
+      const lineItems = items.map((item) => {
+        const productData: {
+          name: string;
+          description?: string;
+          images?: string[];
+        } = {
+          name: item.title,
+        };
+
+        // Only include description if it's not empty
+        if (item.description && item.description.trim() !== "") {
+          productData.description = item.description;
+        }
+
+        // Only include images if image exists and convert to absolute URL
+        if (item.image) {
+          // Convert relative URLs to absolute URLs
+          let imageUrl = item.image;
+          if (imageUrl.startsWith("/")) {
+            imageUrl = `${window.location.origin}${imageUrl}`;
+          } else if (
+            !imageUrl.startsWith("http://") &&
+            !imageUrl.startsWith("https://")
+          ) {
+            imageUrl = `${window.location.origin}/${imageUrl}`;
+          }
+          productData.images = [imageUrl];
+        }
+
+        return {
+          price_data: {
+            currency: "usd",
+            product_data: productData,
+            unit_amount: Math.round(item.price * 100), // Convert to cents
           },
-          unit_amount: Math.round(item.price * 100), // Convert to cents
-        },
-        quantity: item.quantity,
-      }));
+          quantity: item.quantity,
+        };
+      });
+
+      console.log("Creating checkout session with items:", lineItems);
 
       // Call Netlify function to create checkout session
       const response = await fetch(
@@ -57,11 +93,17 @@ const Checkout = () => {
           },
           body: JSON.stringify({
             items: lineItems,
-            successUrl: `${window.location.origin}/store/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-            cancelUrl: `${window.location.origin}/store/checkout`,
+            successUrl: `${
+              window.location.origin || "http://localhost:5173"
+            }/store/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+            cancelUrl: `${
+              window.location.origin || "http://localhost:5173"
+            }/store/checkout`,
           }),
         }
       );
+
+      console.log("Response status:", response.status);
 
       // Check if response has content before parsing
       const text = await response.text();
@@ -70,7 +112,7 @@ const Checkout = () => {
       if (!text) {
         console.error("Empty response from server. Status:", response.status);
         throw new Error(
-          `Server returned empty response (${response.status}). Check Netlify function logs.`
+          `Server returned empty response (${response.status}). Make sure the dev server is running: npm run dev:server`
         );
       }
 
@@ -92,13 +134,17 @@ const Checkout = () => {
 
       // Redirect to Stripe Checkout
       if (data.url) {
+        console.log("Redirecting to Stripe Checkout:", data.url);
         window.location.href = data.url;
       } else {
-        throw new Error("No checkout URL received");
+        throw new Error("No checkout URL received from server");
       }
     } catch (err: any) {
       console.error("Checkout error:", err);
-      setError(err.message || "An error occurred during checkout");
+      setError(
+        err.message ||
+          "An error occurred during checkout. Make sure the dev server is running: npm run dev:server"
+      );
       setLoading(false);
     }
   };
@@ -201,7 +247,7 @@ const Checkout = () => {
               className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
             >
               <span
-                className="font-bold tracking-tight"
+                className="font-bold tracking-tight balm-logo"
                 style={{
                   color: "#d0d0d0",
                   fontSize: "48px",
@@ -467,49 +513,96 @@ const Checkout = () => {
                 {/* Subtle inner shadow for depth */}
                 <div className="absolute inset-0 rounded-xl shadow-[inset_0_1px_2px_0_rgba(255,255,255,0.2)] pointer-events-none"></div>
                 <h2
-                  className="text-xl font-bold mb-4 relative z-10"
+                  className="mb-4 relative z-10"
                   style={{
-                    letterSpacing: "-1.25px",
-                    color: "#dbdbdb",
+                    letterSpacing: "normal",
+                    color: "black",
+                    fontSize: "16px",
+                    fontWeight: "normal",
                   }}
                 >
                   Order Total
                 </h2>
                 <div className="space-y-3 mb-6 relative z-10">
                   <div className="flex justify-between">
-                    <span style={{ color: "black" }}>Subtotal</span>
-                    <span className="font-semibold" style={{ color: "black" }}>
+                    <span
+                      style={{
+                        color: "black",
+                        fontSize: "16px",
+                        fontWeight: "normal",
+                      }}
+                    >
+                      Subtotal
+                    </span>
+                    <span
+                      style={{
+                        color: "black",
+                        fontSize: "16px",
+                        fontWeight: "normal",
+                      }}
+                    >
                       ${total.toFixed(2)}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span style={{ color: "black" }}>Shipping</span>
-                    <span className="font-semibold" style={{ color: "black" }}>
+                    <span
+                      style={{
+                        color: "black",
+                        fontSize: "16px",
+                        fontWeight: "normal",
+                      }}
+                    >
+                      Shipping
+                    </span>
+                    <span
+                      style={{
+                        color: "black",
+                        fontSize: "16px",
+                        fontWeight: "normal",
+                      }}
+                    >
                       Calculated at checkout
                     </span>
                   </div>
-                  <div className="border-t border-white/20 pt-3 flex justify-between text-lg">
-                    <span className="font-bold" style={{ color: "black" }}>
+                  <div className="border-t border-white/20 pt-3 flex justify-between">
+                    <span
+                      style={{
+                        color: "black",
+                        fontSize: "16px",
+                        fontWeight: "normal",
+                      }}
+                    >
                       Total
                     </span>
-                    <span className="font-bold" style={{ color: "black" }}>
+                    <span
+                      style={{
+                        color: "black",
+                        fontSize: "16px",
+                        fontWeight: "normal",
+                      }}
+                    >
                       ${total.toFixed(2)}
                     </span>
                   </div>
                 </div>
 
                 <button
-                  onClick={handleCheckout}
+                  type="button"
+                  onClick={(e) => {
+                    console.log("Button onClick fired");
+                    handleCheckout(e);
+                  }}
                   disabled={loading || items.length === 0}
-                  className="w-full px-2 py-3 font-semibold rounded-md transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full px-2 py-3 font-semibold rounded-md transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 relative z-20"
                   style={{
-                    fontFamily:
-                      '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-                    fontSize: "20px",
+                    fontFamily: '"Geist Mono", monospace',
+                    fontSize: "16px",
                     backgroundColor: "#f0f0f0",
                     color: "rgb(80, 80, 80)",
                     boxShadow:
                       "rgba(255, 255, 255, 0.9) -1px -1px 1px, rgba(0, 0, 0, 0.2) 1px 1px 2px, rgba(255, 255, 255, 0.5) 0px 0px 1px",
+                    position: "relative",
+                    zIndex: 20,
                   }}
                 >
                   {loading ? (
@@ -529,9 +622,8 @@ const Checkout = () => {
                   onClick={() => navigate("/store")}
                   className="w-full mt-3 px-2 py-3 font-semibold rounded-md transition-all hover:scale-105 relative z-10"
                   style={{
-                    fontFamily:
-                      '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-                    fontSize: "20px",
+                    fontFamily: '"Geist Mono", monospace',
+                    fontSize: "16px",
                     backgroundColor: "#f0f0f0",
                     color: "rgb(80, 80, 80)",
                     boxShadow:

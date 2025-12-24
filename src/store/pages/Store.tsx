@@ -171,24 +171,14 @@ const Store = () => {
       const stripeButtons = document.querySelectorAll("stripe-buy-button");
       stripeButtons.forEach((button) => {
         const shadowRoot = button.shadowRoot;
-        if (
-          shadowRoot &&
-          !shadowRoot.querySelector("style[data-stripe-button-style]")
-        ) {
-          const style = document.createElement("style");
-          style.setAttribute("data-stripe-button-style", "true");
-          style.textContent = `
-            button {
-              width: 100% !important;
-              font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif !important;
-              font-size: 20px !important;
-              border-radius: 0.375rem !important;
-              padding: 0.5rem 0.5rem !important;
-              height: 45px !important;
-              font-weight: 600 !important;
-            }
-          `;
-          shadowRoot.appendChild(style);
+        if (shadowRoot) {
+          // Remove existing style if present
+          const existingStyle = shadowRoot.querySelector(
+            "style[data-stripe-button-style]"
+          );
+          if (existingStyle) {
+            existingStyle.remove();
+          }
         }
       });
     };
@@ -196,9 +186,10 @@ const Store = () => {
     // Try to style immediately
     styleStripeButtons();
 
-    // Also try after a short delay in case buttons load asynchronously
+    // Also try after delays in case buttons load asynchronously
     const timeoutId = setTimeout(styleStripeButtons, 500);
     const timeoutId2 = setTimeout(styleStripeButtons, 1000);
+    const timeoutId3 = setTimeout(styleStripeButtons, 2000);
 
     // Use MutationObserver to watch for new buttons being added
     const observer = new MutationObserver(() => {
@@ -213,6 +204,7 @@ const Store = () => {
     return () => {
       clearTimeout(timeoutId);
       clearTimeout(timeoutId2);
+      clearTimeout(timeoutId3);
       observer.disconnect();
     };
   }, [filteredProducts]);
@@ -253,7 +245,7 @@ const Store = () => {
         }
         .stripe-buy-button-wrapper stripe-buy-button::part(button) {
           width: 100% !important;
-          font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif !important;
+          font-family: "Geist Mono", monospace !important;
           font-size: 20px !important;
           border-radius: 0.375rem !important;
           padding: 0.5rem 0.5rem !important;
@@ -332,7 +324,7 @@ const Store = () => {
               className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
             >
               <span
-                className="font-bold tracking-tight"
+                className="font-bold tracking-tight balm-logo"
                 style={{
                   color: "#d0d0d0",
                   fontSize: "48px",
@@ -503,8 +495,7 @@ const Store = () => {
                           <div
                             className="store-card-content flex flex-col flex-grow"
                             style={{
-                              fontFamily:
-                                '"Helvetica", "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
+                              fontFamily: '"Geist Mono", monospace',
                               padding: "8px",
                               minWidth: 0,
                             }}
@@ -512,8 +503,7 @@ const Store = () => {
                             <h3
                               className="font-bold mb-1 line-clamp-1 cursor-pointer hover:underline store-card-text store-card-h3"
                               style={{
-                                fontFamily:
-                                  '"Helvetica", "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif !important',
+                                fontFamily: '"Geist Mono", monospace',
                                 fontSize: "20px",
                                 color: "black",
                               }}
@@ -523,8 +513,7 @@ const Store = () => {
                             <p
                               className="mb-2 line-clamp-2 store-card-text"
                               style={{
-                                fontFamily:
-                                  '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
+                                fontFamily: '"Geist Mono", monospace',
                                 fontSize: "11px",
                                 color: "black",
                               }}
@@ -535,8 +524,7 @@ const Store = () => {
                               <span
                                 className="font-bold store-card-text"
                                 style={{
-                                  fontFamily:
-                                    '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
+                                  fontFamily: '"Geist Mono", monospace',
                                   fontSize: "18px",
                                   color: "black",
                                 }}
@@ -579,9 +567,8 @@ const Store = () => {
                                   }}
                                   className="flex-1 px-2 font-semibold rounded-md transition-all hover:scale-105 store-card-button"
                                   style={{
-                                    fontFamily:
-                                      '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-                                    fontSize: "20px",
+                                    fontFamily: '"Geist Mono", monospace',
+                                    fontSize: "16px",
                                     backgroundColor: "#f0f0f0",
                                     color: "rgb(80, 80, 80)",
                                     height: "45px",

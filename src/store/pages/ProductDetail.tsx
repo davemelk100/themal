@@ -78,7 +78,7 @@ const ProductDetail = () => {
               {/* BALM - Left Side */}
               <div className="flex items-center gap-3">
                 <span
-                  className="font-bold tracking-tight"
+                  className="font-bold tracking-tight balm-logo"
                   style={{
                     color: "#f0f0f0",
                     fontSize: "48px",
@@ -207,7 +207,7 @@ const ProductDetail = () => {
               className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
             >
               <span
-                className="font-bold tracking-tight"
+                className="font-bold tracking-tight balm-logo"
                 style={{
                   color: "#d0d0d0",
                   fontSize: "48px",
@@ -290,9 +290,8 @@ const ProductDetail = () => {
           onClick={() => navigate("/store")}
           className="px-2 py-3 font-semibold rounded-md transition-all hover:scale-105 mb-8 flex items-center gap-2"
           style={{
-            fontFamily:
-              '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-            fontSize: "20px",
+            fontFamily: '"Geist Mono", monospace',
+            fontSize: "16px",
             backgroundColor: "#f0f0f0",
             color: "rgb(80, 80, 80)",
             boxShadow:
@@ -414,9 +413,8 @@ const ProductDetail = () => {
                   <h1
                     className="font-bold mb-4"
                     style={{
-                      fontFamily:
-                        '"Helvetica", "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-                      fontSize: "20px",
+                      fontFamily: '"Geist Mono", monospace',
+                      fontSize: "16px",
                       color: "black",
                     }}
                   >
@@ -425,8 +423,7 @@ const ProductDetail = () => {
                   <p
                     className="font-bold mb-6"
                     style={{
-                      fontFamily:
-                        '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
+                      fontFamily: '"Geist Mono", monospace',
                       fontSize: "18px",
                       color: "black",
                     }}
@@ -439,8 +436,7 @@ const ProductDetail = () => {
                   <p
                     className="leading-relaxed"
                     style={{
-                      fontFamily:
-                        '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
+                      fontFamily: '"Geist Mono", monospace',
                       fontSize: "14px",
                       color: "black",
                     }}
@@ -455,8 +451,7 @@ const ProductDetail = () => {
                     <label
                       className="block font-semibold mb-3"
                       style={{
-                        fontFamily:
-                          '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
+                        fontFamily: '"Geist Mono", monospace',
                         fontSize: "14px",
                         color: "black",
                       }}
@@ -472,9 +467,8 @@ const ProductDetail = () => {
                             selectedSize === size ? "" : ""
                           }`}
                           style={{
-                            fontFamily:
-                              '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-                            fontSize: "20px",
+                            fontFamily: '"Geist Mono", monospace',
+                            fontSize: "16px",
                             backgroundColor:
                               selectedSize === size ? "#f0f0f0" : "#f0f0f0",
                             color: "rgb(80, 80, 80)",
@@ -516,9 +510,8 @@ const ProductDetail = () => {
                     }}
                     className="w-full px-2 py-3 font-semibold rounded-md transition-all hover:scale-105"
                     style={{
-                      fontFamily:
-                        '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-                      fontSize: "20px",
+                      fontFamily: '"Geist Mono", monospace',
+                      fontSize: "16px",
                       backgroundColor: "#f0f0f0",
                       color: "rgb(80, 80, 80)",
                       boxShadow:
@@ -580,9 +573,8 @@ const ProductDetail = () => {
                   <h3
                     className="font-semibold mb-3"
                     style={{
-                      fontFamily:
-                        '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-                      fontSize: "20px",
+                      fontFamily: '"Geist Mono", monospace',
+                      fontSize: "16px",
                       color: "black",
                     }}
                   >
@@ -591,9 +583,8 @@ const ProductDetail = () => {
                   <div
                     className="space-y-2 whitespace-pre-line"
                     style={{
-                      fontFamily:
-                        '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-                      fontSize: "20px",
+                      fontFamily: '"Geist Mono", monospace',
+                      fontSize: "16px",
                       color: "black",
                     }}
                   >
@@ -610,9 +601,8 @@ const ProductDetail = () => {
                   <h3
                     className="font-semibold mb-3"
                     style={{
-                      fontFamily:
-                        '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-                      fontSize: "20px",
+                      fontFamily: '"Geist Mono", monospace',
+                      fontSize: "16px",
                       color: "black",
                     }}
                   >
@@ -622,9 +612,8 @@ const ProductDetail = () => {
                     <table
                       className="w-full border-collapse"
                       style={{
-                        fontFamily:
-                          '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-                        fontSize: "20px",
+                        fontFamily: '"Geist Mono", monospace',
+                        fontSize: "16px",
                         color: "black",
                       }}
                     >

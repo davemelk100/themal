@@ -37,7 +37,8 @@ export function Toaster() {
               zIndex: 99999,
               position: "fixed",
               top: "1rem",
-              right: "1rem",
+              left: "50%",
+              transform: "translateX(-50%)",
               minWidth: "300px",
               maxWidth: "420px",
             }}

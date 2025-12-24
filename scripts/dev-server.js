@@ -52,34 +52,108 @@ app.post("/create-checkout-session", async (req, res) => {
       return res.status(500).json({ error: "Stripe secret key not configured locally" });
     }
 
-    const lineItems = items.map((item) => ({
-      price_data: {
-        currency: item.price_data.currency || "usd",
-        product_data: {
-          name: item.price_data.product_data.name,
-          description: item.price_data.product_data.description,
-          images: item.price_data.product_data.images,
+    const lineItems = items.map((item) => {
+      const productData = {
+        name: item.price_data.product_data.name,
+      };
+      
+      // Only include description if it's not empty
+      if (item.price_data.product_data.description && item.price_data.product_data.description.trim() !== "") {
+        productData.description = item.price_data.product_data.description;
+      }
+      
+      // Only include images if they exist and are not empty
+      // Convert relative URLs to absolute URLs for Stripe
+      if (item.price_data.product_data.images && item.price_data.product_data.images.length > 0) {
+        const origin = req.headers.origin || 'http://localhost:5173';
+        productData.images = item.price_data.product_data.images
+          .filter(img => img && img.trim() !== "")
+          .map(img => {
+            // Convert relative URLs to absolute
+            if (img.startsWith('/')) {
+              return `${origin}${img}`;
+            } else if (!img.startsWith('http://') && !img.startsWith('https://')) {
+              return `${origin}/${img}`;
+            }
+            return img;
+          });
+      }
+      
+      return {
+        price_data: {
+          currency: item.price_data.currency || "usd",
+          product_data: productData,
+          unit_amount: item.price_data.unit_amount,
         },
-        unit_amount: item.price_data.unit_amount,
-      },
-      quantity: item.quantity,
-    }));
-
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      line_items: lineItems,
-      mode: "payment",
-      success_url: successUrl || `${req.headers.origin}/store/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: cancelUrl || `${req.headers.origin}/store/checkout`,
+        quantity: item.quantity,
+      };
     });
 
-    res.json({
-      sessionId: session.id,
-      url: session.url,
+    // Build URLs with proper fallback
+    const origin = req.headers.origin || 'http://localhost:5173';
+    const finalSuccessUrl = successUrl || `${origin}/store/checkout/success?session_id={CHECKOUT_SESSION_ID}`;
+    const finalCancelUrl = cancelUrl || `${origin}/store/checkout`;
+    
+    console.log("Creating Stripe session with URLs:", {
+      origin,
+      successUrl: finalSuccessUrl,
+      cancelUrl: finalCancelUrl,
+      receivedSuccessUrl: successUrl,
+      receivedCancelUrl: cancelUrl
     });
+    
+    // Validate URLs before sending to Stripe
+    try {
+      new URL(finalSuccessUrl);
+      new URL(finalCancelUrl);
+    } catch (urlError) {
+      console.error("Invalid URL detected:", {
+        successUrl: finalSuccessUrl,
+        cancelUrl: finalCancelUrl,
+        error: urlError.message
+      });
+      return res.status(400).json({
+        error: "Invalid URL format",
+        details: {
+          successUrl: finalSuccessUrl,
+          cancelUrl: finalCancelUrl,
+          error: urlError.message
+        }
+      });
+    }
+    
+    try {
+      const session = await stripe.checkout.sessions.create({
+        payment_method_types: ["card"],
+        line_items: lineItems,
+        mode: "payment",
+        success_url: finalSuccessUrl,
+        cancel_url: finalCancelUrl,
+      });
+
+      console.log("Stripe session created successfully:", session.id);
+      
+      res.json({
+        sessionId: session.id,
+        url: session.url,
+      });
+    } catch (stripeError) {
+      console.error("Stripe API error:", {
+        message: stripeError.message,
+        type: stripeError.type,
+        code: stripeError.code,
+        param: stripeError.param,
+        success_url: finalSuccessUrl,
+        cancel_url: finalCancelUrl
+      });
+      return res.status(500).json({
+        error: stripeError.message || "Stripe API error",
+        details: stripeError.param || stripeError.type
+      });
+    }
   } catch (error) {
-    console.error("Stripe error:", error);
-    res.status(500).json({ error: error.message });
+    console.error("Server error:", error);
+    res.status(500).json({ error: error.message || "Internal server error" });
   }
 });
 
