@@ -20,9 +20,10 @@ const CheckoutSuccess = () => {
   const sessionId = searchParams.get("session_id");
 
   useEffect(() => {
-    // Clear cart on successful checkout
+    // Clear cart on successful checkout (only once on mount)
     clearCart();
-  }, [clearCart]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty dependency array - only run once on mount
 
   return (
     <div
@@ -206,29 +207,43 @@ const CheckoutSuccess = () => {
               </div>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl font-bold text-white">
+            <h1
+              className="text-4xl sm:text-5xl font-bold"
+              style={{ color: "black" }}
+            >
               Thank You!
             </h1>
-            <p className="text-lg text-white">
+            <p className="text-lg" style={{ color: "black" }}>
               Your order has been received and is being processed.
             </p>
 
             {sessionId && (
-              <p className="text-sm text-white/80">Order ID: {sessionId}</p>
+              <p className="text-sm" style={{ color: "black" }}>
+                Order ID: {sessionId}
+              </p>
             )}
 
             <div className="pt-6">
               <button
-                onClick={() => navigate("/store")}
-                className="px-2 py-3 font-semibold rounded-md transition-all hover:scale-105"
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log("Continue Shopping clicked");
+                  navigate("/store");
+                }}
+                className="px-2 py-3 font-semibold rounded-md transition-all hover:scale-105 relative z-20"
                 style={{
                   fontFamily:
                     '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-                  fontSize: "20px",
+                  fontSize: "16px",
                   backgroundColor: "#f0f0f0",
                   color: "rgb(80, 80, 80)",
                   boxShadow:
                     "rgba(255, 255, 255, 0.9) -1px -1px 1px, rgba(0, 0, 0, 0.2) 1px 1px 2px, rgba(255, 255, 255, 0.5) 0px 0px 1px",
+                  position: "relative",
+                  zIndex: 20,
+                  cursor: "pointer",
                 }}
               >
                 Continue Shopping

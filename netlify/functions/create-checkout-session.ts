@@ -75,18 +75,34 @@ export const handler: Handler = async (event, context) => {
 
     // Build line items for Stripe
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = items.map(
-      (item: LineItem) => ({
-        price_data: {
-          currency: item.price_data.currency || "usd",
-          product_data: {
-            name: item.price_data.product_data.name,
-            description: item.price_data.product_data.description,
-            images: item.price_data.product_data.images,
+      (item: LineItem) => {
+        const productData: {
+          name: string;
+          description?: string;
+          images?: string[];
+        } = {
+          name: item.price_data.product_data.name,
+        };
+        
+        // Only include description if it's not empty
+        if (item.price_data.product_data.description && item.price_data.product_data.description.trim() !== "") {
+          productData.description = item.price_data.product_data.description;
+        }
+        
+        // Only include images if they exist and are not empty
+        if (item.price_data.product_data.images && item.price_data.product_data.images.length > 0) {
+          productData.images = item.price_data.product_data.images.filter(img => img && img.trim() !== "");
+        }
+        
+        return {
+          price_data: {
+            currency: item.price_data.currency || "usd",
+            product_data: productData,
+            unit_amount: item.price_data.unit_amount,
           },
-          unit_amount: item.price_data.unit_amount,
-        },
-        quantity: item.quantity,
-      })
+          quantity: item.quantity,
+        };
+      }
     );
 
     // Create Stripe Checkout Session

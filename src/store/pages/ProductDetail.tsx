@@ -292,7 +292,7 @@ const ProductDetail = () => {
           style={{
             fontFamily:
               '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-            fontSize: "20px",
+            fontSize: "16px",
             backgroundColor: "#f0f0f0",
             color: "rgb(80, 80, 80)",
             boxShadow:
@@ -416,7 +416,7 @@ const ProductDetail = () => {
                     style={{
                       fontFamily:
                         '"Helvetica", "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-                      fontSize: "20px",
+                      fontSize: "16px",
                       color: "black",
                     }}
                   >
@@ -474,7 +474,7 @@ const ProductDetail = () => {
                           style={{
                             fontFamily:
                               '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-                            fontSize: "20px",
+                            fontSize: "16px",
                             backgroundColor:
                               selectedSize === size ? "#f0f0f0" : "#f0f0f0",
                             color: "rgb(80, 80, 80)",
@@ -518,7 +518,7 @@ const ProductDetail = () => {
                     style={{
                       fontFamily:
                         '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-                      fontSize: "20px",
+                      fontSize: "16px",
                       backgroundColor: "#f0f0f0",
                       color: "rgb(80, 80, 80)",
                       boxShadow:
@@ -582,7 +582,7 @@ const ProductDetail = () => {
                     style={{
                       fontFamily:
                         '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-                      fontSize: "20px",
+                      fontSize: "16px",
                       color: "black",
                     }}
                   >
@@ -593,7 +593,7 @@ const ProductDetail = () => {
                     style={{
                       fontFamily:
                         '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-                      fontSize: "20px",
+                      fontSize: "16px",
                       color: "black",
                     }}
                   >
@@ -612,7 +612,7 @@ const ProductDetail = () => {
                     style={{
                       fontFamily:
                         '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-                      fontSize: "20px",
+                      fontSize: "16px",
                       color: "black",
                     }}
                   >
@@ -624,7 +624,7 @@ const ProductDetail = () => {
                       style={{
                         fontFamily:
                           '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-                        fontSize: "20px",
+                        fontSize: "16px",
                         color: "black",
                       }}
                     >

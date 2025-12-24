@@ -171,24 +171,49 @@ const Store = () => {
       const stripeButtons = document.querySelectorAll("stripe-buy-button");
       stripeButtons.forEach((button) => {
         const shadowRoot = button.shadowRoot;
-        if (
-          shadowRoot &&
-          !shadowRoot.querySelector("style[data-stripe-button-style]")
-        ) {
+        if (shadowRoot) {
+          // Remove existing style if present
+          const existingStyle = shadowRoot.querySelector(
+            "style[data-stripe-button-style]"
+          );
+          if (existingStyle) {
+            existingStyle.remove();
+          }
+
           const style = document.createElement("style");
           style.setAttribute("data-stripe-button-style", "true");
           style.textContent = `
             button {
               width: 100% !important;
               font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif !important;
-              font-size: 20px !important;
+              font-size: 16px !important;
               border-radius: 0.375rem !important;
               padding: 0.5rem 0.5rem !important;
               height: 45px !important;
               font-weight: 600 !important;
             }
+            .BuyButton-ButtonText,
+            span.BuyButton-ButtonText,
+            button .BuyButton-ButtonText,
+            button span.BuyButton-ButtonText,
+            span.Text,
+            .Text,
+            button span,
+            button * {
+              font-size: 16px !important;
+            }
           `;
           shadowRoot.appendChild(style);
+
+          // Also try to directly style any existing span elements
+          const spans = shadowRoot.querySelectorAll(
+            "span.BuyButton-ButtonText, .BuyButton-ButtonText, span.Text, .Text"
+          );
+          spans.forEach((span: any) => {
+            if (span.style) {
+              span.style.fontSize = "16px";
+            }
+          });
         }
       });
     };
@@ -196,9 +221,10 @@ const Store = () => {
     // Try to style immediately
     styleStripeButtons();
 
-    // Also try after a short delay in case buttons load asynchronously
+    // Also try after delays in case buttons load asynchronously
     const timeoutId = setTimeout(styleStripeButtons, 500);
     const timeoutId2 = setTimeout(styleStripeButtons, 1000);
+    const timeoutId3 = setTimeout(styleStripeButtons, 2000);
 
     // Use MutationObserver to watch for new buttons being added
     const observer = new MutationObserver(() => {
@@ -213,6 +239,7 @@ const Store = () => {
     return () => {
       clearTimeout(timeoutId);
       clearTimeout(timeoutId2);
+      clearTimeout(timeoutId3);
       observer.disconnect();
     };
   }, [filteredProducts]);
@@ -581,7 +608,7 @@ const Store = () => {
                                   style={{
                                     fontFamily:
                                       '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-                                    fontSize: "20px",
+                                    fontSize: "16px",
                                     backgroundColor: "#f0f0f0",
                                     color: "rgb(80, 80, 80)",
                                     height: "45px",
