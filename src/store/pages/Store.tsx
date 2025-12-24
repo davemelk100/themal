@@ -181,10 +181,10 @@ const Store = () => {
             button {
               width: 100% !important;
               font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif !important;
-              font-size: 11px !important;
+              font-size: 14px !important;
               border-radius: 0.375rem !important;
               padding: 0.5rem 0.5rem !important;
-              min-height: 32px !important;
+              height: 45px !important;
               font-weight: 600 !important;
             }
           `;
@@ -244,7 +244,7 @@ const Store = () => {
           66% { transform: translate(20px, -20px) scale(1.1); }
         }
         .stripe-buy-button-wrapper {
-          width: 100%;
+          flex: 1;
           display: flex;
         }
         .stripe-buy-button-wrapper stripe-buy-button {
@@ -254,10 +254,10 @@ const Store = () => {
         .stripe-buy-button-wrapper stripe-buy-button::part(button) {
           width: 100% !important;
           font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif !important;
-          font-size: 11px !important;
+          font-size: 14px !important;
           border-radius: 0.375rem !important;
           padding: 0.5rem 0.5rem !important;
-          min-height: 32px !important;
+          height: 45px !important;
           font-weight: 600 !important;
         }
       `}</style>
@@ -326,32 +326,21 @@ const Store = () => {
             transition={{ duration: 0.6 }}
             className="flex items-center justify-between"
           >
-            {/* MELKONIAN INDUSTRIES - Left Side */}
+            {/* BALM - Left Side */}
             <button
               onClick={() => navigate("/store")}
               className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
             >
               <span
-                className="font-bold tracking-tight md:hidden"
+                className="font-bold tracking-tight"
                 style={{
-                  color: "#f0f0f0",
+                  color: "#d0d0d0",
                   fontSize: "48px",
                   textShadow:
                     "rgba(255, 255, 255, 0.9) -1px -1px 1px, rgba(0, 0, 0, 0.2) 1px 1px 2px, rgba(255, 255, 255, 0.5) 0px 0px 1px",
                 }}
               >
-                MI
-              </span>
-              <span
-                className="font-bold tracking-tight hidden md:block"
-                style={{
-                  color: "#f0f0f0",
-                  fontSize: "48px",
-                  textShadow:
-                    "rgba(255, 255, 255, 0.9) -1px -1px 1px, rgba(0, 0, 0, 0.2) 1px 1px 2px, rgba(255, 255, 255, 0.5) 0px 0px 1px",
-                }}
-              >
-                MELKONIAN INDUSTRIES
+                BALM
               </span>
             </button>
 
@@ -438,7 +427,7 @@ const Store = () => {
                 <h2
                   className="text-3xl font-bold"
                   style={{
-                    color: "#dbdbdb",
+                    color: "black",
                     letterSpacing: "-1.25px",
                   }}
                 >
@@ -459,7 +448,7 @@ const Store = () => {
                       key={product.id}
                       variants={fadeInUp}
                       whileHover={{ y: -4, scale: 1.02 }}
-                      className="group relative overflow-hidden rounded-lg flex flex-col cursor-pointer w-full max-w-[480px]"
+                      className="group relative overflow-hidden rounded-lg flex flex-col cursor-pointer w-full max-w-[520px]"
                       onClick={() => navigate(`/store/product/${product.id}`)}
                     >
                       {/* Clear Liquid Glass Background Blobs */}
@@ -517,6 +506,7 @@ const Store = () => {
                               fontFamily:
                                 '"Helvetica", "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
                               padding: "8px",
+                              minWidth: 0,
                             }}
                           >
                             <h3
@@ -524,7 +514,7 @@ const Store = () => {
                               style={{
                                 fontFamily:
                                   '"Helvetica", "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif !important',
-                                fontSize: "12px",
+                                fontSize: "20px",
                                 color: "black",
                               }}
                             >
@@ -547,7 +537,7 @@ const Store = () => {
                                 style={{
                                   fontFamily:
                                     '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-                                  fontSize: "12px",
+                                  fontSize: "18px",
                                   color: "black",
                                 }}
                               >

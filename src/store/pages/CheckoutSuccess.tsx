@@ -110,32 +110,21 @@ const CheckoutSuccess = () => {
             transition={{ duration: 0.6 }}
             className="flex items-center justify-between"
           >
-            {/* MELKONIAN INDUSTRIES - Left Side */}
+            {/* BALM - Left Side */}
             <button
               onClick={() => navigate("/store")}
               className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
             >
               <span
-                className="font-bold tracking-tight md:hidden"
+                className="font-bold tracking-tight"
                 style={{
-                  color: "#f0f0f0",
+                  color: "#d0d0d0",
                   fontSize: "48px",
                   textShadow:
                     "rgba(255, 255, 255, 0.9) -1px -1px 1px, rgba(0, 0, 0, 0.2) 1px 1px 2px, rgba(255, 255, 255, 0.5) 0px 0px 1px",
                 }}
               >
-                MI
-              </span>
-              <span
-                className="font-bold tracking-tight hidden md:block"
-                style={{
-                  color: "#f0f0f0",
-                  fontSize: "48px",
-                  textShadow:
-                    "rgba(255, 255, 255, 0.9) -1px -1px 1px, rgba(0, 0, 0, 0.2) 1px 1px 2px, rgba(255, 255, 255, 0.5) 0px 0px 1px",
-                }}
-              >
-                MELKONIAN INDUSTRIES
+                BALM
               </span>
             </button>
 

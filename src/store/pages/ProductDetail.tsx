@@ -75,7 +75,7 @@ const ProductDetail = () => {
               transition={{ duration: 0.6 }}
               className="flex items-center justify-between"
             >
-              {/* MELKONIAN INDUSTRIES - Left Side */}
+              {/* BALM - Left Side */}
               <div className="flex items-center gap-3">
                 <span
                   className="font-bold tracking-tight"
@@ -86,7 +86,7 @@ const ProductDetail = () => {
                       "rgba(255, 255, 255, 0.9) -1px -1px 1px, rgba(0, 0, 0, 0.2) 1px 1px 2px, rgba(255, 255, 255, 0.5) 0px 0px 1px",
                   }}
                 >
-                  MELKONIAN INDUSTRIES
+                  BALM
                 </span>
               </div>
             </motion.div>
@@ -201,32 +201,21 @@ const ProductDetail = () => {
             transition={{ duration: 0.6 }}
             className="flex items-center justify-between"
           >
-            {/* MELKONIAN INDUSTRIES - Left Side */}
+            {/* BALM - Left Side */}
             <button
               onClick={() => navigate("/store")}
               className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
             >
               <span
-                className="font-bold tracking-tight md:hidden"
+                className="font-bold tracking-tight"
                 style={{
-                  color: "#f0f0f0",
+                  color: "#d0d0d0",
                   fontSize: "48px",
                   textShadow:
                     "rgba(255, 255, 255, 0.9) -1px -1px 1px, rgba(0, 0, 0, 0.2) 1px 1px 2px, rgba(255, 255, 255, 0.5) 0px 0px 1px",
                 }}
               >
-                MI
-              </span>
-              <span
-                className="font-bold tracking-tight hidden md:block"
-                style={{
-                  color: "#f0f0f0",
-                  fontSize: "48px",
-                  textShadow:
-                    "rgba(255, 255, 255, 0.9) -1px -1px 1px, rgba(0, 0, 0, 0.2) 1px 1px 2px, rgba(255, 255, 255, 0.5) 0px 0px 1px",
-                }}
-              >
-                MELKONIAN INDUSTRIES
+                BALM
               </span>
             </button>
 
@@ -427,7 +416,7 @@ const ProductDetail = () => {
                     style={{
                       fontFamily:
                         '"Helvetica", "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-                      fontSize: "14px",
+                      fontSize: "20px",
                       color: "black",
                     }}
                   >
@@ -438,7 +427,7 @@ const ProductDetail = () => {
                     style={{
                       fontFamily:
                         '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
-                      fontSize: "14px",
+                      fontSize: "18px",
                       color: "black",
                     }}
                   >
@@ -502,8 +491,8 @@ const ProductDetail = () => {
                 )}
 
                 {/* Buy Now and Add to Cart Buttons */}
-                <div className="flex gap-2">
-                  <div className="flex-1">
+                <div className="flex flex-col gap-2">
+                  <div className="w-full">
                     {/* @ts-ignore - Stripe Buy Button web component */}
                     <stripe-buy-button
                       buy-button-id={STRIPE_BUY_BUTTON_ID}
@@ -525,7 +514,7 @@ const ProductDetail = () => {
                         duration: 3000,
                       });
                     }}
-                    className="flex-1 px-2 py-3 font-semibold rounded-md transition-all hover:scale-105"
+                    className="w-full px-2 py-3 font-semibold rounded-md transition-all hover:scale-105"
                     style={{
                       fontFamily:
                         '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ShoppingCart, Loader2, X, User } from "lucide-react";
+import { ShoppingCart, Loader2, X, User, Plus, Minus } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import {
   DropdownMenu,
@@ -15,7 +15,8 @@ import { Avatar, AvatarFallback } from "../../../components/ui/avatar";
 
 const Checkout = () => {
   const navigate = useNavigate();
-  const { items, getTotalPrice, removeItem, getTotalItems } = useCart();
+  const { items, getTotalPrice, removeItem, getTotalItems, updateQuantity } =
+    useCart();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -194,32 +195,21 @@ const Checkout = () => {
             transition={{ duration: 0.6 }}
             className="flex items-center justify-between"
           >
-            {/* MELKONIAN INDUSTRIES - Left Side */}
+            {/* BALM - Left Side */}
             <button
               onClick={() => navigate("/store")}
               className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
             >
               <span
-                className="font-bold tracking-tight md:hidden"
+                className="font-bold tracking-tight"
                 style={{
-                  color: "#f0f0f0",
+                  color: "#d0d0d0",
                   fontSize: "48px",
                   textShadow:
                     "rgba(255, 255, 255, 0.9) -1px -1px 1px, rgba(0, 0, 0, 0.2) 1px 1px 2px, rgba(255, 255, 255, 0.5) 0px 0px 1px",
                 }}
               >
-                MI
-              </span>
-              <span
-                className="font-bold tracking-tight hidden md:block"
-                style={{
-                  color: "#f0f0f0",
-                  fontSize: "48px",
-                  textShadow:
-                    "rgba(255, 255, 255, 0.9) -1px -1px 1px, rgba(0, 0, 0, 0.2) 1px 1px 2px, rgba(255, 255, 255, 0.5) 0px 0px 1px",
-                }}
-              >
-                MELKONIAN INDUSTRIES
+                BALM
               </span>
             </button>
 
@@ -314,6 +304,15 @@ const Checkout = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Order Summary */}
             <div className="lg:col-span-2 space-y-6">
+              <h2
+                className="text-2xl font-bold mb-6"
+                style={{
+                  letterSpacing: "-1.25px",
+                  color: "black",
+                }}
+              >
+                Order Summary
+              </h2>
               <div
                 className="relative rounded-xl backdrop-blur-2xl border border-white/40 shadow-[0_8px_32px_0_rgba(255,255,255,0.2)]"
                 style={{ padding: "10px" }}
@@ -350,15 +349,6 @@ const Checkout = () => {
 
                 {/* Subtle inner shadow for depth */}
                 <div className="absolute inset-0 rounded-xl shadow-[inset_0_1px_2px_0_rgba(255,255,255,0.2)] pointer-events-none"></div>
-                <h2
-                  className="text-2xl font-bold mb-6 relative z-10"
-                  style={{
-                    letterSpacing: "-1.25px",
-                    color: "black",
-                  }}
-                >
-                  Order Summary
-                </h2>
                 <div className="space-y-4 relative z-10">
                   {items.map((item) => (
                     <div
@@ -371,15 +361,54 @@ const Checkout = () => {
                         className="w-20 h-20 object-cover rounded-lg"
                       />
                       <div className="flex-1">
-                        <h3
-                          className="font-semibold text-lg"
-                          style={{ color: "black" }}
-                        >
-                          {item.title}
-                        </h3>
-                        <p className="text-sm" style={{ color: "black" }}>
-                          Quantity: {item.quantity}
-                        </p>
+                        <div className="flex items-center gap-3">
+                          <h3
+                            className="font-semibold text-lg"
+                            style={{ color: "black" }}
+                          >
+                            {item.title}
+                          </h3>
+                          <div className="flex items-center gap-1">
+                            <button
+                              onClick={() =>
+                                updateQuantity(item.id, item.quantity - 1)
+                              }
+                              className="flex items-center justify-center w-6 h-6 rounded-md transition-all hover:scale-105"
+                              style={{
+                                backgroundColor: "#f0f0f0",
+                                color: "rgb(80, 80, 80)",
+                                boxShadow:
+                                  "rgba(255, 255, 255, 0.9) -1px -1px 1px, rgba(0, 0, 0, 0.2) 1px 1px 2px, rgba(255, 255, 255, 0.5) 0px 0px 1px",
+                              }}
+                              aria-label="Decrease quantity"
+                            >
+                              <Minus className="h-3 w-3" />
+                            </button>
+                            <span
+                              className="font-semibold min-w-[1.5rem] text-center text-lg"
+                              style={{
+                                color: "black",
+                              }}
+                            >
+                              {item.quantity}
+                            </span>
+                            <button
+                              onClick={() =>
+                                updateQuantity(item.id, item.quantity + 1)
+                              }
+                              className="flex items-center justify-center w-6 h-6 rounded-md transition-all hover:scale-105"
+                              style={{
+                                backgroundColor: "#f0f0f0",
+                                color: "rgb(80, 80, 80)",
+                                boxShadow:
+                                  "rgba(255, 255, 255, 0.9) -1px -1px 1px, rgba(0, 0, 0, 0.2) 1px 1px 2px, rgba(255, 255, 255, 0.5) 0px 0px 1px",
+                              }}
+                              aria-label="Increase quantity"
+                            >
+                              <Plus className="h-3 w-3" />
+                            </button>
+                          </div>
+                        </div>
                       </div>
                       <div className="text-right flex items-center gap-4">
                         <p
