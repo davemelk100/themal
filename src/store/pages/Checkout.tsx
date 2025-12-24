@@ -247,7 +247,7 @@ const Checkout = () => {
               className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
             >
               <span
-                className="font-bold tracking-tight"
+                className="font-bold tracking-tight balm-logo"
                 style={{
                   color: "#d0d0d0",
                   fontSize: "48px",
@@ -513,48 +513,73 @@ const Checkout = () => {
                 {/* Subtle inner shadow for depth */}
                 <div className="absolute inset-0 rounded-xl shadow-[inset_0_1px_2px_0_rgba(255,255,255,0.2)] pointer-events-none"></div>
                 <h2
-                  className="font-bold mb-4 relative z-10"
+                  className="mb-4 relative z-10"
                   style={{
-                    letterSpacing: "-1.25px",
+                    letterSpacing: "normal",
                     color: "black",
                     fontSize: "16px",
+                    fontWeight: "normal",
                   }}
                 >
                   Order Total
                 </h2>
                 <div className="space-y-3 mb-6 relative z-10">
                   <div className="flex justify-between">
-                    <span style={{ color: "black", fontSize: "20px" }}>
+                    <span
+                      style={{
+                        color: "black",
+                        fontSize: "16px",
+                        fontWeight: "normal",
+                      }}
+                    >
                       Subtotal
                     </span>
                     <span
-                      className="font-semibold"
-                      style={{ color: "black", fontSize: "20px" }}
+                      style={{
+                        color: "black",
+                        fontSize: "16px",
+                        fontWeight: "normal",
+                      }}
                     >
                       ${total.toFixed(2)}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span style={{ color: "black", fontSize: "20px" }}>
+                    <span
+                      style={{
+                        color: "black",
+                        fontSize: "16px",
+                        fontWeight: "normal",
+                      }}
+                    >
                       Shipping
                     </span>
                     <span
-                      className="font-semibold"
-                      style={{ color: "black", fontSize: "20px" }}
+                      style={{
+                        color: "black",
+                        fontSize: "16px",
+                        fontWeight: "normal",
+                      }}
                     >
                       Calculated at checkout
                     </span>
                   </div>
                   <div className="border-t border-white/20 pt-3 flex justify-between">
                     <span
-                      className="font-bold"
-                      style={{ color: "black", fontSize: "20px" }}
+                      style={{
+                        color: "black",
+                        fontSize: "16px",
+                        fontWeight: "normal",
+                      }}
                     >
                       Total
                     </span>
                     <span
-                      className="font-bold"
-                      style={{ color: "black", fontSize: "20px" }}
+                      style={{
+                        color: "black",
+                        fontSize: "16px",
+                        fontWeight: "normal",
+                      }}
                     >
                       ${total.toFixed(2)}
                     </span>
@@ -570,8 +595,7 @@ const Checkout = () => {
                   disabled={loading || items.length === 0}
                   className="w-full px-2 py-3 font-semibold rounded-md transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 relative z-20"
                   style={{
-                    fontFamily:
-                      '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
+                    fontFamily: '"Geist Mono", monospace',
                     fontSize: "16px",
                     backgroundColor: "#f0f0f0",
                     color: "rgb(80, 80, 80)",
@@ -598,8 +622,7 @@ const Checkout = () => {
                   onClick={() => navigate("/store")}
                   className="w-full mt-3 px-2 py-3 font-semibold rounded-md transition-all hover:scale-105 relative z-10"
                   style={{
-                    fontFamily:
-                      '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
+                    fontFamily: '"Geist Mono", monospace',
                     fontSize: "16px",
                     backgroundColor: "#f0f0f0",
                     color: "rgb(80, 80, 80)",

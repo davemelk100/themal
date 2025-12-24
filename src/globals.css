@@ -89,7 +89,7 @@
   /* Store page body font override - higher specificity */
   body.store-page,
   html body.store-page {
-    font-family: "Helvetica", "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif;
+    font-family: "Geist Mono", monospace;
   }
 
   /* Default font for all elements except store page */
@@ -604,7 +604,7 @@
   line-height: 1.5;
 }
 
-/* Store page h3 tags use Helvetica */
+/* Store page h3 tags use Geist Mono */
 .store-page h3,
 .store-page h3[class*="font-"]:not(.font-serif):not(.font-mono),
 .store-page h3.title-font,
@@ -623,7 +623,7 @@
 .store-page .group .store-card-content h3,
 .store-page [class*="group"] .store-card-content h3,
 .store-page .store-card-content h3 {
-  font-family: "Helvetica", "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif;
+  font-family: "Geist Mono", monospace;
 }
 
 /* Additional font sizes for elements inside product cards */
@@ -639,42 +639,50 @@
   line-height: 1.5;
 }
 
-/* Store page font override - Helvetica with DM Sans fallback - placed at end for maximum priority */
+/* Store page font override - Geist Mono - placed at end for maximum priority */
 /* Override body tag for store pages */
 body.store-page,
 html body.store-page,
 html body .store-page {
-  font-family: "Helvetica", "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif;
+  font-family: "Geist Mono", monospace;
 }
 
-/* Override all elements in store pages except title-font elements - highest specificity at end */
+/* Override all elements in store pages except title-font and balm-logo elements - highest specificity at end */
 .store-page,
-.store-page *:not(.title-font),
-.store-page h1:not(.title-font),
-.store-page h2:not(.title-font),
-.store-page h3,
-.store-page h4:not(.title-font),
-.store-page h5:not(.title-font),
-.store-page h6:not(.title-font),
-.store-page p:not(.title-font),
-.store-page span:not(.title-font),
-.store-page div:not(.title-font),
-.store-page button:not(.title-font),
-.store-page input,
-.store-page textarea,
-.store-page select,
-.store-page label,
-.store-page a:not(.title-font),
-.store-page li,
-.store-page ul,
-.store-page ol,
-.store-page .store-card-content,
-.store-page .store-card-content *,
-.store-page .store-card-text,
-.store-page .store-card-button,
-.store-page .group,
-.store-page .group * {
-  font-family: "Helvetica", "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif;
+.store-page *:not(.title-font):not(.balm-logo),
+.store-page h1:not(.title-font):not(.balm-logo),
+.store-page h2:not(.title-font):not(.balm-logo),
+.store-page h3:not(.balm-logo),
+.store-page h4:not(.title-font):not(.balm-logo),
+.store-page h5:not(.title-font):not(.balm-logo),
+.store-page h6:not(.title-font):not(.balm-logo),
+.store-page p:not(.title-font):not(.balm-logo),
+.store-page span:not(.title-font):not(.balm-logo),
+.store-page div:not(.title-font):not(.balm-logo),
+.store-page button:not(.title-font):not(.balm-logo),
+.store-page input:not(.balm-logo),
+.store-page textarea:not(.balm-logo),
+.store-page select:not(.balm-logo),
+.store-page label:not(.balm-logo),
+.store-page a:not(.title-font):not(.balm-logo),
+.store-page li:not(.balm-logo),
+.store-page ul:not(.balm-logo),
+.store-page ol:not(.balm-logo),
+.store-page .store-card-content:not(.balm-logo),
+.store-page .store-card-content *:not(.balm-logo),
+.store-page .store-card-text:not(.balm-logo),
+.store-page .store-card-button:not(.balm-logo),
+.store-page .group:not(.balm-logo),
+.store-page .group *:not(.balm-logo) {
+  font-family: "Geist Mono", monospace;
+}
+
+/* Ensure BALM logo keeps its original font - highest specificity */
+.store-page .balm-logo,
+.store-page span.balm-logo,
+.store-page button .balm-logo,
+.store-page button span.balm-logo {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif !important;
 }
 
 /* Ensure avatar span doesn't appear red - very specific selector to override inline styles */

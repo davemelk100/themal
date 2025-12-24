@@ -117,7 +117,7 @@ const CheckoutSuccess = () => {
               className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
             >
               <span
-                className="font-bold tracking-tight"
+                className="font-bold tracking-tight balm-logo"
                 style={{
                   color: "#d0d0d0",
                   fontSize: "48px",
@@ -234,8 +234,7 @@ const CheckoutSuccess = () => {
                 }}
                 className="px-2 py-3 font-semibold rounded-md transition-all hover:scale-105 relative z-20"
                 style={{
-                  fontFamily:
-                    '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif',
+                  fontFamily: '"Geist Mono", monospace',
                   fontSize: "16px",
                   backgroundColor: "#f0f0f0",
                   color: "rgb(80, 80, 80)",
