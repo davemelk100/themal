@@ -428,7 +428,7 @@ const Checkout = () => {
                           </h3>
                         </div>
                         {/* Price and Toggler */}
-                        <div className="flex flex-col gap-3 mt-auto">
+                        <div className="flex flex-col gap-3 mt-auto -mt-2">
                           <p
                             className="font-bold text-lg"
                             style={{ color: "black" }}
@@ -569,13 +569,14 @@ const Checkout = () => {
                       Shipping
                     </span>
                     <span
+                      className="text-right"
                       style={{
                         color: "black",
                         fontSize: "16px",
                         fontWeight: "normal",
                       }}
                     >
-                      Calculated at checkout
+                      Free
                     </span>
                   </div>
                   <div className="pt-3 flex justify-between">

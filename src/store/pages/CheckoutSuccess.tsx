@@ -208,7 +208,7 @@ const CheckoutSuccess = () => {
             </div>
 
             <h1
-              className="text-4xl sm:text-5xl font-bold"
+              className="text-4xl sm:text-5xl font-bold uppercase"
               style={{ color: "black" }}
             >
               Thank You!
@@ -218,7 +218,7 @@ const CheckoutSuccess = () => {
             </p>
 
             {sessionId && (
-              <p className="text-sm" style={{ color: "black" }}>
+              <p className="text-xs" style={{ color: "black", fontSize: "12px" }}>
                 Order ID: {sessionId}
               </p>
             )}

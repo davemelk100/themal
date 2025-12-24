@@ -23,7 +23,7 @@ export const storeProducts: Product[] = [
     id: "art-tshirt-5",
     mainCategory: "art",
     title: "BALM Chest Print Button-Up Cursive",
-    price: 22.0,
+    price: 25.0,
     image: "/img/balm-cursive.png",
     images: [
       "/img/balm-cursive.png",
