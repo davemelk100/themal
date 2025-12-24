@@ -411,11 +411,12 @@ const ProductDetail = () => {
               <div className="relative z-10 space-y-6">
                 <div>
                   <h1
-                    className="font-bold mb-4"
+                    className="mb-4"
                     style={{
                       fontFamily: '"Geist Mono", monospace',
                       fontSize: "16px",
                       color: "black",
+                      fontWeight: 400,
                     }}
                   >
                     {product.title}

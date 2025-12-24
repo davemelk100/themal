@@ -380,8 +380,7 @@ const Store = () => {
                 <h2
                   className="text-3xl font-bold"
                   style={{
-                    color: "#dbdbdb",
-                    letterSpacing: "-1.25px",
+                    color: "#dbdbdb"
                   }}
                 >
                   {activeCategory === null

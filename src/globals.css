@@ -404,7 +404,7 @@
   /* Touch-friendly improvements for mobile */
   @media (max-width: 768px) {
 
-    button:not(.carousel-button):not(.lab-card-title),
+    button:not(.carousel-button):not(.lab-card-title):not(.quantity-toggle),
     a:not(.carousel-button):not(.lab-card-title) {
       min-height: 44px;
       min-width: 44px;
@@ -683,6 +683,17 @@ html body .store-page {
 .store-page button .balm-logo,
 .store-page button span.balm-logo {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif !important;
+}
+
+/* Ensure product titles use font-weight 400 - override any font-semibold */
+.store-page h3.store-card-h3,
+.store-page .store-card-content h3.store-card-h3,
+.store-page .store-card-content h3.store-card-text.store-card-h3,
+.store-page h3.store-card-h3.font-semibold,
+.store-page .store-card-content h3.store-card-h3.font-semibold,
+.store-page h1.mb-4,
+.store-page h1.mb-4.font-semibold {
+  font-weight: 400 !important;
 }
 
 /* Ensure avatar span doesn't appear red - very specific selector to override inline styles */

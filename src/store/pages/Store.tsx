@@ -60,9 +60,9 @@ const ProductImageRow = ({
       className="relative overflow-hidden bg-transparent cursor-pointer rounded-t-lg group"
       style={{ padding: "6px", paddingBottom: "0" }}
     >
-      <div className="relative aspect-square overflow-hidden rounded-lg bg-transparent">
+      <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-transparent max-h-[300px] mx-auto">
         {/* Images */}
-        <div className="relative w-full h-full">
+        <div className="relative w-full h-full flex items-center justify-center">
           {images.map((image, index) => (
             <img
               key={index}
@@ -72,6 +72,7 @@ const ProductImageRow = ({
                 index === currentImageIndex ? "opacity-100" : "opacity-0"
               }`}
               loading={index === 0 ? "eager" : "lazy"}
+              style={{ maxHeight: "100%", objectPosition: "center" }}
             />
           ))}
         </div>
@@ -415,12 +416,11 @@ const Store = () => {
           >
             {/* Products Grid */}
             <motion.section variants={fadeInUp} className="space-y-6">
-              <div className="flex items-center justify-between mb-6">
+              {/* <div className="flex items-center justify-between mb-6">
                 <h2
                   className="text-3xl font-bold"
                   style={{
-                    color: "black",
-                    letterSpacing: "-1.25px",
+                    color: "black"
                   }}
                 >
                   {activeCategory === null
@@ -432,7 +432,7 @@ const Store = () => {
                   {filteredProducts.length}{" "}
                   {filteredProducts.length === 1 ? "item" : "items"}
                 </p>
-              </div>
+              </div> */}
               <div className="flex justify-center gap-4">
                 {filteredProducts.map((product) => {
                   return (
@@ -471,9 +471,9 @@ const Store = () => {
                         ></div>
 
                         {/* Reflective highlights - multiple angles */}
-                        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent"></div>
-                        <div className="absolute top-0 left-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/60 to-transparent"></div>
-                        <div className="absolute top-0 right-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/40 to-transparent"></div>
+                        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+                        <div className="absolute top-0 left-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
+                        <div className="absolute top-0 right-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/15 to-transparent"></div>
 
                         {/* Inner glow effect - muted */}
                         <div className="absolute inset-[1px] rounded-lg bg-gradient-to-br from-gray-300/8 via-transparent to-transparent pointer-events-none"></div>
@@ -501,11 +501,12 @@ const Store = () => {
                             }}
                           >
                             <h3
-                              className="font-bold mb-1 line-clamp-1 cursor-pointer hover:underline store-card-text store-card-h3"
+                              className="mb-1 line-clamp-1 cursor-pointer hover:underline store-card-text store-card-h3"
                               style={{
                                 fontFamily: '"Geist Mono", monospace',
                                 fontSize: "20px",
                                 color: "black",
+                                fontWeight: 400,
                               }}
                             >
                               {product.title}
