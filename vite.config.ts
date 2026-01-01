@@ -22,6 +22,10 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/\.netlify\/functions/, ""),
       },
+      "/uploads": {
+        target: "http://localhost:8888",
+        changeOrigin: true,
+      },
     },
   },
   build: {

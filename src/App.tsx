@@ -35,6 +35,7 @@ const Signup = lazy(() => import("./store/pages/Signup"));
 const AuthCallback = lazy(() => import("./store/pages/AuthCallback"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
+const Discogs = lazy(() => import("./pages/Discogs"));
 
 // Lazy load non-critical UI components to reduce critical path
 const MobileTrayMenu = lazy(() => import("./components/MobileTrayMenu"));
@@ -145,22 +146,20 @@ const SectionHeader = ({
             <div className="flex items-center gap-1 ml-0 sm:ml-2">
               <button
                 aria-label="Grid view"
-                className={`p-2 rounded-md border transition-colors flex items-center justify-center ${
-                  viewMode === "grid"
-                    ? "bg-gray-200 dark:bg-gray-700 border-gray-400 dark:border-gray-500"
-                    : "bg-transparent border-transparent hover:bg-gray-100 dark:hover:bg-gray-800"
-                }`}
+                className={`p-2 rounded-md border transition-colors flex items-center justify-center ${viewMode === "grid"
+                  ? "bg-gray-200 dark:bg-gray-700 border-gray-400 dark:border-gray-500"
+                  : "bg-transparent border-transparent hover:bg-gray-100 dark:hover:bg-gray-800"
+                  }`}
                 onClick={() => toggleView("grid")}
               >
                 <IconWrapper Icon={LazyLayoutGrid} className="h-4 w-4" />
               </button>
               <button
                 aria-label="List view"
-                className={`p-2 rounded-md border transition-colors flex items-center justify-center ${
-                  viewMode === "list"
-                    ? "bg-gray-200 dark:bg-gray-700 border-gray-400 dark:border-gray-500"
-                    : "bg-transparent border-transparent hover:bg-gray-100 dark:hover:bg-gray-800"
-                }`}
+                className={`p-2 rounded-md border transition-colors flex items-center justify-center ${viewMode === "list"
+                  ? "bg-gray-200 dark:bg-gray-700 border-gray-400 dark:border-gray-500"
+                  : "bg-transparent border-transparent hover:bg-gray-100 dark:hover:bg-gray-800"
+                  }`}
                 onClick={() => toggleView("list")}
               >
                 <IconWrapper Icon={LazyList} className="h-4 w-4" />
@@ -383,7 +382,7 @@ function App() {
                                     project.title !== "HealthAware" &&
                                     project.title !== "AI NUI" &&
                                     project.title !==
-                                      "Configurable Multivariate Testing"
+                                    "Configurable Multivariate Testing"
                                 )
                                 .map((project, index) => (
                                   <a
@@ -396,21 +395,21 @@ function App() {
                                     {/* Card Image */}
                                     <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-transparent">
                                       {project.title === "JSON AI Prompts" ||
-                                      project.title === "User Testing Config" ||
-                                      project.title === "MicroLearn" ||
-                                      project.title === "RAG App" ? (
+                                        project.title === "User Testing Config" ||
+                                        project.title === "MicroLearn" ||
+                                        project.title === "RAG App" ? (
                                         <img
                                           src={
                                             project.title === "JSON AI Prompts"
                                               ? `/img/json-ai-prompts-animation.svg?v=${Date.now()}`
                                               : project.title ===
                                                 "User Testing Config"
-                                              ? `/img/user-testing-config-animation.svg?v=${Date.now()}`
-                                              : project.title === "MicroLearn"
-                                              ? `/img/micro-learn-animation.svg?v=${Date.now()}`
-                                              : project.title === "RAG App"
-                                              ? `/img/rag-app-animation.svg?v=${Date.now()}`
-                                              : ""
+                                                ? `/img/user-testing-config-animation.svg?v=${Date.now()}`
+                                                : project.title === "MicroLearn"
+                                                  ? `/img/micro-learn-animation.svg?v=${Date.now()}`
+                                                  : project.title === "RAG App"
+                                                    ? `/img/rag-app-animation.svg?v=${Date.now()}`
+                                                    : ""
                                           }
                                           alt={project.title}
                                           className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-300"
@@ -456,7 +455,7 @@ function App() {
                                     project.title !== "HealthAware" &&
                                     project.title !== "AI NUI" &&
                                     project.title !==
-                                      "Configurable Multivariate Testing"
+                                    "Configurable Multivariate Testing"
                                 )
                                 .map((project, index) => (
                                   <a
@@ -469,21 +468,21 @@ function App() {
                                     {/* Compact Image */}
                                     <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 overflow-hidden rounded bg-transparent">
                                       {project.title === "JSON AI Prompts" ||
-                                      project.title === "User Testing Config" ||
-                                      project.title === "MicroLearn" ||
-                                      project.title === "RAG App" ? (
+                                        project.title === "User Testing Config" ||
+                                        project.title === "MicroLearn" ||
+                                        project.title === "RAG App" ? (
                                         <img
                                           src={
                                             project.title === "JSON AI Prompts"
                                               ? `/img/json-ai-prompts-animation.svg?v=${Date.now()}`
                                               : project.title ===
                                                 "User Testing Config"
-                                              ? `/img/user-testing-config-animation.svg?v=${Date.now()}`
-                                              : project.title === "MicroLearn"
-                                              ? `/img/micro-learn-animation.svg?v=${Date.now()}`
-                                              : project.title === "RAG App"
-                                              ? `/img/rag-app-animation.svg?v=${Date.now()}`
-                                              : ""
+                                                ? `/img/user-testing-config-animation.svg?v=${Date.now()}`
+                                                : project.title === "MicroLearn"
+                                                  ? `/img/micro-learn-animation.svg?v=${Date.now()}`
+                                                  : project.title === "RAG App"
+                                                    ? `/img/rag-app-animation.svg?v=${Date.now()}`
+                                                    : ""
                                           }
                                           alt={project.title}
                                           className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-300"
@@ -595,9 +594,8 @@ function App() {
                                       });
                                     }
                                   }}
-                                  className={`group relative rounded-lg bg-white/20 backdrop-blur-lg flex flex-col shadow-xl hover:shadow-2xl transition-shadow ${
-                                    story.hasModal ? "cursor-pointer" : ""
-                                  }`}
+                                  className={`group relative rounded-lg bg-white/20 backdrop-blur-lg flex flex-col shadow-xl hover:shadow-2xl transition-shadow ${story.hasModal ? "cursor-pointer" : ""
+                                    }`}
                                 >
                                   {/* Card Image */}
                                   <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-transparent">
@@ -650,9 +648,8 @@ function App() {
                                       });
                                     }
                                   }}
-                                  className={`group flex items-center gap-4 p-3 rounded-lg bg-white/20 backdrop-blur-lg transition-all shadow-xl hover:shadow-2xl ${
-                                    story.hasModal ? "cursor-pointer" : ""
-                                  }`}
+                                  className={`group flex items-center gap-4 p-3 rounded-lg bg-white/20 backdrop-blur-lg transition-all shadow-xl hover:shadow-2xl ${story.hasModal ? "cursor-pointer" : ""
+                                    }`}
                                 >
                                   {/* Compact Image */}
                                   <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 overflow-hidden rounded bg-transparent">
@@ -859,13 +856,13 @@ function App() {
                                 (article) =>
                                   article.title !== "Commit Message Fatigue" &&
                                   article.title !==
-                                    "Information Architecture Is Not Sacred" &&
+                                  "Information Architecture Is Not Sacred" &&
                                   article.title !==
-                                    "AI is hydrated with user research data" &&
+                                  "AI is hydrated with user research data" &&
                                   article.title !==
-                                    "Prompting for Heuristic Evaluations" &&
+                                  "Prompting for Heuristic Evaluations" &&
                                   article.title !==
-                                    "Vibe Coding v Vibe Engineering"
+                                  "Vibe Coding v Vibe Engineering"
                               )
                               .sort(
                                 (a, b) =>
@@ -898,7 +895,7 @@ function App() {
                                       <img
                                         {...getCardImageProps(
                                           (article as any).cardImage ||
-                                            article.image
+                                          article.image
                                         )}
                                         alt={article.title}
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -929,13 +926,13 @@ function App() {
                                 (article) =>
                                   article.title !== "Commit Message Fatigue" &&
                                   article.title !==
-                                    "Information Architecture Is Not Sacred" &&
+                                  "Information Architecture Is Not Sacred" &&
                                   article.title !==
-                                    "AI is hydrated with user research data" &&
+                                  "AI is hydrated with user research data" &&
                                   article.title !==
-                                    "Prompting for Heuristic Evaluations" &&
+                                  "Prompting for Heuristic Evaluations" &&
                                   article.title !==
-                                    "Vibe Coding v Vibe Engineering"
+                                  "Vibe Coding v Vibe Engineering"
                               )
                               .sort(
                                 (a, b) =>
@@ -968,7 +965,7 @@ function App() {
                                       <img
                                         {...getThumbnailImageProps(
                                           (article as any).cardImage ||
-                                            article.image
+                                          article.image
                                         )}
                                         alt={article.title}
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -1554,6 +1551,7 @@ function App() {
             <Route path="/music" element={<MusicPlayer />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
+            <Route path="/discogs" element={<Discogs />} />
             <Route path="/store/login" element={<Login />} />
             <Route path="/store/signup" element={<Signup />} />
             <Route path="/store/auth/callback" element={<AuthCallback />} />
@@ -1599,16 +1597,18 @@ function App() {
           />
         </Suspense>
       )}
-      {/* Hide MobileTrayMenu on news and store pages */}
+      {/* Hide MobileTrayMenu on news, store and discogs pages */}
       {location.pathname !== "/news" &&
+        location.pathname !== "/discogs" &&
         !location.pathname.startsWith("/store") && (
           <Suspense fallback={null}>
             <MobileTrayMenu />
           </Suspense>
         )}
 
-      {/* Footer - Hide on all store pages (they have their own BALM footer) */}
-      {!location.pathname.startsWith("/store") ? (
+      {/* Footer - Hide on all store pages and discogs page */}
+      {!location.pathname.startsWith("/store") &&
+        location.pathname !== "/discogs" ? (
         <Suspense fallback={null} key={location.pathname}>
           <Footer />
         </Suspense>
@@ -1627,11 +1627,10 @@ function App() {
                   new CustomEvent("toggleViewMode", { detail: "list" })
                 );
               }}
-              className={`w-8 h-8 flex items-center justify-center rounded-md transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                currentViewMode === "list"
-                  ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
-                  : "text-gray-700 dark:text-gray-300"
-              }`}
+              className={`w-8 h-8 flex items-center justify-center rounded-md transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 ${currentViewMode === "list"
+                ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
+                : "text-gray-700 dark:text-gray-300"
+                }`}
               aria-label="List view"
             >
               <IconWrapper Icon={LazyList} className="w-4 h-4" />
@@ -1644,11 +1643,10 @@ function App() {
                   new CustomEvent("toggleViewMode", { detail: "grid" })
                 );
               }}
-              className={`w-8 h-8 flex items-center justify-center rounded-md transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                currentViewMode === "grid"
-                  ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
-                  : "text-gray-700 dark:text-gray-300"
-              }`}
+              className={`w-8 h-8 flex items-center justify-center rounded-md transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 ${currentViewMode === "grid"
+                ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
+                : "text-gray-700 dark:text-gray-300"
+                }`}
               aria-label="Grid view"
             >
               <IconWrapper Icon={LazyLayoutGrid} className="w-4 h-4" />
@@ -1656,8 +1654,9 @@ function App() {
           </div>
         )}
 
-        {/* Dark Mode Toggle - Hide on news and store pages */}
+        {/* Dark Mode Toggle - Hide on news, store and discogs pages */}
         {location.pathname !== "/news" &&
+          location.pathname !== "/discogs" &&
           !location.pathname.startsWith("/store") && (
             <button
               onClick={() => {
@@ -1704,6 +1703,7 @@ function App() {
 
         {/* Fixed background image in bottom left */}
         {location.pathname !== "/specs" &&
+          location.pathname !== "/discogs" &&
           !location.pathname.startsWith("/store") && (
             <div className="fixed bottom-0 left-0 z-[5] pointer-events-none">
               <img

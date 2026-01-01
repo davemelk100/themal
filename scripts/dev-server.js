@@ -9,6 +9,8 @@ import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import path from "path";
+import fs from "fs";
+import multer from "multer";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -49,7 +51,7 @@ async function initDatabase() {
     if (
       process.env.DATABASE_URL.includes("user:password@host") ||
       process.env.DATABASE_URL ===
-        "postgresql://user:password@host/database?sslmode=require"
+      "postgresql://user:password@host/database?sslmode=require"
     ) {
       console.error("❌ DATABASE_URL appears to be a placeholder value.");
       console.error(
@@ -113,6 +115,30 @@ app.use(
   })
 );
 app.use(express.json());
+
+// Configure multer for Discogs uploads
+const DISCOGS_UPLOAD_DIR = path.resolve(__dirname, "../public/uploads/discogs");
+if (!fs.existsSync(DISCOGS_UPLOAD_DIR)) {
+  fs.mkdirSync(DISCOGS_UPLOAD_DIR, { recursive: true });
+}
+
+const discogsStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, DISCOGS_UPLOAD_DIR);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, uniqueSuffix + path.extname(file.originalname));
+  },
+});
+
+const uploadDiscogs = multer({
+  storage: discogsStorage,
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB limit
+});
+
+// Serve uploaded files statically
+app.use("/uploads", express.static(path.join(__dirname, "../public/uploads")));
 
 // Health check endpoint
 app.get("/", (req, res) => {
@@ -768,6 +794,40 @@ app.post("/auth-login-email", async (req, res) => {
   } catch (error) {
     console.error("Login error:", error);
     return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Photo upload endpoint for /discogs
+app.post("/upload-discogs", uploadDiscogs.single("file"), (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded" });
+    }
+    const fileUrl = `/uploads/discogs/${req.file.filename}`;
+    res.json({ success: true, url: fileUrl });
+  } catch (error) {
+    console.error("Upload error:", error);
+    res.status(500).json({ error: "Upload failed" });
+  }
+});
+
+// List uploaded files for /discogs
+app.get("/list-discogs", (req, res) => {
+  try {
+    if (!fs.existsSync(DISCOGS_UPLOAD_DIR)) {
+      return res.json({ files: [] });
+    }
+    const files = fs.readdirSync(DISCOGS_UPLOAD_DIR).map((filename) => ({
+      url: `/uploads/discogs/${filename}`,
+      name: filename,
+      type: path.extname(filename).toLowerCase().match(/\.(mp4|webm|ogg|mov|m4v)$/)
+        ? "video"
+        : "image",
+    }));
+    res.json({ files });
+  } catch (error) {
+    console.error("List error:", error);
+    res.status(500).json({ error: "Failed to list files" });
   }
 });
 
