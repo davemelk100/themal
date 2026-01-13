@@ -551,6 +551,21 @@ export const content = {
     ],
   },
 
+  featuredWork: {
+    title: "Featured Work",
+    projects: [
+      {
+        title: "Major League Numbers and ChatMLB",
+        description:
+          "A comprehensive analytics platform for baseball statistics and player performance tracking.",
+        technologies: ["React", "TypeScript", "Data Visualization"],
+        demo: "https://majorleaguenumbers.com",
+        image: "/img/mln-patches.svg",
+        image2: "/img/chatmlb-port.png",
+      },
+    ],
+  },
+
   currentProjects: {
     title: "Lab",
     subtitle: "New design and development projects",
@@ -568,13 +583,6 @@ export const content = {
         description: "Design, designs, and designers.",
         technologies: ["React", "TypeScript", "Tailwind", "Figma API"],
         demo: "https://designpanes.com/",
-        image: "/img/design-panes.png",
-      },
-      {
-        title: "JSON AI Prompts",
-        description: "Structured prompts for AI agents.",
-        technologies: ["React", "TypeScript", "Tailwind", "Figma API"],
-        demo: "/json",
         image: "/img/design-panes.png",
       },
       {

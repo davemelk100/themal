@@ -117,16 +117,6 @@ const SectionHeader = ({
           <h2 className="text-4xl font-bold title-font leading-tight text-gray-900 dark:text-white">
             {title}
           </h2>
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="bg-black text-white dark:bg-white/10 dark:text-white rounded-full shadow-lg hover:opacity-80 transition-opacity flex-shrink-0 flex items-center justify-center w-8 h-8 p-0 min-w-8 min-h-8"
-            aria-label="Scroll to top"
-          >
-            <IconWrapper
-              Icon={LazyArrowUp}
-              className="h-4 w-4 m-0 flex-shrink-0"
-            />
-          </button>
           {icon && <div className="flex items-center gap-2">{icon}</div>}
           {showUpArrow && (
             <button
@@ -146,20 +136,22 @@ const SectionHeader = ({
             <div className="flex items-center gap-1 ml-0 sm:ml-2">
               <button
                 aria-label="Grid view"
-                className={`p-2 rounded-md border transition-colors flex items-center justify-center ${viewMode === "grid"
-                  ? "bg-gray-200 dark:bg-gray-700 border-gray-400 dark:border-gray-500"
-                  : "bg-transparent border-transparent hover:bg-gray-100 dark:hover:bg-gray-800"
-                  }`}
+                className={`p-2 rounded-md border transition-colors flex items-center justify-center ${
+                  viewMode === "grid"
+                    ? "bg-gray-200 dark:bg-gray-700 border-gray-400 dark:border-gray-500"
+                    : "bg-transparent border-transparent hover:bg-gray-100 dark:hover:bg-gray-800"
+                }`}
                 onClick={() => toggleView("grid")}
               >
                 <IconWrapper Icon={LazyLayoutGrid} className="h-4 w-4" />
               </button>
               <button
                 aria-label="List view"
-                className={`p-2 rounded-md border transition-colors flex items-center justify-center ${viewMode === "list"
-                  ? "bg-gray-200 dark:bg-gray-700 border-gray-400 dark:border-gray-500"
-                  : "bg-transparent border-transparent hover:bg-gray-100 dark:hover:bg-gray-800"
-                  }`}
+                className={`p-2 rounded-md border transition-colors flex items-center justify-center ${
+                  viewMode === "list"
+                    ? "bg-gray-200 dark:bg-gray-700 border-gray-400 dark:border-gray-500"
+                    : "bg-transparent border-transparent hover:bg-gray-100 dark:hover:bg-gray-800"
+                }`}
                 onClick={() => toggleView("list")}
               >
                 <IconWrapper Icon={LazyList} className="h-4 w-4" />
@@ -320,7 +312,7 @@ function App() {
 
                           {/* Summary Text */}
                           <div className="mt-4 sm:mt-6">
-                            <p className="hero-intro text-muted-foreground text-left">
+                            <p className="text-muted-foreground text-left">
                               I'm David Melkonian, a technical product and
                               experience leader with over a decade of work at
                               the intersection of UX, front-end engineering, and
@@ -336,7 +328,7 @@ function App() {
                               processes and digital experience delivery.
                             </p>
                           </div>
-                          <p className="my-4">
+                          {/* <p className="my-4">
                             <a
                               href="https://rococo-paprenjak-da1be1.netlify.app/samples"
                               target="_blank"
@@ -349,7 +341,77 @@ function App() {
                                 className="w-4 h-4"
                               />
                             </a>
-                          </p>
+                          </p> */}
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+
+                  {/* Featured Work Section */}
+                  <section className="py-2 sm:py-3 lg:py-4 xl:py-6 relative lab-section-narrow">
+                    <div className="max-w-[980px] mx-auto px-4 sm:px-6 lg:px-8">
+                      <div className="grid grid-cols-1 gap-6 sm:gap-8">
+                        <div
+                          id="featured-work"
+                          className="pt-4 px-4 sm:pt-6 sm:px-6 relative bg-transparent"
+                        >
+                          <SectionHeader
+                            title={content.featuredWork.title}
+                            className="mb-6"
+                            showUpArrow={false}
+                          />
+                          <div className="grid grid-cols-1 gap-4 sm:gap-6">
+                            {content.featuredWork.projects.map(
+                              (project, index) => (
+                                <a
+                                  key={index}
+                                  href={project.demo}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="group relative rounded-lg bg-white/20 backdrop-blur-lg flex flex-col cursor-pointer shadow-xl overflow-hidden"
+                                >
+                                  {/* Card Content */}
+                                  <div className="p-6 sm:p-8 flex flex-col gap-2 text-center items-center">
+                                    <h3
+                                      className="font-league-gothic text-gray-900 dark:text-white group-hover:text-primary transition-colors uppercase"
+                                      style={{
+                                        fontSize: "57px",
+                                        letterSpacing: "1px",
+                                      }}
+                                    >
+                                      {project.title}
+                                    </h3>
+                                    <p className="text-sm sm:text-base text-gray-600 dark:text-white">
+                                      {project.description}
+                                    </p>
+                                  </div>
+                                  {/* Card Images */}
+                                  <div className="flex flex-row justify-center items-center gap-12 p-8">
+                                    {project.image && (
+                                      <div className="flex items-center justify-center">
+                                        <img
+                                          src={project.image}
+                                          alt={project.title}
+                                          className="max-h-[250px] object-contain group-hover:scale-105 transition-transform duration-300"
+                                          loading="eager"
+                                        />
+                                      </div>
+                                    )}
+                                    {(project as any).image2 && (
+                                      <div className="flex items-center justify-center">
+                                        <img
+                                          src={(project as any).image2}
+                                          alt={`${project.title} secondary`}
+                                          className="max-h-[250px] object-contain group-hover:scale-105 transition-transform duration-300"
+                                          loading="eager"
+                                        />
+                                      </div>
+                                    )}
+                                  </div>
+                                </a>
+                              )
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -382,7 +444,7 @@ function App() {
                                     project.title !== "HealthAware" &&
                                     project.title !== "AI NUI" &&
                                     project.title !==
-                                    "Configurable Multivariate Testing"
+                                      "Configurable Multivariate Testing"
                                 )
                                 .map((project, index) => (
                                   <a
@@ -394,22 +456,20 @@ function App() {
                                   >
                                     {/* Card Image */}
                                     <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-transparent">
-                                      {project.title === "JSON AI Prompts" ||
-                                        project.title === "User Testing Config" ||
-                                        project.title === "MicroLearn" ||
-                                        project.title === "RAG App" ? (
+                                      {project.title ===
+                                        "User Testing Config" ||
+                                      project.title === "MicroLearn" ||
+                                      project.title === "RAG App" ? (
                                         <img
                                           src={
-                                            project.title === "JSON AI Prompts"
-                                              ? `/img/json-ai-prompts-animation.svg?v=${Date.now()}`
-                                              : project.title ===
-                                                "User Testing Config"
-                                                ? `/img/user-testing-config-animation.svg?v=${Date.now()}`
-                                                : project.title === "MicroLearn"
-                                                  ? `/img/micro-learn-animation.svg?v=${Date.now()}`
-                                                  : project.title === "RAG App"
-                                                    ? `/img/rag-app-animation.svg?v=${Date.now()}`
-                                                    : ""
+                                            project.title ===
+                                            "User Testing Config"
+                                              ? `/img/user-testing-config-animation.svg?v=${Date.now()}`
+                                              : project.title === "MicroLearn"
+                                              ? `/img/micro-learn-animation.svg?v=${Date.now()}`
+                                              : project.title === "RAG App"
+                                              ? `/img/rag-app-animation.svg?v=${Date.now()}`
+                                              : ""
                                           }
                                           alt={project.title}
                                           className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-300"
@@ -455,7 +515,7 @@ function App() {
                                     project.title !== "HealthAware" &&
                                     project.title !== "AI NUI" &&
                                     project.title !==
-                                    "Configurable Multivariate Testing"
+                                      "Configurable Multivariate Testing"
                                 )
                                 .map((project, index) => (
                                   <a
@@ -467,22 +527,20 @@ function App() {
                                   >
                                     {/* Compact Image */}
                                     <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 overflow-hidden rounded bg-transparent">
-                                      {project.title === "JSON AI Prompts" ||
-                                        project.title === "User Testing Config" ||
-                                        project.title === "MicroLearn" ||
-                                        project.title === "RAG App" ? (
+                                      {project.title ===
+                                        "User Testing Config" ||
+                                      project.title === "MicroLearn" ||
+                                      project.title === "RAG App" ? (
                                         <img
                                           src={
-                                            project.title === "JSON AI Prompts"
-                                              ? `/img/json-ai-prompts-animation.svg?v=${Date.now()}`
-                                              : project.title ===
-                                                "User Testing Config"
-                                                ? `/img/user-testing-config-animation.svg?v=${Date.now()}`
-                                                : project.title === "MicroLearn"
-                                                  ? `/img/micro-learn-animation.svg?v=${Date.now()}`
-                                                  : project.title === "RAG App"
-                                                    ? `/img/rag-app-animation.svg?v=${Date.now()}`
-                                                    : ""
+                                            project.title ===
+                                            "User Testing Config"
+                                              ? `/img/user-testing-config-animation.svg?v=${Date.now()}`
+                                              : project.title === "MicroLearn"
+                                              ? `/img/micro-learn-animation.svg?v=${Date.now()}`
+                                              : project.title === "RAG App"
+                                              ? `/img/rag-app-animation.svg?v=${Date.now()}`
+                                              : ""
                                           }
                                           alt={project.title}
                                           className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-300"
@@ -594,8 +652,9 @@ function App() {
                                       });
                                     }
                                   }}
-                                  className={`group relative rounded-lg bg-white/20 backdrop-blur-lg flex flex-col shadow-xl hover:shadow-2xl transition-shadow ${story.hasModal ? "cursor-pointer" : ""
-                                    }`}
+                                  className={`group relative rounded-lg bg-white/20 backdrop-blur-lg flex flex-col shadow-xl hover:shadow-2xl transition-shadow ${
+                                    story.hasModal ? "cursor-pointer" : ""
+                                  }`}
                                 >
                                   {/* Card Image */}
                                   <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-transparent">
@@ -648,8 +707,9 @@ function App() {
                                       });
                                     }
                                   }}
-                                  className={`group flex items-center gap-4 p-3 rounded-lg bg-white/20 backdrop-blur-lg transition-all shadow-xl hover:shadow-2xl ${story.hasModal ? "cursor-pointer" : ""
-                                    }`}
+                                  className={`group flex items-center gap-4 p-3 rounded-lg bg-white/20 backdrop-blur-lg transition-all shadow-xl hover:shadow-2xl ${
+                                    story.hasModal ? "cursor-pointer" : ""
+                                  }`}
                                 >
                                   {/* Compact Image */}
                                   <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 overflow-hidden rounded bg-transparent">
@@ -856,13 +916,13 @@ function App() {
                                 (article) =>
                                   article.title !== "Commit Message Fatigue" &&
                                   article.title !==
-                                  "Information Architecture Is Not Sacred" &&
+                                    "Information Architecture Is Not Sacred" &&
                                   article.title !==
-                                  "AI is hydrated with user research data" &&
+                                    "AI is hydrated with user research data" &&
                                   article.title !==
-                                  "Prompting for Heuristic Evaluations" &&
+                                    "Prompting for Heuristic Evaluations" &&
                                   article.title !==
-                                  "Vibe Coding v Vibe Engineering"
+                                    "Vibe Coding v Vibe Engineering"
                               )
                               .sort(
                                 (a, b) =>
@@ -895,7 +955,7 @@ function App() {
                                       <img
                                         {...getCardImageProps(
                                           (article as any).cardImage ||
-                                          article.image
+                                            article.image
                                         )}
                                         alt={article.title}
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -926,13 +986,13 @@ function App() {
                                 (article) =>
                                   article.title !== "Commit Message Fatigue" &&
                                   article.title !==
-                                  "Information Architecture Is Not Sacred" &&
+                                    "Information Architecture Is Not Sacred" &&
                                   article.title !==
-                                  "AI is hydrated with user research data" &&
+                                    "AI is hydrated with user research data" &&
                                   article.title !==
-                                  "Prompting for Heuristic Evaluations" &&
+                                    "Prompting for Heuristic Evaluations" &&
                                   article.title !==
-                                  "Vibe Coding v Vibe Engineering"
+                                    "Vibe Coding v Vibe Engineering"
                               )
                               .sort(
                                 (a, b) =>
@@ -965,7 +1025,7 @@ function App() {
                                       <img
                                         {...getThumbnailImageProps(
                                           (article as any).cardImage ||
-                                          article.image
+                                            article.image
                                         )}
                                         alt={article.title}
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -1608,7 +1668,7 @@ function App() {
 
       {/* Footer - Hide on all store pages and discogs page */}
       {!location.pathname.startsWith("/store") &&
-        location.pathname !== "/discogs" ? (
+      location.pathname !== "/discogs" ? (
         <Suspense fallback={null} key={location.pathname}>
           <Footer />
         </Suspense>
@@ -1627,10 +1687,11 @@ function App() {
                   new CustomEvent("toggleViewMode", { detail: "list" })
                 );
               }}
-              className={`w-8 h-8 flex items-center justify-center rounded-md transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 ${currentViewMode === "list"
-                ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
-                : "text-gray-700 dark:text-gray-300"
-                }`}
+              className={`w-8 h-8 flex items-center justify-center rounded-md transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                currentViewMode === "list"
+                  ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
+                  : "text-gray-700 dark:text-gray-300"
+              }`}
               aria-label="List view"
             >
               <IconWrapper Icon={LazyList} className="w-4 h-4" />
@@ -1643,10 +1704,11 @@ function App() {
                   new CustomEvent("toggleViewMode", { detail: "grid" })
                 );
               }}
-              className={`w-8 h-8 flex items-center justify-center rounded-md transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 ${currentViewMode === "grid"
-                ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
-                : "text-gray-700 dark:text-gray-300"
-                }`}
+              className={`w-8 h-8 flex items-center justify-center rounded-md transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                currentViewMode === "grid"
+                  ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
+                  : "text-gray-700 dark:text-gray-300"
+              }`}
               aria-label="Grid view"
             >
               <IconWrapper Icon={LazyLayoutGrid} className="w-4 h-4" />
