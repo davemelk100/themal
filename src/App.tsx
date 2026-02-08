@@ -254,6 +254,34 @@ function App() {
             <Route
               path="/"
               element={
+                <div className="min-h-screen flex flex-col items-center justify-center px-4">
+                  <img
+                    src="/img/melkonian-industries-logo.svg"
+                    alt="Melkonian Industries"
+                    className="w-64 sm:w-80 lg:w-96 mb-12"
+                  />
+                  <div className="flex flex-col sm:flex-row gap-6">
+                    <Link
+                      to="/portfolio"
+                      className="text-lg font-medium text-[#1d77af] dark:text-[#1d77af] hover:text-[#155d8a] dark:hover:text-[#2a8ec8] transition-colors px-6 py-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 border border-[#1d77af] dark:border-[#1d77af] text-center"
+                    >
+                      Portfolio
+                    </Link>
+                    <a
+                      href="https://www.majorleaguenumbers.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-lg font-medium text-[#1d77af] dark:text-[#1d77af] hover:text-[#155d8a] dark:hover:text-[#2a8ec8] transition-colors px-6 py-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 border border-[#1d77af] dark:border-[#1d77af] text-center"
+                    >
+                      Major League Numbers
+                    </a>
+                  </div>
+                </div>
+              }
+            />
+            <Route
+              path="/portfolio"
+              element={
                 <>
                   {/* Hero Section */}
                   <section className="py-4 sm:py-4xl:py-4 relative">
@@ -312,7 +340,7 @@ function App() {
 
                           {/* Summary Text */}
                           <div className="mt-4 sm:mt-6">
-                            <p className="text-muted-foreground text-left">
+                            <p className="text-sm text-muted-foreground text-left">
                               I'm David Melkonian, a technical product and
                               experience leader with over a decade of work at
                               the intersection of UX, front-end engineering, and
@@ -373,15 +401,11 @@ function App() {
                                   {/* Card Content */}
                                   <div className="p-6 sm:p-8 flex flex-col gap-2 text-center items-center">
                                     <h3
-                                      className="font-league-gothic text-gray-900 dark:text-white group-hover:text-primary transition-colors uppercase"
-                                      style={{
-                                        fontSize: "57px",
-                                        letterSpacing: "1px",
-                                      }}
+                                      className="text-sm font-league-gothic text-gray-900 dark:text-white group-hover:text-primary transition-colors uppercase tracking-wide"
                                     >
                                       {project.title}
                                     </h3>
-                                    <p className="text-sm sm:text-base text-gray-600 dark:text-white">
+                                    <p className="text-sm text-gray-600 dark:text-white">
                                       {project.description}
                                     </p>
                                   </div>
@@ -495,7 +519,7 @@ function App() {
 
                                     {/* Card Content */}
                                     <div className="p-4 sm:p-6 flex flex-col gap-2 flex-1">
-                                      <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                                      <h3 className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
                                         {project.title}
                                       </h3>
                                       <p className="text-sm text-gray-600 dark:text-white line-clamp-2">
@@ -561,7 +585,7 @@ function App() {
 
                                     {/* Compact Content */}
                                     <div className="flex-1 min-w-0">
-                                      <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors truncate">
+                                      <h3 className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors truncate">
                                         {project.title}
                                       </h3>
                                       <p className="text-sm text-gray-600 dark:text-white line-clamp-1 mt-1">
@@ -677,7 +701,7 @@ function App() {
 
                                   {/* Card Content */}
                                   <div className="p-4 sm:p-6 flex flex-col gap-2 flex-1">
-                                    <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                                    <h3 className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
                                       {story.title}
                                     </h3>
                                     {story.subtitle && (
@@ -732,7 +756,7 @@ function App() {
 
                                   {/* Compact Content */}
                                   <div className="flex-1 min-w-0">
-                                    <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors truncate">
+                                    <h3 className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors truncate">
                                       {story.title}
                                     </h3>
                                     {story.subtitle && (
@@ -814,7 +838,7 @@ function App() {
 
                                   {/* Card Content */}
                                   <div className="p-4 sm:p-6 flex flex-col gap-2 flex-1">
-                                    <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                                    <h3 className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
                                       {project.title}
                                     </h3>
                                     {project.description && (
@@ -854,7 +878,7 @@ function App() {
 
                                   {/* Compact Content */}
                                   <div className="flex-1 min-w-0">
-                                    <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors truncate">
+                                    <h3 className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors truncate">
                                       {project.title}
                                     </h3>
                                     {project.description && (
@@ -966,7 +990,7 @@ function App() {
 
                                     {/* Card Content */}
                                     <div className="p-4 sm:p-6 flex flex-col gap-2 flex-1">
-                                      <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                                      <h3 className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
                                         {article.title}
                                       </h3>
                                       {article.description && (
@@ -1036,7 +1060,7 @@ function App() {
 
                                     {/* Compact Content */}
                                     <div className="flex-1 min-w-0">
-                                      <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors truncate">
+                                      <h3 className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors truncate">
                                         {article.title}
                                       </h3>
                                       {article.description && (
@@ -1091,7 +1115,7 @@ function App() {
                             key={position.title + position.period}
                             className=""
                           >
-                            <h3 className="text-lg font-semibold mb-1 dark:text-white title-font">
+                            <h3 className="text-sm font-semibold mb-1 dark:text-white title-font">
                               {position.title}
                             </h3>
                             <p className="text-sm text-gray-600 dark:text-gray-300 mb-1 font-medium">
