@@ -1,5 +1,90 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import emailjs from "@emailjs/browser";
+
+const bannerStyle = document.createElement("style");
+bannerStyle.textContent = `
+@keyframes scroll-banner {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-scroll-banner {
+  animation: scroll-banner 30s linear infinite;
+}
+.animate-scroll-banner.paused {
+  animation-play-state: paused;
+}
+`;
+document.head.appendChild(bannerStyle);
+
+function useSwipeable(ref: React.RefObject<HTMLDivElement | null>) {
+  const [isDragging, setIsDragging] = useState(false);
+  const startX = useRef(0);
+  const scrollOffset = useRef(0);
+  const currentOffset = useRef(0);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const inner = el.querySelector(".animate-scroll-banner") as HTMLElement;
+    if (!inner) return;
+
+    const getComputedTranslateX = () => {
+      const style = window.getComputedStyle(inner);
+      const matrix = new DOMMatrix(style.transform);
+      return matrix.m41;
+    };
+
+    const onStart = (clientX: number) => {
+      setIsDragging(true);
+      inner.classList.add("paused");
+      startX.current = clientX;
+      scrollOffset.current = getComputedTranslateX();
+      inner.style.transform = `translateX(${scrollOffset.current}px)`;
+    };
+
+    const onMove = (clientX: number) => {
+      if (!isDragging) return;
+      const delta = clientX - startX.current;
+      currentOffset.current = scrollOffset.current + delta;
+      inner.style.transform = `translateX(${currentOffset.current}px)`;
+    };
+
+    const onEnd = () => {
+      if (!isDragging) return;
+      setIsDragging(false);
+      inner.classList.remove("paused");
+      inner.style.transform = "";
+    };
+
+    const onTouchStart = (e: TouchEvent) => onStart(e.touches[0].clientX);
+    const onTouchMove = (e: TouchEvent) => { e.preventDefault(); onMove(e.touches[0].clientX); };
+    const onTouchEnd = () => onEnd();
+    const onMouseDown = (e: MouseEvent) => { e.preventDefault(); onStart(e.clientX); };
+    const onMouseMove = (e: MouseEvent) => onMove(e.clientX);
+    const onMouseUp = () => onEnd();
+    const onMouseLeave = () => onEnd();
+
+    el.addEventListener("touchstart", onTouchStart, { passive: false });
+    el.addEventListener("touchmove", onTouchMove, { passive: false });
+    el.addEventListener("touchend", onTouchEnd);
+    el.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
+    el.addEventListener("mouseleave", onMouseLeave);
+
+    return () => {
+      el.removeEventListener("touchstart", onTouchStart);
+      el.removeEventListener("touchmove", onTouchMove);
+      el.removeEventListener("touchend", onTouchEnd);
+      el.removeEventListener("mousedown", onMouseDown);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+      el.removeEventListener("mouseleave", onMouseLeave);
+    };
+  }, [ref, isDragging]);
+
+  return isDragging;
+}
 
 const SectionHeader = ({
   title,
@@ -63,6 +148,8 @@ const ServiceSection = ({
 );
 
 export default function Consult() {
+  const bannerRef = useRef<HTMLDivElement>(null);
+  const isDragging = useSwipeable(bannerRef);
   const contactFormRef = useRef<HTMLFormElement>(null);
   const [contactStatus, setContactStatus] = useState<
     "idle" | "sending" | "success" | "error"
@@ -103,7 +190,7 @@ export default function Consult() {
                   alt="Melkonian Industries"
                   className="w-12 sm:w-16 lg:w-20 h-12 sm:h-16 lg:h-20"
                 />
-                <h1 className="tracking-tighter title-font leading-none text-left text-gray-900 dark:text-white uppercase">
+                <h1 className="tracking-tighter title-font leading-none text-left text-gray-900 dark:text-white uppercase font-black">
                   Melkonian Industries
                 </h1>
               </div>
@@ -112,6 +199,33 @@ export default function Consult() {
                   Technical & Business Consulting for Digital Growth
                 </h2>
               </div>
+
+              {/* Auto-scrolling client logo banner */}
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-2 font-medium">Former and Current Clients</p>
+              <div ref={bannerRef} className="mb-8 overflow-hidden relative bg-gray-300 dark:bg-gray-700 rounded-lg py-6 px-4 cursor-grab active:cursor-grabbing select-none">
+                <div className="flex animate-scroll-banner items-center gap-8 sm:gap-12 w-max">
+                  {[...Array(2)].map((_, setIndex) => (
+                    <div key={setIndex} className="flex items-center gap-8 sm:gap-12 shrink-0">
+                      <img src="/img/carousel/healthcare-dot-gov-carousel.svg" alt="Healthcare.gov" className="h-6 sm:h-8 w-auto object-contain" />
+                      <img src="/img/carousel/cygnet-carousel.svg" alt="Cygnet" className="h-16 sm:h-18 w-auto object-contain" />
+                      <img src="/img/carousel/dark-slide-carousel.png" alt="Dark Slide" className="h-12 sm:h-14 w-auto object-contain" />
+                      <img src="/img/carousel/nextier-carousel.png" alt="Nextier" className="h-10 sm:h-12 w-auto object-contain" />
+                      <img src="/img/carousel/logo-propio.svg" alt="Propio" className="h-6 sm:h-8 w-auto object-contain" />
+                      <img src="/img/carousel/dewpoint-carousel.svg" alt="Dewpoint" className="h-10 sm:h-12 w-auto object-contain" />
+                      <img src="/img/carousel/optum-carousel.svg" alt="Optum" className="h-6 sm:h-8 w-auto object-contain" />
+                      <img src="/img/carousel/logo-ddpa-green.png" alt="Delta Dental" className="h-4 sm:h-6 w-auto object-contain" />
+                      <img src="/img/carousel/meridian-carousel.png" alt="Meridian" className="h-10 sm:h-12 w-auto object-contain" />
+                      <img src="/img/carousel/neogen-carousel.png" alt="Neogen Corporation" className="h-10 sm:h-12 w-auto object-contain" />
+                      <img src="/img/carousel/dcal-carousel.svg" alt="DCAL" className="h-10 sm:h-12 w-auto object-contain" />
+                      <img src="/img/carousel/data-foundation-carousel.png" alt="Data Foundation" className="h-14 sm:h-16 w-auto object-contain" />
+                      <img src="/img/carousel/bsbsm-carousel.png" alt="Blue Cross Blue Shield of Michigan" className="h-14 sm:h-16 w-auto object-contain" />
+                      <img src="/img/carousel/fictionforge-carousel.png" alt="FictionForge" className="h-20 sm:h-24 w-auto object-contain" />
+                      <img src="/img/carousel/customgpt-carousel.png" alt="CustomGPT.ai" className="h-6 sm:h-8 w-auto object-contain" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
                 Strategy, SEO, Advertising, and Technical Execution - Aligned to
                 Business Outcomes
