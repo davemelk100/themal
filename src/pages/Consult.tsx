@@ -323,7 +323,10 @@ export default function Consult() {
                     Unlike traditional agencies that operate in silos, I work
                     across strategy, design, and development to ensure
                     everything connects - from system architecture to user
-                    experience to measurable outcomes.
+                    experience to measurable outcomes. I also bring experience
+                    as a Product Owner and Scrum Master, hold a Certified
+                    Usability Analyst (CUA) credential from HFI, and carry
+                    ITIL Business certifications.
                   </p>
                   <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                     I also consult on AI tooling and approaches - backed by
@@ -568,7 +571,7 @@ export default function Consult() {
         </div>
 
         {/* Client logos column - right side */}
-        <div className="hidden md:flex flex-col items-center gap-16 py-6 px-4 w-48 shrink-0 bg-[#d5e0ea] dark:bg-gray-700 rounded-lg mt-40 mr-4 self-start">
+        <div className="hidden md:flex flex-col items-center gap-24 py-6 px-4 w-48 shrink-0 bg-[#d5e0ea] dark:bg-gray-700 rounded-lg mt-40 mr-4 self-start">
           <img
             src="/img/carousel/optum-carousel.svg"
             alt="Optum"
