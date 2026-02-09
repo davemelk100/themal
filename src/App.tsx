@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
+import emailjs from "@emailjs/browser";
 import { content } from "./content";
 import { ThemeProvider } from "./context/ThemeContext";
 import { CartProvider, StoreProvider, AuthProvider } from "./store";
@@ -204,6 +205,35 @@ function App() {
     "grid",
   );
 
+  // Contact form state
+  const contactFormRef = useRef<HTMLFormElement>(null);
+  const [contactStatus, setContactStatus] = useState<
+    "idle" | "sending" | "success" | "error"
+  >("idle");
+  const [contactError, setContactError] = useState("");
+
+  const handleContactSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setContactStatus("sending");
+    setContactError("");
+
+    emailjs
+      .sendForm(
+        "YOUR_SERVICE_ID",
+        "YOUR_TEMPLATE_ID",
+        contactFormRef.current!,
+        "YOUR_PUBLIC_KEY",
+      )
+      .then(() => {
+        setContactStatus("success");
+        contactFormRef.current?.reset();
+      })
+      .catch((err) => {
+        setContactStatus("error");
+        setContactError(err.text || "Something went wrong. Please try again.");
+      });
+  };
+
   // Scroll to top on route change (but not for internal navigation)
   useEffect(() => {
     // Only scroll to top if we're not navigating to a specific section
@@ -211,6 +241,20 @@ function App() {
       window.scrollTo(0, 0);
     }
   }, [location.pathname]);
+
+  // Scroll to hash target after navigation
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.replace("#", "");
+      // Small delay to let the DOM render
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
+    }
+  }, [location]);
 
   // Listen for view mode changes from NewsAggregator
   useEffect(() => {
@@ -281,6 +325,12 @@ function App() {
                     >
                       Major League Numbers
                     </a>
+                    <Link
+                      to="/portfolio#contact"
+                      className="text-lg font-medium text-[#1d77af] dark:text-[#1d77af] hover:text-[#155d8a] dark:hover:text-[#2a8ec8] transition-colors px-6 py-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 border border-[#1d77af] dark:border-[#1d77af] text-center"
+                    >
+                      Consulting Services
+                    </Link>
                   </div>
                 </div>
               }
@@ -352,14 +402,15 @@ function App() {
                               the intersection of UX, front-end engineering, and
                               digital accessibility. I specialize in designing
                               and shipping full-stack web and mobile products
-                              using modern stacks like React, TypeScript,
-                              Next.js, Python, and FastAPI, with a strong focus
-                              on scalable design systems, AI-assisted workflows,
-                              vector search, and measurable impact on
-                              performance and usability. I've led teams of 30+,
-                              built full-stack applications with AI integration,
-                              and established enterprise-wide standards for
-                              processes and digital experience delivery.
+                              using React, TypeScript, Next.js, Python, and
+                              FastAPI, with a focus on scalable design systems,
+                              performance, and usability. Recently, I've been
+                              building AI-powered features into real
+                              products, from RAG pipelines and vector search to
+                              chatbots, smart categorization with GPT-4o, and
+                              semantic search with sentence transformers. I've
+                              led teams of 30+ and established enterprise-wide
+                              standards for digital experience delivery.
                             </p>
                           </div>
                           {/* <p className="my-4">
@@ -1164,6 +1215,90 @@ function App() {
                           <li>Minor in Public Relations</li>
                         </ul>
                       </div>
+                    </div>
+                  </section>
+
+                  {/* Contact Section */}
+                  <section
+                    id="contact"
+                    className="py-4 sm:py-6 lg:py-8 xl:py-12 relative"
+                  >
+                    <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
+                      <SectionHeader
+                        title="Contact"
+                        subtitle="Get in touch for consulting services"
+                        className="mb-8 sm:mb-6"
+                      />
+                      <form
+                        ref={contactFormRef}
+                        onSubmit={handleContactSubmit}
+                        className="max-w-xl space-y-4"
+                      >
+                        <div>
+                          <label
+                            htmlFor="contact-name"
+                            className="block text-gray-700 dark:text-gray-300 mb-1"
+                          >
+                            Name
+                          </label>
+                          <input
+                            id="contact-name"
+                            type="text"
+                            name="user_name"
+                            required
+                            className="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#1d77af]"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="contact-email"
+                            className="block text-gray-700 dark:text-gray-300 mb-1"
+                          >
+                            Email
+                          </label>
+                          <input
+                            id="contact-email"
+                            type="email"
+                            name="user_email"
+                            required
+                            className="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#1d77af]"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="contact-message"
+                            className="block text-gray-700 dark:text-gray-300 mb-1"
+                          >
+                            Message
+                          </label>
+                          <textarea
+                            id="contact-message"
+                            name="message"
+                            required
+                            rows={5}
+                            className="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#1d77af] resize-vertical"
+                          />
+                        </div>
+                        <button
+                          type="submit"
+                          disabled={contactStatus === "sending"}
+                          className="px-6 py-3 rounded-md bg-[#1d77af] text-white font-medium hover:bg-[#155d8a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {contactStatus === "sending"
+                            ? "Sending..."
+                            : "Send Message"}
+                        </button>
+                        {contactStatus === "success" && (
+                          <p className="text-green-600 dark:text-green-400">
+                            Message sent successfully!
+                          </p>
+                        )}
+                        {contactStatus === "error" && (
+                          <p className="text-red-600 dark:text-red-400">
+                            {contactError}
+                          </p>
+                        )}
+                      </form>
                     </div>
                   </section>
 

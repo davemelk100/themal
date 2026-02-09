@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.10.0",
+    "@emailjs/browser": "^4.4.1",
     "@fontsource/roboto-serif": "^5.2.6",
     "@hookform/resolvers": "^3.3.2",
     "@neondatabase/serverless": "^1.0.1",
