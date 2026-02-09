@@ -244,6 +244,25 @@ export const content = {
     subtitle: "Organizations that have supported my career",
     positions: [
       {
+        title: "Technical and Business Consultant",
+        company: "Melkonian Industries · Self-employed",
+        period: "Jan 2026 – Present",
+        description: [
+          "Implementing SEO enhancements and Google Ad placement strategy to increase traffic for a non-profit financial wellness organization",
+          "Redesigned and rebuilt an application for a Six Sigma Training and Book advertising site for a consulting collective",
+          "Deep dive into process and technologies for a small tech business. Implemented an inventory system integrated with an existing CRM, and tied it into the point-of-sale solution",
+          "Established a digital supply chain to automate workflows and templating for back-end processing for an accounting firm",
+          "Conducting exploratory consults to determine a social media strategy and user demographic study for multiple clients",
+          "Built a time-tracking system to ensure clients have full transparency into the details and time frames in which work was performed. This is targeted towards independent employees requiring a simple time-tracking mechanism",
+          "Architecting a site for a large skateboard company in which to incorporate all of its sub-brands under its main brands' umbrella. Doing SEO enhancements, and targeted Google Ad placement, in addition to client interface with music licensing personnel",
+          "Built operational and digital workflow improvements, with an emphasis on tooling, automation, and simple tech stacks",
+          "Implemented lightweight process and system enhancements to improve efficiency",
+          "Delivered assessments and recommendations on accessibility, content structure, and internal systems for an AI chatbot company, and for a data governance organization",
+          "Provided training and coaching to improve tool adoption, self-sufficiency, and day-to-day execution",
+          "Built a RAG application for materials inventory using: Full-Stack: React, TypeScript, Python, FastAPI, Netlify, Railway | AI/ML: RAG, Sentence Transformers, pgvector, OpenAI, Anthropic, Groq, Ollama",
+        ],
+      },
+      {
         title: "Business and Technical Consultant",
         company: "Nextier",
         period: "December 2025 – Present",

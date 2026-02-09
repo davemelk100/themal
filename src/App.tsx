@@ -37,6 +37,7 @@ const AuthCallback = lazy(() => import("./store/pages/AuthCallback"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const Discogs = lazy(() => import("./pages/Discogs"));
+const Consult = lazy(() => import("./pages/Consult"));
 
 // Lazy load non-critical UI components to reduce critical path
 const MobileTrayMenu = lazy(() => import("./components/MobileTrayMenu"));
@@ -292,7 +293,7 @@ function App() {
                       Major League Numbers
                     </a>
                     <Link
-                      to="/portfolio#contact"
+                      to="/consult"
                       className="text-lg font-medium text-[#1d77af] dark:text-[#1d77af] hover:text-[#155d8a] dark:hover:text-[#2a8ec8] transition-colors px-6 py-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 border border-[#1d77af] dark:border-[#1d77af] text-center"
                     >
                       Consulting Services
@@ -1742,6 +1743,7 @@ function App() {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="/discogs" element={<Discogs />} />
+            <Route path="/consult" element={<Consult />} />
             <Route path="/store/login" element={<Login />} />
             <Route path="/store/signup" element={<Signup />} />
             <Route path="/store/auth/callback" element={<AuthCallback />} />
