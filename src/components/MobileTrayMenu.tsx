@@ -182,6 +182,7 @@ const MobileTrayMenu: React.FC = () => {
                 "work",
                 "articles",
                 "career",
+                "contact",
               ];
               const indexA = order.indexOf(a.id);
               const indexB = order.indexOf(b.id);

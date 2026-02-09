@@ -110,17 +110,6 @@ const JsonAiPrompts = () => {
                 "Playlist management",
               ],
             },
-            "/news": {
-              title: "News Aggregator",
-              description: "RSS feed aggregator with category filtering",
-              sources: [
-                "Ars Technica",
-                "Reuters",
-                "Breitbart",
-                "Lambgoat",
-                "No Echo",
-              ],
-            },
             "/archive": {
               title: "Articles Archive",
               description: "Complete archive of all articles with search",
@@ -647,18 +636,6 @@ const JsonAiPrompts = () => {
                                   "Development Methodologies",
                                   "Key Features",
                                   "Performance Metrics",
-                                ],
-                              },
-                              "/news": {
-                                title: "News Aggregator",
-                                description:
-                                  "RSS feed aggregator with category filtering",
-                                sources: [
-                                  "Ars Technica",
-                                  "Reuters",
-                                  "Breitbart",
-                                  "Lambgoat",
-                                  "No Echo",
                                 ],
                               },
                               "/archive": {

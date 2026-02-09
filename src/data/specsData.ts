@@ -101,7 +101,7 @@ export const techCategories: TechCategory[] = [
         example: {
           title: "Accessible Components",
           description: "Custom components built on Radix primitives",
-          link: "/news",
+          link: "/",
           code: "Dialog, DropdownMenu, Tooltip components",
         },
       },
@@ -157,7 +157,7 @@ export const techCategories: TechCategory[] = [
         example: {
           title: "Cloud Database",
           description: "Serverless PostgreSQL for data persistence",
-          link: "/news",
+          link: "/",
           code: "Neon connection with connection pooling",
         },
       },
@@ -173,11 +173,11 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "Netlify Functions",
-        description: "Serverless functions for RSS and API",
+        description: "Serverless functions for API",
         example: {
           title: "Serverless API",
-          description: "RSS proxy and site configuration functions",
-          link: "/news",
+          description: "Site configuration and authentication functions",
+          link: "/",
           code: "netlify/functions/ for API endpoints",
         },
       },
@@ -409,7 +409,7 @@ export const techCategories: TechCategory[] = [
         example: {
           title: "Keyboard Accessible",
           description: "Tab navigation and keyboard shortcuts",
-          link: "/news",
+          link: "/",
           code: "onKeyDown handlers for keyboard events",
         },
       },
@@ -429,16 +429,6 @@ export const techCategories: TechCategory[] = [
     title: "Content & Media",
     icon: "Layers",
     items: [
-      {
-        name: "RSS Feeds",
-        description: "News aggregation system",
-        example: {
-          title: "Live News Feeds",
-          description: "Real-time RSS feed aggregation and parsing",
-          link: "/news",
-          code: "RSS proxy functions for CORS handling",
-        },
-      },
       {
         name: "Music Player",
         description: "Audio playback with playlist management",

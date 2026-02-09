@@ -37,7 +37,6 @@ export const TermsOfServiceContent = () => {
             Store functionality for purchasing digital or physical products (if
             applicable)
           </li>
-          <li>News aggregation and content curation features</li>
         </ul>
         <p className="text-gray-700 mb-4">
           We reserve the right to modify, suspend, or discontinue any part of

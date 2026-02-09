@@ -38,6 +38,10 @@ export const content = {
         id: "design-system",
         text: "Design System",
       },
+      {
+        id: "contact",
+        text: "Contact",
+      },
     ],
     social: {
       linkedin: {

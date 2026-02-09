@@ -23,7 +23,7 @@ const Archive = lazy(() => import("./pages/Archive"));
 
 const JsonAiPrompts = lazy(() => import("./pages/JsonAiPrompts"));
 const AudioTranscript = lazy(() => import("./pages/AudioTranscript"));
-const NewsAggregator = lazy(() => import("./pages/NewsAggregator"));
+
 const Specs = lazy(() => import("./pages/Specs"));
 const Story = lazy(() => import("./pages/Story"));
 const MusicPlayer = lazy(() => import("./pages/MusicPlayer"));
@@ -193,9 +193,6 @@ function App() {
     subtitle?: string;
   } | null>(null);
 
-  const [currentViewMode, setCurrentViewMode] = useState<"list" | "grid">(
-    "grid",
-  );
   const [designViewMode, setDesignViewMode] = useState<"list" | "grid">("grid");
   const [labViewMode, setLabViewMode] = useState<"list" | "grid">("grid");
   const [storiesViewMode, setStoriesViewMode] = useState<"list" | "grid">(
@@ -219,10 +216,10 @@ function App() {
 
     emailjs
       .sendForm(
-        "YOUR_SERVICE_ID",
-        "YOUR_TEMPLATE_ID",
+        "service_fm58itq",
+        "template_t8jxrzr",
         contactFormRef.current!,
-        "YOUR_PUBLIC_KEY",
+        "6XBDY7TVW_51JPyZQ",
       )
       .then(() => {
         setContactStatus("success");
@@ -256,37 +253,6 @@ function App() {
     }
   }, [location]);
 
-  // Listen for view mode changes from NewsAggregator
-  useEffect(() => {
-    const handleViewModeChange = (event: CustomEvent) => {
-      setCurrentViewMode(event.detail);
-    };
-
-    // Defer localStorage read to avoid blocking initial render
-    requestIdleCallback(
-      () => {
-        const savedViewMode = localStorage.getItem("viewMode") as
-          | "list"
-          | "grid";
-        if (savedViewMode) {
-          setCurrentViewMode(savedViewMode);
-        }
-      },
-      { timeout: 100 },
-    );
-
-    window.addEventListener(
-      "viewModeChanged",
-      handleViewModeChange as EventListener,
-    );
-
-    return () => {
-      window.removeEventListener(
-        "viewModeChanged",
-        handleViewModeChange as EventListener,
-      );
-    };
-  }, []);
 
   return (
     <div className="min-h-screen text-gray-900 transition-colors duration-300 dark:text-white pb-20 sm:pb-0 flex flex-col relative">
@@ -365,6 +331,7 @@ function App() {
                                     "work",
                                     "articles",
                                     "career",
+                                    "contact",
                                   ];
                                   const indexA = order.indexOf(a.id);
                                   const indexB = order.indexOf(b.id);
@@ -402,15 +369,15 @@ function App() {
                               the intersection of UX, front-end engineering, and
                               digital accessibility. I specialize in designing
                               and shipping full-stack web and mobile products
-                              using React, TypeScript, Next.js, Python, and
-                              FastAPI, with a focus on scalable design systems,
+                              using Vue, React, Next.js, Python, and FastAPI,
+                              with a focus on scalable design systems,
                               performance, and usability. Recently, I've been
-                              building AI-powered features into real
-                              products, from RAG pipelines and vector search to
-                              chatbots, smart categorization with GPT-4o, and
-                              semantic search with sentence transformers. I've
-                              led teams of 30+ and established enterprise-wide
-                              standards for digital experience delivery.
+                              building AI-powered features into real products,
+                              from RAG pipelines and vector search to chatbots,
+                              smart categorization with GPT-4o, and semantic
+                              search with sentence transformers. I've led teams
+                              of 30+ and established enterprise-wide standards
+                              for digital experience delivery.
                             </p>
                           </div>
                           {/* <p className="my-4">
@@ -1768,7 +1735,7 @@ function App() {
             <Route path="/archive" element={<Archive />} />
             <Route path="/json" element={<JsonAiPrompts />} />
             <Route path="/zaven" element={<AudioTranscript />} />
-            <Route path="/news" element={<NewsAggregator />} />
+
             <Route path="/specs" element={<Specs />} />
             <Route path="/story" element={<Story />} />
             <Route path="/music" element={<MusicPlayer />} />
@@ -1820,9 +1787,8 @@ function App() {
           />
         </Suspense>
       )}
-      {/* Hide MobileTrayMenu on news, store and discogs pages */}
-      {location.pathname !== "/news" &&
-        location.pathname !== "/discogs" &&
+      {/* Hide MobileTrayMenu on store and discogs pages */}
+      {location.pathname !== "/discogs" &&
         !location.pathname.startsWith("/store") && (
           <Suspense fallback={null}>
             <MobileTrayMenu />
@@ -1837,51 +1803,10 @@ function App() {
         </Suspense>
       ) : null}
 
-      {/* Global Dark Mode Toggle and View Toggle - Visible on all pages */}
+      {/* Global Dark Mode Toggle - Visible on all pages */}
       <div className="fixed top-2 right-0 z-50 flex items-center gap-2">
-        {/* View Toggle - Only show on news page and hide on mobile */}
-        {location.pathname === "/news" && (
-          <div className="hidden md:flex items-center gap-1 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-1 shadow-lg">
-            <button
-              onClick={() => {
-                // This will be handled by the NewsAggregator component
-                // We'll use a custom event to communicate
-                window.dispatchEvent(
-                  new CustomEvent("toggleViewMode", { detail: "list" }),
-                );
-              }}
-              className={`w-8 h-8 flex items-center justify-center rounded-md transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                currentViewMode === "list"
-                  ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
-                  : "text-gray-700 dark:text-gray-300"
-              }`}
-              aria-label="List view"
-            >
-              <IconWrapper Icon={LazyList} className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => {
-                // This will be handled by the NewsAggregator component
-                // We'll use a custom event to communicate
-                window.dispatchEvent(
-                  new CustomEvent("toggleViewMode", { detail: "grid" }),
-                );
-              }}
-              className={`w-8 h-8 flex items-center justify-center rounded-md transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                currentViewMode === "grid"
-                  ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
-                  : "text-gray-700 dark:text-gray-300"
-              }`}
-              aria-label="Grid view"
-            >
-              <IconWrapper Icon={LazyLayoutGrid} className="w-4 h-4" />
-            </button>
-          </div>
-        )}
-
-        {/* Dark Mode Toggle - Hide on news, store and discogs pages */}
-        {location.pathname !== "/news" &&
-          location.pathname !== "/discogs" &&
+        {/* Dark Mode Toggle - Hide on store and discogs pages */}
+        {location.pathname !== "/discogs" &&
           !location.pathname.startsWith("/store") && (
             <button
               onClick={() => {

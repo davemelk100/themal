@@ -41,40 +41,9 @@ export const userSettings = pgTable("user_settings", {
     .references(() => users.id, { onDelete: "cascade" })
     .notNull(),
   theme: text("theme").default("light"),
-  viewMode: text("view_mode").default("grid"),
-  activeCategory: text("active_category").default("all"),
-  customFeeds: jsonb("custom_feeds").default([]),
   preferences: jsonb("preferences").default({}),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
-});
-
-// RSS feeds table
-export const rssFeeds = pgTable("rss_feeds", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  userId: uuid("user_id")
-    .references(() => users.id, { onDelete: "cascade" })
-    .notNull(),
-  name: text("name").notNull(),
-  url: text("url").notNull(),
-  category: text("category").notNull(),
-  isActive: boolean("is_active").default(true),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-});
-
-// News items cache table
-export const newsItems = pgTable("news_items", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  feedId: uuid("feed_id")
-    .references(() => rssFeeds.id, { onDelete: "cascade" })
-    .notNull(),
-  title: text("title").notNull(),
-  url: text("url").notNull(),
-  excerpt: text("excerpt"),
-  image: text("image"),
-  publishedAt: timestamp("published_at"),
-  createdAt: timestamp("created_at").defaultNow(),
 });
 
 // Site configuration table for global settings
@@ -91,27 +60,11 @@ export const siteConfig = pgTable("site_config", {
 // Relations
 export const usersRelations = relations(users, ({ many }) => ({
   settings: many(userSettings),
-  feeds: many(rssFeeds),
 }));
 
 export const userSettingsRelations = relations(userSettings, ({ one }) => ({
   user: one(users, {
     fields: [userSettings.userId],
     references: [users.id],
-  }),
-}));
-
-export const rssFeedsRelations = relations(rssFeeds, ({ one, many }) => ({
-  user: one(users, {
-    fields: [rssFeeds.userId],
-    references: [users.id],
-  }),
-  newsItems: many(newsItems),
-}));
-
-export const newsItemsRelations = relations(newsItems, ({ one }) => ({
-  feed: one(rssFeeds, {
-    fields: [newsItems.feedId],
-    references: [rssFeeds.id],
   }),
 }));

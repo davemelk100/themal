@@ -14,10 +14,10 @@ export class EmailService {
     
     const emailData: EmailData = {
       to: email,
-      subject: 'Your Magic Link - News Aggregator',
+      subject: 'Your Magic Link - Dave Melkonian',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #333;">Welcome to News Aggregator!</h2>
+          <h2 style="color: #333;">Welcome to Dave Melkonian!</h2>
           <p>Click the button below to sign in to your account:</p>
           <div style="text-align: center; margin: 30px 0;">
             <a href="${magicLink}" 
@@ -34,7 +34,7 @@ export class EmailService {
         </div>
       `,
       text: `
-        Welcome to News Aggregator!
+        Welcome to Dave Melkonian!
         
         Click this link to sign in: ${magicLink}
         
