@@ -204,19 +204,19 @@ export default function Consult() {
             >
               <img src="/img/carousel/optum-carousel.svg" alt="Optum" className="h-6 w-auto object-contain" />
               <img src="/img/carousel/healthcare-dot-gov-carousel.svg" alt="Healthcare.gov" className="h-6 w-auto object-contain" />
-              <img src="/img/carousel/customgpt-carousel.png" alt="CustomGPT.ai" className="h-6 w-auto object-contain" />
+              <img src="/img/carousel/customgpt-carousel.png" alt="CustomGPT.ai" className="h-9 w-auto object-contain" />
               <img src="/img/carousel/dcal-carousel.svg" alt="DCAL" className="h-10 w-auto object-contain" />
-              <img src="/img/carousel/logo-ddpa-green.png" alt="Delta Dental" className="h-4 w-auto object-contain" />
-              <img src="/img/carousel/bsbsm-carousel.png" alt="BCBSM" className="h-10 w-auto object-contain" />
+              <img src="/img/carousel/logo-ddpa-green.png" alt="Delta Dental" className="h-7 w-auto object-contain" />
+              <img src="/img/carousel/bsbsm-carousel.png" alt="BCBSM" className="h-14 w-auto object-contain" />
               <img src="/img/carousel/meridian-carousel.png" alt="Meridian" className="h-8 w-auto object-contain" />
               <img src="/img/carousel/data-foundation-carousel.png" alt="Data Foundation" className="h-10 w-auto object-contain" />
               <img src="/img/carousel/nextier-carousel.png" alt="Nextier" className="h-8 w-auto object-contain" />
-              <img src="/img/carousel/logo-propio.svg" alt="Propio" className="h-6 w-auto object-contain" />
-              <img src="/img/carousel/dewpoint-carousel.svg" alt="Dewpoint" className="h-8 w-auto object-contain" />
-              <img src="/img/carousel/neogen-carousel.png" alt="Neogen Corporation" className="h-8 w-auto object-contain" />
-              <img src="/img/carousel/fictionforge-carousel.png" alt="FictionForge" className="h-14 w-auto object-contain" />
+              <img src="/img/carousel/logo-propio.svg" alt="Propio" className="h-11 w-auto object-contain" />
+              <img src="/img/carousel/dewpoint-carousel.svg" alt="Dewpoint" className="h-11 w-auto object-contain" />
+              <img src="/img/carousel/neogen-carousel.png" alt="Neogen Corporation" className="h-11 w-auto object-contain" />
+              <img src="/img/carousel/fictionforge-carousel.png" alt="FictionForge" className="h-10 w-auto object-contain" />
               <img src="/img/carousel/cygnet-carousel.svg" alt="Cygnet" className="h-14 w-auto object-contain" />
-              <img src="/img/carousel/dark-slide-carousel.png" alt="Dark Slide" className="h-10 w-auto object-contain" />
+              <img src="/img/carousel/dark-slide-carousel.png" alt="Dark Slide" className="h-14 w-auto object-contain" />
             </div>
           ))}
         </div>

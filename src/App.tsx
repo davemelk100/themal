@@ -266,9 +266,34 @@ function App() {
               path="/"
               element={
                 <div
-                  className="min-h-screen flex flex-col items-center justify-center px-4 font-helvetica"
+                  className="min-h-screen flex flex-col items-center font-helvetica"
                   style={{ color: "#1d77af" }}
                 >
+                  {/* Auto-scrolling client logo banner */}
+                  <div className="w-screen overflow-hidden bg-[#d5e0ea] dark:bg-gray-700 py-2 select-none">
+                    <div className="flex animate-scroll-banner items-center gap-[120px] w-max">
+                      {[...Array(2)].map((_, setIndex) => (
+                        <div key={setIndex} className="flex items-center gap-[120px] shrink-0">
+                          <img src="/img/carousel/optum-carousel.svg" alt="Optum" className="h-6 w-auto object-contain" />
+                          <img src="/img/carousel/healthcare-dot-gov-carousel.svg" alt="Healthcare.gov" className="h-6 w-auto object-contain" />
+                          <img src="/img/carousel/customgpt-carousel.png" alt="CustomGPT.ai" className="h-9 w-auto object-contain" />
+                          <img src="/img/carousel/dcal-carousel.svg" alt="DCAL" className="h-10 w-auto object-contain" />
+                          <img src="/img/carousel/logo-ddpa-green.png" alt="Delta Dental" className="h-7 w-auto object-contain" />
+                          <img src="/img/carousel/bsbsm-carousel.png" alt="BCBSM" className="h-14 w-auto object-contain" />
+                          <img src="/img/carousel/meridian-carousel.png" alt="Meridian" className="h-8 w-auto object-contain" />
+                          <img src="/img/carousel/data-foundation-carousel.png" alt="Data Foundation" className="h-10 w-auto object-contain" />
+                          <img src="/img/carousel/nextier-carousel.png" alt="Nextier" className="h-8 w-auto object-contain" />
+                          <img src="/img/carousel/logo-propio.svg" alt="Propio" className="h-11 w-auto object-contain" />
+                          <img src="/img/carousel/dewpoint-carousel.svg" alt="Dewpoint" className="h-11 w-auto object-contain" />
+                          <img src="/img/carousel/neogen-carousel.png" alt="Neogen Corporation" className="h-11 w-auto object-contain" />
+                          <img src="/img/carousel/fictionforge-carousel.png" alt="FictionForge" className="h-10 w-auto object-contain" />
+                          <img src="/img/carousel/cygnet-carousel.svg" alt="Cygnet" className="h-14 w-auto object-contain" />
+                          <img src="/img/carousel/dark-slide-carousel.png" alt="Dark Slide" className="h-14 w-auto object-contain" />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex-1 flex flex-col items-center justify-center px-4">
                   <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 text-center uppercase tracking-tighter">
                     Melkonian Industries
                   </h1>
@@ -299,6 +324,7 @@ function App() {
                       Consulting Services
                     </Link>
                   </div>
+                  </div>
                 </div>
               }
             />
@@ -313,19 +339,19 @@ function App() {
                         <div key={setIndex} className="flex items-center gap-[120px] shrink-0">
                           <img src="/img/carousel/optum-carousel.svg" alt="Optum" className="h-6 w-auto object-contain" />
                           <img src="/img/carousel/healthcare-dot-gov-carousel.svg" alt="Healthcare.gov" className="h-6 w-auto object-contain" />
-                          <img src="/img/carousel/customgpt-carousel.png" alt="CustomGPT.ai" className="h-6 w-auto object-contain" />
+                          <img src="/img/carousel/customgpt-carousel.png" alt="CustomGPT.ai" className="h-9 w-auto object-contain" />
                           <img src="/img/carousel/dcal-carousel.svg" alt="DCAL" className="h-10 w-auto object-contain" />
-                          <img src="/img/carousel/logo-ddpa-green.png" alt="Delta Dental" className="h-4 w-auto object-contain" />
-                          <img src="/img/carousel/bsbsm-carousel.png" alt="BCBSM" className="h-10 w-auto object-contain" />
+                          <img src="/img/carousel/logo-ddpa-green.png" alt="Delta Dental" className="h-7 w-auto object-contain" />
+                          <img src="/img/carousel/bsbsm-carousel.png" alt="BCBSM" className="h-14 w-auto object-contain" />
                           <img src="/img/carousel/meridian-carousel.png" alt="Meridian" className="h-8 w-auto object-contain" />
                           <img src="/img/carousel/data-foundation-carousel.png" alt="Data Foundation" className="h-10 w-auto object-contain" />
                           <img src="/img/carousel/nextier-carousel.png" alt="Nextier" className="h-8 w-auto object-contain" />
-                          <img src="/img/carousel/logo-propio.svg" alt="Propio" className="h-6 w-auto object-contain" />
-                          <img src="/img/carousel/dewpoint-carousel.svg" alt="Dewpoint" className="h-8 w-auto object-contain" />
-                          <img src="/img/carousel/neogen-carousel.png" alt="Neogen Corporation" className="h-8 w-auto object-contain" />
-                          <img src="/img/carousel/fictionforge-carousel.png" alt="FictionForge" className="h-14 w-auto object-contain" />
+                          <img src="/img/carousel/logo-propio.svg" alt="Propio" className="h-11 w-auto object-contain" />
+                          <img src="/img/carousel/dewpoint-carousel.svg" alt="Dewpoint" className="h-11 w-auto object-contain" />
+                          <img src="/img/carousel/neogen-carousel.png" alt="Neogen Corporation" className="h-11 w-auto object-contain" />
+                          <img src="/img/carousel/fictionforge-carousel.png" alt="FictionForge" className="h-10 w-auto object-contain" />
                           <img src="/img/carousel/cygnet-carousel.svg" alt="Cygnet" className="h-14 w-auto object-contain" />
-                          <img src="/img/carousel/dark-slide-carousel.png" alt="Dark Slide" className="h-10 w-auto object-contain" />
+                          <img src="/img/carousel/dark-slide-carousel.png" alt="Dark Slide" className="h-14 w-auto object-contain" />
                         </div>
                       ))}
                     </div>
@@ -1883,7 +1909,10 @@ function App() {
           )}
 
         {/* Fixed background image in bottom left */}
-        {location.pathname !== "/specs" &&
+        {location.pathname !== "/" &&
+          location.pathname !== "/portfolio" &&
+          location.pathname !== "/consult" &&
+          location.pathname !== "/specs" &&
           location.pathname !== "/discogs" &&
           !location.pathname.startsWith("/store") && (
             <div className="fixed bottom-0 left-0 z-[5] pointer-events-none">
