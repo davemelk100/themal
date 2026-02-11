@@ -308,10 +308,9 @@ function App() {
                 <div className="portfolio-page">
                   {/* Auto-scrolling client logo banner - full viewport width */}
                   <div className="w-screen relative left-1/2 -translate-x-1/2 overflow-hidden bg-[#d5e0ea] dark:bg-gray-700 py-2 select-none">
-                    <p className="banner-label leading-none text-gray-500 dark:text-gray-400 text-left mb-2 pl-4 uppercase tracking-wide">Clients and Partners, Past and Present</p>
-                    <div className="flex animate-scroll-banner items-center gap-[60px] w-max">
+                    <div className="flex animate-scroll-banner items-center gap-[120px] w-max">
                       {[...Array(2)].map((_, setIndex) => (
-                        <div key={setIndex} className="flex items-center gap-[60px] shrink-0">
+                        <div key={setIndex} className="flex items-center gap-[120px] shrink-0">
                           <img src="/img/carousel/optum-carousel.svg" alt="Optum" className="h-6 w-auto object-contain" />
                           <img src="/img/carousel/healthcare-dot-gov-carousel.svg" alt="Healthcare.gov" className="h-6 w-auto object-contain" />
                           <img src="/img/carousel/customgpt-carousel.png" alt="CustomGPT.ai" className="h-6 w-auto object-contain" />
@@ -1834,8 +1833,10 @@ function App() {
 
       {/* Global Dark Mode Toggle - Visible on all pages */}
       <div className="fixed top-2 right-0 z-50 flex items-center gap-2">
-        {/* Dark Mode Toggle - Hide on store and discogs pages */}
-        {location.pathname !== "/discogs" &&
+        {/* Dark Mode Toggle - Hide on store, discogs, and portfolio pages */}
+        {location.pathname !== "/" &&
+          location.pathname !== "/portfolio" &&
+          location.pathname !== "/discogs" &&
           location.pathname !== "/consult" &&
           !location.pathname.startsWith("/store") && (
             <button
