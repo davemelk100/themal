@@ -1,4 +1,82 @@
+import { useState } from "react";
+
+const PASSCODE_HASH = "a]b\\cd";
+const hash = (s: string) =>
+  s.split("").map((c) => String.fromCharCode(c.charCodeAt(0) + 48)).join("");
+
 export default function Cygnet() {
+  const [authenticated, setAuthenticated] = useState(
+    () => sessionStorage.getItem("cygnet-auth") === "true"
+  );
+  const [input, setInput] = useState("");
+  const [error, setError] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (hash(input) === PASSCODE_HASH) {
+      sessionStorage.setItem("cygnet-auth", "true");
+      setAuthenticated(true);
+    } else {
+      setError(true);
+      setInput("");
+    }
+  };
+
+  if (!authenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#faf9f7]">
+        <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+          .cygnet-gate, .cygnet-gate * { font-family: 'Montserrat', sans-serif !important; }
+        `}</style>
+        <div className="cygnet-gate text-center">
+          <div style={{ background: "#1B3A5C", borderRadius: 14, padding: "40px 48px", maxWidth: 400 }}>
+            <h2 style={{ fontSize: 28, color: "white", marginBottom: 8, fontWeight: 600 }}>Cygnet Institute</h2>
+            <p style={{ fontSize: 16, color: "#a3c0d6", marginBottom: 28 }}>Enter passcode to view this report</p>
+            <form onSubmit={handleSubmit}>
+              <input
+                type="password"
+                value={input}
+                onChange={(e) => { setInput(e.target.value); setError(false); }}
+                placeholder="Passcode"
+                autoFocus
+                style={{
+                  width: "100%",
+                  padding: "12px 16px",
+                  fontSize: 18,
+                  borderRadius: 8,
+                  border: error ? "2px solid #c0392b" : "2px solid #2E8B8B",
+                  outline: "none",
+                  textAlign: "center",
+                  letterSpacing: 4,
+                  marginBottom: 16,
+                  boxSizing: "border-box",
+                }}
+              />
+              {error && <p style={{ color: "#c0392b", fontSize: 14, marginBottom: 12 }}>Incorrect passcode</p>}
+              <button
+                type="submit"
+                style={{
+                  width: "100%",
+                  padding: "12px",
+                  fontSize: 16,
+                  fontWeight: 600,
+                  color: "white",
+                  background: "#2E8B8B",
+                  border: "none",
+                  borderRadius: 8,
+                  cursor: "pointer",
+                }}
+              >
+                Enter
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="portfolio-page">
       <div className="max-w-[1200px] mx-auto">
