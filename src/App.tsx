@@ -38,6 +38,7 @@ const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const Discogs = lazy(() => import("./pages/Discogs"));
 const Consult = lazy(() => import("./pages/Consult"));
+const Cygnet = lazy(() => import("./pages/Cygnet"));
 
 // Lazy load non-critical UI components to reduce critical path
 const MobileTrayMenu = lazy(() => import("./components/MobileTrayMenu"));
@@ -266,33 +267,9 @@ function App() {
               path="/"
               element={
                 <div
-                  className="min-h-screen flex flex-col items-center font-helvetica"
-                  style={{ color: "#1d77af" }}
+                  className="min-h-screen flex flex-col items-center font-helvetica bg-[#1d77af]"
+                  style={{ color: "#ffffff" }}
                 >
-                  {/* Auto-scrolling client logo banner */}
-                  <div className="w-screen overflow-hidden bg-[#d5e0ea] dark:bg-gray-700 py-2 select-none">
-                    <div className="flex animate-scroll-banner items-center gap-[120px] w-max">
-                      {[...Array(2)].map((_, setIndex) => (
-                        <div key={setIndex} className="flex items-center gap-[120px] shrink-0">
-                          <img src="/img/carousel/optum-carousel.svg" alt="Optum" className="h-6 w-auto object-contain" />
-                          <img src="/img/carousel/healthcare-dot-gov-carousel.svg" alt="Healthcare.gov" className="h-6 w-auto object-contain" />
-                          <img src="/img/carousel/customgpt-carousel.png" alt="CustomGPT.ai" className="h-9 w-auto object-contain" />
-                          <img src="/img/carousel/dcal-carousel.svg" alt="DCAL" className="h-10 w-auto object-contain" />
-                          <img src="/img/carousel/logo-ddpa-green.png" alt="Delta Dental" className="h-7 w-auto object-contain" />
-                          <img src="/img/carousel/bsbsm-carousel.png" alt="BCBSM" className="h-14 w-auto object-contain" />
-                          <img src="/img/carousel/meridian-carousel.png" alt="Meridian" className="h-8 w-auto object-contain" />
-                          <img src="/img/carousel/data-foundation-carousel.png" alt="Data Foundation" className="h-10 w-auto object-contain" />
-                          <img src="/img/carousel/nextier-carousel.png" alt="Nextier" className="h-8 w-auto object-contain" />
-                          <img src="/img/carousel/logo-propio.svg" alt="Propio" className="h-11 w-auto object-contain" />
-                          <img src="/img/carousel/dewpoint-carousel.svg" alt="Dewpoint" className="h-11 w-auto object-contain" />
-                          <img src="/img/carousel/neogen-carousel.png" alt="Neogen Corporation" className="h-11 w-auto object-contain" />
-                          <img src="/img/carousel/fictionforge-carousel.png" alt="FictionForge" className="h-10 w-auto object-contain" />
-                          <img src="/img/carousel/cygnet-carousel.svg" alt="Cygnet" className="h-14 w-auto object-contain" />
-                          <img src="/img/carousel/dark-slide-carousel.png" alt="Dark Slide" className="h-14 w-auto object-contain" />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
                   <div className="flex-1 flex flex-col items-center justify-center px-4">
                   <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 text-center uppercase tracking-tighter">
                     Melkonian Industries
@@ -305,7 +282,7 @@ function App() {
                   <div className="flex flex-col sm:flex-row gap-6">
                     <Link
                       to="/portfolio"
-                      className="text-lg font-medium text-[#1d77af] dark:text-[#1d77af] hover:text-[#155d8a] dark:hover:text-[#2a8ec8] transition-colors px-6 py-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 border border-[#1d77af] dark:border-[#1d77af] text-center"
+                      className="text-lg font-medium text-white hover:text-white/80 transition-colors px-6 py-3 rounded-md hover:bg-white/10 border border-white text-center"
                     >
                       Portfolio
                     </Link>
@@ -313,13 +290,13 @@ function App() {
                       href="https://www.majorleaguenumbers.com/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-lg font-medium text-[#1d77af] dark:text-[#1d77af] hover:text-[#155d8a] dark:hover:text-[#2a8ec8] transition-colors px-6 py-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 border border-[#1d77af] dark:border-[#1d77af] text-center"
+                      className="text-lg font-medium text-white hover:text-white/80 transition-colors px-6 py-3 rounded-md hover:bg-white/10 border border-white text-center"
                     >
                       Major League Numbers
                     </a>
                     <Link
                       to="/consult"
-                      className="text-lg font-medium text-[#1d77af] dark:text-[#1d77af] hover:text-[#155d8a] dark:hover:text-[#2a8ec8] transition-colors px-6 py-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 border border-[#1d77af] dark:border-[#1d77af] text-center"
+                      className="text-lg font-medium text-white hover:text-white/80 transition-colors px-6 py-3 rounded-md hover:bg-white/10 border border-white text-center"
                     >
                       Consulting Services
                     </Link>
@@ -334,24 +311,26 @@ function App() {
                 <div className="portfolio-page">
                   {/* Auto-scrolling client logo banner - full viewport width */}
                   <div className="w-screen relative left-1/2 -translate-x-1/2 overflow-hidden bg-[#d5e0ea] dark:bg-gray-700 py-2 select-none">
-                    <div className="flex animate-scroll-banner items-center gap-[120px] w-max">
+                    <div className="flex animate-scroll-banner items-center gap-[80px] w-max">
                       {[...Array(2)].map((_, setIndex) => (
-                        <div key={setIndex} className="flex items-center gap-[120px] shrink-0">
-                          <img src="/img/carousel/optum-carousel.svg" alt="Optum" className="h-6 w-auto object-contain" />
+                        <div key={setIndex} className="flex items-center gap-[80px] shrink-0">
+                          <img src="/img/carousel/optum-carousel.svg" alt="Optum" className="h-8 w-auto object-contain" />
                           <img src="/img/carousel/healthcare-dot-gov-carousel.svg" alt="Healthcare.gov" className="h-6 w-auto object-contain" />
                           <img src="/img/carousel/customgpt-carousel.png" alt="CustomGPT.ai" className="h-9 w-auto object-contain" />
                           <img src="/img/carousel/dcal-carousel.svg" alt="DCAL" className="h-10 w-auto object-contain" />
                           <img src="/img/carousel/logo-ddpa-green.png" alt="Delta Dental" className="h-7 w-auto object-contain" />
                           <img src="/img/carousel/bsbsm-carousel.png" alt="BCBSM" className="h-14 w-auto object-contain" />
-                          <img src="/img/carousel/meridian-carousel.png" alt="Meridian" className="h-8 w-auto object-contain" />
-                          <img src="/img/carousel/data-foundation-carousel.png" alt="Data Foundation" className="h-10 w-auto object-contain" />
-                          <img src="/img/carousel/nextier-carousel.png" alt="Nextier" className="h-8 w-auto object-contain" />
+                          <img src="/img/carousel/meridian-carousel.png" alt="Meridian" className="h-12 w-auto object-contain" />
+                          <img src="/img/carousel/data-foundation-carousel.png" alt="Data Foundation" className="h-14 w-auto object-contain" />
+                          <img src="/img/carousel/nextier-carousel.png" alt="Nextier" className="h-12 w-auto object-contain" />
                           <img src="/img/carousel/logo-propio.svg" alt="Propio" className="h-11 w-auto object-contain" />
                           <img src="/img/carousel/dewpoint-carousel.svg" alt="Dewpoint" className="h-11 w-auto object-contain" />
                           <img src="/img/carousel/neogen-carousel.png" alt="Neogen Corporation" className="h-11 w-auto object-contain" />
                           <img src="/img/carousel/fictionforge-carousel.png" alt="FictionForge" className="h-10 w-auto object-contain" />
                           <img src="/img/carousel/cygnet-carousel.svg" alt="Cygnet" className="h-14 w-auto object-contain" />
                           <img src="/img/carousel/dark-slide-carousel.png" alt="Dark Slide" className="h-14 w-auto object-contain" />
+                          <img src="/img/carousel/knifehub-carousel.png" alt="KnifeHub" className="h-14 w-auto object-contain" />
+                          <img src="/img/carousel/som-carousel.png" alt="Mi.gov" className="h-12 w-auto object-contain" />
                         </div>
                       ))}
                     </div>
@@ -1795,6 +1774,7 @@ function App() {
             <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="/discogs" element={<Discogs />} />
             <Route path="/consult" element={<Consult />} />
+            <Route path="/cygnet" element={<Cygnet />} />
             <Route path="/store/login" element={<Login />} />
             <Route path="/store/signup" element={<Signup />} />
             <Route path="/store/auth/callback" element={<AuthCallback />} />
@@ -1864,6 +1844,7 @@ function App() {
           location.pathname !== "/portfolio" &&
           location.pathname !== "/discogs" &&
           location.pathname !== "/consult" &&
+          location.pathname !== "/cygnet" &&
           !location.pathname.startsWith("/store") && (
             <button
               onClick={() => {
