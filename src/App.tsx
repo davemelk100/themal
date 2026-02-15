@@ -1831,7 +1831,8 @@ function App() {
       {/* Footer - Hide on home, store, and discogs pages */}
       {location.pathname !== "/" &&
       !location.pathname.startsWith("/store") &&
-      location.pathname !== "/discogs" ? (
+      location.pathname !== "/discogs" &&
+      location.pathname !== "/cygnet" ? (
         <Suspense fallback={null} key={location.pathname}>
           <Footer />
         </Suspense>

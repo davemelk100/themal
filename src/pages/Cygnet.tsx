@@ -36,7 +36,7 @@ export default function Cygnet() {
             .cygnet-page .stat-card.teal::before { background: #2E8B8B; }
             .cygnet-page .stat-card.gold::before { background: #E8A838; }
             .cygnet-page .stat-card.navy::before { background: #1B3A5C; }
-            .cygnet-page .stat-card .num { font-family: 'Montserrat', sans-serif; font-size: 50px; line-height: 1.1; margin-bottom: 8px; }
+            .cygnet-page .stat-card .num { font-family: 'Montserrat', sans-serif; font-size: 50px; line-height: 1.1; margin-bottom: 8px; font-weight: 700; }
             .cygnet-page .num-teal { color: #2E8B8B; }
             .cygnet-page .num-gold { color: #D4922A; }
             .cygnet-page .num-navy { color: #1B3A5C; }
@@ -348,14 +348,7 @@ export default function Cygnet() {
             </div>
           </div>
 
-          {/* Footer */}
-          <section className="py-4 sm:py-6 relative">
-            <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
-              <p className="text-xs text-gray-400 dark:text-gray-500">
-                Cygnet Institute — SEM 103 Workshop Results
-              </p>
-            </div>
-          </section>
+
         </div>
       </div>
     </div>
