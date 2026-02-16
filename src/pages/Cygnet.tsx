@@ -82,6 +82,7 @@ export default function Cygnet() {
 
         .cygnet-page, .cygnet-page * { font-family: 'DM Sans', sans-serif !important; margin: 0; padding: 0; box-sizing: border-box; }
         .cygnet-page { background: #faf9f7; color: #2a2a2a; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+        .cygnet-page span, .cygnet-page strong, .cygnet-page em, .cygnet-page li, .cygnet-page a { font-size: 18px; }
 
         .cygnet-page .hero { background: #1B3A5C; padding: 48px 24px 44px; text-align: center; position: relative; overflow: hidden; }
         .cygnet-page .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, #2E8B8B, #3AAFAF, #E8A838); }
@@ -140,7 +141,7 @@ export default function Cygnet() {
       <div className="cygnet-page">
         <div className="hero">
           <h1>Cygnet Institute of Personal Financial Literacy</h1>
-          <p>501(c)(3) nonprofit teaching adults real-world money skills since 1989</p>
+          <p>501(c)(3) nonprofit teaching Financial Cash Flow Planning and real-world money skills since 1989</p>
           <div className="tags">
             <span className="tag">Fiduciary Standard</span>
             <span className="tag">NCCA-Accredited CRC&reg;</span>
