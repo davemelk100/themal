@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { LinkedInLogoIcon } from "@radix-ui/react-icons";
+import { LinkedInLogoIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
 import { content } from "../content";
 
 // Lazy load icon to avoid blocking critical path
@@ -78,6 +78,15 @@ export const Footer = () => {
               aria-label="LinkedIn"
             >
               <LinkedInLogoIcon className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+            </a>
+            <a
+              href="https://github.com/davemelk100"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full p-2 shadow-sm hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
+              aria-label="GitHub"
+            >
+              <GitHubLogoIcon className="h-5 w-5 text-gray-700 dark:text-gray-300" />
             </a>
             <a
               href={content.navigation.social.dribbble.url}
