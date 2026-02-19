@@ -666,6 +666,13 @@ export const content = {
         demo: "https://rag-with-python-and-n8n.netlify.app/",
         image: "/img/rag-app.png",
       },
+      {
+        title: "Translate & Interpret",
+        description: "Translation and interpretation services platform.",
+        technologies: ["React", "TypeScript", "Tailwind"],
+        demo: "https://translate-interpret.netlify.app/",
+        image: "/img/translate-interpret-animation.svg",
+      },
     ],
   },
 
