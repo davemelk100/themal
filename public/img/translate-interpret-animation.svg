@@ -43,9 +43,6 @@
     <path d="M96 96 Q100 99 104 96" fill="none" stroke="#059669" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
   </g>
 
-  <!-- Subtle glow behind person -->
-  <circle cx="100" cy="102" r="22" fill="#10b981" opacity="0.08" class="tiPulseCenter"/>
-
   <!-- Orbit 1 Group with dashed connections (Emerald Light) -->
   <g class="tiOrbit1">
     <circle cx="100" cy="50" r="4" fill="url(#tiSphere2)" filter="url(#tiSphereShadow)" opacity="0.8" class="tiPathFollow1"/>
