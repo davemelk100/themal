@@ -1,0 +1,703 @@
+import PortfolioLayout from "../components/PortfolioLayout";
+
+export default function CaseStudies() {
+  return (
+    <PortfolioLayout currentPage="case-studies">
+      {/* Case Study Content */}
+      <section className="py-4 sm:py-6 lg:py-8 xl:py-12 relative">
+        <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="pt-4 px-4 sm:pt-6 sm:px-6 relative bg-transparent">
+            <h2 className="font-bold title-font leading-tight text-gray-900 dark:text-white mb-2">
+              Operationalizing Accessibility Across an Enterprise Healthcare Organization
+            </h2>
+            <p className="text-muted-foreground mb-8">
+              Senior UX Developer and Accessibility Strategist — Delta Dental of Michigan
+            </p>
+
+            <div className="space-y-8">
+
+              {/* Executive Context */}
+              <div>
+                <h3 className="font-semibold mb-3 dark:text-white title-font">Executive Context</h3>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">
+                  Delta Dental began encountering RFP and bid language requiring formal compliance with W3C standards, WCAG 2.1 AA, and Section 508 accessibility regulations.
+                </p>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">The organization did not have:</p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>A documented accessibility framework</li>
+                  <li>WCAG-aligned design standards</li>
+                  <li>Section 508 mapping documentation</li>
+                  <li>Assistive technology testing practices</li>
+                  <li>A formal response model for compliance questionnaires</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">The business problem was immediate and concrete.</p>
+                <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 sm:p-6 my-4">
+                  <p className="text-gray-900 dark:text-white font-medium italic">
+                    How do you confidently respond to enterprise bid requirements that mandate W3C and Section 508 compliance when you do not yet have a structured accessibility practice?
+                  </p>
+                  <p className="text-gray-700 dark:text-gray-300 mt-2">
+                    <strong className="text-gray-900 dark:text-white">I had the expertise to answer that question and build the infrastructure behind it.</strong>
+                  </p>
+                </div>
+              </div>
+
+              {/* The Problem */}
+              <div>
+                <h3 className="font-semibold mb-3 dark:text-white title-font">The Problem</h3>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">Bid language required demonstrable compliance with:</p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>W3C Web Content Accessibility Guidelines</li>
+                  <li>WCAG 2.1 AA success criteria</li>
+                  <li>Section 508 standards</li>
+                  <li>ADA alignment</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">However:</p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Accessibility had not been operationalized</li>
+                  <li>Development teams had not been trained on semantic implementation</li>
+                  <li>QA did not test with assistive technologies</li>
+                  <li>Design components were not documented with accessibility standards</li>
+                  <li>No governance model existed</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  This created both <strong className="text-gray-900 dark:text-white">revenue risk</strong> and <strong className="text-gray-900 dark:text-white">regulatory exposure</strong>. The organization needed more than a compliance statement. It needed a <strong className="text-gray-900 dark:text-white">defensible system</strong>.
+                </p>
+              </div>
+
+              {/* My Objective */}
+              <div>
+                <h3 className="font-semibold mb-3 dark:text-white title-font">My Objective</h3>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">Design and implement an enterprise accessibility framework that would:</p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Support accurate RFP responses</li>
+                  <li>Reduce legal and compliance risk</li>
+                  <li>Standardize accessible design and development practices</li>
+                  <li>Integrate accessibility into Agile delivery</li>
+                  <li>Create sustainable governance</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  This was not a remediation project. It was an <strong className="text-gray-900 dark:text-white">operational transformation</strong>.
+                </p>
+              </div>
+
+              {/* Phase 1 */}
+              <div>
+                <h3 className="font-semibold mb-3 dark:text-white title-font">Phase 1: Translating Bid Requirements into Technical Reality</h3>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">
+                  The first step was interpreting regulatory language and translating it into system-level requirements.
+                </p>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">I broke down the bid language into actionable components:</p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>WCAG 2.1 AA success criteria</li>
+                  <li>Section 508 mapping requirements</li>
+                  <li>W3C semantic and structural standards</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">I created a traceability matrix mapping:</p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Regulatory requirement</li>
+                  <li>Current implementation state</li>
+                  <li>Risk level</li>
+                  <li>Remediation priority</li>
+                  <li>Implementation approach</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  This allowed leadership to see the compliance gap clearly and quantitatively. <strong className="text-gray-900 dark:text-white">Instead of abstract risk, we now had a technical roadmap.</strong>
+                </p>
+              </div>
+
+              {/* Phase 2 */}
+              <div>
+                <h3 className="font-semibold mb-3 dark:text-white title-font">Phase 2: Enterprise Accessibility Audit</h3>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">
+                  To establish a baseline, I conducted structured audits across internal and member-facing applications.
+                </p>
+
+                <h4 className="font-semibold mb-2 text-gray-800 dark:text-gray-200">Audit Methodology</h4>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Manual WCAG 2.1 AA review</li>
+                  <li>Semantic HTML inspection</li>
+                  <li>ARIA role and attribute validation</li>
+                  <li>Keyboard-only workflow testing</li>
+                  <li>Screen reader testing with JAWS and NVDA</li>
+                  <li>Form validation and error announcement analysis</li>
+                  <li>Focus order and state validation</li>
+                  <li>Color contrast measurement</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                  Automated scanners were used for surface detection, but all critical findings were validated manually.
+                </p>
+
+                <h4 className="font-semibold mb-2 text-gray-800 dark:text-gray-200">Systemic Findings</h4>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">Recurring architectural issues included:</p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Non-semantic interactive components</li>
+                  <li>Improper label associations</li>
+                  <li>Missing programmatic error announcements</li>
+                  <li>Modal dialogs without focus management</li>
+                  <li>Inconsistent tab sequencing</li>
+                  <li>Dynamic content not exposed to assistive technologies</li>
+                  <li>Insufficient color contrast</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  The issues were repeatable and pattern-based, which meant they could be addressed at the <strong className="text-gray-900 dark:text-white">component level</strong>.
+                </p>
+              </div>
+
+              {/* Phase 3 */}
+              <div>
+                <h3 className="font-semibold mb-3 dark:text-white title-font">Phase 3: Building the Accessibility Infrastructure</h3>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">
+                  Because the organization needed defensible compliance, I built reusable infrastructure rather than issuing isolated fixes.
+                </p>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                  As a UX leader fluent in front-end architecture, I translated regulatory requirements directly into implementation patterns.
+                </p>
+
+                <h4 className="font-semibold mb-2 text-gray-800 dark:text-gray-200">Accessible Component Patterns</h4>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">I developed standardized code patterns including:</p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Accessible form field architecture with proper label associations</li>
+                  <li>ARIA live region implementation for validation feedback</li>
+                  <li>Focus management utilities for modal dialogs and route transitions</li>
+                  <li>Keyboard interaction models for custom components</li>
+                  <li>Accessible table markup patterns</li>
+                  <li>Semantic button and link usage guidelines</li>
+                  <li>Skip navigation structures</li>
+                </ul>
+
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">Each pattern included:</p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>HTML structure</li>
+                  <li>CSS guidance</li>
+                  <li>JavaScript or TypeScript implementation notes</li>
+                  <li>WCAG success criteria references</li>
+                  <li>Section 508 mapping references</li>
+                </ul>
+
+                <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 sm:p-6 my-4">
+                  <p className="text-gray-900 dark:text-white font-medium">
+                    Developers were given working, compliant examples instead of abstract rules.
+                  </p>
+                </div>
+
+                <h4 className="font-semibold mb-2 text-gray-800 dark:text-gray-200">Design System Integration</h4>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">
+                  Accessibility cannot live only in code. It must begin in design. I embedded accessibility standards directly into the design system:
+                </p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Focus state design tokens</li>
+                  <li>Contrast-compliant color palettes</li>
+                  <li>Accessible error messaging patterns</li>
+                  <li>Field grouping standards</li>
+                  <li>Interaction documentation tied to semantic markup</li>
+                </ul>
+
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">Figma components included:</p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Accessibility annotations</li>
+                  <li>Behavioral intent</li>
+                  <li>Implementation alignment notes</li>
+                  <li>WCAG references</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  This ensured that <strong className="text-gray-900 dark:text-white">design intent and code execution were synchronized</strong>.
+                </p>
+              </div>
+
+              {/* Phase 4 */}
+              <div>
+                <h3 className="font-semibold mb-3 dark:text-white title-font">Phase 4: Agile Process Integration</h3>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">
+                  To operationalize accessibility, it needed to be embedded into delivery workflows. I worked with Product Owners, Scrum Masters, and QA leads to:
+                </p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Add accessibility criteria to the Definition of Done</li>
+                  <li>Incorporate accessibility acceptance criteria into user stories</li>
+                  <li>Expand QA scripts to include keyboard and screen reader testing</li>
+                  <li>Introduce accessibility checkpoints during refinement</li>
+                  <li>Create shared accessibility documentation repositories</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  <strong className="text-gray-900 dark:text-white">Accessibility moved from reactive defect handling to proactive quality control.</strong>
+                </p>
+              </div>
+
+              {/* Phase 5 */}
+              <div>
+                <h3 className="font-semibold mb-3 dark:text-white title-font">Phase 5: Governance and RFP Readiness</h3>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">
+                  Once patterns and workflows were established, I formalized governance documentation. Deliverables included:
+                </p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>WCAG 2.1 AA alignment documentation</li>
+                  <li>Section 508 mapping matrices</li>
+                  <li>Accessibility implementation standards</li>
+                  <li>Audit reporting templates</li>
+                  <li>Compliance response language for bids</li>
+                  <li>Internal accessibility playbooks</li>
+                </ul>
+                <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 sm:p-6 my-4">
+                  <p className="text-gray-900 dark:text-white font-medium">
+                    Delta Dental could now respond to RFPs with defensible, documented standards backed by implementation evidence. Accessibility shifted from uncertainty to institutional capability.
+                  </p>
+                </div>
+              </div>
+
+              {/* Technical Depth */}
+              <div>
+                <h3 className="font-semibold mb-3 dark:text-white title-font">Technical Depth</h3>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">
+                  This initiative required fluency across UX strategy and front-end engineering. Applied expertise included:
+                </p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Semantic HTML architecture</li>
+                  <li>ARIA role and property implementation</li>
+                  <li>Accessible form validation patterns</li>
+                  <li>Focus management in single-page applications</li>
+                  <li>Assistive technology behavior testing</li>
+                  <li>Component-driven development</li>
+                  <li>Progressive enhancement</li>
+                  <li>Design token governance</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  Because I can speak directly in terms of DOM structure, event handling, and screen reader behavior, there was <strong className="text-gray-900 dark:text-white">no translation gap</strong> between design intent and engineering implementation. <strong className="text-gray-900 dark:text-white">That accelerated adoption.</strong>
+                </p>
+              </div>
+
+              {/* Organizational Impact */}
+              <div>
+                <h3 className="font-semibold mb-3 dark:text-white title-font">Organizational Impact</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-4">
+                  <div className="bg-white/20 backdrop-blur-lg rounded-lg p-4 sm:p-6 shadow-xl">
+                    <h4 className="font-semibold mb-3 text-gray-800 dark:text-gray-200">Before</h4>
+                    <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1">
+                      <li>No formal accessibility framework</li>
+                      <li>Limited understanding of WCAG and Section 508</li>
+                      <li>Unclear RFP response capability</li>
+                      <li>Reactive remediation</li>
+                      <li>Elevated compliance risk</li>
+                    </ul>
+                  </div>
+                  <div className="bg-white/20 backdrop-blur-lg rounded-lg p-4 sm:p-6 shadow-xl">
+                    <h4 className="font-semibold mb-3 text-gray-800 dark:text-gray-200">After</h4>
+                    <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1">
+                      <li>Enterprise accessibility framework</li>
+                      <li>Reusable compliant component library</li>
+                      <li>Accessibility embedded in Agile workflows</li>
+                      <li>Clear compliance documentation for bids</li>
+                      <li>Reduced rework and QA churn</li>
+                      <li>Executive-level visibility into accessibility posture</li>
+                    </ul>
+                  </div>
+                </div>
+                <p className="text-gray-900 dark:text-white font-semibold text-center">
+                  Accessibility became operational.
+                </p>
+              </div>
+
+              {/* Why This Work Matters */}
+              <div>
+                <h3 className="font-semibold mb-3 dark:text-white title-font">Why This Work Matters</h3>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">
+                  For enterprise healthcare organizations, accessibility is not optional. It directly impacts:
+                </p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Member access</li>
+                  <li>Regulatory exposure</li>
+                  <li>Contract eligibility</li>
+                  <li>Brand trust</li>
+                  <li>Operational efficiency</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">This case study demonstrates my ability to:</p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Translate regulatory language into technical architecture</li>
+                  <li>Build scalable implementation standards</li>
+                  <li>Align design and engineering systems</li>
+                  <li>Embed governance into enterprise workflows</li>
+                  <li>Enable revenue opportunities through compliance readiness</li>
+                </ul>
+                <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 sm:p-6 my-4">
+                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                    Delta Dental encountered compliance requirements.
+                  </p>
+                  <p className="text-gray-900 dark:text-white font-medium mt-2">
+                    I built the framework that allowed the organization to meet them with confidence.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Case Study 2 */}
+      <section className="py-4 sm:py-6 lg:py-8 xl:py-12 relative">
+        <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="pt-4 px-4 sm:pt-6 sm:px-6 relative bg-transparent">
+            <h2 className="font-bold title-font leading-tight text-gray-900 dark:text-white mb-2">
+              Designing AI Powered Interpretation for Real Time Enterprise Communication
+            </h2>
+            <p className="text-muted-foreground mb-8">
+              UX Lead and Front End Architect — Propio Language Services
+            </p>
+
+            <div className="space-y-8">
+
+              {/* Executive Context */}
+              <div>
+                <h3 className="font-semibold mb-3 dark:text-white title-font">Executive Context</h3>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">
+                  Propio Language Services provides interpretation and language solutions across healthcare, government, and enterprise sectors. As demand increased, clients began expecting more than basic live transcription. They wanted:
+                </p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Real time multilingual translation</li>
+                  <li>Higher accuracy in domain specific conversations</li>
+                  <li>Industry tailored vocabulary</li>
+                  <li>Seamless integration with existing communication platforms</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">
+                  Leadership identified OpenAI as an opportunity to elevate the product into an intelligent interpretation platform that could differentiate us in a competitive market.
+                </p>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">
+                  The opportunity required more than adding AI to an existing interface. It required designing a real time AI interaction model that users could trust in high stakes environments such as healthcare and government interpretation.
+                </p>
+                <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 sm:p-6 my-4">
+                  <p className="text-gray-900 dark:text-white font-medium">
+                    I led the UX and front end architecture from concept through production.
+                  </p>
+                </div>
+              </div>
+
+              {/* The Business Problem */}
+              <div>
+                <h3 className="font-semibold mb-3 dark:text-white title-font">The Business Problem</h3>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">
+                  Propio's existing live transcription tool delivered baseline value, but enterprise clients were increasingly asking:
+                </p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Can this handle medical and legal terminology?</li>
+                  <li>Can we customize vocabulary by client?</li>
+                  <li>Can it translate in real time?</li>
+                  <li>Can it integrate into our existing communication platforms?</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">The business objective was clear:</p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Improve interpretation quality</li>
+                  <li>Increase enterprise adoption</li>
+                  <li>Strengthen product differentiation</li>
+                  <li>Drive long term competitive advantage</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  However, there was no defined UX model for how AI should behave inside a live interpretation workflow. The challenge was designing both the <strong className="text-gray-900 dark:text-white">user experience</strong> and the <strong className="text-gray-900 dark:text-white">technical integration</strong> simultaneously.
+                </p>
+              </div>
+
+              {/* My Objective */}
+              <div>
+                <h3 className="font-semibold mb-3 dark:text-white title-font">My Objective</h3>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">Design and prototype an AI powered interpretation system that would:</p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Integrate OpenAI into live transcription workflows</li>
+                  <li>Support real time multilingual translation</li>
+                  <li>Enable customizable industry specific vocabulary</li>
+                  <li>Maintain clarity and trust during active sessions</li>
+                  <li>Scale technically for enterprise environments</li>
+                  <li>Meet accessibility standards</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  This required working across <strong className="text-gray-900 dark:text-white">product strategy, UX design, AI interaction modeling, and front end architecture</strong>.
+                </p>
+              </div>
+
+              {/* Phase 1 */}
+              <div>
+                <h3 className="font-semibold mb-3 dark:text-white title-font">Phase 1: Defining the AI Interaction Model</h3>
+                <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 sm:p-6 my-4">
+                  <p className="text-gray-900 dark:text-white font-medium italic">
+                    AI features must be designed around human workflow, not technical capability.
+                  </p>
+                </div>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">I began by mapping:</p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Interpreter workflows</li>
+                  <li>Client session flows</li>
+                  <li>Real time latency constraints</li>
+                  <li>Error tolerance thresholds</li>
+                  <li>Translation confidence communication</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">I created:</p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Detailed user flows</li>
+                  <li>State diagrams</li>
+                  <li>Decision trees for AI intervention</li>
+                  <li>Edge case handling scenarios</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">Critical design questions included:</p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>When should AI suggestions surface?</li>
+                  <li>How should translation uncertainty be communicated?</li>
+                  <li>How do we prevent cognitive overload during live sessions?</li>
+                  <li>How do we allow vocabulary overrides without disrupting flow?</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  This systems level modeling ensured the AI <strong className="text-gray-900 dark:text-white">enhanced communication rather than interrupting it</strong>.
+                </p>
+              </div>
+
+              {/* Phase 2 */}
+              <div>
+                <h3 className="font-semibold mb-3 dark:text-white title-font">Phase 2: Visual Design and High Fidelity Comps</h3>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">
+                  I created full interface comps and component designs in Figma.
+                </p>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">The design system included:</p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Transcript panel architecture</li>
+                  <li>Clear differentiation between original and translated text</li>
+                  <li>Confidence and status indicators</li>
+                  <li>Vocabulary management UI</li>
+                  <li>Session controls and integration points</li>
+                  <li>Error and latency states</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">Each component was documented with:</p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Behavioral intent</li>
+                  <li>Accessibility annotations</li>
+                  <li>State variations</li>
+                  <li>Engineering alignment notes</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">
+                  The Figma files were structured to align with modular component development, making handoff efficient and reducing translation friction between design and engineering.
+                </p>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">Interactive prototypes were used to gather feedback from:</p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Internal stakeholders</li>
+                  <li>Product leadership</li>
+                  <li>Pilot users</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  This allowed us to refine layout density, real time update behavior, and AI feature discoverability before committing to engineering resources.
+                </p>
+              </div>
+
+              {/* Phase 3 */}
+              <div>
+                <h3 className="font-semibold mb-3 dark:text-white title-font">Phase 3: Front End Architecture and AI Integrated Prototype</h3>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">
+                  To accelerate alignment and validate feasibility, I built a working prototype using:
+                </p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>React</li>
+                  <li>TypeScript</li>
+                  <li>Component driven architecture</li>
+                  <li>Streaming update simulation</li>
+                  <li>API integration scaffolding</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">
+                  I used the Cursor editor as my primary IDE, leveraging its AI co-pilot capabilities to:
+                </p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Rapidly scaffold components</li>
+                  <li>Refactor state management</li>
+                  <li>Optimize type definitions</li>
+                  <li>Generate and refine API interaction logic</li>
+                  <li>Validate accessibility patterns</li>
+                  <li>Debug asynchronous streaming behavior</li>
+                </ul>
+                <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 sm:p-6 my-4">
+                  <p className="text-gray-900 dark:text-white font-medium">
+                    Cursor's AI co-pilot allowed me to iterate on architecture faster while maintaining strict control over implementation quality. It functioned as an augmentation tool rather than an automation crutch.
+                  </p>
+                </div>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">The prototype simulated:</p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Streaming transcription updates</li>
+                  <li>OpenAI powered translation responses</li>
+                  <li>Custom vocabulary injection</li>
+                  <li>Latency handling</li>
+                  <li>Error fallback states</li>
+                  <li>Session export capabilities</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  Because I delivered a functional front end prototype, engineering could evaluate <strong className="text-gray-900 dark:text-white">real integration complexity early</strong> rather than interpreting static design artifacts.
+                </p>
+              </div>
+
+              {/* AI System Design Considerations */}
+              <div>
+                <h3 className="font-semibold mb-3 dark:text-white title-font">AI System Design Considerations</h3>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">
+                  Integrating OpenAI into a live communication environment required architectural discipline. Key considerations included:
+                </p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Token management for long sessions</li>
+                  <li>Streaming API handling</li>
+                  <li>Latency minimization</li>
+                  <li>Preventing hallucinated translations</li>
+                  <li>Transparent error states</li>
+                  <li>Logging and traceability for enterprise compliance</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">The UI was intentionally designed to:</p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Visually distinguish human transcript from AI translation</li>
+                  <li>Surface confidence and processing indicators</li>
+                  <li>Allow user controlled vocabulary overrides</li>
+                  <li>Maintain clarity under rapid update conditions</li>
+                </ul>
+                <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 sm:p-6 my-4">
+                  <p className="text-gray-900 dark:text-white font-medium">
+                    Trust was treated as a design requirement, not a secondary feature.
+                  </p>
+                </div>
+              </div>
+
+              {/* Experimentation and Optimization */}
+              <div>
+                <h3 className="font-semibold mb-3 dark:text-white title-font">Experimentation and Optimization</h3>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">We used Optimizely to run structured A/B experiments on:</p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Layout variations</li>
+                  <li>Transcript and translation positioning</li>
+                  <li>Vocabulary control visibility</li>
+                  <li>AI feature discoverability</li>
+                  <li>Status indicator prominence</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">We gathered:</p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Task completion rates</li>
+                  <li>Feature adoption metrics</li>
+                  <li>Engagement duration</li>
+                  <li>Qualitative usability feedback</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  This allowed us to refine the experience based on <strong className="text-gray-900 dark:text-white">measurable behavior rather than intuition</strong>.
+                </p>
+              </div>
+
+              {/* Accessibility in Dynamic AI Interfaces */}
+              <div>
+                <h3 className="font-semibold mb-3 dark:text-white title-font">Accessibility in Dynamic AI Interfaces</h3>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">
+                  Real time AI interfaces can easily become inaccessible if updates overwhelm assistive technologies. I ensured:
+                </p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Proper semantic structure</li>
+                  <li>Keyboard navigability</li>
+                  <li>Screen reader compatibility</li>
+                  <li>Focus management discipline</li>
+                  <li>Accessible color contrast</li>
+                  <li>Controlled ARIA live region updates</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  Streaming transcript updates were throttled and structured to avoid excessive screen reader interruption. <strong className="text-gray-900 dark:text-white">AI innovation did not compromise accessibility standards.</strong>
+                </p>
+              </div>
+
+              {/* From Concept to Production */}
+              <div>
+                <h3 className="font-semibold mb-3 dark:text-white title-font">From Concept to Production</h3>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">I contributed across the entire lifecycle:</p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>UX architecture</li>
+                  <li>Figma design systems</li>
+                  <li>Interactive prototypes</li>
+                  <li>React and TypeScript implementation</li>
+                  <li>AI API integration modeling</li>
+                  <li>Accessibility validation</li>
+                  <li>Experimentation design</li>
+                  <li>Production alignment</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">Documentation included:</p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Component specifications</li>
+                  <li>API interaction diagrams</li>
+                  <li>Prompt behavior guidelines</li>
+                  <li>Vocabulary injection rules</li>
+                  <li>Error handling logic</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  The result was a <strong className="text-gray-900 dark:text-white">scalable AI powered interpretation feature</strong> that could integrate into enterprise communication platforms.
+                </p>
+              </div>
+
+              {/* Impact */}
+              <div>
+                <h3 className="font-semibold mb-3 dark:text-white title-font">Impact</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-4">
+                  <div className="bg-white/20 backdrop-blur-lg rounded-lg p-4 sm:p-6 shadow-xl">
+                    <h4 className="font-semibold mb-3 text-gray-800 dark:text-gray-200">Before</h4>
+                    <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1">
+                      <li>Basic transcription capability</li>
+                      <li>Limited differentiation</li>
+                      <li>Rising client expectations</li>
+                      <li>No AI powered enhancements</li>
+                    </ul>
+                  </div>
+                  <div className="bg-white/20 backdrop-blur-lg rounded-lg p-4 sm:p-6 shadow-xl">
+                    <h4 className="font-semibold mb-3 text-gray-800 dark:text-gray-200">After</h4>
+                    <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1">
+                      <li>Real time AI powered translation</li>
+                      <li>Customizable industry vocabulary</li>
+                      <li>Improved transcript clarity</li>
+                      <li>Enterprise ready architecture</li>
+                      <li>Strengthened competitive positioning</li>
+                      <li>Increased perceived product sophistication</li>
+                    </ul>
+                  </div>
+                </div>
+                <p className="text-gray-900 dark:text-white font-semibold text-center">
+                  The AI interpretation layer became a strategic differentiator.
+                </p>
+              </div>
+
+              {/* Technical and Strategic Depth */}
+              <div>
+                <h3 className="font-semibold mb-3 dark:text-white title-font">Technical and Strategic Depth</h3>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">This project required expertise in:</p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>AI assisted language modeling</li>
+                  <li>Real time UI architecture</li>
+                  <li>Streaming API integration</li>
+                  <li>React and TypeScript systems</li>
+                  <li>AI assisted development workflows</li>
+                  <li>Accessibility in dynamic interfaces</li>
+                  <li>Experimentation frameworks</li>
+                  <li>Enterprise scalability planning</li>
+                </ul>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">I operated at the intersection of <strong className="text-gray-900 dark:text-white">UX strategy, AI interaction design, front end engineering, and product differentiation</strong>.</p>
+              </div>
+
+              {/* Why This Work Matters */}
+              <div>
+                <h3 className="font-semibold mb-3 dark:text-white title-font">Why This Work Matters</h3>
+                <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 sm:p-6 my-4">
+                  <p className="text-gray-900 dark:text-white font-medium italic">
+                    AI integration without thoughtful UX creates complexity and distrust.
+                  </p>
+                </div>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">This initiative demonstrates my ability to:</p>
+                <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1 mb-4">
+                  <li>Translate AI capabilities into human centered systems</li>
+                  <li>Prototype technically credible AI products</li>
+                  <li>Use modern AI assisted development tools responsibly</li>
+                  <li>Align design, engineering, and business strategy</li>
+                  <li>Deliver production ready AI experiences in regulated industries</li>
+                </ul>
+                <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 sm:p-6 my-4">
+                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                    The result was not simply AI integration.
+                  </p>
+                  <p className="text-gray-900 dark:text-white font-medium mt-2">
+                    It was a scalable, accessible, and enterprise ready intelligent interpretation system.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+    </PortfolioLayout>
+  );
+}

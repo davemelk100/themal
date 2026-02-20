@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense, lazy } from "react";
+import React, { useState, Suspense, lazy } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { content } from "../content";
 
@@ -21,32 +21,26 @@ const LazyBookOpen = lazy(() =>
 const LazyBriefcase = lazy(() =>
   import("lucide-react").then((mod) => ({ default: mod.Briefcase }))
 );
-const LazySettings = lazy(() =>
-  import("lucide-react").then((mod) => ({ default: mod.Settings }))
+const LazyMail = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Mail }))
 );
+
+const idToRoute: Record<string, string> = {
+  "current-projects": "/portfolio/lab",
+  stories: "/portfolio/stories",
+  work: "/portfolio/design",
+  articles: "/portfolio/articles",
+  career: "/portfolio/career",
+  contact: "/portfolio/contact",
+};
 
 const MobileTrayMenu: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<string>("");
   const location = useLocation();
-
-  const handleNavClick = (id: string) => {
-    if (location.pathname === "/") {
-      // If we're on the main page, scroll to the section
-      const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
-    } else {
-      // If we're on another page, navigate to the main page and scroll
-      window.location.href = `/#${id}`;
-    }
-    setIsMobileMenuOpen(false);
-  };
 
   const getNavIcon = (id: string) => {
     const iconProps = { className: "w-6 h-6" };
-    const fallback = <span className="w-6 h-6">•</span>;
+    const fallback = <span className="w-6 h-6">·</span>;
 
     switch (id) {
       case "current-projects":
@@ -79,10 +73,10 @@ const MobileTrayMenu: React.FC = () => {
             <LazyBriefcase {...iconProps} />
           </Suspense>
         );
-      case "design-system":
+      case "contact":
         return (
           <Suspense fallback={fallback}>
-            <LazySettings {...iconProps} />
+            <LazyMail {...iconProps} />
           </Suspense>
         );
       default:
@@ -94,78 +88,11 @@ const MobileTrayMenu: React.FC = () => {
     }
   };
 
-  const isActiveSection = (id: string) => {
-    return activeSection === id;
+  const isActiveRoute = (id: string) => {
+    const route = idToRoute[id];
+    if (!route) return false;
+    return location.pathname === route;
   };
-
-  useEffect(() => {
-    if (location.pathname !== "/") return;
-
-    // Use IntersectionObserver to avoid forced reflows
-    // This is more efficient than getBoundingClientRect in scroll handlers
-    const sections = content.navigation.links
-      .filter((link) => link.id !== "design-system")
-      .map((link) => link.id);
-
-    const sectionElements: Map<string, HTMLElement> = new Map();
-
-    // Cache section elements to avoid repeated DOM queries
-    sections.forEach((sectionId) => {
-      const element = document.getElementById(sectionId);
-      if (element) {
-        sectionElements.set(sectionId, element);
-      }
-    });
-
-    // Use IntersectionObserver with rootMargin to detect sections near viewport center
-    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
-      // Find the section that's most visible in the center of the viewport
-      type VisibleSection = {
-        id: string;
-        ratio: number;
-      };
-      let mostVisible: VisibleSection | null = null;
-
-      for (const entry of entries) {
-        if (entry.isIntersecting && entry.intersectionRatio > 0) {
-          const target = entry.target as HTMLElement;
-          const targetId = target.id;
-          if (!targetId) continue;
-
-          const rect = entry.boundingClientRect;
-          const viewportCenter = window.innerHeight / 2;
-          const elementCenter = rect.top + rect.height / 2;
-          const distanceFromCenter = Math.abs(elementCenter - viewportCenter);
-          const visibility = 1 - distanceFromCenter / window.innerHeight;
-
-          if (mostVisible === null || visibility > mostVisible.ratio) {
-            mostVisible = {
-              id: targetId,
-              ratio: visibility,
-            };
-          }
-        }
-      }
-
-      if (mostVisible !== null) {
-        setActiveSection(mostVisible.id);
-      }
-    };
-
-    const observer = new IntersectionObserver(handleIntersection, {
-      rootMargin: "-40% 0px -40% 0px", // Only trigger when section is in center 20% of viewport
-      threshold: [0, 0.1, 0.5, 1],
-    });
-
-    // Observe all section elements
-    sectionElements.forEach((element) => {
-      observer.observe(element);
-    });
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [location.pathname]);
 
   return (
     <>
@@ -175,7 +102,6 @@ const MobileTrayMenu: React.FC = () => {
           {content.navigation.links
             .filter((link) => link.id !== "design-system")
             .sort((a, b) => {
-              // Define the desired order: Lab, Storytelling, Design, Articles, Career
               const order = [
                 "current-projects",
                 "stories",
@@ -191,11 +117,12 @@ const MobileTrayMenu: React.FC = () => {
               );
             })
             .map((link) => {
-              const isActive = isActiveSection(link.id);
+              const isActive = isActiveRoute(link.id);
+              const route = idToRoute[link.id] || "/portfolio";
               return (
-                <button
+                <Link
                   key={link.id}
-                  onClick={() => handleNavClick(link.id)}
+                  to={route}
                   className={`flex flex-col items-center gap-1 px-2 py-2 transition-colors ${
                     isActive
                       ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 rounded-lg"
@@ -205,9 +132,24 @@ const MobileTrayMenu: React.FC = () => {
                 >
                   {getNavIcon(link.id)}
                   <span className="text-xs font-medium">{link.text}</span>
-                </button>
+                </Link>
               );
             })}
+          <Link
+            to="/case-studies"
+            className={`flex flex-col items-center gap-1 px-2 py-2 transition-colors ${
+              location.pathname === "/case-studies"
+                ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 rounded-lg"
+                : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+            }`}
+            aria-label="Navigate to Case Studies"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
+              <rect x="9" y="3" width="6" height="4" rx="1" />
+            </svg>
+            <span className="text-xs font-medium">Cases</span>
+          </Link>
         </div>
       </nav>
 
@@ -233,55 +175,48 @@ const MobileTrayMenu: React.FC = () => {
             <div className="space-y-4">
               {/* Navigation Links */}
               <div className="space-y-2">
-                <button
-                  onClick={() => handleNavClick("current-projects")}
-                  className="w-full text-left px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
-                  aria-label="Navigate to Lab section"
+                <Link
+                  to="/portfolio/lab"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block w-full text-left px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
                 >
                   Lab
-                </button>
-                <button
-                  onClick={() => handleNavClick("articles")}
-                  className="w-full text-left px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
-                  aria-label="Navigate to Articles section"
+                </Link>
+                <Link
+                  to="/portfolio/articles"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block w-full text-left px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
                 >
                   Articles
-                </button>
-                <button
-                  onClick={() => handleNavClick("work")}
-                  className="w-full text-left px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
-                  aria-label="Navigate to Designs section"
+                </Link>
+                <Link
+                  to="/portfolio/design"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block w-full text-left px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
                 >
                   Designs
-                </button>
-                <button
-                  onClick={() => handleNavClick("stories")}
-                  className="w-full text-left px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
-                  aria-label="Navigate to Storytelling section"
+                </Link>
+                {/* <Link
+                  to="/portfolio/stories"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block w-full text-left px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
                 >
                   Storytelling
-                </button>
-                <button
-                  onClick={() => handleNavClick("career")}
-                  className="w-full text-left px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
-                  aria-label="Navigate to Career section"
+                </Link> */}
+                <Link
+                  to="/portfolio/career"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block w-full text-left px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
                 >
                   Career
-                </button>
-                <button
-                  onClick={() => handleNavClick("skills-and-software")}
-                  className="w-full text-left px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
-                  aria-label="Navigate to Skills and Software section"
+                </Link>
+                <Link
+                  to="/portfolio/contact"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block w-full text-left px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
                 >
-                  Skills & Software
-                </button>
-                <button
-                  onClick={() => handleNavClick("design-system")}
-                  className="w-full text-left px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
-                  aria-label="Navigate to Design System section"
-                >
-                  Design System
-                </button>
+                  Contact
+                </Link>
               </div>
 
               {/* Page-specific links */}
@@ -292,6 +227,13 @@ const MobileTrayMenu: React.FC = () => {
                   className="block px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
                 >
                   Home
+                </Link>
+                <Link
+                  to="/case-studies"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
+                >
+                  Case Studies
                 </Link>
               </div>
 
