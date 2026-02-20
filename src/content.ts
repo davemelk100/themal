@@ -669,7 +669,7 @@ export const content = {
         description: "RAG with Python and n8n.",
         technologies: ["Python", "n8n", "RAG", "AI"],
         demo: "https://rag-with-python-and-n8n.netlify.app/",
-        image: "/img/rag-app.png",
+        image: "/img/rag-app-animation.svg",
       },
       {
         title: "Translate & Interpret",
