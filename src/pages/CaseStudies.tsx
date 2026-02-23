@@ -36,7 +36,7 @@ export default function CaseStudies() {
     <PortfolioLayout currentPage="case-studies">
       {/* Sub-menu */}
       <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-wrap gap-2 pt-2 pb-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex flex-wrap gap-2 pt-2 pb-4 border-b border-border">
           {caseStudies.map((study) => (
             <button
               key={study.id}

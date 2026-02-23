@@ -160,6 +160,7 @@ export default function DesignSystemPage() {
     return () => window.removeEventListener("theme-pending-update", handlePendingUpdate);
   }, [readCurrentColors]);
 
+
   // When brand or secondary changes, derive related palette colors by shifting hue
   const derivePaletteFromChange = (
     changedKey: string,
@@ -207,12 +208,19 @@ export default function DesignSystemPage() {
       shiftExisting("--border");
       shiftExisting("--foreground");
     } else if (changedKey === "--secondary") {
+      // Brand and primary family adopt secondary's hue
+      shiftExisting("--brand");
+      shiftHue("--primary", 83.2, 48);
+      shiftHue("--primary-foreground", 40, 98);
+      shiftHue("--ring", 83.2, 53.3);
       // Accent and muted follow secondary's hue
+      shiftExisting("--secondary-foreground");
       shiftExisting("--accent");
       shiftExisting("--accent-foreground");
       shiftExisting("--muted");
       shiftExisting("--muted-foreground");
       shiftExisting("--border");
+      shiftExisting("--foreground");
     }
 
     return derived;
@@ -224,23 +232,28 @@ export default function DesignSystemPage() {
     const adjustments: Record<string, string> = {};
     const working = { ...newColors };
 
+    const parseHsl = (val: string) => {
+      const p = val.trim().split(/\s+/);
+      if (p.length < 3) return null;
+      return { h: parseFloat(p[0]), s: parseFloat(p[1]), l: parseFloat(p[2]) };
+    };
+    const toHsl = (h: number, s: number, l: number) =>
+      `${h} ${s}% ${l}%`;
+
     // Check brand against background — adjust background if brand is inaccessible
     const brandVal = working["--brand"];
     const bgVal = working["--background"];
     if (brandVal && bgVal && contrastRatio(brandVal, bgVal) < 4.5) {
-      const bgParts = bgVal.trim().split(/\s+/);
-      if (bgParts.length >= 3) {
-        const bh = parseFloat(bgParts[0]);
-        const bs = parseFloat(bgParts[1]);
-        let bl = parseFloat(bgParts[2]);
-        const brandParts = brandVal.trim().split(/\s+/);
-        const brandLightness = brandParts.length >= 3 ? parseFloat(brandParts[2]) : 50;
+      const bg = parseHsl(bgVal);
+      const brand = parseHsl(brandVal);
+      if (bg && brand) {
         // If brand is light, darken background; if brand is dark, lighten background
-        const dir = brandLightness > 50 ? -3 : 3;
-        let adjBg = `${bh} ${bs}% ${bl}%`;
-        for (let i = 0; i < 15; i++) {
+        const dir = brand.l > 50 ? -3 : 3;
+        let bl = bg.l;
+        let adjBg = toHsl(bg.h, bg.s, bl);
+        for (let i = 0; i < 34; i++) {
           bl = Math.max(0, Math.min(100, bl + dir));
-          adjBg = `${bh} ${bs}% ${bl}%`;
+          adjBg = toHsl(bg.h, bg.s, bl);
           if (contrastRatio(brandVal, adjBg) >= 4.5) break;
         }
         adjustments["--background"] = adjBg;
@@ -249,32 +262,55 @@ export default function DesignSystemPage() {
     }
 
     // Check all foreground/background contrast pairs — adjust foreground
-    for (const [fg, bg] of CONTRAST_PAIRS) {
-      const fgVal = working[fg];
-      const bgv = working[bg];
+    for (const [fgKey, bgKey] of CONTRAST_PAIRS) {
+      const fgVal = working[fgKey];
+      const bgv = working[bgKey];
       if (!fgVal || !bgv) continue;
-
       if (contrastRatio(fgVal, bgv) >= 4.5) continue;
 
-      const fgParts = fgVal.trim().split(/\s+/);
-      if (fgParts.length < 3) continue;
+      const fg = parseHsl(fgVal);
+      const bg = parseHsl(bgv);
+      if (!fg || !bg) continue;
 
-      const h = parseFloat(fgParts[0]);
-      const s = parseFloat(fgParts[1]);
-      let l = parseFloat(fgParts[2]);
-
-      const bgParts = bgv.trim().split(/\s+/);
-      const bgLightness = bgParts.length >= 3 ? parseFloat(bgParts[2]) : 50;
-      const direction = bgLightness > 50 ? -3 : 3;
-
-      let adjusted = `${h} ${s}% ${l}%`;
-      for (let i = 0; i < 15; i++) {
+      // Choose direction: make foreground lighter if bg is dark, darker if bg is light
+      const direction = bg.l > 50 ? -3 : 3;
+      let l = fg.l;
+      let adjusted = toHsl(fg.h, fg.s, l);
+      for (let i = 0; i < 34; i++) {
         l = Math.max(0, Math.min(100, l + direction));
-        adjusted = `${h} ${s}% ${l}%`;
+        adjusted = toHsl(fg.h, fg.s, l);
         if (contrastRatio(adjusted, bgv) >= 4.5) break;
       }
-      adjustments[fg] = adjusted;
-      working[fg] = adjusted;
+
+      // If we hit the limit and still fail, try the opposite direction for foreground
+      if (contrastRatio(adjusted, bgv) < 4.5) {
+        l = fg.l;
+        const oppDir = -direction;
+        for (let i = 0; i < 34; i++) {
+          l = Math.max(0, Math.min(100, l + oppDir));
+          adjusted = toHsl(fg.h, fg.s, l);
+          if (contrastRatio(adjusted, bgv) >= 4.5) break;
+        }
+      }
+
+      // If foreground adjustment alone isn't enough, adjust the background
+      if (contrastRatio(adjusted, bgv) < 4.5) {
+        const bgDir = fg.l > 50 ? -3 : 3;
+        let bgL = bg.l;
+        let adjBg = toHsl(bg.h, bg.s, bgL);
+        for (let i = 0; i < 34; i++) {
+          bgL = Math.max(0, Math.min(100, bgL + bgDir));
+          adjBg = toHsl(bg.h, bg.s, bgL);
+          if (contrastRatio(adjusted, adjBg) >= 4.5) break;
+        }
+        if (contrastRatio(adjusted, adjBg) >= 4.5) {
+          adjustments[bgKey] = adjBg;
+          working[bgKey] = adjBg;
+        }
+      }
+
+      adjustments[fgKey] = adjusted;
+      working[fgKey] = adjusted;
     }
     return adjustments;
   };
@@ -319,8 +355,14 @@ export default function DesignSystemPage() {
     window.dispatchEvent(new Event("theme-pending-update"));
 
     // Show palette adaptation notice
+    const adjustedKeys = Object.keys(adjustments);
     if (key === "--brand" || key === "--secondary") {
-      setAutoAdjustNotice("Palette adapted to new hue. All color pairs pass WCAG AA contrast ratio (4.5:1).");
+      const extras = adjustedKeys.length > 0
+        ? ` Auto-adjusted ${adjustedKeys.map(k => k.replace("--", "")).join(", ")} for contrast.`
+        : "";
+      setAutoAdjustNotice(`Palette adapted to new hue. All color pairs pass WCAG AA (4.5:1).${extras}`);
+    } else if (adjustedKeys.length > 0) {
+      setAutoAdjustNotice(`Auto-adjusted ${adjustedKeys.map(k => k.replace("--", "")).join(", ")} to maintain WCAG AA contrast (4.5:1).`);
     } else {
       setAutoAdjustNotice(null);
     }
@@ -342,15 +384,25 @@ export default function DesignSystemPage() {
   return (
     <PortfolioLayout currentPage="design-system">
       <section className="py-4 sm:py-6 lg:py-8 xl:py-12 relative">
-        <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader
             title={content.designSystem.title}
             subtitle={content.designSystem.subtitle}
-            className="mb-8 sm:mb-6"
+            className="mb-4 sm:mb-4"
           />
 
-          {/* Colors */}
-          <div className="mb-10">
+          {/* Instructions */}
+          <div className="mb-6 rounded-lg border border-border bg-gray-50 dark:bg-gray-800/50 px-4 py-3">
+            <p className="text-sm font-medium text-gray-900 dark:text-white mb-2">How to use the color editor</p>
+            <ol className="text-sm text-gray-600 dark:text-gray-400 space-y-1 list-decimal list-inside">
+              <li>Click the <strong className="text-gray-900 dark:text-white">Brand Blue</strong> or <strong className="text-gray-900 dark:text-white">Secondary</strong> swatch (marked with a pencil icon) to open the color picker</li>
+              <li>Choose a new color. The rest of the palette will automatically adapt to maintain WCAG AA contrast ratios (4.5:1)</li>
+              <li>Use the preview bar at the bottom to navigate affected pages, then <strong className="text-gray-900 dark:text-white">Save</strong>, <strong className="text-gray-900 dark:text-white">Discard</strong>, or <strong className="text-gray-900 dark:text-white">Undo</strong> your changes</li>
+            </ol>
+          </div>
+
+          {/* Colors + Preview side by side */}
+          <div id="colors" className="mb-10 scroll-mt-24">
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-semibold text-brand-dynamic dark:text-white">
                 {content.designSystem.sections.colors}
@@ -365,16 +417,6 @@ export default function DesignSystemPage() {
               )}
             </div>
 
-            {/* Instructions */}
-            <div className="mb-6 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 px-4 py-3">
-              <p className="text-sm font-medium text-gray-900 dark:text-white mb-2">How to use the color editor</p>
-              <ol className="text-sm text-gray-600 dark:text-gray-400 space-y-1 list-decimal list-inside">
-                <li>Click the <strong className="text-gray-900 dark:text-white">Brand Blue</strong> or <strong className="text-gray-900 dark:text-white">Secondary</strong> swatch (marked with a pencil icon) to open the color picker</li>
-                <li>Choose a new color. The rest of the palette will automatically adapt to maintain WCAG AA contrast ratios (4.5:1)</li>
-                <li>Use the preview bar at the bottom to navigate affected pages, then <strong className="text-gray-900 dark:text-white">Save</strong>, <strong className="text-gray-900 dark:text-white">Discard</strong>, or <strong className="text-gray-900 dark:text-white">Undo</strong> your changes</li>
-              </ol>
-            </div>
-
             {/* Palette adaptation notice */}
             {autoAdjustNotice && (
               <div className="mb-4 rounded-lg border border-blue-300 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/20 px-4 py-2">
@@ -382,58 +424,157 @@ export default function DesignSystemPage() {
               </div>
             )}
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-              {EDITABLE_VARS.map(({ key, label }) => {
-                const isEditable = key === "--brand" || key === "--secondary";
-                return (
-                <div
-                  key={key}
-                  className={`text-left ${isEditable ? "group cursor-pointer" : ""}`}
-                  onClick={undefined}
-                >
-                  <label className={isEditable && unlocked ? "cursor-pointer" : "pointer-events-none"}>
-                    <div className={`relative w-full h-16 rounded-lg mb-2 border border-gray-200 dark:border-gray-700 transition-all overflow-hidden ${isEditable ? "group-hover:ring-2 group-hover:ring-gray-400" : ""}`}>
-                      <div
-                        className="absolute inset-0"
-                        style={{
-                          backgroundColor: colors[key]
-                            ? `hsl(${colors[key]})`
-                            : undefined,
-                        }}
-                      />
-                      {isEditable && !unlocked && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-black/10 dark:bg-white/10">
-                          <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                          </svg>
+            <div className="flex flex-col xl:flex-row gap-6">
+              {/* Color swatches */}
+              <div className="xl:w-1/3 xl:flex-shrink-0 min-w-0 rounded-lg border border-border bg-background p-4">
+                <div className="grid grid-cols-3 sm:grid-cols-4 xl:grid-cols-3 gap-2">
+                  {EDITABLE_VARS.map(({ key, label }) => {
+                    const isEditable = key === "--brand" || key === "--secondary";
+                    return (
+                    <div
+                      key={key}
+                      className={`text-left ${isEditable ? "group cursor-pointer" : ""}`}
+                      onClick={undefined}
+                    >
+                      <label className={isEditable && unlocked ? "cursor-pointer" : "pointer-events-none"}>
+                        <div className={`relative w-full h-12 rounded-md mb-1 border border-border transition-all overflow-hidden ${isEditable ? "group-hover:ring-2 group-hover:ring-gray-400" : ""}`}>
+                          <div
+                            className="absolute inset-0"
+                            style={{
+                              backgroundColor: colors[key]
+                                ? `hsl(${colors[key]})`
+                                : undefined,
+                            }}
+                          />
+                          {isEditable && !unlocked && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/10 dark:bg-white/10">
+                              <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                              </svg>
+                            </div>
+                          )}
+                          {isEditable && unlocked && (
+                            <div className="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-white/80 dark:bg-black/50 flex items-center justify-center shadow-sm">
+                              <svg className="w-3 h-3 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                              </svg>
+                            </div>
+                          )}
+                          {isEditable && (
+                            <input
+                              type="color"
+                              value={colors[key] ? hslStringToHex(colors[key]) : "#000000"}
+                              onChange={(e) => handleColorChange(key, e.target.value)}
+                              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                            />
+                          )}
                         </div>
-                      )}
-                      {isEditable && unlocked && (
-                        <div className="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-white/80 dark:bg-black/50 flex items-center justify-center shadow-sm">
-                          <svg className="w-3 h-3 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                          </svg>
-                        </div>
-                      )}
-                      {isEditable && (
-                        <input
-                          type="color"
-                          value={colors[key] ? hslStringToHex(colors[key]) : "#000000"}
-                          onChange={(e) => handleColorChange(key, e.target.value)}
-                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                        />
-                      )}
+                      </label>
+                      <p className="text-xs font-medium text-gray-900 dark:text-white truncate">
+                        {label}
+                      </p>
+                      <p className="text-[10px] text-gray-500 dark:text-gray-400 truncate">
+                        {colors[key] ? hslStringToHex(colors[key]) : key}
+                      </p>
                     </div>
-                  </label>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">
-                    {label}
-                  </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    {colors[key] ? hslStringToHex(colors[key]) : key}
-                  </p>
+                    );
+                  })}
                 </div>
-                );
-              })}
+              </div>
+
+              {/* Preview panel */}
+              <div className="xl:w-1/3 xl:flex-shrink-0 rounded-lg border border-border bg-background p-4 space-y-4">
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Chips</p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium" style={{ backgroundColor: "hsl(var(--brand))", color: "white" }}>
+                    Brand
+                  </span>
+                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium" style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}>
+                    Secondary
+                  </span>
+                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium" style={{ backgroundColor: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" }}>
+                    Muted
+                  </span>
+                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium" style={{ backgroundColor: "hsl(var(--accent))", color: "hsl(var(--accent-foreground))" }}>
+                    Accent
+                  </span>
+                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>
+                    Destructive
+                  </span>
+                </div>
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Buttons</p>
+                <div className="flex flex-wrap gap-2">
+                  <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors" style={{ backgroundColor: "hsl(var(--brand))", color: "white" }}>
+                    Primary
+                  </button>
+                  <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors" style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}>
+                    Secondary
+                  </button>
+                  <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors" style={{ backgroundColor: "transparent", color: "hsl(var(--brand))", border: "1px solid hsl(var(--brand))" }}>
+                    Outlined
+                  </button>
+                  <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors" style={{ backgroundColor: "transparent", color: "hsl(var(--brand))" }}>
+                    Ghost
+                  </button>
+                  <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>
+                    Destructive
+                  </button>
+                  <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors" style={{ backgroundColor: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" }}>
+                    Muted
+                  </button>
+                </div>
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Spacing</p>
+                <div className="flex flex-wrap gap-3">
+                  {designTokens.spacing.map((space) => (
+                    <div key={space.name} className="flex flex-col items-center gap-1">
+                      <div
+                        className="bg-brand-dynamic rounded-sm"
+                        style={{ width: space.value, height: space.value, minWidth: "1rem", minHeight: "1rem" }}
+                      />
+                      <span className="text-[10px] text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                        {space.name}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Border Radius</p>
+                <div className="flex flex-wrap gap-3">
+                  {designTokens.numbers
+                    .filter((n) => n.name.startsWith("border-radius"))
+                    .map((radius) => (
+                      <div key={radius.name} className="flex flex-col items-center gap-1">
+                        <div
+                          className="w-10 h-10 bg-brand-dynamic"
+                          style={{ borderRadius: `${radius.value}px` }}
+                        />
+                        <span className="text-[10px] text-gray-500 dark:text-gray-400">
+                          {radius.value}px
+                        </span>
+                      </div>
+                    ))}
+                </div>
+              </div>
+
+              {/* Shadows column */}
+              <div id="shadows" className="xl:w-1/3 xl:flex-shrink-0 min-w-0 scroll-mt-24 rounded-lg border border-border bg-background p-4">
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3">Shadows</p>
+                <div className="grid grid-cols-2 gap-3">
+                  {designTokens.shadows.map((shadow) => (
+                    <div key={shadow.name} className="text-center">
+                      <div
+                        className="w-full h-20 rounded-lg bg-white dark:bg-gray-800 mb-2"
+                        style={{ boxShadow: shadow.value }}
+                      />
+                      <p className="text-xs font-medium text-gray-900 dark:text-white">
+                        {shadow.name}
+                      </p>
+                      <p className="text-[10px] text-gray-500 dark:text-gray-400">
+                        {shadow.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
 
             {/* Reset Confirmation Modal */}
@@ -463,45 +604,10 @@ export default function DesignSystemPage() {
                 </div>
               </div>
             )}
-
-            {/* Live Preview */}
-            <div className="mt-6 rounded-lg border border-border bg-background p-5 space-y-4">
-              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                Live Preview
-              </p>
-              <div className="space-y-3">
-                <p className="text-foreground text-sm">
-                  This text uses <span className="font-semibold">foreground</span> on <span className="font-semibold">background</span>.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium bg-primary text-white">
-                    Primary
-                  </span>
-                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium bg-secondary text-white">
-                    Secondary
-                  </span>
-                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium bg-muted text-muted-foreground">
-                    Muted
-                  </span>
-                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium bg-accent text-accent-foreground">
-                    Accent
-                  </span>
-                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium bg-destructive text-destructive-foreground">
-                    Destructive
-                  </span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="h-8 flex-1 rounded-md border-2 border-border" />
-                  <span className="text-xs text-muted-foreground">Border</span>
-                  <div className="h-8 w-8 rounded-md ring-2 ring-ring" />
-                  <span className="text-xs text-muted-foreground">Ring</span>
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* Typography */}
-          <div className="mb-10">
+          <div id="typography" className="mb-10 scroll-mt-24">
             <h3 className="font-semibold text-brand-dynamic dark:text-white mb-4">
               {content.designSystem.sections.typography}
             </h3>
@@ -509,7 +615,7 @@ export default function DesignSystemPage() {
               {designTokens.typography.map((type) => (
                 <div
                   key={type.name}
-                  className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6 border-b border-gray-100 dark:border-gray-800 pb-4"
+                  className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6 border-b border-border pb-4"
                 >
                   <div className="sm:w-32 flex-shrink-0">
                     <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -534,85 +640,14 @@ export default function DesignSystemPage() {
             </div>
           </div>
 
-          {/* Spacing */}
-          <div className="mb-10">
-            <h3 className="font-semibold text-brand-dynamic dark:text-white mb-4">
-              {content.designSystem.sections.spacing}
-            </h3>
-            <div className="space-y-3">
-              {designTokens.spacing.map((space) => (
-                <div key={space.name} className="flex items-center gap-4">
-                  <span className="w-12 text-xs text-gray-500 dark:text-gray-400 flex-shrink-0">
-                    {space.name}
-                  </span>
-                  <div
-                    className="bg-brand-dynamic dark:bg-brand-dynamic rounded-sm"
-                    style={{ width: space.value, height: "1rem" }}
-                  />
-                  <span className="text-xs text-gray-400 dark:text-gray-500">
-                    {space.value}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Shadows */}
-          <div className="mb-10">
-            <h3 className="font-semibold text-brand-dynamic dark:text-white mb-4">
-              Shadows
-            </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {designTokens.shadows.map((shadow) => (
-                <div key={shadow.name} className="text-center">
-                  <div
-                    className="w-full h-20 rounded-lg bg-white dark:bg-gray-800 mb-2"
-                    style={{ boxShadow: shadow.value }}
-                  />
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">
-                    {shadow.name}
-                  </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    {shadow.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Buttons */}
-          <div className="mb-10">
-            <h3 className="font-semibold text-brand-dynamic dark:text-white mb-4">
-              {content.designSystem.sections.buttons}
-            </h3>
-            <div className="flex flex-wrap gap-3">
-              {designTokens.buttons.map((btn) => (
-                <button
-                  key={btn.name}
-                  className="transition-colors"
-                  style={{
-                    backgroundColor: btn.backgroundColor,
-                    color: btn.textColor,
-                    border: btn.border,
-                    padding: btn.padding,
-                    borderRadius: `${btn.borderRadius}px`,
-                    fontWeight: btn.fontWeight,
-                  }}
-                >
-                  {btn.name}
-                </button>
-              ))}
-            </div>
-          </div>
-
           {/* Animations */}
-          <div className="mb-10">
+          <div id="animations" className="mb-10 scroll-mt-24">
             <h3 className="font-semibold text-brand-dynamic dark:text-white mb-4">
               Animations
             </h3>
             <div className="space-y-6">
               {/* Accordion */}
-              <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+              <div className="border border-border rounded-lg overflow-hidden">
                 <div className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-800/50">
                   <div>
                     <p className="text-sm font-medium text-gray-900 dark:text-white">
@@ -646,7 +681,7 @@ export default function DesignSystemPage() {
               </div>
 
               {/* Scroll Banner */}
-              <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+              <div className="border border-border rounded-lg overflow-hidden">
                 <div className="px-4 py-3 bg-gray-50 dark:bg-gray-800/50">
                   <p className="text-sm font-medium text-gray-900 dark:text-white">
                     scroll-banner
@@ -689,30 +724,7 @@ export default function DesignSystemPage() {
             </div>
           </div>
 
-          {/* Border Radii */}
-          <div className="mb-10">
-            <h3 className="font-semibold text-brand-dynamic dark:text-white mb-4">
-              Border Radius
-            </h3>
-            <div className="flex flex-wrap gap-6">
-              {designTokens.numbers
-                .filter((n) => n.name.startsWith("border-radius"))
-                .map((radius) => (
-                  <div key={radius.name} className="text-center">
-                    <div
-                      className="w-20 h-20 bg-brand-dynamic dark:bg-brand-dynamic mb-2"
-                      style={{ borderRadius: `${radius.value}px` }}
-                    />
-                    <p className="text-sm font-medium text-gray-900 dark:text-white">
-                      {radius.value}px
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                      {radius.name.replace("border-radius-", "")}
-                    </p>
-                  </div>
-                ))}
-            </div>
-          </div>
+
         </div>
       </section>
     </PortfolioLayout>

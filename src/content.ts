@@ -1359,8 +1359,8 @@ There isn't always a clear way to select a technology. The newest, shiniest prod
   },
 
   designSystem: {
-    title: "Design System",
-    subtitle: "Component library and design tokens.",
+    title: "Live Design System",
+    subtitle: "",
     backToSite: "Back to Site",
     storageNotAvailable: "Storage not available.",
     sections: {
