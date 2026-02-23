@@ -1,12 +1,107 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import PortfolioLayout from "../../components/PortfolioLayout";
 import SectionHeader from "../../components/SectionHeader";
 import { content } from "../../content";
 import designTokens from "../../designTokens.json";
+import storage from "../../utils/storage";
+
+const THEME_COLORS_KEY = "ds-theme-colors";
+
+const EDITABLE_VARS = [
+  { key: "--background", label: "Background" },
+  { key: "--foreground", label: "Foreground" },
+  { key: "--primary", label: "Primary" },
+  { key: "--primary-foreground", label: "Primary FG" },
+  { key: "--secondary", label: "Secondary" },
+  { key: "--secondary-foreground", label: "Secondary FG" },
+  { key: "--muted", label: "Muted" },
+  { key: "--muted-foreground", label: "Muted FG" },
+  { key: "--accent", label: "Accent" },
+  { key: "--accent-foreground", label: "Accent FG" },
+  { key: "--destructive", label: "Destructive" },
+  { key: "--destructive-foreground", label: "Destructive FG" },
+  { key: "--border", label: "Border" },
+  { key: "--ring", label: "Ring" },
+] as const;
+
+function hslStringToHex(hsl: string): string {
+  const parts = hsl.trim().split(/\s+/);
+  if (parts.length < 3) return "#000000";
+  const h = parseFloat(parts[0]);
+  const s = parseFloat(parts[1]) / 100;
+  const l = parseFloat(parts[2]) / 100;
+  const a = s * Math.min(l, 1 - l);
+  const f = (n: number) => {
+    const k = (n + h / 30) % 12;
+    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+    return Math.round(255 * color)
+      .toString(16)
+      .padStart(2, "0");
+  };
+  return `#${f(0)}${f(8)}${f(4)}`;
+}
+
+function hexToHslString(hex: string): string {
+  const r = parseInt(hex.slice(1, 3), 16) / 255;
+  const g = parseInt(hex.slice(3, 5), 16) / 255;
+  const b = parseInt(hex.slice(5, 7), 16) / 255;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const l = (max + min) / 2;
+  if (max === min) return `0 0% ${(l * 100).toFixed(1)}%`;
+  const d = max - min;
+  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+  let h = 0;
+  if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+  else if (max === g) h = ((b - r) / d + 2) / 6;
+  else h = ((r - g) / d + 4) / 6;
+  return `${(h * 360).toFixed(1)} ${(s * 100).toFixed(1)}% ${(l * 100).toFixed(1)}%`;
+}
+
+export function applyStoredThemeColors() {
+  const saved = storage.get<Record<string, string>>(THEME_COLORS_KEY);
+  if (saved) {
+    Object.entries(saved).forEach(([key, value]) => {
+      document.documentElement.style.setProperty(key, value);
+    });
+  }
+}
 
 export default function DesignSystemPage() {
   const [copiedValue, setCopiedValue] = useState<string | null>(null);
   const [accordionOpen, setAccordionOpen] = useState(false);
+  const [colors, setColors] = useState<Record<string, string>>({});
+
+  const readCurrentColors = useCallback(() => {
+    const style = getComputedStyle(document.documentElement);
+    const current: Record<string, string> = {};
+    EDITABLE_VARS.forEach(({ key }) => {
+      current[key] = style.getPropertyValue(key).trim();
+    });
+    setColors(current);
+  }, []);
+
+  useEffect(() => {
+    applyStoredThemeColors();
+    readCurrentColors();
+  }, [readCurrentColors]);
+
+  const handleColorChange = (key: string, hex: string) => {
+    const hsl = hexToHslString(hex);
+    document.documentElement.style.setProperty(key, hsl);
+    setColors((prev) => ({ ...prev, [key]: hsl }));
+    const saved = storage.get<Record<string, string>>(THEME_COLORS_KEY) || {};
+    saved[key] = hsl;
+    storage.set(THEME_COLORS_KEY, saved);
+  };
+
+  const handleReset = () => {
+    EDITABLE_VARS.forEach(({ key }) => {
+      document.documentElement.style.removeProperty(key);
+    });
+    storage.remove(THEME_COLORS_KEY);
+    readCurrentColors();
+  };
 
   const copyToClipboard = (value: string) => {
     navigator.clipboard.writeText(value);
@@ -51,6 +146,89 @@ export default function DesignSystemPage() {
             </div>
           </div>
 
+          {/* Theme Colors (Editable) */}
+          <div className="mb-10">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-semibold text-gray-900 dark:text-white">
+                Theme Colors
+              </h3>
+              <button
+                onClick={handleReset}
+                className="px-3 py-1.5 text-xs font-medium rounded-md bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+              >
+                Reset to Defaults
+              </button>
+            </div>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+              Edit these CSS custom properties to change colors across the
+              entire site in real-time. Changes persist across pages and
+              refreshes.
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+              {EDITABLE_VARS.map(({ key, label }) => (
+                <label key={key} className="group cursor-pointer text-left">
+                  <div className="relative w-full h-16 rounded-lg mb-2 border border-gray-200 dark:border-gray-700 group-hover:ring-2 group-hover:ring-gray-400 transition-all overflow-hidden">
+                    <div
+                      className="absolute inset-0"
+                      style={{
+                        backgroundColor: colors[key]
+                          ? `hsl(${colors[key]})`
+                          : undefined,
+                      }}
+                    />
+                    <input
+                      type="color"
+                      value={colors[key] ? hslStringToHex(colors[key]) : "#000000"}
+                      onChange={(e) => handleColorChange(key, e.target.value)}
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    />
+                  </div>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">
+                    {label}
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 font-mono">
+                    {key}
+                  </p>
+                </label>
+              ))}
+            </div>
+
+            {/* Live Preview */}
+            <div className="mt-6 rounded-lg border border-border bg-background p-5 space-y-4">
+              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                Live Preview
+              </p>
+              <div className="space-y-3">
+                <p className="text-foreground text-sm">
+                  This text uses <span className="font-semibold">foreground</span> on <span className="font-semibold">background</span>.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium bg-primary text-primary-foreground">
+                    Primary
+                  </span>
+                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium bg-secondary text-secondary-foreground">
+                    Secondary
+                  </span>
+                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium bg-muted text-muted-foreground">
+                    Muted
+                  </span>
+                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium bg-accent text-accent-foreground">
+                    Accent
+                  </span>
+                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium bg-destructive text-destructive-foreground">
+                    Destructive
+                  </span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="h-8 flex-1 rounded-md border-2 border-border" />
+                  <span className="text-xs text-muted-foreground">Border</span>
+                  <div className="h-8 w-8 rounded-md ring-2 ring-ring" />
+                  <span className="text-xs text-muted-foreground">Ring</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Typography */}
           <div className="mb-10">
             <h3 className="font-semibold text-gray-900 dark:text-white mb-4">
@@ -78,7 +256,7 @@ export default function DesignSystemPage() {
                       lineHeight: type.lineHeight,
                     }}
                   >
-                    The quick brown fox jumps over the lazy dog
+                    The interface adapts before the user knows what they need
                   </p>
                 </div>
               ))}

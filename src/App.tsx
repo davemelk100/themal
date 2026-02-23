@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
 import { ThemeProvider } from "./context/ThemeContext";
+import { applyStoredThemeColors } from "./pages/portfolio/DesignSystemPage";
 import { CartProvider, StoreProvider, AuthProvider } from "./store";
 import { ProtectedRoute } from "./store/components/ProtectedRoute";
 import { Toaster } from "@/components/ui/toaster";
@@ -57,6 +58,11 @@ const Footer = lazy(() =>
 
 function App() {
   const location = useLocation();
+
+  // Restore saved theme colors on app mount
+  useEffect(() => {
+    applyStoredThemeColors();
+  }, []);
 
   // Scroll to top on route change (but not for internal navigation)
   useEffect(() => {
