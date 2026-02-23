@@ -9,6 +9,7 @@ const navOrder = [
   // "career",
   "testimonials",
   "contact",
+  "design-system",
 ];
 
 const idToRoute: Record<string, string> = {
@@ -19,6 +20,7 @@ const idToRoute: Record<string, string> = {
   // career: "/portfolio/career",
   testimonials: "/portfolio/testimonials",
   contact: "/portfolio/contact",
+  "design-system": "/portfolio/design-system",
 };
 
 const PortfolioNav = ({ currentPage }: { currentPage?: string }) => (
@@ -42,7 +44,7 @@ const PortfolioNav = ({ currentPage }: { currentPage?: string }) => (
 
             <div className="hidden lg:flex flex-wrap justify-end gap-2 sm:gap-3 mt-2 lg:mt-0">
               {content.navigation.links
-                .filter((link) => link.id !== "design-system" && link.id !== "career")
+                .filter((link) => link.id !== "career")
                 .sort((a, b) => {
                   const indexA = navOrder.indexOf(a.id);
                   const indexB = navOrder.indexOf(b.id);

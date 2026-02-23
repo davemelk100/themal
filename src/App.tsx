@@ -47,6 +47,7 @@ const ArticlesPage = lazy(() => import("./pages/portfolio/ArticlesPage"));
 // const CareerPage = lazy(() => import("./pages/portfolio/CareerPage"));
 const ContactPage = lazy(() => import("./pages/portfolio/ContactPage"));
 const TestimonialsPage = lazy(() => import("./pages/portfolio/TestimonialsPage"));
+const DesignSystemPage = lazy(() => import("./pages/portfolio/DesignSystemPage"));
 
 // Lazy load non-critical UI components to reduce critical path
 const MobileTrayMenu = lazy(() => import("./components/MobileTrayMenu"));
@@ -142,6 +143,7 @@ function App() {
             {/* <Route path="/portfolio/career" element={<CareerPage />} /> */}
             <Route path="/portfolio/testimonials" element={<TestimonialsPage />} />
             <Route path="/portfolio/contact" element={<ContactPage />} />
+            <Route path="/portfolio/design-system" element={<DesignSystemPage />} />
             <Route path="/article/:slug" element={<Article />} />
             <Route path="/archive" element={<Archive />} />
             <Route path="/json" element={<JsonAiPrompts />} />
