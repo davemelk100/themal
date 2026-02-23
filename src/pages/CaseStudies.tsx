@@ -55,7 +55,7 @@ export default function CaseStudies() {
               Operationalizing Accessibility Across an Enterprise Healthcare Organization
             </h2>
             <p className="text-muted-foreground mb-8">
-              Senior UX Developer and Accessibility Strategist — Delta Dental of Michigan
+              Senior UX Developer and Accessibility Strategist, Delta Dental of Michigan
             </p>
 
             <div className="space-y-8">
@@ -385,7 +385,7 @@ export default function CaseStudies() {
               Designing AI Powered Interpretation for Real Time Enterprise Communication
             </h2>
             <p className="text-muted-foreground mb-8">
-              UX Lead and Front End Architect — Propio Language Services
+              UX Lead and Front End Architect, Propio Language Services
             </p>
 
             <div className="space-y-8">
@@ -755,7 +755,7 @@ export default function CaseStudies() {
               Designing a Cross Product User Testing Platform with Unified Data and Theming Architecture
             </h2>
             <p className="text-muted-foreground mb-8">
-              UX Architect and Software Engineer — Melkonian Industries
+              UX Architect and Software Engineer, Melkonian Industries
             </p>
 
             <div className="space-y-8">
