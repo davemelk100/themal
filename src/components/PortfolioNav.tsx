@@ -42,9 +42,9 @@ const PortfolioNav = ({ currentPage }: { currentPage?: string }) => (
               </Link>
             </div>
 
-            <div className="hidden lg:flex flex-wrap justify-end gap-2 sm:gap-3 mt-2 lg:mt-0">
+            <div className="hidden lg:flex flex-wrap items-center gap-2 sm:gap-3 mt-2 lg:mt-0">
               {content.navigation.links
-                .filter((link) => link.id !== "career")
+                .filter((link) => link.id !== "career" && link.id !== "contact")
                 .sort((a, b) => {
                   const indexA = navOrder.indexOf(a.id);
                   const indexB = navOrder.indexOf(b.id);
@@ -79,6 +79,17 @@ const PortfolioNav = ({ currentPage }: { currentPage?: string }) => (
                 }
               >
                 Case Studies
+              </Link>
+              <div className="ml-auto" />
+              <Link
+                to="/portfolio/contact"
+                className={
+                  currentPage === "contact"
+                    ? "text-gray-900 dark:text-white px-3 py-2 rounded-md bg-gray-100 dark:bg-gray-800 font-medium"
+                    : "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
+                }
+              >
+                Contact
               </Link>
             </div>
           </div>

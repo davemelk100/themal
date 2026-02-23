@@ -1,54 +1,54 @@
 {
   "colors": [
     {
-      "name": "Muted Orange",
-      "value": "#D2691E",
-      "description": "Muted orange color"
+      "name": "Brand Blue",
+      "value": "#1d77af",
+      "description": "Primary brand color, used on homepage"
     },
     {
-      "name": "Warm Gray Light",
-      "value": "#C4A484",
-      "description": "Light warm gray"
+      "name": "Primary",
+      "value": "#3b82f6",
+      "description": "Primary action color (--primary)"
     },
     {
-      "name": "Teal",
-      "value": "#20B2AA",
-      "description": "Teal color"
+      "name": "Primary Light",
+      "value": "#6da9fd",
+      "description": "Lighter primary, used in legacy config"
     },
     {
-      "name": "Warm Gray Medium",
-      "value": "#A67C52",
-      "description": "Medium warm gray"
+      "name": "Destructive",
+      "value": "#ef4444",
+      "description": "Error and destructive actions (--destructive)"
     },
     {
-      "name": "Teal Light",
-      "value": "#48D1CC",
-      "description": "Light teal color"
+      "name": "Secondary Red",
+      "value": "#C03221",
+      "description": "Secondary red accent"
     },
     {
-      "name": "Warm Gray Dark",
-      "value": "#8B7355",
-      "description": "Dark warm gray"
+      "name": "Accent Yellow",
+      "value": "#F9C22E",
+      "description": "Accent highlight color"
     },
     {
-      "name": "Burnt Sienna",
-      "value": "#CD853F",
-      "description": "Burnt sienna secondary color"
+      "name": "Success",
+      "value": "#4CAF50",
+      "description": "Success state color"
     },
     {
-      "name": "Sage Green",
-      "value": "#9CAF88",
-      "description": "Sage green secondary color"
+      "name": "Neutral",
+      "value": "#828E82",
+      "description": "Neutral gray-green"
     },
     {
-      "name": "Taupe",
-      "value": "#B8860B",
-      "description": "Taupe secondary color"
+      "name": "Foreground",
+      "value": "#020817",
+      "description": "Default text color (--foreground)"
     },
     {
-      "name": "Dusty Blue",
-      "value": "#6B8E23",
-      "description": "Dusty blue secondary color"
+      "name": "Muted",
+      "value": "#f1f5f9",
+      "description": "Muted background and surfaces (--muted)"
     }
   ],
 
