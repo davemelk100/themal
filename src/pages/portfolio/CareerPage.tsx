@@ -14,7 +14,7 @@ export default function CareerPage() {
   return (
     <PortfolioLayout currentPage="career">
       <section className="py-4 sm:py-6 lg:py-8 xl:py-12 relative">
-        <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <SectionHeader
             title={content.career.title}
             subtitle={content.career.subtitle}
@@ -63,7 +63,7 @@ export default function CareerPage() {
               </div>
             ))}
           </div>
-          <div className="mt-4 pt-2 max-w-3xl">
+          <div className="mt-4 pt-2">
             <h3 className="font-semibold mb-2 text-gray-800 dark:text-gray-200">
               Certifications
             </h3>

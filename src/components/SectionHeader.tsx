@@ -5,12 +5,6 @@ import IconWrapper from "./IconWrapper";
 const LazyArrowUp = React.lazy(() =>
   import("lucide-react").then((mod) => ({ default: mod.ArrowUp })),
 );
-const LazyLayoutGrid = React.lazy(() =>
-  import("lucide-react").then((mod) => ({ default: mod.LayoutGrid })),
-);
-const LazyList = React.lazy(() =>
-  import("lucide-react").then((mod) => ({ default: mod.List })),
-);
 
 const SectionHeader = ({
   title,
@@ -18,8 +12,6 @@ const SectionHeader = ({
   className = "",
   showArchiveLink = false,
   showUpArrow = false,
-  toggleView,
-  viewMode,
   icon,
 }: {
   title: string;
@@ -27,8 +19,6 @@ const SectionHeader = ({
   className?: string;
   showArchiveLink?: boolean;
   showUpArrow?: boolean;
-  toggleView?: (mode: "grid" | "list") => void;
-  viewMode?: "grid" | "list";
   icon?: React.ReactNode;
 }) => {
   return (
@@ -53,32 +43,6 @@ const SectionHeader = ({
           )}
         </div>
         <div className="flex items-center gap-2 sm:gap-3">
-          {toggleView && (
-            <div className="flex items-center gap-1 ml-0 sm:ml-2">
-              <button
-                aria-label="Grid view"
-                className={`p-2 rounded-md border transition-colors flex items-center justify-center ${
-                  viewMode === "grid"
-                    ? "bg-gray-200 dark:bg-gray-700 border-border"
-                    : "bg-transparent border-transparent hover:bg-gray-100 dark:hover:bg-gray-800"
-                }`}
-                onClick={() => toggleView("grid")}
-              >
-                <IconWrapper Icon={LazyLayoutGrid} className="h-4 w-4 text-brand-dynamic dark:text-gray-300" />
-              </button>
-              <button
-                aria-label="List view"
-                className={`p-2 rounded-md border transition-colors flex items-center justify-center ${
-                  viewMode === "list"
-                    ? "bg-gray-200 dark:bg-gray-700 border-border"
-                    : "bg-transparent border-transparent hover:bg-gray-100 dark:hover:bg-gray-800"
-                }`}
-                onClick={() => toggleView("list")}
-              >
-                <IconWrapper Icon={LazyList} className="h-4 w-4 text-brand-dynamic dark:text-gray-300" />
-              </button>
-            </div>
-          )}
           {showArchiveLink && (
             <Link
               to="/archive"

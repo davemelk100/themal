@@ -218,7 +218,8 @@ function App() {
       {location.pathname !== "/" &&
       !location.pathname.startsWith("/store") &&
       location.pathname !== "/discogs" &&
-      location.pathname !== "/cygnet" ? (
+      location.pathname !== "/cygnet" &&
+      location.pathname !== "/portfolio/design-system" ? (
         <Suspense fallback={null} key={location.pathname}>
           <Footer />
         </Suspense>

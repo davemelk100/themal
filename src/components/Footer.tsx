@@ -41,7 +41,7 @@ export const Footer = () => {
   return (
     <footer className="bg-white dark:bg-gray-900 border-t border-border mt-auto">
       {/* Contact Form */}
-      <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Contact</h3>
         <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Get in touch for consulting services</p>
         <form
@@ -118,7 +118,7 @@ export const Footer = () => {
 
       {/* Footer info */}
       <div className="border-t border-border">
-      <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-6">
           {/* Left side - Email and Copyright */}
           <div className="flex flex-col items-center sm:items-start gap-2">

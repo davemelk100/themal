@@ -3,7 +3,6 @@ import axe, { type AxeResults } from "axe-core";
 import PortfolioLayout from "../../components/PortfolioLayout";
 import SectionHeader from "../../components/SectionHeader";
 import { content } from "../../content";
-import designTokens from "../../designTokens.json";
 import storage from "../../utils/storage";
 
 // Lazy-load icons used across the portfolio site
@@ -288,12 +287,9 @@ export default function DesignSystemPage() {
   const [colors, setColors] = useState<Record<string, string>>({});
   const [showResetModal, setShowResetModal] = useState(false);
   const [auditStatus, setAuditStatus] = useState<'idle' | 'running' | 'passed' | 'failed'>('idle');
-  const [auditViolations, setAuditViolations] = useState<{ id: string; description: string; nodes: number }[]>([]);
-  const [auditResults, setAuditResults] = useState<AxeResults | null>(null);
+  const [auditViolations, setAuditViolations] = useState<{ selector: string; text: string }[]>([]);
   const [generatedCode, setGeneratedCode] = useState<string | null>(null);
   const [codeCopied, setCodeCopied] = useState(false);
-
-  const hasPendingChanges = !!storage.get<Record<string, string>>(PENDING_COLORS_KEY);
 
   const readCurrentColors = useCallback(() => {
     const style = getComputedStyle(document.documentElement);
@@ -557,20 +553,24 @@ export default function DesignSystemPage() {
     setGeneratedCode(css + tw);
   };
 
-  const runAudit = () => axe.run(document, { runOnly: ['wcag2a', 'wcag2aa'] });
+  const runAudit = () => axe.run(document, { runOnly: { type: 'rule', values: ['color-contrast'] } });
 
   const setAuditFromResults = (results: AxeResults) => {
-    setAuditResults(results);
     if (results.violations.length === 0) {
       setAuditStatus('passed');
       setAuditViolations([]);
     } else {
       setAuditStatus('failed');
-      setAuditViolations(results.violations.map((v) => ({
-        id: v.id,
-        description: v.description,
-        nodes: v.nodes.length,
-      })));
+      const elements: { selector: string; text: string }[] = [];
+      for (const v of results.violations) {
+        for (const node of v.nodes) {
+          const selector = String(node.target[0] || '');
+          const el = document.querySelector(selector) as HTMLElement | null;
+          const text = el?.textContent?.trim().slice(0, 40) || selector;
+          elements.push({ selector, text });
+        }
+      }
+      setAuditViolations(elements);
     }
   };
 
@@ -578,86 +578,75 @@ export default function DesignSystemPage() {
     setAuditStatus('running');
     setAuditViolations([]);
     try {
-      setAuditFromResults(await runAudit());
-    } catch {
-      setAuditStatus('idle');
-    }
-  };
+      const initialResults = await runAudit();
 
-  const fixAccessibilityIssues = async () => {
-    setAuditStatus('running');
-    try {
-      // 1. Fix contrast on our CSS variable pairs
-      const style = getComputedStyle(document.documentElement);
-      const liveColors: Record<string, string> = {};
-      EDITABLE_VARS.forEach(({ key }) => {
-        liveColors[key] = style.getPropertyValue(key).trim();
-      });
+      // If violations found, auto-fix and re-audit
+      if (initialResults.violations.length > 0) {
+        // 1. Fix contrast on CSS variable pairs
+        const style = getComputedStyle(document.documentElement);
+        const liveColors: Record<string, string> = {};
+        EDITABLE_VARS.forEach(({ key }) => {
+          liveColors[key] = style.getPropertyValue(key).trim();
+        });
 
-      const fixes = autoAdjustContrast(liveColors);
-      if (Object.keys(fixes).length > 0) {
-        const pending = storage.get<Record<string, string>>(PENDING_COLORS_KEY) || {};
-        const updatedColors = { ...liveColors };
-        for (const [fixKey, fixVal] of Object.entries(fixes)) {
-          document.documentElement.style.setProperty(fixKey, fixVal);
-          updatedColors[fixKey] = fixVal;
-          pending[fixKey] = fixVal;
+        const fixes = autoAdjustContrast(liveColors);
+        if (Object.keys(fixes).length > 0) {
+          const pending = storage.get<Record<string, string>>(PENDING_COLORS_KEY) || {};
+          const updatedColors = { ...liveColors };
+          for (const [fixKey, fixVal] of Object.entries(fixes)) {
+            document.documentElement.style.setProperty(fixKey, fixVal);
+            updatedColors[fixKey] = fixVal;
+            pending[fixKey] = fixVal;
+          }
+          storage.set(PENDING_COLORS_KEY, pending);
+          setColors(updatedColors);
+          window.dispatchEvent(new Event("theme-pending-update"));
         }
-        storage.set(PENDING_COLORS_KEY, pending);
-        setColors(updatedColors);
-        window.dispatchEvent(new Event("theme-pending-update"));
-      }
 
-      // 2. Fix per-element contrast violations reported by axe
-      if (auditResults) {
-        const contrastViolation = auditResults.violations.find((v) => v.id === 'color-contrast');
+        // 2. Fix per-element contrast violations reported by axe
+        const contrastViolation = initialResults.violations.find((v) => v.id === 'color-contrast');
         if (contrastViolation) {
+          const parseRgb = (rgb: string): [number, number, number] | null => {
+            const m = rgb.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+            if (!m) return null;
+            return [parseInt(m[1]) / 255, parseInt(m[2]) / 255, parseInt(m[3]) / 255];
+          };
+          const lum = (r: number, g: number, b: number) => {
+            const toL = (c: number) => (c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
+            return 0.2126 * toL(r) + 0.7152 * toL(g) + 0.0722 * toL(b);
+          };
+          const rgbToHsl = (r: number, g: number, b: number) => {
+            const max = Math.max(r, g, b), min = Math.min(r, g, b);
+            const li = (max + min) / 2;
+            if (max === min) return { h: 0, s: 0, l: li };
+            const d = max - min;
+            const s = li > 0.5 ? d / (2 - max - min) : d / (max + min);
+            let h = 0;
+            if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+            else if (max === g) h = ((b - r) / d + 2) / 6;
+            else h = ((r - g) / d + 4) / 6;
+            return { h, s, l: li };
+          };
+          const hslToRgbStr = (h: number, s: number, l: number) => {
+            const a = s * Math.min(l, 1 - l);
+            const f = (n: number) => {
+              const k = (n + h * 12) % 12;
+              return l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+            };
+            return `rgb(${Math.round(f(0) * 255)}, ${Math.round(f(8) * 255)}, ${Math.round(f(4) * 255)})`;
+          };
+
           for (const node of contrastViolation.nodes) {
             const el = document.querySelector(node.target[0] as string) as HTMLElement | null;
             if (!el) continue;
             const computed = getComputedStyle(el);
-            const fgRgb = computed.color;
-            const bgRgb = computed.backgroundColor;
-            // Parse rgb(r, g, b) values
-            const parseRgb = (rgb: string): [number, number, number] | null => {
-              const m = rgb.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
-              if (!m) return null;
-              return [parseInt(m[1]) / 255, parseInt(m[2]) / 255, parseInt(m[3]) / 255];
-            };
-            const fg = parseRgb(fgRgb);
-            const bg = parseRgb(bgRgb);
+            const fg = parseRgb(computed.color);
+            const bg = parseRgb(computed.backgroundColor);
             if (!fg || !bg) continue;
-            const lum = (r: number, g: number, b: number) => {
-              const toL = (c: number) => (c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
-              return 0.2126 * toL(r) + 0.7152 * toL(g) + 0.0722 * toL(b);
-            };
-            const l1 = lum(...fg);
-            const l2 = lum(...bg);
-            const ratio = (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+            const bgLum = lum(...bg);
+            const ratio = (Math.max(lum(...fg), bgLum) + 0.05) / (Math.min(lum(...fg), bgLum) + 0.05);
             if (ratio >= 4.5) continue;
-            // Adjust foreground lightness via HSL
-            const rgbToHsl = (r: number, g: number, b: number) => {
-              const max = Math.max(r, g, b), min = Math.min(r, g, b);
-              const li = (max + min) / 2;
-              if (max === min) return { h: 0, s: 0, l: li };
-              const d = max - min;
-              const s = li > 0.5 ? d / (2 - max - min) : d / (max + min);
-              let h = 0;
-              if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
-              else if (max === g) h = ((b - r) / d + 2) / 6;
-              else h = ((r - g) / d + 4) / 6;
-              return { h, s, l: li };
-            };
-            const hslToRgbStr = (h: number, s: number, l: number) => {
-              const a = s * Math.min(l, 1 - l);
-              const f = (n: number) => {
-                const k = (n + h * 12) % 12;
-                return l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-              };
-              return `rgb(${Math.round(f(0) * 255)}, ${Math.round(f(8) * 255)}, ${Math.round(f(4) * 255)})`;
-            };
             const fgHsl = rgbToHsl(...fg);
-            const bgLum = l2;
             const dir = bgLum > 0.5 ? -0.03 : 0.03;
             for (let i = 0; i < 40; i++) {
               fgHsl.l = Math.max(0, Math.min(1, fgHsl.l + dir));
@@ -668,8 +657,7 @@ export default function DesignSystemPage() {
                 const k = (n + fgHsl.h * 12) % 12;
                 newFg[ci] = fgHsl.l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
               }
-              const newL1 = lum(...newFg);
-              const newRatio = (Math.max(newL1, bgLum) + 0.05) / (Math.min(newL1, bgLum) + 0.05);
+              const newRatio = (Math.max(lum(...newFg), bgLum) + 0.05) / (Math.min(lum(...newFg), bgLum) + 0.05);
               if (newRatio >= 4.5) {
                 el.style.color = hslToRgbStr(fgHsl.h, fgHsl.s, fgHsl.l);
                 break;
@@ -677,9 +665,101 @@ export default function DesignSystemPage() {
             }
           }
         }
+
+        // 3. Re-audit after fixes
+        setAuditFromResults(await runAudit());
+      } else {
+        setAuditFromResults(initialResults);
+      }
+    } catch {
+      setAuditStatus('idle');
+    }
+  };
+
+  const fixContrastIssues = async () => {
+    setAuditStatus('running');
+    try {
+      // Get current CSS variable values
+      const style = getComputedStyle(document.documentElement);
+      const liveColors: Record<string, string> = {};
+      EDITABLE_VARS.forEach(({ key }) => {
+        liveColors[key] = style.getPropertyValue(key).trim();
+      });
+
+      // Run aggressive auto-adjust with wider steps
+      const parseHsl = (val: string) => {
+        const p = val.trim().split(/\s+/);
+        if (p.length < 3) return null;
+        return { h: parseFloat(p[0]), s: parseFloat(p[1]), l: parseFloat(p[2]) };
+      };
+      const toHsl = (h: number, s: number, l: number) => `${h} ${s}% ${l}%`;
+      const working = { ...liveColors };
+      const pending = storage.get<Record<string, string>>(PENDING_COLORS_KEY) || {};
+
+      // Aggressively fix all contrast pairs — try both directions, 1% steps, 100 iterations
+      for (const [fgKey, bgKey] of CONTRAST_PAIRS) {
+        const fgVal = working[fgKey];
+        const bgv = working[bgKey];
+        if (!fgVal || !bgv) continue;
+        if (contrastRatio(fgVal, bgv) >= 4.5) continue;
+
+        const fg = parseHsl(fgVal);
+        const bg = parseHsl(bgv);
+        if (!fg || !bg) continue;
+
+        // Try adjusting foreground with 1% steps
+        const direction = bg.l > 50 ? -1 : 1;
+        let l = fg.l;
+        let adjusted = toHsl(fg.h, fg.s, l);
+        for (let i = 0; i < 100; i++) {
+          l = Math.max(0, Math.min(100, l + direction));
+          adjusted = toHsl(fg.h, fg.s, l);
+          if (contrastRatio(adjusted, bgv) >= 4.5) break;
+        }
+        if (contrastRatio(adjusted, bgv) < 4.5) {
+          // Try opposite direction
+          l = fg.l;
+          for (let i = 0; i < 100; i++) {
+            l = Math.max(0, Math.min(100, l - direction));
+            adjusted = toHsl(fg.h, fg.s, l);
+            if (contrastRatio(adjusted, bgv) >= 4.5) break;
+          }
+        }
+        if (contrastRatio(adjusted, bgv) >= 4.5) {
+          document.documentElement.style.setProperty(fgKey, adjusted);
+          working[fgKey] = adjusted;
+          pending[fgKey] = adjusted;
+        }
       }
 
-      // 3. Re-audit after all fixes
+      // Also fix brand vs background
+      const brandVal = working["--brand"];
+      const bgVal = working["--background"];
+      if (brandVal && bgVal && contrastRatio(brandVal, bgVal) < 4.5) {
+        const brand = parseHsl(brandVal);
+        const bg = parseHsl(bgVal);
+        if (brand && bg) {
+          const dir = bg.l > 50 ? -1 : 1;
+          let l = brand.l;
+          let adj = toHsl(brand.h, brand.s, l);
+          for (let i = 0; i < 100; i++) {
+            l = Math.max(0, Math.min(100, l + dir));
+            adj = toHsl(brand.h, brand.s, l);
+            if (contrastRatio(adj, bgVal) >= 4.5) break;
+          }
+          if (contrastRatio(adj, bgVal) >= 4.5) {
+            document.documentElement.style.setProperty("--brand", adj);
+            working["--brand"] = adj;
+            pending["--brand"] = adj;
+          }
+        }
+      }
+
+      storage.set(PENDING_COLORS_KEY, pending);
+      setColors(working);
+      window.dispatchEvent(new Event("theme-pending-update"));
+
+      // Re-audit after aggressive fix
       setAuditFromResults(await runAudit());
     } catch {
       setAuditStatus('idle');
@@ -738,7 +818,6 @@ export default function DesignSystemPage() {
     readCurrentColors();
     setAuditStatus('idle');
     setAuditViolations([]);
-    setAuditResults(null);
     setGeneratedCode(null);
     window.dispatchEvent(new Event("theme-pending-update"));
   };
@@ -767,20 +846,36 @@ export default function DesignSystemPage() {
                   </span>
                 )}
                 {auditStatus === 'failed' && (
-                  <div className="rounded-lg border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/30 px-4 py-2">
-                    <p className="text-xs font-medium text-red-700 dark:text-red-300 mb-1">
-                      &#10007; {auditViolations.length} WCAG violation{auditViolations.length !== 1 ? 's' : ''} found
+                  <div className="rounded-lg border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/30 px-4 py-2 flex flex-wrap items-center gap-x-3 gap-y-0.5">
+                    <p className="text-xs font-medium text-red-700 dark:text-red-300">
+                      &#10007; {auditViolations.length} contrast issue{auditViolations.length !== 1 ? 's' : ''}:
                     </p>
-                    <ul className="text-[10px] text-red-600 dark:text-red-400 space-y-0.5 mb-2">
-                      {auditViolations.map((v) => (
-                        <li key={v.id}>{v.description} ({v.nodes} element{v.nodes !== 1 ? 's' : ''})</li>
+                    <ul className="text-[10px] text-red-600 dark:text-red-400 flex flex-wrap items-center gap-x-3 gap-y-0.5">
+                      {auditViolations.map((v, i) => (
+                        <li
+                          key={i}
+                          className="cursor-pointer hover:underline"
+                          onClick={() => {
+                            const el = document.querySelector(v.selector) as HTMLElement | null;
+                            if (!el) return;
+                            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            el.style.outline = '3px solid hsl(0 84% 60%)';
+                            el.style.outlineOffset = '2px';
+                            setTimeout(() => {
+                              el.style.outline = '';
+                              el.style.outlineOffset = '';
+                            }, 3000);
+                          }}
+                        >
+                          <span className="font-medium">Item {i + 1}</span>
+                        </li>
                       ))}
                     </ul>
                     <button
-                      onClick={() => fixAccessibilityIssues()}
-                      className="px-3 py-1.5 text-[10px] font-medium rounded-md bg-red-600 text-white hover:bg-red-700 transition-colors"
+                      onClick={() => fixContrastIssues()}
+                      className="ml-auto px-3 py-1 text-[10px] font-semibold rounded-md bg-red-600 text-white hover:bg-red-700 transition-colors whitespace-nowrap"
                     >
-                      Fix Issues
+                      Fix Contrast
                     </button>
                   </div>
                 )}
@@ -791,26 +886,21 @@ export default function DesignSystemPage() {
               >
                 Reset to Defaults
               </button>
-              {hasPendingChanges && (
-                <button
-                  onClick={() => generateCode()}
-                  className="px-4 py-2 text-xs font-medium rounded-lg border border-border bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-                >
-                  Generate CSS?
-                </button>
-              )}
+              <button
+                onClick={() => generateCode()}
+                className="px-4 py-2 text-xs font-medium rounded-lg border border-border bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              >
+                Generate CSS
+              </button>
             </div>
           </div>
           <div className="flex flex-col lg:flex-row lg:items-start gap-4 mb-4">
             <div className="lg:w-[20%]">
-              <ul className="text-xs text-muted-foreground space-y-0.5 list-disc list-inside leading-relaxed">
-                <li>Driven by CSS custom properties. Pick a <strong className="text-foreground">Brand</strong> color and the entire palette auto-adjusts.</li>
-                <li>Secondary, primary, accent, muted, border, and foreground tokens all shift to harmonize with your selection.</li>
-                <li>Every color pair is checked against WCAG AA contrast requirements (4.5:1 minimum) in real time.</li>
-                <li>If a pair fails, lightness values are automatically adjusted until the ratio passes.</li>
-                <li>The brand color is protected: if too light for the background, the system darkens it until it meets 4.5:1.</li>
-                <li>Headings, links, and navigation text remain legible no matter what color you choose.</li>
-              </ul>
+              <div className="text-xs text-muted-foreground leading-relaxed space-y-2">
+                <p>Pick any brand color and watch the entire palette transform. Every token — primary, secondary, accent, muted, border, and foreground — shifts automatically to stay in harmony.</p>
+                <p>Behind the scenes, each color pair is validated against WCAG AA contrast standards in real time. If anything falls short of the 4.5:1 minimum, the system corrects it instantly — adjusting lightness until every ratio passes.</p>
+                <p>Your brand color stays protected too: if it's too light for the background, it darkens just enough to remain accessible. The result is a fully legible interface, no matter what color you choose.</p>
+              </div>
             </div>
             {/* Colors + Preview side by side */}
             <div id="colors" className="lg:flex-1 min-w-0 scroll-mt-24">
@@ -916,7 +1006,7 @@ export default function DesignSystemPage() {
 
             <div className="flex flex-col xl:flex-row gap-6">
               {/* Color swatches (non-hero) */}
-              <div className="xl:w-1/3 min-w-0 rounded-lg border border-border bg-background p-4">
+              <div className="xl:flex-1 min-w-0 rounded-lg border border-border bg-background p-4">
                 <div className="flex items-center justify-between mb-3">
                   <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     {content.designSystem.sections.colors}
@@ -948,90 +1038,52 @@ export default function DesignSystemPage() {
                 </div>
               </div>
 
-              {/* Chips & Buttons column */}
-              <div className="xl:w-1/3 rounded-lg border border-border bg-background p-4 space-y-4">
+              {/* Chips column */}
+              <div className="xl:w-auto rounded-lg border border-border bg-background p-4 space-y-3">
                 <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Chips</p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium" style={{ backgroundColor: "hsl(var(--brand))", color: "white" }}>
-                    Brand
-                  </span>
-                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium" style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}>
-                    Secondary
-                  </span>
-                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium" style={{ backgroundColor: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" }}>
-                    Muted
-                  </span>
-                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium" style={{ backgroundColor: "hsl(var(--accent))", color: "hsl(var(--accent-foreground))" }}>
-                    Accent
-                  </span>
-                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>
-                    Destructive
-                  </span>
-                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium" style={{ backgroundColor: "hsl(var(--success))", color: "hsl(var(--success-foreground))" }}>
-                    Success
-                  </span>
-                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))" }}>
-                    Warning
-                  </span>
+                <div className="flex flex-col gap-2 items-start">
+                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium" style={{ backgroundColor: "hsl(var(--brand))", color: "white" }}>Brand</span>
+                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium" style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}>Secondary</span>
+                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium" style={{ backgroundColor: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" }}>Muted</span>
+                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium" style={{ backgroundColor: "hsl(var(--accent))", color: "hsl(var(--accent-foreground))" }}>Accent</span>
+                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>Destructive</span>
+                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium" style={{ backgroundColor: "hsl(var(--success))", color: "hsl(var(--success-foreground))" }}>Success</span>
+                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))" }}>Warning</span>
                 </div>
+              </div>
+
+              {/* Buttons column */}
+              <div className="xl:w-auto rounded-lg border border-border bg-background p-4 space-y-3">
                 <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Buttons</p>
-                <div className="flex flex-wrap gap-2">
-                  <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors" style={{ backgroundColor: "hsl(var(--brand))", color: "white" }}>
-                    Primary
-                  </button>
-                  <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors" style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}>
-                    Secondary
-                  </button>
-                  <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors" style={{ backgroundColor: "transparent", color: "hsl(var(--brand))", border: "1px solid hsl(var(--brand))" }}>
-                    Outlined
-                  </button>
-                  <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors" style={{ backgroundColor: "transparent", color: "hsl(var(--brand))" }}>
-                    Ghost
-                  </button>
-                  <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>
-                    Destructive
-                  </button>
-                  <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors" style={{ backgroundColor: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" }}>
-                    Muted
-                  </button>
-                  <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors" style={{ backgroundColor: "hsl(var(--success))", color: "hsl(var(--success-foreground))" }}>
-                    Success
-                  </button>
-                  <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))" }}>
-                    Warning
-                  </button>
+                <div className="flex flex-col gap-2 items-start">
+                  <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors" style={{ backgroundColor: "hsl(var(--brand))", color: "white" }}>Primary</button>
+                  <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors" style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}>Secondary</button>
+                  <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors" style={{ backgroundColor: "transparent", color: "hsl(var(--brand))", border: "1px solid hsl(var(--brand))" }}>Outlined</button>
+                  <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors" style={{ backgroundColor: "transparent", color: "hsl(var(--brand))" }}>Ghost</button>
+                  <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>Destructive</button>
+                  <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors" style={{ backgroundColor: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" }}>Muted</button>
+                  <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors" style={{ backgroundColor: "hsl(var(--success))", color: "hsl(var(--success-foreground))" }}>Success</button>
+                  <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))" }}>Warning</button>
                 </div>
+              </div>
+
+              {/* Badges column */}
+              <div className="xl:w-auto rounded-lg border border-border bg-background p-4 space-y-3">
                 <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Badges</p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium" style={{ backgroundColor: "hsl(var(--brand))", color: "white" }}>
-                    Brand
-                  </span>
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium" style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}>
-                    Secondary
-                  </span>
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium" style={{ backgroundColor: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" }}>
-                    Muted
-                  </span>
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium" style={{ backgroundColor: "hsl(var(--accent))", color: "hsl(var(--accent-foreground))" }}>
-                    Accent
-                  </span>
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>
-                    Destructive
-                  </span>
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium" style={{ backgroundColor: "hsl(var(--success))", color: "hsl(var(--success-foreground))" }}>
-                    Success
-                  </span>
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))" }}>
-                    Warning
-                  </span>
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium border border-border text-muted-foreground">
-                    Outlined
-                  </span>
+                <div className="flex flex-col gap-2 items-start">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium" style={{ backgroundColor: "hsl(var(--brand))", color: "white" }}>Brand</span>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium" style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}>Secondary</span>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium" style={{ backgroundColor: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" }}>Muted</span>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium" style={{ backgroundColor: "hsl(var(--accent))", color: "hsl(var(--accent-foreground))" }}>Accent</span>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>Destructive</span>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium" style={{ backgroundColor: "hsl(var(--success))", color: "hsl(var(--success-foreground))" }}>Success</span>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))" }}>Warning</span>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium border border-border text-muted-foreground">Outlined</span>
                 </div>
               </div>
 
               {/* Icons column */}
-              <div className="xl:w-1/3 rounded-lg border border-border bg-background p-4 space-y-4">
+              <div className="xl:flex-1 min-w-0 rounded-lg border border-border bg-background p-4 space-y-4">
                 <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Icons</p>
                 <div className="grid grid-cols-5 sm:grid-cols-7 gap-2">
                   <Suspense fallback={null}>
@@ -1046,149 +1098,6 @@ export default function DesignSystemPage() {
 
             </div>
 
-            <div className="flex flex-col xl:flex-row gap-6 mt-6">
-            {/* Shadows column */}
-            <div id="shadows" className="xl:w-1/2 scroll-mt-24 rounded-2xl border border-white/20 dark:border-white/10 p-4 overflow-hidden relative flex flex-col" style={{ background: "linear-gradient(160deg, hsl(var(--brand) / 0.25) 0%, hsl(var(--secondary) / 0.35) 40%, hsl(var(--brand) / 0.18) 70%, hsl(var(--accent) / 0.22) 100%)" }}>
-              {/* Animated color blobs behind the glass cards */}
-              <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute -top-8 -left-8 w-32 h-32 rounded-full opacity-60" style={{ background: "radial-gradient(circle, hsl(var(--brand) / 0.5), transparent 70%)", filter: "blur(20px)" }} />
-                <div className="absolute top-1/3 -right-6 w-28 h-28 rounded-full opacity-50" style={{ background: "radial-gradient(circle, hsl(var(--secondary) / 0.5), transparent 70%)", filter: "blur(18px)" }} />
-                <div className="absolute -bottom-6 left-1/4 w-24 h-24 rounded-full opacity-40" style={{ background: "radial-gradient(circle, hsl(var(--accent) / 0.4), transparent 70%)", filter: "blur(16px)" }} />
-              </div>
-              {/* SVG filter for water drop refraction */}
-              <svg className="absolute w-0 h-0" aria-hidden="true">
-                <defs>
-                  <filter id="water-drop-filter">
-                    <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" />
-                    <feSpecularLighting in="blur" surfaceScale="4" specularConstant="0.8" specularExponent="25" result="specular" lightingColor="white">
-                      <fePointLight x="80" y="40" z="200" />
-                    </feSpecularLighting>
-                    <feComposite in="SourceGraphic" in2="specular" operator="arithmetic" k1="0" k2="1" k3="0.2" k4="0" />
-                  </filter>
-                  <radialGradient id="drop-gradient" cx="40%" cy="35%" r="50%">
-                    <stop offset="0%" stopColor="white" stopOpacity="0.7" />
-                    <stop offset="40%" stopColor="white" stopOpacity="0.15" />
-                    <stop offset="100%" stopColor="white" stopOpacity="0.05" />
-                  </radialGradient>
-                  <radialGradient id="drop-shadow-grad" cx="50%" cy="85%" r="40%">
-                    <stop offset="0%" stopColor="black" stopOpacity="0.12" />
-                    <stop offset="100%" stopColor="black" stopOpacity="0" />
-                  </radialGradient>
-                  <radialGradient id="drop-caustic" cx="55%" cy="70%" r="35%">
-                    <stop offset="0%" stopColor="white" stopOpacity="0.35" />
-                    <stop offset="100%" stopColor="white" stopOpacity="0" />
-                  </radialGradient>
-                </defs>
-              </svg>
-              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3 relative z-10">Shadows</p>
-              <div className="grid grid-cols-2 gap-x-3 gap-y-3 relative z-10 flex-1">
-                {designTokens.shadows.map((shadow, idx) => (
-                  <div key={shadow.name} className="text-center flex flex-col">
-                    <div
-                      className="relative overflow-hidden w-full flex-1 min-h-[12rem] rounded-3xl mb-1"
-                      style={{
-                        boxShadow: `${shadow.value}, 0 0 0 0.5px rgba(255,255,255,0.3)`,
-                      }}
-                    >
-                      {/* Glass background */}
-                      <div
-                        className="absolute inset-0 rounded-3xl"
-                        style={{
-                          backdropFilter: "blur(24px) saturate(1.6) brightness(1.05)",
-                          WebkitBackdropFilter: "blur(24px) saturate(1.6) brightness(1.05)",
-                          background: "rgba(255,255,255,0.2)",
-                        }}
-                      />
-                      {/* Top specular highlight */}
-                      <div
-                        className="absolute inset-0 rounded-3xl pointer-events-none"
-                        style={{
-                          background: "linear-gradient(to bottom, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.03) 35%, transparent 60%)",
-                        }}
-                      />
-                      {/* Inner edge light */}
-                      <div
-                        className="absolute inset-0 rounded-3xl pointer-events-none"
-                        style={{
-                          border: "1px solid rgba(255,255,255,0.15)",
-                          boxShadow: "inset 0 1px 1px rgba(255,255,255,0.2), inset 0 -1px 1px rgba(0,0,0,0.03)",
-                        }}
-                      />
-                      {/* Water drop */}
-                      <svg
-                        className="absolute pointer-events-none"
-                        style={{
-                          width: idx % 2 === 0 ? "28px" : "22px",
-                          height: idx % 2 === 0 ? "34px" : "28px",
-                          top: idx < 2 ? "18%" : "25%",
-                          left: idx % 2 === 0 ? "60%" : "30%",
-                          filter: "url(#water-drop-filter)",
-                        }}
-                        viewBox="0 0 40 50"
-                        aria-hidden="true"
-                      >
-                        {/* Drop shadow (contact shadow on glass) */}
-                        <ellipse cx="20" cy="46" rx="12" ry="3" fill="url(#drop-shadow-grad)" />
-                        {/* Main drop body */}
-                        <path
-                          d="M20 4 C20 4, 6 22, 6 32 C6 40, 12 46, 20 46 C28 46, 34 40, 34 32 C34 22, 20 4, 20 4Z"
-                          fill="url(#drop-gradient)"
-                          stroke="rgba(255,255,255,0.35)"
-                          strokeWidth="0.5"
-                        />
-                        {/* Caustic light underneath */}
-                        <ellipse cx="22" cy="36" rx="7" ry="5" fill="url(#drop-caustic)" />
-                        {/* Primary specular highlight */}
-                        <ellipse cx="15" cy="22" rx="5" ry="7" fill="white" opacity="0.45" transform="rotate(-15, 15, 22)" />
-                        {/* Small secondary highlight */}
-                        <circle cx="24" cy="34" r="2" fill="white" opacity="0.2" />
-                      </svg>
-                    </div>
-                    <p className="text-xs font-medium text-gray-900 dark:text-white">
-                      {shadow.name}
-                    </p>
-                    <p className="text-[10px] text-gray-500 dark:text-gray-400">
-                      {shadow.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-          {/* Typography column */}
-          <div id="typography" className="xl:w-1/2 scroll-mt-24 rounded-lg border border-border bg-background p-4">
-            <h3 className="font-semibold text-brand-dynamic dark:text-white mb-4">
-              {content.designSystem.sections.typography}
-            </h3>
-            <div className="space-y-4">
-              {designTokens.typography.map((type) => (
-                <div
-                  key={type.name}
-                  className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6 border-b border-border pb-4"
-                >
-                  <div className="sm:w-32 flex-shrink-0">
-                    <p className="text-xs text-brand-dynamic dark:text-brand-dynamic">
-                      {type.name}
-                    </p>
-                    <p className="text-xs text-brand-dynamic dark:text-brand-dynamic">
-                      {type.fontSize} / {type.fontWeight}
-                    </p>
-                  </div>
-                  <p
-                    className="text-gray-900 dark:text-white"
-                    style={{
-                      fontSize: type.fontSize,
-                      fontWeight: Number(type.fontWeight),
-                      lineHeight: type.lineHeight,
-                    }}
-                  >
-                    The interface adapts before the user knows what they need
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-          </div>
 
             {/* Reset Confirmation Modal */}
             {showResetModal && (

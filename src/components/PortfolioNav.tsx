@@ -25,14 +25,14 @@ const idToRoute: Record<string, string> = {
 const activeClass = "text-brand-dynamic dark:text-white px-3 py-2 rounded-md";
 const inactiveClass = "text-gray-600 dark:text-gray-300 hover:text-brand-dynamic dark:hover:text-white transition-colors px-3 py-2 rounded-md";
 
-const PortfolioNav = ({ currentPage, hideBorder }: { currentPage?: string; hideBorder?: boolean }) => (
-  <nav aria-label="Site navigation" className={`py-4 sm:py-4 xl:py-4 relative${hideBorder ? "" : " border-b border-border"}`}>
+const PortfolioNav = ({ currentPage }: { currentPage?: string }) => (
+  <nav aria-label="Site navigation" className="py-4 sm:py-4 xl:py-4 relative">
     <div className="w-full px-4 sm:px-6 lg:px-8 relative z-10">
       <div className="grid grid-cols-1 gap-6 sm:gap-8">
         <div className="pt-4 rounded-lg">
           <div className="mb-6 sm:mb-8 flex flex-col lg:flex-row lg:items-center lg:justify-between lg:gap-4">
-            <div className="flex-1">
-              <Link to="/portfolio" className="no-underline flex items-center gap-3">
+            <div>
+              <Link to="/portfolio" className="no-underline inline-flex items-center gap-3">
                 <MelkonianLogo
                   className="w-14 h-14 sm:w-20 sm:h-20 text-brand-dynamic dark:text-white"
                 />

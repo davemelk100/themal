@@ -108,7 +108,7 @@ const MobileTrayMenu: React.FC = () => {
     <>
       {/* Mobile Bottom Navigation */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
-        <div className="flex items-center justify-between max-w-[1000px] mx-auto px-2 py-2">
+        <div className="flex items-center justify-between w-full px-2 py-2">
           {content.navigation.links
             .filter((link) => link.id !== "design-system" && link.id !== "career" && link.id !== "contact")
             .sort((a, b) => {
