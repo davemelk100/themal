@@ -1062,7 +1062,7 @@ export default function DesignSystemPage() {
                       input?.click();
                     } : undefined}
                   >
-                    <div className={`relative w-full h-20 rounded-lg mb-1 border border-border transition-all overflow-hidden ${isEditable ? "group-hover:ring-2 group-hover:ring-gray-400" : ""}`}>
+                    <div className={`relative w-full h-20 rounded-lg mb-1 transition-all overflow-hidden ${isEditable ? "ring-2 ring-brand-dynamic shadow-md group-hover:ring-4 group-hover:shadow-lg border-2 border-white dark:border-gray-900" : "border border-border"}`}>
                       <div
                         className="absolute inset-0"
                         style={{
@@ -1072,10 +1072,13 @@ export default function DesignSystemPage() {
                         }}
                       />
                       {isEditable && (
-                        <div className="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-white/80 dark:bg-black/50 flex items-center justify-center shadow-sm">
-                          <svg className="w-3 h-3 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                          </svg>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="bg-white/90 dark:bg-black/70 text-gray-700 dark:text-gray-200 text-[10px] font-semibold px-2 py-1 rounded-full shadow flex items-center gap-1">
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                            </svg>
+                            Click to edit
+                          </span>
                         </div>
                       )}
                       {isEditable && (
