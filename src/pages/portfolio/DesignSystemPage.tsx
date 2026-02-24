@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, lazy, Suspense } from "react";
-import axe from "axe-core";
+import axe, { type AxeResults } from "axe-core";
 import PortfolioLayout from "../../components/PortfolioLayout";
 import SectionHeader from "../../components/SectionHeader";
 import { content } from "../../content";
@@ -289,6 +289,7 @@ export default function DesignSystemPage() {
   const [showResetModal, setShowResetModal] = useState(false);
   const [auditStatus, setAuditStatus] = useState<'idle' | 'running' | 'passed' | 'failed'>('idle');
   const [auditViolations, setAuditViolations] = useState<{ id: string; description: string; nodes: number }[]>([]);
+  const [auditResults, setAuditResults] = useState<AxeResults | null>(null);
   const [generatedCode, setGeneratedCode] = useState<string | null>(null);
   const [codeCopied, setCodeCopied] = useState(false);
 
@@ -556,49 +557,130 @@ export default function DesignSystemPage() {
     setGeneratedCode(css + tw);
   };
 
+  const runAudit = () => axe.run(document, { runOnly: ['wcag2a', 'wcag2aa'] });
+
+  const setAuditFromResults = (results: AxeResults) => {
+    setAuditResults(results);
+    if (results.violations.length === 0) {
+      setAuditStatus('passed');
+      setAuditViolations([]);
+    } else {
+      setAuditStatus('failed');
+      setAuditViolations(results.violations.map((v) => ({
+        id: v.id,
+        description: v.description,
+        nodes: v.nodes.length,
+      })));
+    }
+  };
+
   const runAccessibilityAudit = async () => {
     setAuditStatus('running');
     setAuditViolations([]);
     try {
-      const runAudit = () => axe.run(document, { runOnly: ['wcag2a', 'wcag2aa'] });
-      let results = await runAudit();
+      setAuditFromResults(await runAudit());
+    } catch {
+      setAuditStatus('idle');
+    }
+  };
 
-      if (results.violations.length > 0) {
-        // Attempt auto-fix: re-read live CSS vars, run contrast adjustment, apply
-        const style = getComputedStyle(document.documentElement);
-        const liveColors: Record<string, string> = {};
-        EDITABLE_VARS.forEach(({ key }) => {
-          liveColors[key] = style.getPropertyValue(key).trim();
-        });
+  const fixAccessibilityIssues = async () => {
+    setAuditStatus('running');
+    try {
+      // 1. Fix contrast on our CSS variable pairs
+      const style = getComputedStyle(document.documentElement);
+      const liveColors: Record<string, string> = {};
+      EDITABLE_VARS.forEach(({ key }) => {
+        liveColors[key] = style.getPropertyValue(key).trim();
+      });
 
-        const fixes = autoAdjustContrast(liveColors);
-        if (Object.keys(fixes).length > 0) {
-          const pending = storage.get<Record<string, string>>(PENDING_COLORS_KEY) || {};
-          const updatedColors = { ...liveColors };
-          for (const [fixKey, fixVal] of Object.entries(fixes)) {
-            document.documentElement.style.setProperty(fixKey, fixVal);
-            updatedColors[fixKey] = fixVal;
-            pending[fixKey] = fixVal;
+      const fixes = autoAdjustContrast(liveColors);
+      if (Object.keys(fixes).length > 0) {
+        const pending = storage.get<Record<string, string>>(PENDING_COLORS_KEY) || {};
+        const updatedColors = { ...liveColors };
+        for (const [fixKey, fixVal] of Object.entries(fixes)) {
+          document.documentElement.style.setProperty(fixKey, fixVal);
+          updatedColors[fixKey] = fixVal;
+          pending[fixKey] = fixVal;
+        }
+        storage.set(PENDING_COLORS_KEY, pending);
+        setColors(updatedColors);
+        window.dispatchEvent(new Event("theme-pending-update"));
+      }
+
+      // 2. Fix per-element contrast violations reported by axe
+      if (auditResults) {
+        const contrastViolation = auditResults.violations.find((v) => v.id === 'color-contrast');
+        if (contrastViolation) {
+          for (const node of contrastViolation.nodes) {
+            const el = document.querySelector(node.target[0] as string) as HTMLElement | null;
+            if (!el) continue;
+            const computed = getComputedStyle(el);
+            const fgRgb = computed.color;
+            const bgRgb = computed.backgroundColor;
+            // Parse rgb(r, g, b) values
+            const parseRgb = (rgb: string): [number, number, number] | null => {
+              const m = rgb.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+              if (!m) return null;
+              return [parseInt(m[1]) / 255, parseInt(m[2]) / 255, parseInt(m[3]) / 255];
+            };
+            const fg = parseRgb(fgRgb);
+            const bg = parseRgb(bgRgb);
+            if (!fg || !bg) continue;
+            const lum = (r: number, g: number, b: number) => {
+              const toL = (c: number) => (c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
+              return 0.2126 * toL(r) + 0.7152 * toL(g) + 0.0722 * toL(b);
+            };
+            const l1 = lum(...fg);
+            const l2 = lum(...bg);
+            const ratio = (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+            if (ratio >= 4.5) continue;
+            // Adjust foreground lightness via HSL
+            const rgbToHsl = (r: number, g: number, b: number) => {
+              const max = Math.max(r, g, b), min = Math.min(r, g, b);
+              const li = (max + min) / 2;
+              if (max === min) return { h: 0, s: 0, l: li };
+              const d = max - min;
+              const s = li > 0.5 ? d / (2 - max - min) : d / (max + min);
+              let h = 0;
+              if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+              else if (max === g) h = ((b - r) / d + 2) / 6;
+              else h = ((r - g) / d + 4) / 6;
+              return { h, s, l: li };
+            };
+            const hslToRgbStr = (h: number, s: number, l: number) => {
+              const a = s * Math.min(l, 1 - l);
+              const f = (n: number) => {
+                const k = (n + h * 12) % 12;
+                return l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+              };
+              return `rgb(${Math.round(f(0) * 255)}, ${Math.round(f(8) * 255)}, ${Math.round(f(4) * 255)})`;
+            };
+            const fgHsl = rgbToHsl(...fg);
+            const bgLum = l2;
+            const dir = bgLum > 0.5 ? -0.03 : 0.03;
+            for (let i = 0; i < 40; i++) {
+              fgHsl.l = Math.max(0, Math.min(1, fgHsl.l + dir));
+              const newFg = [0, 0, 0] as [number, number, number];
+              const a = fgHsl.s * Math.min(fgHsl.l, 1 - fgHsl.l);
+              for (let ci = 0; ci < 3; ci++) {
+                const n = [0, 8, 4][ci];
+                const k = (n + fgHsl.h * 12) % 12;
+                newFg[ci] = fgHsl.l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+              }
+              const newL1 = lum(...newFg);
+              const newRatio = (Math.max(newL1, bgLum) + 0.05) / (Math.min(newL1, bgLum) + 0.05);
+              if (newRatio >= 4.5) {
+                el.style.color = hslToRgbStr(fgHsl.h, fgHsl.s, fgHsl.l);
+                break;
+              }
+            }
           }
-          storage.set(PENDING_COLORS_KEY, pending);
-          setColors(updatedColors);
-          window.dispatchEvent(new Event("theme-pending-update"));
-
-          // Re-audit after fix
-          results = await runAudit();
         }
       }
 
-      if (results.violations.length === 0) {
-        setAuditStatus('passed');
-      } else {
-        setAuditStatus('failed');
-        setAuditViolations(results.violations.map((v) => ({
-          id: v.id,
-          description: v.description,
-          nodes: v.nodes.length,
-        })));
-      }
+      // 3. Re-audit after all fixes
+      setAuditFromResults(await runAudit());
     } catch {
       setAuditStatus('idle');
     }
@@ -656,62 +738,72 @@ export default function DesignSystemPage() {
     readCurrentColors();
     setAuditStatus('idle');
     setAuditViolations([]);
+    setAuditResults(null);
     setGeneratedCode(null);
     window.dispatchEvent(new Event("theme-pending-update"));
   };
 
   return (
     <PortfolioLayout currentPage="design-system">
-      <section className="py-2 sm:py-3 lg:py-4 xl:py-6 relative">
+      <section className="pt-0 pb-2 sm:pb-3 lg:pb-4 xl:pb-6 relative">
         <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row lg:items-start gap-4 mb-4">
-            <div className="lg:w-[20%]">
-              <SectionHeader
-                title={content.designSystem.title}
-                subtitle={content.designSystem.subtitle}
-                className=""
-              />
-              <div className="flex flex-col gap-2 mt-3">
-                <button
-                  onClick={() => setShowResetModal(true)}
-                  className="px-4 py-2 text-xs font-medium rounded-lg border border-border bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors w-full"
-                >
-                  Reset to Defaults
-                </button>
-                {hasPendingChanges && (
-                  <button
-                    onClick={() => generateCode()}
-                    className="px-4 py-2 text-xs font-medium rounded-lg border border-border bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors w-full"
-                  >
-                    Generate CSS?
-                  </button>
-                )}
-              </div>
-              <div aria-live="assertive" aria-atomic="true">
+          {/* Title row with buttons and WCAG indicator */}
+          <div className="flex flex-wrap items-center gap-3 mb-4">
+            <SectionHeader
+              title={content.designSystem.title}
+              subtitle={content.designSystem.subtitle}
+              className=""
+            />
+            <div className="flex items-center gap-2 ml-auto">
+              <div aria-live="assertive" aria-atomic="true" className="flex items-center">
                 {auditStatus === 'running' && (
-                  <span className="mt-2 flex w-full items-center justify-center gap-1 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 px-4 py-2 text-xs font-medium text-gray-600 dark:text-gray-300">
+                  <span className="flex items-center gap-1 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 px-4 py-2 text-xs font-medium text-gray-600 dark:text-gray-300">
                     Running audit&hellip;
                   </span>
                 )}
                 {auditStatus === 'passed' && (
-                  <span className="mt-2 flex w-full items-center justify-center gap-1 rounded-lg border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30 px-4 py-2 text-xs font-medium text-green-700 dark:text-green-300">
+                  <span className="flex items-center gap-1 rounded-lg border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30 px-4 py-2 text-xs font-medium text-green-700 dark:text-green-300">
                     <span className="text-green-600 dark:text-green-400">&#10003;</span> Passed WCAG AA
                   </span>
                 )}
                 {auditStatus === 'failed' && (
-                  <div className="mt-2 w-full rounded-lg border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/30 px-4 py-2">
+                  <div className="rounded-lg border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/30 px-4 py-2">
                     <p className="text-xs font-medium text-red-700 dark:text-red-300 mb-1">
                       &#10007; {auditViolations.length} WCAG violation{auditViolations.length !== 1 ? 's' : ''} found
                     </p>
-                    <ul className="text-[10px] text-red-600 dark:text-red-400 space-y-0.5">
+                    <ul className="text-[10px] text-red-600 dark:text-red-400 space-y-0.5 mb-2">
                       {auditViolations.map((v) => (
                         <li key={v.id}>{v.description} ({v.nodes} element{v.nodes !== 1 ? 's' : ''})</li>
                       ))}
                     </ul>
+                    <button
+                      onClick={() => fixAccessibilityIssues()}
+                      className="px-3 py-1.5 text-[10px] font-medium rounded-md bg-red-600 text-white hover:bg-red-700 transition-colors"
+                    >
+                      Fix Issues
+                    </button>
                   </div>
                 )}
               </div>
-              <ul className="mt-4 text-xs text-muted-foreground space-y-0.5 list-disc list-inside leading-relaxed">
+              <button
+                onClick={() => setShowResetModal(true)}
+                className="px-4 py-2 text-xs font-medium rounded-lg border border-border bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              >
+                Reset to Defaults
+              </button>
+              {hasPendingChanges && (
+                <button
+                  onClick={() => generateCode()}
+                  className="px-4 py-2 text-xs font-medium rounded-lg border border-border bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                >
+                  Generate CSS?
+                </button>
+              )}
+            </div>
+          </div>
+          <div className="flex flex-col lg:flex-row lg:items-start gap-4 mb-4">
+            <div className="lg:w-[20%]">
+              <ul className="text-xs text-muted-foreground space-y-0.5 list-disc list-inside leading-relaxed">
                 <li>Driven by CSS custom properties. Pick a <strong className="text-foreground">Brand</strong> color and the entire palette auto-adjusts.</li>
                 <li>Secondary, primary, accent, muted, border, and foreground tokens all shift to harmonize with your selection.</li>
                 <li>Every color pair is checked against WCAG AA contrast requirements (4.5:1 minimum) in real time.</li>
@@ -908,6 +1000,33 @@ export default function DesignSystemPage() {
                   <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))" }}>
                     Warning
                   </button>
+                </div>
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Badges</p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium" style={{ backgroundColor: "hsl(var(--brand))", color: "white" }}>
+                    Brand
+                  </span>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium" style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}>
+                    Secondary
+                  </span>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium" style={{ backgroundColor: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" }}>
+                    Muted
+                  </span>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium" style={{ backgroundColor: "hsl(var(--accent))", color: "hsl(var(--accent-foreground))" }}>
+                    Accent
+                  </span>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>
+                    Destructive
+                  </span>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium" style={{ backgroundColor: "hsl(var(--success))", color: "hsl(var(--success-foreground))" }}>
+                    Success
+                  </span>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))" }}>
+                    Warning
+                  </span>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium border border-border text-muted-foreground">
+                    Outlined
+                  </span>
                 </div>
               </div>
 
