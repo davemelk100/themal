@@ -288,6 +288,10 @@ export default function DesignSystemPage() {
   const [colors, setColors] = useState<Record<string, string>>({});
   const [showResetModal, setShowResetModal] = useState(false);
   const [autoAdjustNotice, setAutoAdjustNotice] = useState<string | null>(null);
+  const [generatedCode, setGeneratedCode] = useState<string | null>(null);
+  const [codeCopied, setCodeCopied] = useState(false);
+
+  const hasPendingChanges = !!storage.get<Record<string, string>>(PENDING_COLORS_KEY);
 
   const readCurrentColors = useCallback(() => {
     const style = getComputedStyle(document.documentElement);
@@ -526,6 +530,32 @@ export default function DesignSystemPage() {
     return adjustments;
   };
 
+  const generateCode = () => {
+    // CSS custom properties
+    let css = ":root {\n";
+    EDITABLE_VARS.forEach(({ key }) => {
+      const val = colors[key];
+      if (val) css += `  ${key}: ${val};\n`;
+    });
+    css += "}\n";
+
+    // Tailwind config colors snippet
+    let tw = "\n// tailwind.config.ts → theme.extend.colors\ncolors: {\n";
+    tw += `  brand: "hsl(var(--brand))",\n`;
+    tw += `  background: "hsl(var(--background))",\n`;
+    tw += `  foreground: "hsl(var(--foreground))",\n`;
+    tw += `  primary: {\n    DEFAULT: "hsl(var(--primary))",\n    foreground: "hsl(var(--primary-foreground))",\n  },\n`;
+    tw += `  secondary: {\n    DEFAULT: "hsl(var(--secondary))",\n    foreground: "hsl(var(--secondary-foreground))",\n  },\n`;
+    tw += `  muted: {\n    DEFAULT: "hsl(var(--muted))",\n    foreground: "hsl(var(--muted-foreground))",\n  },\n`;
+    tw += `  accent: {\n    DEFAULT: "hsl(var(--accent))",\n    foreground: "hsl(var(--accent-foreground))",\n  },\n`;
+    tw += `  destructive: {\n    DEFAULT: "hsl(var(--destructive))",\n    foreground: "hsl(var(--destructive-foreground))",\n  },\n`;
+    tw += `  border: "hsl(var(--border))",\n`;
+    tw += `  ring: "hsl(var(--ring))",\n`;
+    tw += "}";
+
+    setGeneratedCode(css + tw);
+  };
+
   const handleColorChange = (key: string, hex: string) => {
     const hsl = hexToHslString(hex);
 
@@ -589,6 +619,7 @@ export default function DesignSystemPage() {
     storage.remove(COLOR_HISTORY_KEY);
     readCurrentColors();
     setAutoAdjustNotice(null);
+    setGeneratedCode(null);
     window.dispatchEvent(new Event("theme-pending-update"));
   };
 
@@ -636,6 +667,36 @@ export default function DesignSystemPage() {
           </div>
           {/* Colors + Preview side by side */}
           <div id="colors" className="mb-10 scroll-mt-24">
+
+            {/* Generated code output — above hero swatches */}
+            {generatedCode && (
+              <div className="mb-4 rounded-lg border border-border bg-gray-50 dark:bg-gray-900">
+                <div className="flex items-center justify-between px-3 py-1.5 border-b border-border">
+                  <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">Generated Theme</span>
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(generatedCode);
+                        setCodeCopied(true);
+                        setTimeout(() => setCodeCopied(false), 2000);
+                      }}
+                      className="px-2 py-0.5 text-[10px] font-medium rounded border border-border bg-white dark:bg-gray-800 text-muted-foreground hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    >
+                      {codeCopied ? "Copied!" : "Copy"}
+                    </button>
+                    <button
+                      onClick={() => setGeneratedCode(null)}
+                      className="px-2 py-0.5 text-[10px] font-medium rounded border border-border bg-white dark:bg-gray-800 text-muted-foreground hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+                <pre className="p-3 overflow-x-auto max-h-64 text-xs leading-relaxed text-foreground font-mono">
+                  <code>{generatedCode}</code>
+                </pre>
+              </div>
+            )}
 
             {/* Hero colors row: Brand, Secondary, Tertiary */}
             {(() => {
@@ -699,12 +760,25 @@ export default function DesignSystemPage() {
                         />
                       )}
                     </div>
-                    <p className="text-xs font-medium text-gray-900 dark:text-white truncate">
-                      {displayLabel}
-                    </p>
-                    <p className="text-[10px] text-gray-500 dark:text-gray-400 truncate">
-                      {colors[key] ? hslStringToHex(colors[key]) : key}
-                    </p>
+                    <div className="flex items-center justify-between">
+                      <div className="min-w-0">
+                        <p className="text-xs font-medium text-gray-900 dark:text-white truncate">
+                          {displayLabel}
+                        </p>
+                        <p className="text-[10px] text-gray-500 dark:text-gray-400 truncate">
+                          {colors[key] ? hslStringToHex(colors[key]) : key}
+                        </p>
+                      </div>
+                      {isEditable && hasPendingChanges && (
+                        <button
+                          onClick={(e) => { e.stopPropagation(); generateCode(); }}
+                          className="shrink-0 ml-2 px-3 py-1 text-[10px] font-medium rounded-full text-white hover:opacity-90 transition-colors"
+                          style={{ backgroundColor: "hsl(var(--brand))" }}
+                        >
+                          Save Changes?
+                        </button>
+                      )}
+                    </div>
                   </div>
                 );
               };
