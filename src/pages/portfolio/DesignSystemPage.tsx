@@ -1008,8 +1008,21 @@ export default function DesignSystemPage() {
                       : 'border-border bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-700'
                 } disabled:opacity-50`}
               >
-                {prStatus === 'creating' ? 'Preparing PR...' : prStatus === 'error' ? 'Retry PR' : prStatus === 'created' ? 'Open PR on GitHub' : 'Open PR'}
+                {prStatus === 'creating' ? 'Preparing PR...' : prStatus === 'error' ? 'Retry PR' : 'Open PR'}
               </button>
+              {prStatus === 'created' && prUrl && (
+                <span className="px-4 py-2 text-xs font-medium rounded-lg border border-green-400 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 inline-flex items-center gap-2">
+                  PR Created!
+                  <a
+                    href={prUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline font-semibold hover:text-green-900 dark:hover:text-green-100 transition-colors"
+                  >
+                    View PR
+                  </a>
+                </span>
+              )}
             </div>
 
             {/* Generated code output — above hero swatches */}
