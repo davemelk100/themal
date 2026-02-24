@@ -5,7 +5,6 @@ import IconWrapper from "../../components/IconWrapper";
 import { content } from "../../content";
 import designTokens from "../../designTokens.json";
 import storage from "../../utils/storage";
-import { getCardImageProps } from "../../utils/imageOptimizer";
 
 // Lazy-load icons used across the portfolio site
 const LazyLinkedInLogoIcon = lazy(() =>
@@ -1077,11 +1076,11 @@ export default function DesignSystemPage() {
                     rel="noopener noreferrer"
                     className="group relative rounded-lg bg-white/20 backdrop-blur-lg flex flex-col shadow-xl hover:shadow-2xl transition-shadow cursor-pointer"
                   >
-                    <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-transparent">
+                    <div className="relative w-full overflow-hidden bg-transparent">
                       <img
-                        {...getCardImageProps(project.image)}
+                        src={project.image}
                         alt={project.alt || project.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        className="w-full h-auto group-hover:scale-105 transition-transform duration-300"
                         loading="lazy"
                         decoding="async"
                       />
