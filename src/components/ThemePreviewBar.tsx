@@ -84,6 +84,10 @@ const VAR_TO_CLASS_PATTERNS: Record<string, string[]> = {
   "--accent-foreground": ["text-accent-foreground"],
   "--destructive": ["bg-destructive", "text-destructive", "border-destructive"],
   "--destructive-foreground": ["text-destructive-foreground"],
+  "--success": ["bg-success", "text-success", "border-success"],
+  "--success-foreground": ["text-success-foreground"],
+  "--warning": ["bg-warning", "text-warning", "border-warning"],
+  "--warning-foreground": ["text-warning-foreground"],
   "--background": ["bg-background"],
   "--foreground": ["text-foreground"],
   "--border": ["border-border"],
@@ -92,10 +96,6 @@ const VAR_TO_CLASS_PATTERNS: Record<string, string[]> = {
 
 function highlightElements(varName: string) {
   const patterns = VAR_TO_CLASS_PATTERNS[varName];
-  if (!patterns) return;
-
-  // Build a selector that matches elements containing any of these class substrings
-  const selector = patterns.map((p) => `[class*='${p}']`).join(", ");
 
   // Inject highlight animation styles if not already present
   if (!document.getElementById("theme-highlight-styles")) {
@@ -109,7 +109,7 @@ function highlightElements(varName: string) {
       .theme-highlight {
         outline: 3px solid rgba(234, 179, 8, 0.9);
         outline-offset: 3px;
-        animation: theme-highlight-pulse 1.2s ease-in-out 3;
+        animation: theme-highlight-pulse 1.2s ease-in-out 1;
         position: relative;
         z-index: 10;
       }
@@ -118,25 +118,29 @@ function highlightElements(varName: string) {
   }
 
   try {
+    // Match elements by class patterns
+    const classSelector = patterns ? patterns.map((p) => `[class*='${p}']`).join(", ") : "";
+    // Also match elements using inline styles referencing the CSS variable
+    const inlineStyleSelector = `[style*='var(${varName})']`;
+    const selector = [classSelector, inlineStyleSelector].filter(Boolean).join(", ");
+
     const elements = document.querySelectorAll(selector);
     if (elements.length === 0) return;
 
-    // Scroll the first visible element into view
+    // Find the first visible element only
     const firstVisible = Array.from(elements).find((el) => {
       const rect = el.getBoundingClientRect();
       return rect.width > 0 && rect.height > 0;
     });
-    if (firstVisible) {
-      firstVisible.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
+    if (!firstVisible) return;
 
-    // Add highlight class to all matching elements
-    elements.forEach((el) => el.classList.add("theme-highlight"));
+    firstVisible.scrollIntoView({ behavior: "smooth", block: "center" });
+    firstVisible.classList.add("theme-highlight");
 
-    // Remove highlights after animation completes (~3.6s for 3 pulses)
+    // Remove highlight after one pulse (~1.2s)
     setTimeout(() => {
-      elements.forEach((el) => el.classList.remove("theme-highlight"));
-    }, 4000);
+      firstVisible.classList.remove("theme-highlight");
+    }, 1500);
   } catch {
     // Invalid selector, skip
   }

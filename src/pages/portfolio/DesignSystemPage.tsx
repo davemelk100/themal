@@ -17,7 +17,6 @@ const CONTRAST_PAIRS: [string, string][] = [
   ["--muted-foreground", "--muted"],
   ["--accent-foreground", "--accent"],
   ["--destructive-foreground", "--destructive"],
-  ["--success-foreground", "--success"],
   ["--warning-foreground", "--warning"],
 ];
 
@@ -128,6 +127,7 @@ export default function DesignSystemPage() {
   const unlocked = true;
   const [showResetModal, setShowResetModal] = useState(false);
   const [autoAdjustNotice, setAutoAdjustNotice] = useState<string | null>(null);
+  const [showInfoPopover, setShowInfoPopover] = useState(false);
 
   const readCurrentColors = useCallback(() => {
     const style = getComputedStyle(document.documentElement);
@@ -225,7 +225,6 @@ export default function DesignSystemPage() {
       shiftClamped("--destructive", 340, 20);        // red family
       shiftClamped("--destructive-foreground", 0, 360);
       shiftClamped("--success", 100, 170);            // green family
-      shiftClamped("--success-foreground", 0, 360);
       shiftClamped("--warning", 30, 60);              // yellow family
       shiftClamped("--warning-foreground", 0, 360);
     };
@@ -435,55 +434,59 @@ export default function DesignSystemPage() {
     <PortfolioLayout currentPage="design-system">
       <section className="py-2 sm:py-3 lg:py-4 xl:py-6 relative">
         <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row lg:items-stretch gap-3 mb-4">
-            <div className="flex items-center justify-between lg:w-[20%]">
-              <SectionHeader
-                title={content.designSystem.title}
-                subtitle={content.designSystem.subtitle}
-                className=""
-              />
-              <div className="lg:hidden">
-                {unlocked && (
-                  <button
-                    onClick={() => setShowResetModal(true)}
-                    className="px-2 py-1 text-[10px] font-medium rounded bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-                  >
-                    Reset
-                  </button>
-                )}
-              </div>
-            </div>
-            <div className="lg:w-[35%] rounded border border-border bg-gray-50 dark:bg-gray-800/50 px-2.5 py-1.5 flex flex-col justify-center">
-              <p className="text-[9px] font-medium text-gray-900 dark:text-white mb-0.5">How to use</p>
-              <ol className="text-[8px] text-gray-500 dark:text-gray-400 space-y-0 list-decimal list-inside leading-tight">
-                <li>Click <strong className="text-gray-700 dark:text-gray-200">Brand</strong> or <strong className="text-gray-700 dark:text-gray-200">Secondary</strong> swatch to pick a color</li>
-                <li>Palette auto-adapts for WCAG AA contrast (4.5:1)</li>
-                <li><strong className="text-gray-700 dark:text-gray-200">Save</strong>, <strong className="text-gray-700 dark:text-gray-200">Discard</strong>, or <strong className="text-gray-700 dark:text-gray-200">Undo</strong> via the preview bar</li>
-              </ol>
-            </div>
-            <div className="lg:w-[35%] rounded border border-blue-300 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/20 px-2.5 py-1.5 flex items-center justify-center">
-              <p className="text-[8px] text-blue-800 dark:text-blue-200 leading-tight">
-                {autoAdjustNotice || "Palette adapted to new hue. All color pairs pass WCAG AA (4.5:1). Auto-adjusted primary-foreground for contrast."}
-              </p>
-            </div>
-            <div className="hidden lg:flex lg:w-[10%] items-center justify-end">
-              {unlocked && (
-                <button
-                  onClick={() => setShowResetModal(true)}
-                  className="px-2 py-1 text-[10px] font-medium rounded bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-                >
-                  Reset
-                </button>
-              )}
-            </div>
+          <div className="flex items-center justify-between mb-2">
+            <SectionHeader
+              title={content.designSystem.title}
+              subtitle={content.designSystem.subtitle}
+              className=""
+            />
+            {unlocked && (
+              <button
+                onClick={() => setShowResetModal(true)}
+                className="px-2 py-1 text-[10px] font-medium rounded bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+              >
+                Reset
+              </button>
+            )}
           </div>
-
           {/* Colors + Preview side by side */}
           <div id="colors" className="mb-10 scroll-mt-24">
 
             <div className="flex flex-col xl:flex-row gap-6">
               {/* Color swatches */}
               <div className="xl:w-[40%] min-w-0 rounded-lg border border-border bg-background p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                    {content.designSystem.sections.colors}
+                  </p>
+                  <div className="flex items-center gap-1.5">
+                    {autoAdjustNotice && (
+                      <span className="flex items-center gap-1 rounded-full border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30 px-2 py-0.5 text-[10px] font-medium text-green-700 dark:text-green-300">
+                        <span className="text-green-600 dark:text-green-400">&#10003;</span> Passed WCAG AA
+                      </span>
+                    )}
+                    <div className="relative">
+                    <button
+                      onClick={() => setShowInfoPopover(!showInfoPopover)}
+                      className="flex items-center gap-1 rounded-full border border-border bg-gray-100 dark:bg-gray-800 px-2 py-0.5 text-[10px] font-medium text-muted-foreground hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                      aria-label="How to use"
+                    >
+                      <span className="w-4 h-4 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center text-[9px] font-semibold">i</span>
+                      How to use
+                    </button>
+                    {showInfoPopover && (
+                      <div className="absolute right-0 top-7 z-50 w-64 rounded-lg border border-border bg-white dark:bg-gray-900 shadow-lg p-3">
+                        <p className="text-xs font-medium text-gray-900 dark:text-white mb-1">How to use</p>
+                        <ol className="text-[11px] text-gray-500 dark:text-gray-400 space-y-1 list-decimal list-inside leading-snug">
+                          <li>Click <strong className="text-gray-700 dark:text-gray-200">Brand</strong> or <strong className="text-gray-700 dark:text-gray-200">Secondary</strong> swatch to pick a color</li>
+                          <li>Palette auto-adapts for WCAG AA contrast (4.5:1)</li>
+                          <li><strong className="text-gray-700 dark:text-gray-200">Save</strong>, <strong className="text-gray-700 dark:text-gray-200">Discard</strong>, or <strong className="text-gray-700 dark:text-gray-200">Undo</strong> via the preview bar</li>
+                        </ol>
+                      </div>
+                    )}
+                  </div>
+                  </div>
+                </div>
                 <div className="grid grid-cols-3 sm:grid-cols-4 xl:grid-cols-3 gap-2">
                   {EDITABLE_VARS.map(({ key, label }) => {
                     const isEditable = key === "--brand" || key === "--secondary";

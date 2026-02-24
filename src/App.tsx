@@ -67,7 +67,7 @@ function App() {
       applyStoredThemeColors();
     } else {
       // Remove custom theme colors on non-portfolio pages
-      const vars = ["--brand", "--background", "--foreground", "--primary", "--primary-foreground", "--secondary", "--secondary-foreground", "--muted", "--muted-foreground", "--accent", "--accent-foreground", "--destructive", "--destructive-foreground", "--border", "--ring"];
+      const vars = ["--brand", "--background", "--foreground", "--primary", "--primary-foreground", "--secondary", "--secondary-foreground", "--muted", "--muted-foreground", "--accent", "--accent-foreground", "--destructive", "--destructive-foreground", "--success", "--success-foreground", "--warning", "--warning-foreground", "--border", "--ring"];
       vars.forEach((key) => document.documentElement.style.removeProperty(key));
     }
   }, [isThemePath]);

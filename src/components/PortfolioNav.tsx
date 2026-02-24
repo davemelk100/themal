@@ -28,7 +28,7 @@ const activeClass = "text-brand-dynamic dark:text-white px-3 py-2 rounded-md bg-
 const inactiveClass = "text-gray-600 dark:text-gray-300 hover:text-brand-dynamic dark:hover:text-white transition-colors px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800";
 
 const PortfolioNav = ({ currentPage, hideBorder }: { currentPage?: string; hideBorder?: boolean }) => (
-  <section className={`py-4 sm:py-4 xl:py-4 relative bg-brand-dynamic/5 dark:bg-brand-dynamic/10${hideBorder ? "" : " border-b border-border"}`}>
+  <section className={`py-4 sm:py-4 xl:py-4 relative${hideBorder ? "" : " border-b border-border"}`}>
     <div className="w-full px-4 sm:px-6 lg:px-8 relative z-10">
       <div className="grid grid-cols-1 gap-6 sm:gap-8">
         <div className="pt-4 rounded-lg">
@@ -44,7 +44,7 @@ const PortfolioNav = ({ currentPage, hideBorder }: { currentPage?: string; hideB
               </Link>
             </div>
 
-            <div className="hidden lg:flex flex-wrap items-center gap-2 sm:gap-3 mt-2 lg:mt-0">
+            <div className="hidden lg:flex flex-wrap items-center gap-2 sm:gap-3 mt-2 lg:mt-0 rounded-lg px-3 py-2" style={{ background: "linear-gradient(135deg, hsl(var(--brand) / 0.08), hsl(var(--secondary) / 0.12), hsl(var(--brand) / 0.05))" }}>
               {content.navigation.links
                 .filter((link) => link.id !== "career" && link.id !== "contact")
                 .sort((a, b) => {
