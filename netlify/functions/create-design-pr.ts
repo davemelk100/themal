@@ -9,6 +9,10 @@ const REPO = "davemelk100/dm-2025";
 const FILE_PATH = "src/globals.css";
 const API = "https://api.github.com";
 
+// In-memory rate limiting: max 1 request per IP per 60 seconds
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const rateMap = new Map<string, number>();
+
 async function ghFetch(path: string, token: string, options: RequestInit = {}) {
   const res = await fetch(`${API}${path}`, {
     ...options,
@@ -69,6 +73,25 @@ export const handler = async (event: any) => {
       headers,
       body: JSON.stringify({ error: "Method not allowed" }),
     };
+  }
+
+  // Rate limit by IP
+  const ip = event.headers["x-forwarded-for"] || event.headers["client-ip"] || "unknown";
+  const now = Date.now();
+  const lastRequest = rateMap.get(ip);
+  if (lastRequest && now - lastRequest < RATE_LIMIT_WINDOW_MS) {
+    const retryAfter = Math.ceil((RATE_LIMIT_WINDOW_MS - (now - lastRequest)) / 1000);
+    return {
+      statusCode: 429,
+      headers: { ...headers, "Retry-After": String(retryAfter) },
+      body: JSON.stringify({ error: `Rate limited. Try again in ${retryAfter} seconds.` }),
+    };
+  }
+  rateMap.set(ip, now);
+
+  // Clean up old entries
+  for (const [key, ts] of rateMap) {
+    if (now - ts > RATE_LIMIT_WINDOW_MS) rateMap.delete(key);
   }
 
   const token = process.env.GITHUB_TOKEN;

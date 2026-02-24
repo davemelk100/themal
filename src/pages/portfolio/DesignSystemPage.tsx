@@ -290,8 +290,9 @@ export default function DesignSystemPage() {
   const [auditViolations, setAuditViolations] = useState<{ selector: string; text: string }[]>([]);
   const [generatedCode, setGeneratedCode] = useState<string | null>(null);
   const [codeCopied, setCodeCopied] = useState(false);
-  const [prStatus, setPrStatus] = useState<'idle' | 'creating' | 'created' | 'error'>('idle');
+  const [prStatus, setPrStatus] = useState<'idle' | 'creating' | 'created' | 'error' | 'rate-limited'>('idle');
   const [prUrl, setPrUrl] = useState<string | null>(null);
+  const [prError, setPrError] = useState<string | null>(null);
 
   const readCurrentColors = useCallback(() => {
     const style = getComputedStyle(document.documentElement);
@@ -887,6 +888,7 @@ export default function DesignSystemPage() {
     setGeneratedCode(null);
     setPrStatus('idle');
     setPrUrl(null);
+    setPrError(null);
     window.dispatchEvent(new Event("theme-pending-update"));
   };
 
@@ -992,24 +994,37 @@ export default function DesignSystemPage() {
                       body: JSON.stringify({ css }),
                     });
                     const data = await res.json();
-                    if (!res.ok) throw new Error(data.error || 'Failed to create PR');
+                    if (!res.ok) {
+                      if (res.status === 429) {
+                        setPrStatus('rate-limited');
+                        setPrError(data.error);
+                        return;
+                      }
+                      throw new Error(data.error || 'Failed to create PR');
+                    }
                     setPrStatus('created');
                     setPrUrl(data.url);
+                    setPrError(null);
                     window.open(data.url, '_blank');
                   } catch {
                     setPrStatus('error');
                   }
                 }}
                 className={`px-4 py-2 text-xs font-medium rounded-lg border transition-colors ${
-                  prStatus === 'error'
+                  prStatus === 'error' || prStatus === 'rate-limited'
                     ? 'border-red-400 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-900/50'
                     : prStatus === 'created'
                       ? 'border-green-400 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 hover:bg-green-100 dark:hover:bg-green-900/50'
                       : 'border-border bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-700'
                 } disabled:opacity-50`}
               >
-                {prStatus === 'creating' ? 'Preparing PR...' : prStatus === 'error' ? 'Retry PR' : 'Open PR'}
+                {prStatus === 'creating' ? 'Preparing PR...' : prStatus === 'error' ? 'Retry PR' : prStatus === 'rate-limited' ? 'Retry PR' : 'Open PR'}
               </button>
+              {prStatus === 'rate-limited' && prError && (
+                <span className="px-4 py-2 text-xs font-medium rounded-lg border border-yellow-400 bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300">
+                  {prError}
+                </span>
+              )}
               {prStatus === 'created' && prUrl && (
                 <span className="px-4 py-2 text-xs font-medium rounded-lg border border-green-400 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 inline-flex items-center gap-2">
                   PR Created!
