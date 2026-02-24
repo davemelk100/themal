@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback, useRef, lazy, Suspense } from "react";
+import { useState, useEffect, useCallback, lazy, Suspense } from "react";
+import axe from "axe-core";
 import PortfolioLayout from "../../components/PortfolioLayout";
 import SectionHeader from "../../components/SectionHeader";
 import IconWrapper from "../../components/IconWrapper";
@@ -287,11 +288,10 @@ export function applyStoredThemeColors() {
 export default function DesignSystemPage() {
   const [colors, setColors] = useState<Record<string, string>>({});
   const [showResetModal, setShowResetModal] = useState(false);
-  const [autoAdjustNotice, setAutoAdjustNotice] = useState<string | null>(null);
+  const [auditStatus, setAuditStatus] = useState<'idle' | 'running' | 'passed' | 'failed'>('idle');
+  const [auditViolations, setAuditViolations] = useState<string[]>([]);
   const [generatedCode, setGeneratedCode] = useState<string | null>(null);
   const [codeCopied, setCodeCopied] = useState(false);
-
-  const pendingNoticeRef = useRef<string | null>(null);
 
   const hasPendingChanges = !!storage.get<Record<string, string>>(PENDING_COLORS_KEY);
 
@@ -326,7 +326,6 @@ export default function DesignSystemPage() {
     const handlePendingUpdate = () => {
       // Small delay to let inline styles be removed first
       setTimeout(() => readCurrentColors(), 50);
-      setAutoAdjustNotice(null);
     };
     window.addEventListener("theme-pending-update", handlePendingUpdate);
     return () => window.removeEventListener("theme-pending-update", handlePendingUpdate);
@@ -532,7 +531,7 @@ export default function DesignSystemPage() {
     return adjustments;
   };
 
-  const generateCode = () => {
+  const generateCode = async () => {
     // CSS custom properties
     let css = ":root {\n";
     EDITABLE_VARS.forEach(({ key }) => {
@@ -556,6 +555,58 @@ export default function DesignSystemPage() {
     tw += "}";
 
     setGeneratedCode(css + tw);
+
+    // Run axe-core WCAG audit, auto-fix contrast violations, then re-audit
+    setAuditStatus('running');
+    setAuditViolations([]);
+    try {
+      const runAudit = () => axe.run(document, { runOnly: ['wcag2a', 'wcag2aa'] });
+      let results = await runAudit();
+
+      if (results.violations.length > 0) {
+        // Attempt auto-fix: re-read live CSS vars, run contrast adjustment, apply
+        const style = getComputedStyle(document.documentElement);
+        const liveColors: Record<string, string> = {};
+        EDITABLE_VARS.forEach(({ key }) => {
+          liveColors[key] = style.getPropertyValue(key).trim();
+        });
+
+        const fixes = autoAdjustContrast(liveColors);
+        if (Object.keys(fixes).length > 0) {
+          const pending = storage.get<Record<string, string>>(PENDING_COLORS_KEY) || {};
+          const updatedColors = { ...liveColors };
+          for (const [fixKey, fixVal] of Object.entries(fixes)) {
+            document.documentElement.style.setProperty(fixKey, fixVal);
+            updatedColors[fixKey] = fixVal;
+            pending[fixKey] = fixVal;
+          }
+          storage.set(PENDING_COLORS_KEY, pending);
+          setColors(updatedColors);
+          window.dispatchEvent(new Event("theme-pending-update"));
+
+          // Re-generate code with fixed values
+          let fixedCss = ":root {\n";
+          EDITABLE_VARS.forEach(({ key }) => {
+            const val = updatedColors[key];
+            if (val) fixedCss += `  ${key}: ${val};\n`;
+          });
+          fixedCss += "}\n";
+          setGeneratedCode(fixedCss + tw);
+
+          // Re-audit after fix
+          results = await runAudit();
+        }
+      }
+
+      if (results.violations.length === 0) {
+        setAuditStatus('passed');
+      } else {
+        setAuditStatus('failed');
+        setAuditViolations(results.violations.map((v) => v.description));
+      }
+    } catch {
+      setAuditStatus('idle');
+    }
   };
 
   const handleColorChange = (key: string, hex: string) => {
@@ -597,18 +648,6 @@ export default function DesignSystemPage() {
     storage.set(PENDING_COLORS_KEY, pending);
     window.dispatchEvent(new Event("theme-pending-update"));
 
-    // Store palette adaptation notice — only revealed when the color picker closes
-    const adjustedKeys = Object.keys(adjustments);
-    if (key === "--brand" || key === "--secondary" || key === "--accent") {
-      const extras = adjustedKeys.length > 0
-        ? ` Auto-adjusted ${adjustedKeys.map(k => k.replace("--", "")).join(", ")} for contrast.`
-        : "";
-      pendingNoticeRef.current = `Palette adapted to new hue. All color pairs pass WCAG AA (4.5:1).${extras}`;
-    } else if (adjustedKeys.length > 0) {
-      pendingNoticeRef.current = `Auto-adjusted ${adjustedKeys.map(k => k.replace("--", "")).join(", ")} to maintain WCAG AA contrast (4.5:1).`;
-    } else {
-      pendingNoticeRef.current = null;
-    }
   };
 
 
@@ -620,7 +659,8 @@ export default function DesignSystemPage() {
     storage.remove(PENDING_COLORS_KEY);
     storage.remove(COLOR_HISTORY_KEY);
     readCurrentColors();
-    setAutoAdjustNotice(null);
+    setAuditStatus('idle');
+    setAuditViolations([]);
     setGeneratedCode(null);
     window.dispatchEvent(new Event("theme-pending-update"));
   };
@@ -652,9 +692,19 @@ export default function DesignSystemPage() {
                   </button>
                 )}
               </div>
-              {autoAdjustNotice && (
-                <span className="mt-3 flex w-fit items-center gap-1 rounded-full border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30 px-2 py-0.5 text-[10px] font-medium text-green-700 dark:text-green-300">
+              {auditStatus === 'running' && (
+                <span className="mt-2 flex w-full items-center justify-center gap-1 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 px-4 py-2 text-xs font-medium text-gray-600 dark:text-gray-300">
+                  Running audit&hellip;
+                </span>
+              )}
+              {auditStatus === 'passed' && (
+                <span className="mt-2 flex w-full items-center justify-center gap-1 rounded-lg border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30 px-4 py-2 text-xs font-medium text-green-700 dark:text-green-300">
                   <span className="text-green-600 dark:text-green-400">&#10003;</span> Passed WCAG AA
+                </span>
+              )}
+              {auditStatus === 'failed' && (
+                <span className="mt-2 flex w-full items-center justify-center gap-1 rounded-lg border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/30 px-4 py-2 text-xs font-medium text-red-700 dark:text-red-300">
+                  &#10007; {auditViolations.length} WCAG violation{auditViolations.length !== 1 ? 's' : ''}
                 </span>
               )}
             </div>
@@ -738,10 +788,6 @@ export default function DesignSystemPage() {
                           type="color"
                           value={colors[key] ? hslStringToHex(colors[key]) : "#000000"}
                           onChange={(e) => handleColorChange(key, e.target.value)}
-                          onBlur={() => {
-                            setAutoAdjustNotice(pendingNoticeRef.current);
-                            pendingNoticeRef.current = null;
-                          }}
                           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                         />
                       )}
@@ -1033,10 +1079,10 @@ export default function DesignSystemPage() {
                   className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6 border-b border-border pb-4"
                 >
                   <div className="sm:w-32 flex-shrink-0">
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <p className="text-xs text-brand-dynamic dark:text-brand-dynamic">
                       {type.name}
                     </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <p className="text-xs text-brand-dynamic dark:text-brand-dynamic">
                       {type.fontSize} / {type.fontWeight}
                     </p>
                   </div>
