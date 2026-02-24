@@ -42,6 +42,7 @@ backend/.env
 
 # netlify
 .netlify
+deno.lock
 
 # typescript
 *.tsbuildinfo
