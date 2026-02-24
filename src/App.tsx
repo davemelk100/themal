@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { ThemeProvider } from "./context/ThemeContext";
 import { applyStoredThemeColors } from "./pages/portfolio/DesignSystemPage";
-import ThemePreviewBar from "./components/ThemePreviewBar";
+// import ThemePreviewBar from "./components/ThemePreviewBar";
 import { CartProvider, StoreProvider, AuthProvider } from "./store";
 import { ProtectedRoute } from "./store/components/ProtectedRoute";
 import { Toaster } from "@/components/ui/toaster";
@@ -44,7 +44,7 @@ const CaseStudies = lazy(() => import("./pages/CaseStudies"));
 const PortfolioLanding = lazy(() => import("./pages/portfolio/PortfolioLanding"));
 const LabPage = lazy(() => import("./pages/portfolio/LabPage"));
 // const StoriesPage = lazy(() => import("./pages/portfolio/StoriesPage"));
-const DesignPage = lazy(() => import("./pages/portfolio/DesignPage"));
+// const DesignPage = lazy(() => import("./pages/portfolio/DesignPage"));
 const ArticlesPage = lazy(() => import("./pages/portfolio/ArticlesPage"));
 // const CareerPage = lazy(() => import("./pages/portfolio/CareerPage"));
 const ContactPage = lazy(() => import("./pages/portfolio/ContactPage"));
@@ -98,7 +98,13 @@ function App() {
 
   return (
     <div className="min-h-screen text-gray-900 transition-colors duration-300 dark:text-white pb-20 sm:pb-0 flex flex-col relative">
-      <main className="flex-1 relative z-10">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-md focus:bg-white focus:text-gray-900 focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-brand-dynamic dark:focus:bg-gray-900 dark:focus:text-white"
+      >
+        Skip to content
+      </a>
+      <main id="main-content" className="flex-1 relative z-10">
         <Suspense fallback={null}>
           <Routes>
             <Route
@@ -152,7 +158,7 @@ function App() {
             <Route path="/portfolio" element={<PortfolioLanding />} />
             <Route path="/portfolio/lab" element={<LabPage />} />
             {/* <Route path="/portfolio/stories" element={<StoriesPage />} /> */}
-            <Route path="/portfolio/design" element={<DesignPage />} />
+            {/* <Route path="/portfolio/design" element={<DesignPage />} /> */}
             <Route path="/portfolio/articles" element={<ArticlesPage />} />
             {/* <Route path="/portfolio/career" element={<CareerPage />} /> */}
             <Route path="/portfolio/testimonials" element={<TestimonialsPage />} />
@@ -269,7 +275,7 @@ function App() {
             </button>
           )}
       </div>
-      <ThemePreviewBar />
+      {/* <ThemePreviewBar /> */}
       <Toaster />
     </div>
   );

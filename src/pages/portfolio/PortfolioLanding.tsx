@@ -50,7 +50,7 @@ export default function PortfolioLanding() {
               >
                 <IconWrapper
                   Icon={LazyLinkedInLogoIcon}
-                  className="h-5 w-5 text-black"
+                  className="h-5 w-5 text-brand-dynamic"
                 />
               </a>
             }

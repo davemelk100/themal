@@ -1,9 +1,173 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, lazy, Suspense } from "react";
 import PortfolioLayout from "../../components/PortfolioLayout";
 import SectionHeader from "../../components/SectionHeader";
+import IconWrapper from "../../components/IconWrapper";
 import { content } from "../../content";
 import designTokens from "../../designTokens.json";
 import storage from "../../utils/storage";
+import { getCardImageProps } from "../../utils/imageOptimizer";
+
+// Lazy-load icons used across the portfolio site
+const LazyLinkedInLogoIcon = lazy(() =>
+  import("@radix-ui/react-icons").then((mod) => ({ default: mod.LinkedInLogoIcon }))
+);
+const LazyGitHubLogoIcon = lazy(() =>
+  import("@radix-ui/react-icons").then((mod) => ({ default: mod.GitHubLogoIcon }))
+);
+const LazyDribbble = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Dribbble }))
+);
+const LazyHome = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Home }))
+);
+const LazyMail = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Mail }))
+);
+const LazyPalette = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Palette }))
+);
+const LazyBookOpen = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.BookOpen }))
+);
+const LazyFileText = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.FileText }))
+);
+const LazyBriefcase = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Briefcase }))
+);
+const LazyQuote = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Quote }))
+);
+const LazySearch = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Search }))
+);
+const LazyCalendar = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Calendar }))
+);
+const LazySun = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Sun }))
+);
+const LazyMoon = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Moon }))
+);
+const LazyArrowLeft = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.ArrowLeft }))
+);
+const LazyArrowRight = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.ArrowRight }))
+);
+const LazyChevronLeft = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.ChevronLeft }))
+);
+const LazyChevronRight = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.ChevronRight }))
+);
+const LazyChevronDown = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.ChevronDown }))
+);
+const LazyChevronUp = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.ChevronUp }))
+);
+const LazyX = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.X }))
+);
+const LazyCheck = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Check }))
+);
+const LazyExternalLink = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.ExternalLink }))
+);
+const LazyLink2 = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Link2 }))
+);
+const LazyEye = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Eye }))
+);
+const LazyMenu = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Menu }))
+);
+const LazyFlaskConical = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.FlaskConical }))
+);
+const LazyUsers = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Users }))
+);
+const LazyAlertCircle = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.AlertCircle }))
+);
+const LazyLoader2 = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Loader2 }))
+);
+const LazyHeart = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Heart }))
+);
+const LazyZap = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Zap }))
+);
+const LazyGlobe = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Globe }))
+);
+const LazyShield = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Shield }))
+);
+const LazySettings = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Settings }))
+);
+const LazyCode = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Code }))
+);
+const LazyDatabase = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Database }))
+);
+const LazySmartphone = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Smartphone }))
+);
+const LazyLayers = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Layers }))
+);
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const SITE_ICONS: { name: string; icon: React.LazyExoticComponent<any> }[] = [
+  { name: "LinkedIn", icon: LazyLinkedInLogoIcon },
+  { name: "GitHub", icon: LazyGitHubLogoIcon },
+  { name: "Dribbble", icon: LazyDribbble },
+  { name: "Home", icon: LazyHome },
+  { name: "Mail", icon: LazyMail },
+  { name: "Palette", icon: LazyPalette },
+  { name: "BookOpen", icon: LazyBookOpen },
+  { name: "FileText", icon: LazyFileText },
+  { name: "Briefcase", icon: LazyBriefcase },
+  { name: "Quote", icon: LazyQuote },
+  { name: "Search", icon: LazySearch },
+  { name: "Calendar", icon: LazyCalendar },
+  { name: "Sun", icon: LazySun },
+  { name: "Moon", icon: LazyMoon },
+  { name: "Eye", icon: LazyEye },
+  { name: "Heart", icon: LazyHeart },
+  { name: "Menu", icon: LazyMenu },
+  { name: "X", icon: LazyX },
+  { name: "Check", icon: LazyCheck },
+  { name: "ArrowLeft", icon: LazyArrowLeft },
+  { name: "ArrowRight", icon: LazyArrowRight },
+  { name: "ChevronLeft", icon: LazyChevronLeft },
+  { name: "ChevronRight", icon: LazyChevronRight },
+  { name: "ChevronDown", icon: LazyChevronDown },
+  { name: "ChevronUp", icon: LazyChevronUp },
+  { name: "ExternalLink", icon: LazyExternalLink },
+  { name: "Link", icon: LazyLink2 },
+  { name: "FlaskConical", icon: LazyFlaskConical },
+  { name: "Users", icon: LazyUsers },
+  { name: "AlertCircle", icon: LazyAlertCircle },
+  { name: "Loader", icon: LazyLoader2 },
+  { name: "Zap", icon: LazyZap },
+  { name: "Globe", icon: LazyGlobe },
+  { name: "Shield", icon: LazyShield },
+  { name: "Settings", icon: LazySettings },
+  { name: "Code", icon: LazyCode },
+  { name: "Database", icon: LazyDatabase },
+  { name: "Smartphone", icon: LazySmartphone },
+  { name: "Layers", icon: LazyLayers },
+];
 
 const THEME_COLORS_KEY = "ds-theme-colors";
 const PENDING_COLORS_KEY = "ds-pending-colors";
@@ -122,9 +286,10 @@ export function applyStoredThemeColors() {
 }
 
 export default function DesignSystemPage() {
-  const [accordionOpen, setAccordionOpen] = useState(false);
   const [colors, setColors] = useState<Record<string, string>>({});
-  const unlocked = true;
+  // Track which primary swatch is "active" — the other gets locked.
+  // null = both unlocked, "--brand" = brand active (secondary locked), "--secondary" = secondary active (brand locked)
+  const [activePrimary, setActivePrimary] = useState<string | null>(null);
   const [showResetModal, setShowResetModal] = useState(false);
   const [autoAdjustNotice, setAutoAdjustNotice] = useState<string | null>(null);
 
@@ -197,35 +362,30 @@ export default function DesignSystemPage() {
       }
     };
 
-    // Shift a semantic color's hue proportionally but clamp within a hue range
-    const shiftClamped = (varKey: string, minHue: number, maxHue: number) => {
-      const existing = getExisting(varKey);
-      if (!existing) return;
-      // Calculate hue offset from the original brand/secondary hue
-      const origKey = changedKey === "--brand" ? "--brand" : "--secondary";
-      const orig = getExisting(origKey);
-      const offset = orig ? (newHue - orig.h) * 0.15 : 0; // subtle shift (15%)
-      let shifted = existing.h + offset;
-      // Wrap and clamp to the allowed range
-      shifted = ((shifted % 360) + 360) % 360;
-      if (minHue <= maxHue) {
-        shifted = Math.max(minHue, Math.min(maxHue, shifted));
-      } else {
-        // Range wraps around 360 (e.g. red: 340-20)
-        if (shifted < minHue && shifted > maxHue) {
-          shifted = (360 - shifted + minHue < shifted - maxHue) ? minHue : maxHue;
-        }
-      }
-      derived[varKey] = `${shifted.toFixed(1)} ${existing.s.toFixed(1)}% ${existing.l.toFixed(1)}%`;
-    };
+    // Regenerate semantic colors to harmonize with the new brand/secondary palette.
+    // Each semantic color keeps its hue family but adopts saturation/lightness
+    // proportional to the new brand color for a cohesive feel.
+    const deriveSemanticColors = () => {
+      const newSat = parseFloat(parts[1]);
+      const newLight = parseFloat(parts[2]);
 
-    // Shift semantic colors (keep them in their hue family)
-    const shiftSemanticColors = () => {
-      shiftClamped("--destructive", 340, 20);        // red family
-      shiftClamped("--destructive-foreground", 0, 360);
-      shiftClamped("--success", 100, 170);            // green family
-      shiftClamped("--warning", 30, 60);              // yellow family
-      shiftClamped("--warning-foreground", 0, 360);
+      // Destructive (red family): hue 0, saturation follows brand, lightness for readability
+      const destSat = Math.min(100, newSat * 1.1); // slightly more vivid than brand
+      const destLight = Math.max(35, Math.min(55, newLight * 0.85));
+      derived["--destructive"] = `0 ${destSat.toFixed(1)}% ${destLight.toFixed(1)}%`;
+      derived["--destructive-foreground"] = `0 0% ${destLight > 50 ? 10 : 98}%`;
+
+      // Success (green family): hue 142, saturation follows brand
+      const succSat = Math.min(100, newSat * 0.9);
+      const succLight = Math.max(35, Math.min(55, newLight * 0.8));
+      derived["--success"] = `142 ${succSat.toFixed(1)}% ${succLight.toFixed(1)}%`;
+      derived["--success-foreground"] = `142 ${(succSat * 0.3).toFixed(1)}% ${succLight > 50 ? 10 : 98}%`;
+
+      // Warning (yellow/amber family): hue 45, saturation follows brand
+      const warnSat = Math.min(100, newSat * 1.05);
+      const warnLight = Math.max(40, Math.min(60, newLight * 0.9));
+      derived["--warning"] = `45 ${warnSat.toFixed(1)}% ${warnLight.toFixed(1)}%`;
+      derived["--warning-foreground"] = `45 ${(warnSat * 0.4).toFixed(1)}% ${warnLight > 55 ? 15 : 95}%`;
     };
 
     if (changedKey === "--brand") {
@@ -243,7 +403,7 @@ export default function DesignSystemPage() {
       shiftExisting("--accent-foreground");
       shiftExisting("--border");
       shiftExisting("--foreground");
-      shiftSemanticColors();
+      deriveSemanticColors();
     } else if (changedKey === "--secondary") {
       // Accent and muted follow secondary's hue, brand stays unchanged
       shiftExisting("--secondary-foreground");
@@ -253,7 +413,7 @@ export default function DesignSystemPage() {
       shiftExisting("--muted-foreground");
       shiftExisting("--border");
       shiftExisting("--foreground");
-      shiftSemanticColors();
+      deriveSemanticColors();
     }
 
     return derived;
@@ -377,8 +537,9 @@ export default function DesignSystemPage() {
     const pending = storage.get<Record<string, string>>(PENDING_COLORS_KEY) || {};
     pending[key] = hsl;
 
-    // Derive palette when brand or secondary changes
+    // Derive palette when brand or secondary changes; lock the other swatch
     if (key === "--brand" || key === "--secondary") {
+      setActivePrimary(key);
       const derived = derivePaletteFromChange(key, hsl, newColors);
       for (const [dKey, dVal] of Object.entries(derived)) {
         history.push({ key: dKey, previousValue: newColors[dKey] || "" });
@@ -426,6 +587,7 @@ export default function DesignSystemPage() {
     storage.remove(COLOR_HISTORY_KEY);
     readCurrentColors();
     setAutoAdjustNotice(null);
+    setActivePrimary(null);
     window.dispatchEvent(new Event("theme-pending-update"));
   };
 
@@ -440,14 +602,12 @@ export default function DesignSystemPage() {
                 subtitle={content.designSystem.subtitle}
                 className=""
               />
-              {unlocked && (
-                <button
-                  onClick={() => setShowResetModal(true)}
-                  className="mt-1 px-3 py-1 text-[10px] font-medium rounded-full border border-border bg-gray-100 dark:bg-gray-800 text-muted-foreground hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-                >
-                  Reset to Defaults
-                </button>
-              )}
+              <button
+                onClick={() => setShowResetModal(true)}
+                className="mt-1 px-3 py-1 text-[10px] font-medium rounded-full border border-border bg-gray-100 dark:bg-gray-800 text-muted-foreground hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              >
+                Reset to Defaults
+              </button>
               {autoAdjustNotice && (
                 <span className="mt-1 inline-flex items-center gap-1 rounded-full border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30 px-2 py-0.5 text-[10px] font-medium text-green-700 dark:text-green-300">
                   <span className="text-green-600 dark:text-green-400">&#10003;</span> Passed WCAG AA
@@ -478,45 +638,50 @@ export default function DesignSystemPage() {
 
             <div className="flex flex-col xl:flex-row gap-6">
               {/* Color swatches */}
-              <div className="xl:w-[40%] min-w-0 rounded-lg border border-border bg-background p-4">
+              <div className="xl:w-1/3 min-w-0 rounded-lg border border-border bg-background p-4">
                 <div className="flex items-center justify-between mb-3">
                   <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     {content.designSystem.sections.colors}
                   </p>
                 </div>
-                <div className="grid grid-cols-3 sm:grid-cols-4 xl:grid-cols-3 gap-2">
-                  {EDITABLE_VARS.map(({ key, label }) => {
-                    const isEditable = key === "--brand" || key === "--secondary";
-                    // Dynamic label based on current hue for editable swatches
-                    const getColorName = (hsl: string) => {
-                      const parts = hsl.trim().split(/\s+/);
-                      if (parts.length < 3) return label;
-                      const h = parseFloat(parts[0]);
-                      if (h <= 15 || h > 345) return "Red";
-                      if (h <= 40) return "Orange";
-                      if (h <= 65) return "Yellow";
-                      if (h <= 80) return "Lime";
-                      if (h <= 160) return "Green";
-                      if (h <= 180) return "Teal";
-                      if (h <= 200) return "Cyan";
-                      if (h <= 230) return "Blue";
-                      if (h <= 260) return "Indigo";
-                      if (h <= 290) return "Purple";
-                      if (h <= 320) return "Magenta";
-                      return "Pink";
-                    };
-                    const displayLabel = isEditable && colors[key]
-                      ? (key === "--brand" ? "Brand " : "Secondary ") + getColorName(colors[key])
+                {(() => {
+                  const getColorName = (hsl: string, fallback: string) => {
+                    const parts = hsl.trim().split(/\s+/);
+                    if (parts.length < 3) return fallback;
+                    const h = parseFloat(parts[0]);
+                    if (h <= 15 || h > 345) return "Red";
+                    if (h <= 40) return "Orange";
+                    if (h <= 65) return "Yellow";
+                    if (h <= 80) return "Lime";
+                    if (h <= 160) return "Green";
+                    if (h <= 180) return "Teal";
+                    if (h <= 200) return "Cyan";
+                    if (h <= 230) return "Blue";
+                    if (h <= 260) return "Indigo";
+                    if (h <= 290) return "Purple";
+                    if (h <= 320) return "Magenta";
+                    return "Pink";
+                  };
+                  const renderSwatch = ({ key, label }: { key: string; label: string }, large?: boolean) => {
+                    const isPrimary = key === "--brand" || key === "--secondary";
+                    // A primary swatch is locked when the OTHER primary is active
+                    const isLocked = isPrimary && activePrimary !== null && activePrimary !== key;
+                    const isEditable = isPrimary && !isLocked;
+                    const displayLabel = isPrimary && colors[key]
+                      ? (key === "--brand" ? "Brand " : "Secondary ") + getColorName(colors[key], label)
                       : label;
+                    const inputId = `color-input-${key}`;
                     return (
-                    <div
-                      key={key}
-                      data-color-key={key}
-                      className={`text-left ${isEditable ? "group cursor-pointer" : ""}`}
-                      onClick={undefined}
-                    >
-                      <label className={isEditable && unlocked ? "cursor-pointer" : "pointer-events-none"}>
-                        <div className={`relative w-full h-12 rounded-md mb-1 border border-border transition-all overflow-hidden ${isEditable ? "group-hover:ring-2 group-hover:ring-gray-400" : ""}`}>
+                      <div
+                        key={key}
+                        data-color-key={key}
+                        className={`text-left ${isEditable ? "group cursor-pointer" : isPrimary ? "group" : ""}`}
+                        onClick={isLocked ? () => setActivePrimary(null) : isEditable ? () => {
+                          const input = document.getElementById(inputId) as HTMLInputElement | null;
+                          input?.click();
+                        } : undefined}
+                      >
+                        <div className={`relative w-full ${large ? "h-16" : "h-12"} rounded-md mb-1 border border-border transition-all overflow-hidden ${isEditable ? "group-hover:ring-2 group-hover:ring-gray-400" : ""}`}>
                           <div
                             className="absolute inset-0"
                             style={{
@@ -525,14 +690,14 @@ export default function DesignSystemPage() {
                                 : undefined,
                             }}
                           />
-                          {isEditable && !unlocked && (
-                            <div className="absolute inset-0 flex items-center justify-center bg-black/10 dark:bg-white/10">
+                          {isLocked && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/10 dark:bg-white/10 cursor-pointer" title="Click to unlock">
                               <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                               </svg>
                             </div>
                           )}
-                          {isEditable && unlocked && (
+                          {isEditable && (
                             <div className="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-white/80 dark:bg-black/50 flex items-center justify-center shadow-sm">
                               <svg className="w-3 h-3 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -541,6 +706,7 @@ export default function DesignSystemPage() {
                           )}
                           {isEditable && (
                             <input
+                              id={inputId}
                               type="color"
                               value={colors[key] ? hslStringToHex(colors[key]) : "#000000"}
                               onChange={(e) => handleColorChange(key, e.target.value)}
@@ -548,21 +714,32 @@ export default function DesignSystemPage() {
                             />
                           )}
                         </div>
-                      </label>
-                      <p className="text-xs font-medium text-gray-900 dark:text-white truncate">
-                        {displayLabel}
-                      </p>
-                      <p className="text-[10px] text-gray-500 dark:text-gray-400 truncate">
-                        {colors[key] ? hslStringToHex(colors[key]) : key}
-                      </p>
-                    </div>
+                        <p className="text-xs font-medium text-gray-900 dark:text-white truncate">
+                          {displayLabel}
+                        </p>
+                        <p className="text-[10px] text-gray-500 dark:text-gray-400 truncate">
+                          {colors[key] ? hslStringToHex(colors[key]) : key}
+                        </p>
+                      </div>
                     );
-                  })}
-                </div>
+                  };
+                  const primarySwatches = EDITABLE_VARS.filter(v => v.key === "--brand" || v.key === "--secondary");
+                  const restSwatches = EDITABLE_VARS.filter(v => v.key !== "--brand" && v.key !== "--secondary");
+                  return (
+                    <>
+                      <div className="grid grid-cols-2 gap-1.5 mb-2">
+                        {primarySwatches.map((v) => renderSwatch(v, true))}
+                      </div>
+                      <div className="grid grid-cols-6 gap-1.5">
+                        {restSwatches.map((v) => renderSwatch(v))}
+                      </div>
+                    </>
+                  );
+                })()}
               </div>
 
-              {/* Preview panel */}
-              <div className="xl:w-[30%] rounded-lg border border-border bg-background p-4 space-y-4">
+              {/* Chips & Buttons column */}
+              <div className="xl:w-1/3 rounded-lg border border-border bg-background p-4 space-y-4">
                 <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Chips</p>
                 <div className="flex flex-wrap gap-2">
                   <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium" style={{ backgroundColor: "hsl(var(--brand))", color: "white" }}>
@@ -614,98 +791,171 @@ export default function DesignSystemPage() {
                     Warning
                   </button>
                 </div>
-                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Spacing</p>
-                <div className="flex flex-wrap gap-3">
-                  {designTokens.spacing.map((space) => (
-                    <div key={space.name} className="flex flex-col items-center gap-1">
-                      <div
-                        className="bg-brand-dynamic rounded-sm"
-                        style={{ width: space.value, height: space.value, minWidth: "1rem", minHeight: "1rem" }}
-                      />
-                      <span className="text-[10px] text-gray-500 dark:text-gray-400 whitespace-nowrap">
-                        {space.name}
-                      </span>
+                <div className="flex gap-6">
+                  <div className="flex-1">
+                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">Spacing</p>
+                    <div className="flex flex-wrap gap-3">
+                      {designTokens.spacing.map((space) => (
+                        <div key={space.name} className="flex flex-col items-center gap-1">
+                          <div
+                            className="bg-brand-dynamic rounded-sm"
+                            style={{ width: space.value, height: space.value, minWidth: "1rem", minHeight: "1rem" }}
+                          />
+                          <span className="text-[10px] text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                            {space.name}
+                          </span>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Border Radius</p>
-                <div className="flex flex-wrap gap-3">
-                  {designTokens.numbers
-                    .filter((n) => n.name.startsWith("border-radius"))
-                    .map((radius) => (
-                      <div key={radius.name} className="flex flex-col items-center gap-1">
-                        <div
-                          className="w-10 h-10 bg-brand-dynamic"
-                          style={{ borderRadius: `${radius.value}px` }}
-                        />
-                        <span className="text-[10px] text-gray-500 dark:text-gray-400">
-                          {radius.value}px
-                        </span>
-                      </div>
-                    ))}
-                </div>
-              </div>
-
-              {/* Shadows column */}
-              <div id="shadows" className="xl:w-[30%] min-w-0 scroll-mt-24 rounded-2xl border border-white/20 dark:border-white/10 p-4 flex flex-col overflow-hidden" style={{ background: "linear-gradient(135deg, hsl(var(--brand) / 0.12), hsl(var(--secondary) / 0.18), hsl(var(--brand) / 0.08))" }}>
-                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3">Shadows</p>
-                <div className="grid grid-cols-2 gap-3 flex-1">
-                  {designTokens.shadows.map((shadow) => (
-                    <div key={shadow.name} className="text-center flex flex-col">
-                      <div
-                        className="w-full flex-1 min-h-[2.5rem] rounded-xl mb-1"
-                        style={{
-                          boxShadow: `${shadow.value}, inset 0 1px 1px rgba(255,255,255,0.6), inset 0 -1px 1px rgba(0,0,0,0.04)`,
-                          background: "linear-gradient(145deg, rgba(255,255,255,0.7), rgba(255,255,255,0.35))",
-                          backdropFilter: "blur(20px) saturate(1.8) brightness(1.1)",
-                          WebkitBackdropFilter: "blur(20px) saturate(1.8) brightness(1.1)",
-                          border: "1px solid rgba(255,255,255,0.5)",
-                          borderBottom: "1px solid rgba(255,255,255,0.2)",
-                        }}
-                      />
-                      <p className="text-xs font-medium text-gray-900 dark:text-white">
-                        {shadow.name}
-                      </p>
-                      <p className="text-[10px] text-gray-500 dark:text-gray-400">
-                        {shadow.description}
-                      </p>
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">Border Radius</p>
+                    <div className="flex flex-wrap gap-3">
+                      {designTokens.numbers
+                        .filter((n) => n.name.startsWith("border-radius"))
+                        .map((radius) => (
+                          <div key={radius.name} className="flex flex-col items-center gap-1">
+                            <div
+                              className="w-10 h-10 bg-brand-dynamic"
+                              style={{ borderRadius: `${radius.value}px` }}
+                            />
+                            <span className="text-[10px] text-gray-500 dark:text-gray-400">
+                              {radius.value}px
+                            </span>
+                          </div>
+                        ))}
                     </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Reset Confirmation Modal */}
-            {showResetModal && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl p-6 w-full max-w-sm mx-4">
-                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                    Reset to Defaults?
-                  </h4>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-                    This will revert all theme colors to their original values. Any saved customizations will be lost.
-                  </p>
-                  <div className="flex justify-end gap-2">
-                    <button
-                      onClick={() => setShowResetModal(false)}
-                      className="px-3 py-1.5 text-sm rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      onClick={() => { handleReset(); setShowResetModal(false); }}
-                      className="px-3 py-1.5 text-sm font-medium rounded-md bg-red-600 text-white hover:bg-red-700 transition-colors"
-                    >
-                      Reset
-                    </button>
                   </div>
                 </div>
               </div>
-            )}
-          </div>
 
-          {/* Typography */}
-          <div id="typography" className="mb-10 scroll-mt-24">
+              {/* Icons column */}
+              <div className="xl:w-1/3 rounded-lg border border-border bg-background p-4 space-y-4">
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Icons</p>
+                <div className="grid grid-cols-5 sm:grid-cols-7 gap-2">
+                  <Suspense fallback={null}>
+                    {SITE_ICONS.map(({ name, icon: Icon }) => (
+                      <div key={name} className="flex items-center justify-center p-2 rounded-lg hover:bg-muted/50 transition-colors" title={name}>
+                        <Icon className="h-5 w-5 text-brand-dynamic" aria-label={name} role="img" />
+                      </div>
+                    ))}
+                  </Suspense>
+                </div>
+              </div>
+
+            </div>
+
+            <div className="flex flex-col xl:flex-row gap-6 mt-6">
+            {/* Shadows column */}
+            <div id="shadows" className="xl:w-1/2 scroll-mt-24 rounded-2xl border border-white/20 dark:border-white/10 p-4 overflow-hidden relative flex flex-col" style={{ background: "linear-gradient(160deg, hsl(var(--brand) / 0.25) 0%, hsl(var(--secondary) / 0.35) 40%, hsl(var(--brand) / 0.18) 70%, hsl(var(--accent) / 0.22) 100%)" }}>
+              {/* Animated color blobs behind the glass cards */}
+              <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <div className="absolute -top-8 -left-8 w-32 h-32 rounded-full opacity-60" style={{ background: "radial-gradient(circle, hsl(var(--brand) / 0.5), transparent 70%)", filter: "blur(20px)" }} />
+                <div className="absolute top-1/3 -right-6 w-28 h-28 rounded-full opacity-50" style={{ background: "radial-gradient(circle, hsl(var(--secondary) / 0.5), transparent 70%)", filter: "blur(18px)" }} />
+                <div className="absolute -bottom-6 left-1/4 w-24 h-24 rounded-full opacity-40" style={{ background: "radial-gradient(circle, hsl(var(--accent) / 0.4), transparent 70%)", filter: "blur(16px)" }} />
+              </div>
+              {/* SVG filter for water drop refraction */}
+              <svg className="absolute w-0 h-0" aria-hidden="true">
+                <defs>
+                  <filter id="water-drop-filter">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" />
+                    <feSpecularLighting in="blur" surfaceScale="4" specularConstant="0.8" specularExponent="25" result="specular" lightingColor="white">
+                      <fePointLight x="80" y="40" z="200" />
+                    </feSpecularLighting>
+                    <feComposite in="SourceGraphic" in2="specular" operator="arithmetic" k1="0" k2="1" k3="0.2" k4="0" />
+                  </filter>
+                  <radialGradient id="drop-gradient" cx="40%" cy="35%" r="50%">
+                    <stop offset="0%" stopColor="white" stopOpacity="0.7" />
+                    <stop offset="40%" stopColor="white" stopOpacity="0.15" />
+                    <stop offset="100%" stopColor="white" stopOpacity="0.05" />
+                  </radialGradient>
+                  <radialGradient id="drop-shadow-grad" cx="50%" cy="85%" r="40%">
+                    <stop offset="0%" stopColor="black" stopOpacity="0.12" />
+                    <stop offset="100%" stopColor="black" stopOpacity="0" />
+                  </radialGradient>
+                  <radialGradient id="drop-caustic" cx="55%" cy="70%" r="35%">
+                    <stop offset="0%" stopColor="white" stopOpacity="0.35" />
+                    <stop offset="100%" stopColor="white" stopOpacity="0" />
+                  </radialGradient>
+                </defs>
+              </svg>
+              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3 relative z-10">Shadows</p>
+              <div className="grid grid-cols-2 gap-x-3 gap-y-3 relative z-10 flex-1">
+                {designTokens.shadows.map((shadow, idx) => (
+                  <div key={shadow.name} className="text-center flex flex-col">
+                    <div
+                      className="relative overflow-hidden w-full flex-1 min-h-[12rem] rounded-3xl mb-1"
+                      style={{
+                        boxShadow: `${shadow.value}, 0 0 0 0.5px rgba(255,255,255,0.3)`,
+                      }}
+                    >
+                      {/* Glass background */}
+                      <div
+                        className="absolute inset-0 rounded-3xl"
+                        style={{
+                          backdropFilter: "blur(24px) saturate(1.6) brightness(1.05)",
+                          WebkitBackdropFilter: "blur(24px) saturate(1.6) brightness(1.05)",
+                          background: "rgba(255,255,255,0.2)",
+                        }}
+                      />
+                      {/* Top specular highlight */}
+                      <div
+                        className="absolute inset-0 rounded-3xl pointer-events-none"
+                        style={{
+                          background: "linear-gradient(to bottom, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.03) 35%, transparent 60%)",
+                        }}
+                      />
+                      {/* Inner edge light */}
+                      <div
+                        className="absolute inset-0 rounded-3xl pointer-events-none"
+                        style={{
+                          border: "1px solid rgba(255,255,255,0.15)",
+                          boxShadow: "inset 0 1px 1px rgba(255,255,255,0.2), inset 0 -1px 1px rgba(0,0,0,0.03)",
+                        }}
+                      />
+                      {/* Water drop */}
+                      <svg
+                        className="absolute pointer-events-none"
+                        style={{
+                          width: idx % 2 === 0 ? "28px" : "22px",
+                          height: idx % 2 === 0 ? "34px" : "28px",
+                          top: idx < 2 ? "18%" : "25%",
+                          left: idx % 2 === 0 ? "60%" : "30%",
+                          filter: "url(#water-drop-filter)",
+                        }}
+                        viewBox="0 0 40 50"
+                        aria-hidden="true"
+                      >
+                        {/* Drop shadow (contact shadow on glass) */}
+                        <ellipse cx="20" cy="46" rx="12" ry="3" fill="url(#drop-shadow-grad)" />
+                        {/* Main drop body */}
+                        <path
+                          d="M20 4 C20 4, 6 22, 6 32 C6 40, 12 46, 20 46 C28 46, 34 40, 34 32 C34 22, 20 4, 20 4Z"
+                          fill="url(#drop-gradient)"
+                          stroke="rgba(255,255,255,0.35)"
+                          strokeWidth="0.5"
+                        />
+                        {/* Caustic light underneath */}
+                        <ellipse cx="22" cy="36" rx="7" ry="5" fill="url(#drop-caustic)" />
+                        {/* Primary specular highlight */}
+                        <ellipse cx="15" cy="22" rx="5" ry="7" fill="white" opacity="0.45" transform="rotate(-15, 15, 22)" />
+                        {/* Small secondary highlight */}
+                        <circle cx="24" cy="34" r="2" fill="white" opacity="0.2" />
+                      </svg>
+                    </div>
+                    <p className="text-xs font-medium text-gray-900 dark:text-white">
+                      {shadow.name}
+                    </p>
+                    <p className="text-[10px] text-gray-500 dark:text-gray-400">
+                      {shadow.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          {/* Typography column */}
+          <div id="typography" className="xl:w-1/2 scroll-mt-24 rounded-lg border border-border bg-background p-4">
             <h3 className="font-semibold text-brand-dynamic dark:text-white mb-4">
               {content.designSystem.sections.typography}
             </h3>
@@ -737,91 +987,90 @@ export default function DesignSystemPage() {
               ))}
             </div>
           </div>
-
-          {/* Animations */}
-          <div id="animations" className="mb-10 scroll-mt-24">
-            <h3 className="font-semibold text-brand-dynamic dark:text-white mb-4">
-              Animations
-            </h3>
-            <div className="space-y-6">
-              {/* Accordion */}
-              <div className="border border-border rounded-lg overflow-hidden">
-                <div className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-800/50">
-                  <div>
-                    <p className="text-sm font-medium text-gray-900 dark:text-white">
-                      accordion-down / accordion-up
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                      0.2s ease-out
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => setAccordionOpen((prev) => !prev)}
-                    className="px-3 py-1.5 text-xs font-medium rounded-md bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-                  >
-                    {accordionOpen ? "Collapse" : "Expand"}
-                  </button>
-                </div>
-                <div
-                  className="grid transition-all duration-200 ease-out"
-                  style={{
-                    gridTemplateRows: accordionOpen ? "1fr" : "0fr",
-                  }}
-                >
-                  <div className="overflow-hidden">
-                    <div className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
-                      This content expands and collapses using the accordion
-                      animation. Used by the Radix UI Accordion component to
-                      smoothly reveal and hide content sections.
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Scroll Banner */}
-              <div className="border border-border rounded-lg overflow-hidden">
-                <div className="px-4 py-3 bg-gray-50 dark:bg-gray-800/50">
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">
-                    scroll-banner
-                  </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    linear infinite
-                  </p>
-                </div>
-                <div className="px-4 py-3 overflow-hidden bg-[rgb(223,223,223)]/60 dark:bg-gray-700">
-                  <div
-                    className="flex items-center w-max gap-[60px]"
-                    style={{
-                      animation: "scroll-banner 30s linear infinite",
-                    }}
-                  >
-                    {[...Array(2)].map((_, i) => (
-                      <div key={i} className="flex items-center gap-[60px] shrink-0">
-                        <img src="/img/carousel/optum-carousel.svg" alt="Optum" className="h-6 w-auto object-contain" />
-                        <img src="/img/carousel/healthcare-dot-gov-carousel.svg" alt="Healthcare.gov" className="h-5 w-auto object-contain" />
-                        <img src="/img/carousel/customgpt-carousel.png" alt="CustomGPT.ai" className="h-7 w-auto object-contain" />
-                        <img src="/img/carousel/dcal-carousel.svg" alt="DCAL" className="h-7 w-auto object-contain" />
-                        <img src="/img/carousel/logo-ddpa-green.png" alt="Delta Dental" className="h-5 w-auto object-contain" />
-                        <img src="/img/carousel/bsbsm-carousel.png" alt="BCBSM" className="h-10 w-auto object-contain" />
-                        <img src="/img/carousel/meridian-carousel.png" alt="Meridian" className="h-9 w-auto object-contain" />
-                        <img src="/img/carousel/data-foundation-carousel.png" alt="Data Foundation" className="h-10 w-auto object-contain" />
-                        <img src="/img/carousel/nextier-carousel.png" alt="Nextier" className="h-9 w-auto object-contain" />
-                        <img src="/img/carousel/logo-propio.svg" alt="Propio" className="h-8 w-auto object-contain" />
-                        <img src="/img/carousel/dewpoint-carousel.svg" alt="Dewpoint" className="h-8 w-auto object-contain" />
-                        <img src="/img/carousel/neogen-carousel.png" alt="Neogen" className="h-8 w-auto object-contain" />
-                        <img src="/img/carousel/fictionforge-carousel.png" alt="FictionForge" className="h-7 w-auto object-contain" />
-                        <img src="/img/carousel/cygnet-carousel.svg" alt="Cygnet" className="h-10 w-auto object-contain" />
-                        <img src="/img/carousel/dark-slide-carousel.png" alt="Dark Slide" className="h-10 w-auto object-contain" />
-                        <img src="/img/carousel/knifehub-carousel.png" alt="KnifeHub" className="h-10 w-auto object-contain" />
-                        <img src="/img/carousel/som-carousel.png" alt="Mi.gov" className="h-9 w-auto object-contain" />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
 
+            {/* Reset Confirmation Modal */}
+            {showResetModal && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl p-6 w-full max-w-sm mx-4">
+                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                    Reset to Defaults?
+                  </h4>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                    This will revert all theme colors to their original values. Any saved customizations will be lost.
+                  </p>
+                  <div className="flex justify-end gap-2">
+                    <button
+                      onClick={() => setShowResetModal(false)}
+                      className="px-3 py-1.5 text-sm rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={() => { handleReset(); setShowResetModal(false); }}
+                      className="px-3 py-1.5 text-sm font-medium rounded-md bg-red-600 text-white hover:bg-red-700 transition-colors"
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Design Projects */}
+          <div id="design-projects" className="mb-10 mt-16 scroll-mt-24">
+            <div className="flex items-center gap-3 mb-4">
+              <h3 className="font-semibold text-brand-dynamic dark:text-white">
+                Design
+              </h3>
+              <a
+                href={content.navigation.social.dribbble.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white/80 dark:bg-gray-800/80 hover:bg-white dark:hover:bg-gray-700 backdrop-blur-sm rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center"
+                aria-label="Dribbble"
+              >
+                <IconWrapper
+                  Icon={LazyDribbble}
+                  className="h-4 w-4 text-brand-dynamic dark:text-gray-300"
+                />
+              </a>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {content.work.projects
+                .filter((project: any) => project.title !== "3D Conversion UX Plan")
+                .map((project: any, index: number) => (
+                  <a
+                    key={index}
+                    href={project.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative rounded-lg bg-white/20 backdrop-blur-lg flex flex-col shadow-xl hover:shadow-2xl transition-shadow cursor-pointer"
+                  >
+                    <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-transparent">
+                      <img
+                        {...getCardImageProps(project.image)}
+                        alt={project.alt || project.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </div>
+                    <div className="p-4 sm:p-6 flex flex-col gap-2 flex-1">
+                      <h3 className="font-semibold text-brand-dynamic dark:text-white group-hover:font-bold transition-all">
+                        {project.title}
+                      </h3>
+                      {project.description && (
+                        <p className="text-gray-600 dark:text-white line-clamp-2">
+                          {project.description}
+                        </p>
+                      )}
+                    </div>
+                  </a>
+                ))}
+            </div>
+          </div>
 
         </div>
       </section>

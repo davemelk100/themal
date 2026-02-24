@@ -169,7 +169,8 @@ function highlightElements(varName: string) {
 export default function ThemePreviewBar() {
   const [pendingChanges, setPendingChanges] = useState<Record<string, string>>({});
   const [historyLength, setHistoryLength] = useState(0);
-  const [pageIndex, setPageIndex] = useState(0);
+  const [pageIndex] = useState(0);
+  const [varIndex, setVarIndex] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -290,10 +291,12 @@ export default function ThemePreviewBar() {
                   <span className="text-xs text-yellow-600 dark:text-yellow-400 mx-1">|</span>
                   <button
                     onClick={() => {
-                      const newIdx = (pageIndex - 1 + affectedPages.length) % affectedPages.length;
-                      setPageIndex(newIdx);
-                      const page = affectedPages[newIdx];
-                      handlePageClick(page.path, changedVars[0]);
+                      const newVarIdx = (varIndex - 1 + changedVars.length) % changedVars.length;
+                      setVarIndex(newVarIdx);
+                      const varName = changedVars[newVarIdx];
+                      const pages = AFFECTED_PAGES[varName] || [];
+                      const page = pages.find((p) => p.path === location.pathname) || pages[0];
+                      if (page) handlePageClick(page.path, varName);
                     }}
                     className="p-0.5 text-yellow-700 dark:text-yellow-300 hover:text-yellow-900 dark:hover:text-yellow-100 transition-colors"
                     aria-label="Previous page"
@@ -307,21 +310,23 @@ export default function ThemePreviewBar() {
                         : "bg-yellow-200/60 dark:bg-yellow-800/40 text-yellow-700 dark:text-yellow-300"
                     }`}
                   >
-                    {currentPage.label}
+                    {changedVars[varIndex % changedVars.length]?.replace("--", "")}
                   </span>
                   <button
                     onClick={() => {
-                      const newIdx = (pageIndex + 1) % affectedPages.length;
-                      setPageIndex(newIdx);
-                      const page = affectedPages[newIdx];
-                      handlePageClick(page.path, changedVars[0]);
+                      const newVarIdx = (varIndex + 1) % changedVars.length;
+                      setVarIndex(newVarIdx);
+                      const varName = changedVars[newVarIdx];
+                      const pages = AFFECTED_PAGES[varName] || [];
+                      const page = pages.find((p) => p.path === location.pathname) || pages[0];
+                      if (page) handlePageClick(page.path, varName);
                     }}
                     className="p-0.5 text-yellow-700 dark:text-yellow-300 hover:text-yellow-900 dark:hover:text-yellow-100 transition-colors"
                     aria-label="Next page"
                   >
                     <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path d="M9 5l7 7-7 7" /></svg>
                   </button>
-                  <span className="text-xs text-yellow-600 dark:text-yellow-400">{idx + 1}/{affectedPages.length}</span>
+                  <span className="text-xs text-yellow-600 dark:text-yellow-400">{(varIndex % changedVars.length) + 1}/{changedVars.length}</span>
                 </div>
               );
             })()}
