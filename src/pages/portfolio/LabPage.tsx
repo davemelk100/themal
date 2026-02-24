@@ -35,11 +35,11 @@ export default function LabPage() {
                       className="group relative rounded-lg bg-white/20 backdrop-blur-lg flex flex-col cursor-pointer shadow-xl"
                     >
                       <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-transparent">
-                        {project.image?.endsWith(".svg") ? (
+                        {project.image ? (
                           <img
-                            src={`${project.image}?v=${Date.now()}`}
+                            src={project.image.endsWith(".svg") ? `${project.image}?v=${Date.now()}` : project.image}
                             alt={project.title}
-                            className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-300"
+                            className={`w-full h-full group-hover:scale-105 transition-transform duration-300 ${project.image.endsWith(".svg") ? "object-contain object-center" : "object-cover object-top"}`}
                             loading={index === 0 ? "eager" : "lazy"}
                             {...(index === 0 ? { fetchPriority: "high" as const } : {})}
                             decoding="async"

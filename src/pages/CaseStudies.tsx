@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PortfolioLayout from "../components/PortfolioLayout";
+import SectionHeader from "../components/SectionHeader";
 
 const caseStudies = [
   {
@@ -34,6 +35,15 @@ export default function CaseStudies() {
 
   return (
     <PortfolioLayout currentPage="case-studies">
+      {/* Page title */}
+      <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+        <SectionHeader
+          title="Case Studies"
+          subtitle="In-depth explorations of complex design and engineering challenges"
+          className="mb-0"
+        />
+      </div>
+
       {/* Sub-menu */}
       <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-wrap gap-2 pt-2 pb-4 border-b border-border">
