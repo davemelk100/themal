@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, lazy, Suspense } from "react";
+import { useState, useEffect, useCallback, useRef, lazy, Suspense } from "react";
 import PortfolioLayout from "../../components/PortfolioLayout";
 import SectionHeader from "../../components/SectionHeader";
 import IconWrapper from "../../components/IconWrapper";
@@ -290,6 +290,8 @@ export default function DesignSystemPage() {
   const [autoAdjustNotice, setAutoAdjustNotice] = useState<string | null>(null);
   const [generatedCode, setGeneratedCode] = useState<string | null>(null);
   const [codeCopied, setCodeCopied] = useState(false);
+
+  const pendingNoticeRef = useRef<string | null>(null);
 
   const hasPendingChanges = !!storage.get<Record<string, string>>(PENDING_COLORS_KEY);
 
@@ -595,17 +597,17 @@ export default function DesignSystemPage() {
     storage.set(PENDING_COLORS_KEY, pending);
     window.dispatchEvent(new Event("theme-pending-update"));
 
-    // Show palette adaptation notice
+    // Store palette adaptation notice — only revealed when the color picker closes
     const adjustedKeys = Object.keys(adjustments);
     if (key === "--brand" || key === "--secondary" || key === "--accent") {
       const extras = adjustedKeys.length > 0
         ? ` Auto-adjusted ${adjustedKeys.map(k => k.replace("--", "")).join(", ")} for contrast.`
         : "";
-      setAutoAdjustNotice(`Palette adapted to new hue. All color pairs pass WCAG AA (4.5:1).${extras}`);
+      pendingNoticeRef.current = `Palette adapted to new hue. All color pairs pass WCAG AA (4.5:1).${extras}`;
     } else if (adjustedKeys.length > 0) {
-      setAutoAdjustNotice(`Auto-adjusted ${adjustedKeys.map(k => k.replace("--", "")).join(", ")} to maintain WCAG AA contrast (4.5:1).`);
+      pendingNoticeRef.current = `Auto-adjusted ${adjustedKeys.map(k => k.replace("--", "")).join(", ")} to maintain WCAG AA contrast (4.5:1).`;
     } else {
-      setAutoAdjustNotice(null);
+      pendingNoticeRef.current = null;
     }
   };
 
@@ -628,25 +630,35 @@ export default function DesignSystemPage() {
       <section className="py-2 sm:py-3 lg:py-4 xl:py-6 relative">
         <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row lg:items-start gap-4 mb-4">
-            <div className="lg:w-[20%]">
+            <div className="lg:w-[30%]">
               <SectionHeader
                 title={content.designSystem.title}
                 subtitle={content.designSystem.subtitle}
                 className=""
               />
-              <button
-                onClick={() => setShowResetModal(true)}
-                className="mt-1 px-3 py-1 text-[10px] font-medium rounded-full border border-border bg-gray-100 dark:bg-gray-800 text-muted-foreground hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-              >
-                Reset to Defaults
-              </button>
+              <div className="flex items-center gap-2 mt-1">
+                <button
+                  onClick={() => setShowResetModal(true)}
+                  className="px-3 py-1 text-[10px] font-medium rounded-full border border-border bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                >
+                  Reset to Defaults
+                </button>
+                {hasPendingChanges && (
+                  <button
+                    onClick={() => generateCode()}
+                    className="px-3 py-1 text-[10px] font-medium rounded-full border border-border bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                  >
+                    Generate CSS?
+                  </button>
+                )}
+              </div>
               {autoAdjustNotice && (
-                <span className="mt-1 inline-flex items-center gap-1 rounded-full border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30 px-2 py-0.5 text-[10px] font-medium text-green-700 dark:text-green-300">
+                <span className="mt-3 flex w-fit items-center gap-1 rounded-full border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30 px-2 py-0.5 text-[10px] font-medium text-green-700 dark:text-green-300">
                   <span className="text-green-600 dark:text-green-400">&#10003;</span> Passed WCAG AA
                 </span>
               )}
             </div>
-            <ul className="text-xs text-muted-foreground space-y-0.5 list-disc list-inside lg:w-[50%] leading-relaxed">
+            <ul className="text-xs text-muted-foreground space-y-0.5 list-disc list-inside lg:flex-1 leading-relaxed">
               <li>Driven by CSS custom properties. Pick a <strong className="text-foreground">Brand</strong> color and the entire palette auto-adjusts.</li>
               <li>Secondary, primary, accent, muted, border, and foreground tokens all shift to harmonize with your selection.</li>
               <li>Every color pair is checked against WCAG AA contrast requirements (4.5:1 minimum) in real time.</li>
@@ -654,16 +666,6 @@ export default function DesignSystemPage() {
               <li>The brand color is protected: if too light for the background, the system darkens it until it meets 4.5:1.</li>
               <li>Headings, links, and navigation text remain legible no matter what color you choose.</li>
             </ul>
-            <div className="lg:w-[30%] flex lg:justify-end">
-              <div>
-                <p className="text-xs font-medium text-foreground mb-1">How to use</p>
-                <ol className="text-xs text-muted-foreground space-y-0.5 list-decimal list-inside leading-relaxed">
-                <li>Click the <strong className="text-foreground">Brand</strong> swatch to pick a color</li>
-                <li>Palette auto-adapts for WCAG AA contrast (4.5:1)</li>
-                <li><strong className="text-foreground">Save</strong>, <strong className="text-foreground">Discard</strong>, or <strong className="text-foreground">Undo</strong> via the preview bar</li>
-              </ol>
-              </div>
-            </div>
           </div>
           {/* Colors + Preview side by side */}
           <div id="colors" className="mb-10 scroll-mt-24">
@@ -700,29 +702,9 @@ export default function DesignSystemPage() {
 
             {/* Hero colors row: Brand, Secondary, Tertiary */}
             {(() => {
-              const getColorName = (hsl: string, fallback: string) => {
-                const parts = hsl.trim().split(/\s+/);
-                if (parts.length < 3) return fallback;
-                const h = parseFloat(parts[0]);
-                if (h <= 15 || h > 345) return "Red";
-                if (h <= 40) return "Orange";
-                if (h <= 65) return "Yellow";
-                if (h <= 80) return "Lime";
-                if (h <= 160) return "Green";
-                if (h <= 180) return "Teal";
-                if (h <= 200) return "Cyan";
-                if (h <= 230) return "Blue";
-                if (h <= 260) return "Indigo";
-                if (h <= 290) return "Purple";
-                if (h <= 320) return "Magenta";
-                return "Pink";
-              };
-              const renderHeroSwatch = ({ key, label }: { key: string; label: string }) => {
+              const renderHeroSwatch = ({ key }: { key: string; label: string }) => {
                 const isEditable = key === "--brand";
-                const heroPrefix = key === "--brand" ? "Brand " : key === "--secondary" ? "Secondary " : "Tertiary ";
-                const displayLabel = colors[key]
-                  ? heroPrefix + getColorName(colors[key], label)
-                  : label;
+                const displayLabel = key === "--brand" ? "Brand" : key === "--secondary" ? "Secondary" : "Tertiary";
                 const inputId = `color-input-${key}`;
                 return (
                   <div
@@ -756,6 +738,10 @@ export default function DesignSystemPage() {
                           type="color"
                           value={colors[key] ? hslStringToHex(colors[key]) : "#000000"}
                           onChange={(e) => handleColorChange(key, e.target.value)}
+                          onBlur={() => {
+                            setAutoAdjustNotice(pendingNoticeRef.current);
+                            pendingNoticeRef.current = null;
+                          }}
                           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                         />
                       )}
@@ -769,15 +755,6 @@ export default function DesignSystemPage() {
                           {colors[key] ? hslStringToHex(colors[key]) : key}
                         </p>
                       </div>
-                      {isEditable && hasPendingChanges && (
-                        <button
-                          onClick={(e) => { e.stopPropagation(); generateCode(); }}
-                          className="shrink-0 ml-2 px-3 py-1 text-[10px] font-medium rounded-full text-white hover:opacity-90 transition-colors"
-                          style={{ backgroundColor: "hsl(var(--brand))" }}
-                        >
-                          Save Changes?
-                        </button>
-                      )}
                     </div>
                   </div>
                 );
@@ -1059,7 +1036,7 @@ export default function DesignSystemPage() {
                     <p className="text-xs text-gray-500 dark:text-gray-400">
                       {type.name}
                     </p>
-                    <p className="text-xs text-gray-400 dark:text-gray-500">
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
                       {type.fontSize} / {type.fontWeight}
                     </p>
                   </div>

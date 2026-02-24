@@ -24,7 +24,7 @@ const idToRoute: Record<string, string> = {
   "design-system": "/portfolio/design-system",
 };
 
-const activeClass = "text-brand-dynamic dark:text-white px-3 py-2 rounded-md bg-gray-100 dark:bg-gray-800";
+const activeClass = "text-brand-dynamic dark:text-white px-3 py-2 rounded-md";
 const inactiveClass = "text-gray-600 dark:text-gray-300 hover:text-brand-dynamic dark:hover:text-white transition-colors px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800";
 
 const PortfolioNav = ({ currentPage, hideBorder }: { currentPage?: string; hideBorder?: boolean }) => (
