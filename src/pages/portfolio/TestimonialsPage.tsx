@@ -6,7 +6,7 @@ export default function TestimonialsPage() {
   return (
     <PortfolioLayout currentPage="testimonials">
       <section className="py-4 sm:py-6 lg:py-8 xl:py-12 relative">
-        <div className="w-full px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader
             title={content.testimonials.title}
             subtitle={content.testimonials.subtitle}

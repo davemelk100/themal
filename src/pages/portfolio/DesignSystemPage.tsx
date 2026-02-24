@@ -892,7 +892,7 @@ export default function DesignSystemPage() {
 
   return (
     <PortfolioLayout currentPage="design-system">
-      <section className="pt-0 pb-2 sm:pb-3 lg:pb-4 xl:pb-6 relative">
+      <section className="pt-4 pb-2 sm:pb-3 lg:pb-4 xl:pb-6 relative">
         <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
           {/* Title row */}
           <div className="mb-4">
