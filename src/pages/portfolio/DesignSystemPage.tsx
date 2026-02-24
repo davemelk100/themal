@@ -979,7 +979,7 @@ export default function DesignSystemPage() {
             {generatedCode && (
               <div className="mb-4 rounded-lg border border-border bg-gray-50 dark:bg-gray-900">
                 <div className="flex items-center justify-between px-3 py-1.5 border-b border-border">
-                  <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">Generated Theme</span>
+                  <span className="text-[10px] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider">Generated Theme</span>
                   <div className="flex items-center gap-1">
                     <button
                       onClick={() => {
