@@ -17,6 +17,8 @@ const CONTRAST_PAIRS: [string, string][] = [
   ["--muted-foreground", "--muted"],
   ["--accent-foreground", "--accent"],
   ["--destructive-foreground", "--destructive"],
+  ["--success-foreground", "--success"],
+  ["--warning-foreground", "--warning"],
 ];
 
 function hslToRgb(hsl: string): [number, number, number] {
@@ -62,6 +64,10 @@ const EDITABLE_VARS = [
   { key: "--accent-foreground", label: "Accent FG" },
   { key: "--destructive", label: "Destructive" },
   { key: "--destructive-foreground", label: "Destructive FG" },
+  { key: "--success", label: "Success" },
+  { key: "--success-foreground", label: "Success FG" },
+  { key: "--warning", label: "Warning" },
+  { key: "--warning-foreground", label: "Warning FG" },
   { key: "--border", label: "Border" },
   { key: "--ring", label: "Ring" },
 ] as const;
@@ -192,6 +198,38 @@ export default function DesignSystemPage() {
       }
     };
 
+    // Shift a semantic color's hue proportionally but clamp within a hue range
+    const shiftClamped = (varKey: string, minHue: number, maxHue: number) => {
+      const existing = getExisting(varKey);
+      if (!existing) return;
+      // Calculate hue offset from the original brand/secondary hue
+      const origKey = changedKey === "--brand" ? "--brand" : "--secondary";
+      const orig = getExisting(origKey);
+      const offset = orig ? (newHue - orig.h) * 0.15 : 0; // subtle shift (15%)
+      let shifted = existing.h + offset;
+      // Wrap and clamp to the allowed range
+      shifted = ((shifted % 360) + 360) % 360;
+      if (minHue <= maxHue) {
+        shifted = Math.max(minHue, Math.min(maxHue, shifted));
+      } else {
+        // Range wraps around 360 (e.g. red: 340-20)
+        if (shifted < minHue && shifted > maxHue) {
+          shifted = (360 - shifted + minHue < shifted - maxHue) ? minHue : maxHue;
+        }
+      }
+      derived[varKey] = `${shifted.toFixed(1)} ${existing.s.toFixed(1)}% ${existing.l.toFixed(1)}%`;
+    };
+
+    // Shift semantic colors (keep them in their hue family)
+    const shiftSemanticColors = () => {
+      shiftClamped("--destructive", 340, 20);        // red family
+      shiftClamped("--destructive-foreground", 0, 360);
+      shiftClamped("--success", 100, 170);            // green family
+      shiftClamped("--success-foreground", 0, 360);
+      shiftClamped("--warning", 30, 60);              // yellow family
+      shiftClamped("--warning-foreground", 0, 360);
+    };
+
     if (changedKey === "--brand") {
       // Primary family: adopt brand hue
       shiftHue("--primary", 83.2, 48);
@@ -207,13 +245,9 @@ export default function DesignSystemPage() {
       shiftExisting("--accent-foreground");
       shiftExisting("--border");
       shiftExisting("--foreground");
+      shiftSemanticColors();
     } else if (changedKey === "--secondary") {
-      // Brand and primary family adopt secondary's hue
-      shiftExisting("--brand");
-      shiftHue("--primary", 83.2, 48);
-      shiftHue("--primary-foreground", 40, 98);
-      shiftHue("--ring", 83.2, 53.3);
-      // Accent and muted follow secondary's hue
+      // Accent and muted follow secondary's hue, brand stays unchanged
       shiftExisting("--secondary-foreground");
       shiftExisting("--accent");
       shiftExisting("--accent-foreground");
@@ -221,6 +255,7 @@ export default function DesignSystemPage() {
       shiftExisting("--muted-foreground");
       shiftExisting("--border");
       shiftExisting("--foreground");
+      shiftSemanticColors();
     }
 
     return derived;
@@ -400,36 +435,46 @@ export default function DesignSystemPage() {
     <PortfolioLayout currentPage="design-system">
       <section className="py-2 sm:py-3 lg:py-4 xl:py-6 relative">
         <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-4 sm:mb-4">
-            <SectionHeader
-              title={content.designSystem.title}
-              subtitle={content.designSystem.subtitle}
-              className=""
-            />
-            {unlocked && (
-              <button
-                onClick={() => setShowResetModal(true)}
-                className="px-3 py-1.5 text-xs font-medium rounded-md bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-              >
-                Reset to Defaults
-              </button>
-            )}
-          </div>
-
-          {/* Instructions */}
-          <div className="mb-6 flex flex-col md:flex-row gap-4">
-            <div className="md:w-1/2 rounded-lg border border-border bg-gray-50 dark:bg-gray-800/50 px-4 py-3">
-              <p className="text-sm font-medium text-gray-900 dark:text-white mb-2">How to use the color editor</p>
-              <ol className="text-sm text-gray-600 dark:text-gray-400 space-y-1 list-decimal list-inside">
-                <li>Click the <strong className="text-gray-900 dark:text-white">Brand Blue</strong> or <strong className="text-gray-900 dark:text-white">Secondary</strong> swatch (marked with a pencil icon) to open the color picker</li>
-                <li>Choose a new color. The rest of the palette will automatically adapt to maintain WCAG AA contrast ratios (4.5:1)</li>
-                <li>Use the preview bar at the bottom to navigate affected pages, then <strong className="text-gray-900 dark:text-white">Save</strong>, <strong className="text-gray-900 dark:text-white">Discard</strong>, or <strong className="text-gray-900 dark:text-white">Undo</strong> your changes</li>
+          <div className="flex flex-col lg:flex-row lg:items-stretch gap-3 mb-4">
+            <div className="flex items-center justify-between lg:w-[20%]">
+              <SectionHeader
+                title={content.designSystem.title}
+                subtitle={content.designSystem.subtitle}
+                className=""
+              />
+              <div className="lg:hidden">
+                {unlocked && (
+                  <button
+                    onClick={() => setShowResetModal(true)}
+                    className="px-2 py-1 text-[10px] font-medium rounded bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                  >
+                    Reset
+                  </button>
+                )}
+              </div>
+            </div>
+            <div className="lg:w-[35%] rounded border border-border bg-gray-50 dark:bg-gray-800/50 px-2.5 py-1.5 flex flex-col justify-center">
+              <p className="text-[9px] font-medium text-gray-900 dark:text-white mb-0.5">How to use</p>
+              <ol className="text-[8px] text-gray-500 dark:text-gray-400 space-y-0 list-decimal list-inside leading-tight">
+                <li>Click <strong className="text-gray-700 dark:text-gray-200">Brand</strong> or <strong className="text-gray-700 dark:text-gray-200">Secondary</strong> swatch to pick a color</li>
+                <li>Palette auto-adapts for WCAG AA contrast (4.5:1)</li>
+                <li><strong className="text-gray-700 dark:text-gray-200">Save</strong>, <strong className="text-gray-700 dark:text-gray-200">Discard</strong>, or <strong className="text-gray-700 dark:text-gray-200">Undo</strong> via the preview bar</li>
               </ol>
             </div>
-            <div className="md:w-1/2 rounded-lg border border-blue-300 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/20 px-4 py-3 flex items-center">
-              <p className="text-sm text-blue-800 dark:text-blue-200">
+            <div className="lg:w-[35%] rounded border border-blue-300 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/20 px-2.5 py-1.5 flex items-center justify-center">
+              <p className="text-[8px] text-blue-800 dark:text-blue-200 leading-tight">
                 {autoAdjustNotice || "Palette adapted to new hue. All color pairs pass WCAG AA (4.5:1). Auto-adjusted primary-foreground for contrast."}
               </p>
+            </div>
+            <div className="hidden lg:flex lg:w-[10%] items-center justify-end">
+              {unlocked && (
+                <button
+                  onClick={() => setShowResetModal(true)}
+                  className="px-2 py-1 text-[10px] font-medium rounded bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                >
+                  Reset
+                </button>
+              )}
             </div>
           </div>
 
@@ -438,7 +483,7 @@ export default function DesignSystemPage() {
 
             <div className="flex flex-col xl:flex-row gap-6">
               {/* Color swatches */}
-              <div className="xl:flex-1 min-w-0 rounded-lg border border-border bg-background p-4">
+              <div className="xl:w-[40%] min-w-0 rounded-lg border border-border bg-background p-4">
                 <div className="grid grid-cols-3 sm:grid-cols-4 xl:grid-cols-3 gap-2">
                   {EDITABLE_VARS.map(({ key, label }) => {
                     const isEditable = key === "--brand" || key === "--secondary";
@@ -495,7 +540,7 @@ export default function DesignSystemPage() {
               </div>
 
               {/* Preview panel */}
-              <div className="xl:flex-1 rounded-lg border border-border bg-background p-4 space-y-4">
+              <div className="xl:w-[30%] rounded-lg border border-border bg-background p-4 space-y-4">
                 <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Chips</p>
                 <div className="flex flex-wrap gap-2">
                   <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium" style={{ backgroundColor: "hsl(var(--brand))", color: "white" }}>
@@ -512,6 +557,12 @@ export default function DesignSystemPage() {
                   </span>
                   <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>
                     Destructive
+                  </span>
+                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium" style={{ backgroundColor: "hsl(var(--success))", color: "hsl(var(--success-foreground))" }}>
+                    Success
+                  </span>
+                  <span className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))" }}>
+                    Warning
                   </span>
                 </div>
                 <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Buttons</p>
@@ -533,6 +584,12 @@ export default function DesignSystemPage() {
                   </button>
                   <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors" style={{ backgroundColor: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" }}>
                     Muted
+                  </button>
+                  <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors" style={{ backgroundColor: "hsl(var(--success))", color: "hsl(var(--success-foreground))" }}>
+                    Success
+                  </button>
+                  <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))" }}>
+                    Warning
                   </button>
                 </div>
                 <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Spacing</p>
@@ -568,18 +625,20 @@ export default function DesignSystemPage() {
               </div>
 
               {/* Shadows column */}
-              <div id="shadows" className="xl:flex-1 min-w-0 scroll-mt-24 rounded-lg border border-border p-4 flex flex-col" style={{ background: "linear-gradient(135deg, hsl(var(--secondary) / 0.08), hsl(var(--brand) / 0.06))" }}>
+              <div id="shadows" className="xl:w-[30%] min-w-0 scroll-mt-24 rounded-2xl border border-white/20 dark:border-white/10 p-4 flex flex-col overflow-hidden" style={{ background: "linear-gradient(135deg, hsl(var(--brand) / 0.12), hsl(var(--secondary) / 0.18), hsl(var(--brand) / 0.08))" }}>
                 <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3">Shadows</p>
                 <div className="grid grid-cols-2 gap-3 flex-1">
                   {designTokens.shadows.map((shadow) => (
                     <div key={shadow.name} className="text-center flex flex-col">
                       <div
-                        className="w-full flex-1 min-h-[5rem] rounded-2xl mb-2 border border-white/30 dark:border-white/10"
+                        className="w-full flex-1 min-h-[5rem] rounded-2xl mb-2"
                         style={{
-                          boxShadow: shadow.value,
-                          background: "rgba(255,255,255,0.45)",
-                          backdropFilter: "blur(12px) saturate(1.4)",
-                          WebkitBackdropFilter: "blur(12px) saturate(1.4)",
+                          boxShadow: `${shadow.value}, inset 0 1px 1px rgba(255,255,255,0.6), inset 0 -1px 1px rgba(0,0,0,0.04)`,
+                          background: "linear-gradient(145deg, rgba(255,255,255,0.7), rgba(255,255,255,0.35))",
+                          backdropFilter: "blur(20px) saturate(1.8) brightness(1.1)",
+                          WebkitBackdropFilter: "blur(20px) saturate(1.8) brightness(1.1)",
+                          border: "1px solid rgba(255,255,255,0.5)",
+                          borderBottom: "1px solid rgba(255,255,255,0.2)",
                         }}
                       />
                       <p className="text-xs font-medium text-gray-900 dark:text-white">
