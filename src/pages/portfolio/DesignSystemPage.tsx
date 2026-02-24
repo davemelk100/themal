@@ -287,9 +287,8 @@ export function applyStoredThemeColors() {
 
 export default function DesignSystemPage() {
   const [colors, setColors] = useState<Record<string, string>>({});
-  // Track which primary swatch is "active" — the other gets locked.
-  // null = both unlocked, "--brand" = brand active (secondary locked), "--secondary" = secondary active (brand locked)
-  const [activePrimary, setActivePrimary] = useState<string | null>(null);
+  // When brand color is changed, secondary and tertiary lock until explicitly unlocked
+  const [brandLocked, setBrandLocked] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
   const [autoAdjustNotice, setAutoAdjustNotice] = useState<string | null>(null);
 
@@ -413,6 +412,13 @@ export default function DesignSystemPage() {
       shiftExisting("--muted-foreground");
       shiftExisting("--border");
       shiftExisting("--foreground");
+      deriveSemanticColors();
+    } else if (changedKey === "--accent") {
+      // Accent change: muted follows accent hue, brand/secondary stay unchanged
+      shiftExisting("--accent-foreground");
+      shiftExisting("--muted");
+      shiftExisting("--muted-foreground");
+      shiftExisting("--border");
       deriveSemanticColors();
     }
 
@@ -538,8 +544,8 @@ export default function DesignSystemPage() {
     pending[key] = hsl;
 
     // Derive palette when brand or secondary changes; lock the other swatch
-    if (key === "--brand" || key === "--secondary") {
-      setActivePrimary(key);
+    if (key === "--brand" || key === "--secondary" || key === "--accent") {
+      if (key === "--brand") setBrandLocked(true);
       const derived = derivePaletteFromChange(key, hsl, newColors);
       for (const [dKey, dVal] of Object.entries(derived)) {
         history.push({ key: dKey, previousValue: newColors[dKey] || "" });
@@ -565,7 +571,7 @@ export default function DesignSystemPage() {
 
     // Show palette adaptation notice
     const adjustedKeys = Object.keys(adjustments);
-    if (key === "--brand" || key === "--secondary") {
+    if (key === "--brand" || key === "--secondary" || key === "--accent") {
       const extras = adjustedKeys.length > 0
         ? ` Auto-adjusted ${adjustedKeys.map(k => k.replace("--", "")).join(", ")} for contrast.`
         : "";
@@ -587,7 +593,7 @@ export default function DesignSystemPage() {
     storage.remove(COLOR_HISTORY_KEY);
     readCurrentColors();
     setAutoAdjustNotice(null);
-    setActivePrimary(null);
+    setBrandLocked(false);
     window.dispatchEvent(new Event("theme-pending-update"));
   };
 
@@ -636,52 +642,111 @@ export default function DesignSystemPage() {
           {/* Colors + Preview side by side */}
           <div id="colors" className="mb-10 scroll-mt-24">
 
+            {/* Hero colors row: Brand, Secondary, Tertiary */}
+            {(() => {
+              const getColorName = (hsl: string, fallback: string) => {
+                const parts = hsl.trim().split(/\s+/);
+                if (parts.length < 3) return fallback;
+                const h = parseFloat(parts[0]);
+                if (h <= 15 || h > 345) return "Red";
+                if (h <= 40) return "Orange";
+                if (h <= 65) return "Yellow";
+                if (h <= 80) return "Lime";
+                if (h <= 160) return "Green";
+                if (h <= 180) return "Teal";
+                if (h <= 200) return "Cyan";
+                if (h <= 230) return "Blue";
+                if (h <= 260) return "Indigo";
+                if (h <= 290) return "Purple";
+                if (h <= 320) return "Magenta";
+                return "Pink";
+              };
+              const renderHeroSwatch = ({ key, label }: { key: string; label: string }) => {
+                // Secondary and tertiary are locked when brand has been changed
+                const isLocked = brandLocked && key !== "--brand";
+                const isEditable = !isLocked;
+                const heroPrefix = key === "--brand" ? "Brand " : key === "--secondary" ? "Secondary " : "Tertiary ";
+                const displayLabel = colors[key]
+                  ? heroPrefix + getColorName(colors[key], label)
+                  : label;
+                const inputId = `color-input-${key}`;
+                return (
+                  <div
+                    key={key}
+                    data-color-key={key}
+                    className={`text-left flex-1 ${isEditable ? "group cursor-pointer" : "group"}`}
+                    onClick={isLocked ? () => setBrandLocked(false) : () => {
+                      const input = document.getElementById(inputId) as HTMLInputElement | null;
+                      input?.click();
+                    }}
+                  >
+                    <div className={`relative w-full h-20 rounded-lg mb-1 border border-border transition-all overflow-hidden ${isEditable ? "group-hover:ring-2 group-hover:ring-gray-400" : ""}`}>
+                      <div
+                        className="absolute inset-0"
+                        style={{
+                          backgroundColor: colors[key]
+                            ? `hsl(${colors[key]})`
+                            : undefined,
+                        }}
+                      />
+                      {isLocked && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/10 dark:bg-white/10 cursor-pointer" title="Click to unlock">
+                          <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                          </svg>
+                        </div>
+                      )}
+                      {isEditable && (
+                        <div className="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-white/80 dark:bg-black/50 flex items-center justify-center shadow-sm">
+                          <svg className="w-3 h-3 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                          </svg>
+                        </div>
+                      )}
+                      <input
+                        id={inputId}
+                        type="color"
+                        value={colors[key] ? hslStringToHex(colors[key]) : "#000000"}
+                        onChange={(e) => handleColorChange(key, e.target.value)}
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                        disabled={isLocked}
+                      />
+                    </div>
+                    <p className="text-xs font-medium text-gray-900 dark:text-white truncate">
+                      {displayLabel}
+                    </p>
+                    <p className="text-[10px] text-gray-500 dark:text-gray-400 truncate">
+                      {colors[key] ? hslStringToHex(colors[key]) : key}
+                    </p>
+                  </div>
+                );
+              };
+              const heroKeys = [
+                { key: "--brand", label: "Brand Blue" },
+                { key: "--secondary", label: "Secondary" },
+                { key: "--accent", label: "Tertiary" },
+              ];
+              return (
+                <div className="flex gap-4 mb-4">
+                  {heroKeys.map((v) => renderHeroSwatch(v))}
+                </div>
+              );
+            })()}
+
             <div className="flex flex-col xl:flex-row gap-6">
-              {/* Color swatches */}
+              {/* Color swatches (non-hero) */}
               <div className="xl:w-1/3 min-w-0 rounded-lg border border-border bg-background p-4">
                 <div className="flex items-center justify-between mb-3">
                   <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     {content.designSystem.sections.colors}
                   </p>
                 </div>
-                {(() => {
-                  const getColorName = (hsl: string, fallback: string) => {
-                    const parts = hsl.trim().split(/\s+/);
-                    if (parts.length < 3) return fallback;
-                    const h = parseFloat(parts[0]);
-                    if (h <= 15 || h > 345) return "Red";
-                    if (h <= 40) return "Orange";
-                    if (h <= 65) return "Yellow";
-                    if (h <= 80) return "Lime";
-                    if (h <= 160) return "Green";
-                    if (h <= 180) return "Teal";
-                    if (h <= 200) return "Cyan";
-                    if (h <= 230) return "Blue";
-                    if (h <= 260) return "Indigo";
-                    if (h <= 290) return "Purple";
-                    if (h <= 320) return "Magenta";
-                    return "Pink";
-                  };
-                  const renderSwatch = ({ key, label }: { key: string; label: string }, large?: boolean) => {
-                    const isPrimary = key === "--brand" || key === "--secondary";
-                    // A primary swatch is locked when the OTHER primary is active
-                    const isLocked = isPrimary && activePrimary !== null && activePrimary !== key;
-                    const isEditable = isPrimary && !isLocked;
-                    const displayLabel = isPrimary && colors[key]
-                      ? (key === "--brand" ? "Brand " : "Secondary ") + getColorName(colors[key], label)
-                      : label;
-                    const inputId = `color-input-${key}`;
-                    return (
-                      <div
-                        key={key}
-                        data-color-key={key}
-                        className={`text-left ${isEditable ? "group cursor-pointer" : isPrimary ? "group" : ""}`}
-                        onClick={isLocked ? () => setActivePrimary(null) : isEditable ? () => {
-                          const input = document.getElementById(inputId) as HTMLInputElement | null;
-                          input?.click();
-                        } : undefined}
-                      >
-                        <div className={`relative w-full ${large ? "h-16" : "h-12"} rounded-md mb-1 border border-border transition-all overflow-hidden ${isEditable ? "group-hover:ring-2 group-hover:ring-gray-400" : ""}`}>
+                <div className="grid grid-cols-6 gap-1.5">
+                  {EDITABLE_VARS
+                    .filter(v => v.key !== "--brand" && v.key !== "--secondary" && v.key !== "--accent")
+                    .map(({ key, label }) => (
+                      <div key={key} data-color-key={key} className="text-left">
+                        <div className="relative w-full h-12 rounded-md mb-1 border border-border overflow-hidden">
                           <div
                             className="absolute inset-0"
                             style={{
@@ -690,52 +755,16 @@ export default function DesignSystemPage() {
                                 : undefined,
                             }}
                           />
-                          {isLocked && (
-                            <div className="absolute inset-0 flex items-center justify-center bg-black/10 dark:bg-white/10 cursor-pointer" title="Click to unlock">
-                              <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                              </svg>
-                            </div>
-                          )}
-                          {isEditable && (
-                            <div className="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-white/80 dark:bg-black/50 flex items-center justify-center shadow-sm">
-                              <svg className="w-3 h-3 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                              </svg>
-                            </div>
-                          )}
-                          {isEditable && (
-                            <input
-                              id={inputId}
-                              type="color"
-                              value={colors[key] ? hslStringToHex(colors[key]) : "#000000"}
-                              onChange={(e) => handleColorChange(key, e.target.value)}
-                              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                            />
-                          )}
                         </div>
                         <p className="text-xs font-medium text-gray-900 dark:text-white truncate">
-                          {displayLabel}
+                          {label}
                         </p>
                         <p className="text-[10px] text-gray-500 dark:text-gray-400 truncate">
                           {colors[key] ? hslStringToHex(colors[key]) : key}
                         </p>
                       </div>
-                    );
-                  };
-                  const primarySwatches = EDITABLE_VARS.filter(v => v.key === "--brand" || v.key === "--secondary");
-                  const restSwatches = EDITABLE_VARS.filter(v => v.key !== "--brand" && v.key !== "--secondary");
-                  return (
-                    <>
-                      <div className="grid grid-cols-2 gap-1.5 mb-2">
-                        {primarySwatches.map((v) => renderSwatch(v, true))}
-                      </div>
-                      <div className="grid grid-cols-6 gap-1.5">
-                        {restSwatches.map((v) => renderSwatch(v))}
-                      </div>
-                    </>
-                  );
-                })()}
+                    ))}
+                </div>
               </div>
 
               {/* Chips & Buttons column */}

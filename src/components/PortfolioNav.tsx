@@ -46,6 +46,13 @@ const PortfolioNav = ({ currentPage, hideBorder }: { currentPage?: string; hideB
 
             <div className="hidden lg:flex flex-wrap items-center gap-2 sm:gap-3 mt-2 lg:mt-0 rounded-lg px-3 py-2" style={{ background: "linear-gradient(135deg, hsl(var(--brand) / 0.08), hsl(var(--secondary) / 0.12), hsl(var(--brand) / 0.05))" }}>
               <Link
+                to="/portfolio"
+                className={currentPage === "home" ? activeClass : inactiveClass}
+                style={currentPage === "home" ? { fontWeight: 700 } : undefined}
+              >
+                Home
+              </Link>
+              <Link
                 to="/portfolio/design-system"
                 className={currentPage === "design-system" || currentPage === "work" ? activeClass : inactiveClass}
                 style={currentPage === "design-system" || currentPage === "work" ? { fontWeight: 700 } : undefined}
