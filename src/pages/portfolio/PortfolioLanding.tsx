@@ -576,12 +576,8 @@ export default function PortfolioLanding() {
                 I'm David Melkonian, a technical product and
                 experience leader with over a decade of work at
                 the intersection of UX, software engineering, and
-                digital accessibility. I specialize in designing
-                and shipping full-stack web and mobile products
-                using Vue, React, Next.js, Python, and FastAPI,
-                with a focus on scalable design systems,
-                performance, and usability. I've led teams
-                of 30+ and established enterprise-wide standards
+                digital accessibility. I've led teams across multiple
+                continents and established enterprise-wide standards
                 for digital experience delivery.
               </p>
             </div>
@@ -603,17 +599,17 @@ export default function PortfolioLanding() {
           {/* Buttons and audit status row */}
           <div className="flex flex-row flex-wrap items-center gap-2 mb-6">
             {auditStatus === 'running' && (
-              <span aria-live="assertive" data-axe-exclude className="inline-flex items-center gap-1 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 px-4 h-9 text-xs font-medium text-gray-600 dark:text-gray-300">
+              <span aria-live="assertive" data-axe-exclude className="inline-flex items-center gap-1 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 px-4 h-9 box-border text-xs font-medium text-gray-600 dark:text-gray-300">
                 Running audit&hellip;
               </span>
             )}
             {auditStatus === 'passed' && (
-              <span aria-live="assertive" data-axe-exclude className="inline-flex items-center gap-1 rounded-lg border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30 px-4 h-9 text-xs font-medium text-green-700 dark:text-green-300">
+              <span aria-live="assertive" data-axe-exclude className="inline-flex items-center gap-1 rounded-lg border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30 px-4 h-9 box-border text-xs font-medium text-green-700 dark:text-green-300">
                 <span className="text-green-600 dark:text-green-400">&#10003;</span> <span className="hidden sm:inline">Passed WCAG AA</span><span className="sm:hidden">WCAG</span>
               </span>
             )}
             {auditStatus === 'failed' && (
-              <div aria-live="assertive" data-axe-exclude className="rounded-lg border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/30 px-4 min-h-9 py-1.5 flex flex-wrap items-center gap-x-3 gap-y-0.5">
+              <div aria-live="assertive" data-axe-exclude className="rounded-lg border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/30 px-4 h-9 box-border flex flex-wrap items-center gap-x-3 gap-y-0.5">
                 <p className="text-xs font-medium text-red-700 dark:text-red-300">
                   &#10007; {auditViolations.length} contrast issue{auditViolations.length !== 1 ? 's' : ''}:
                 </p>
