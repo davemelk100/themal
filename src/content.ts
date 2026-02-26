@@ -28,7 +28,7 @@ export const content = {
       // },
       {
         id: "work",
-        text: "Design",
+        text: "Design System",
       },
       {
         id: "articles",

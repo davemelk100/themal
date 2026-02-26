@@ -31,7 +31,7 @@ const LazyQuote = lazy(() =>
 const idToRoute: Record<string, string> = {
   "current-projects": "/portfolio/lab",
   stories: "/portfolio/stories",
-  work: "/portfolio/design",
+  work: "/portfolio/design-system",
   articles: "/portfolio/articles",
   // career: "/portfolio/career",
   testimonials: "/portfolio/testimonials",

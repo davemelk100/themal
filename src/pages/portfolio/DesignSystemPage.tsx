@@ -919,12 +919,12 @@ export default function DesignSystemPage() {
             <div className="flex flex-wrap items-center gap-2 mb-4">
               <div aria-live="assertive" aria-atomic="true" className="flex items-center">
                 {auditStatus === 'running' && (
-                  <span data-axe-exclude className="flex items-center gap-1 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 px-4 py-2 text-xs font-medium text-gray-600 dark:text-gray-300">
+                  <span data-axe-exclude className="flex items-center gap-1 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 px-4 h-9 text-xs font-medium text-gray-600 dark:text-gray-300">
                     Running audit&hellip;
                   </span>
                 )}
                 {auditStatus === 'passed' && (
-                  <span data-axe-exclude className="flex items-center gap-1 rounded-lg border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30 px-4 py-2 text-xs font-medium text-green-700 dark:text-green-300">
+                  <span data-axe-exclude className="flex items-center gap-1 rounded-lg border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30 px-4 h-9 text-xs font-medium text-green-700 dark:text-green-300">
                     <span className="text-green-600 dark:text-green-400">&#10003;</span> Passed WCAG AA
                   </span>
                 )}
@@ -965,13 +965,13 @@ export default function DesignSystemPage() {
               </div>
               <button
                 onClick={() => setShowResetModal(true)}
-                className="px-4 py-2 text-xs font-medium rounded-lg border border-border bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                className="px-4 h-9 text-xs font-medium rounded-lg border border-border bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
               >
                 Reset to Defaults
               </button>
               <button
                 onClick={() => generateCode()}
-                className="px-4 py-2 text-xs font-medium rounded-lg border border-border bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                className="px-4 h-9 text-xs font-medium rounded-lg border border-border bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
               >
                 Generate CSS
               </button>
@@ -1010,7 +1010,7 @@ export default function DesignSystemPage() {
                     setPrStatus('error');
                   }
                 }}
-                className={`px-4 py-2 text-xs font-medium rounded-lg border transition-colors ${
+                className={`px-4 h-9 text-xs font-medium rounded-lg border transition-colors ${
                   prStatus === 'error' || prStatus === 'rate-limited'
                     ? 'border-red-400 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-900/50'
                     : prStatus === 'created'
@@ -1021,12 +1021,12 @@ export default function DesignSystemPage() {
                 {prStatus === 'creating' ? 'Preparing PR...' : prStatus === 'error' ? 'Retry PR' : prStatus === 'rate-limited' ? 'Retry PR' : 'Open PR'}
               </button>
               {prStatus === 'rate-limited' && prError && (
-                <span className="inline-flex items-center px-4 py-2 text-xs font-medium rounded-lg border border-yellow-400 bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300">
+                <span className="inline-flex items-center px-4 h-9 text-xs font-medium rounded-lg border border-yellow-400 bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300">
                   {prError}
                 </span>
               )}
               {prStatus === 'created' && prUrl && (
-                <span className="inline-flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-lg border border-green-400 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300">
+                <span className="inline-flex items-center gap-2 px-4 h-9 text-xs font-medium rounded-lg border border-green-400 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300">
                   PR Created!
                   <a
                     href={prUrl}
