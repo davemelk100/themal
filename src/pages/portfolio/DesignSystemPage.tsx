@@ -1104,7 +1104,7 @@ export default function DesignSystemPage() {
                       />
                       {isEditable && (
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="bg-white/90 dark:bg-black/70 text-gray-700 dark:text-gray-200 text-[10px] font-semibold px-2 py-1 rounded-full shadow flex items-center gap-1">
+                          <span className="bg-white/90 dark:bg-black/70 text-gray-700 dark:text-gray-200 text-[10px] font-semibold w-6 h-6 sm:w-auto sm:h-auto sm:px-2 sm:py-1 rounded-full shadow flex items-center justify-center sm:justify-start gap-1">
                             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                             </svg>
