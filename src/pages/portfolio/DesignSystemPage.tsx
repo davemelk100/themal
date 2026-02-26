@@ -179,6 +179,7 @@ export const CONTRAST_PAIRS: [string, string][] = [
   ["--muted-foreground", "--muted"],
   ["--accent-foreground", "--accent"],
   ["--destructive-foreground", "--destructive"],
+  ["--success-foreground", "--success"],
   ["--warning-foreground", "--warning"],
 ];
 
@@ -331,7 +332,7 @@ export const derivePaletteFromChange = (
       const succSat = Math.min(100, newSat * 0.9);
       const succLight = Math.max(35, Math.min(55, newLight * 0.8));
       derived["--success"] = `142 ${succSat.toFixed(1)}% ${succLight.toFixed(1)}%`;
-      derived["--success-foreground"] = `142 ${(succSat * 0.3).toFixed(1)}% ${succLight > 50 ? 10 : 98}%`;
+      derived["--success-foreground"] = `0 0% 100%`;
 
       // Warning (yellow/amber family): hue 45, saturation follows brand
       const warnSat = Math.min(100, newSat * 1.05);
