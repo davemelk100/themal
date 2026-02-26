@@ -39,10 +39,6 @@ export const content = {
         text: "Design System",
       },
       {
-        id: "testimonials",
-        text: "Testimonials",
-      },
-      {
         id: "contact",
         text: "Contact",
       },

@@ -15,7 +15,7 @@ export default function GraphicsPage() {
         <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3 mb-6">
             <SectionHeader
-              title="Graphics"
+              title="UX/UI"
               subtitle="Design work and visual explorations"
               className=""
             />

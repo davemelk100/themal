@@ -48,7 +48,7 @@ const LabPage = lazy(() => import("./pages/portfolio/LabPage"));
 const ArticlesPage = lazy(() => import("./pages/portfolio/ArticlesPage"));
 // const CareerPage = lazy(() => import("./pages/portfolio/CareerPage"));
 // const ContactPage = lazy(() => import("./pages/portfolio/ContactPage"));
-const TestimonialsPage = lazy(() => import("./pages/portfolio/TestimonialsPage"));
+// const TestimonialsPage = lazy(() => import("./pages/portfolio/TestimonialsPage"));
 const DesignSystemPage = lazy(() => import("./pages/portfolio/DesignSystemPage"));
 const GraphicsPage = lazy(() => import("./pages/portfolio/GraphicsPage"));
 
@@ -162,7 +162,7 @@ function App() {
             {/* <Route path="/portfolio/design" element={<DesignPage />} /> */}
             <Route path="/portfolio/articles" element={<ArticlesPage />} />
             {/* <Route path="/portfolio/career" element={<CareerPage />} /> */}
-            <Route path="/portfolio/testimonials" element={<TestimonialsPage />} />
+            {/* <Route path="/portfolio/testimonials" element={<TestimonialsPage />} /> */}
             {/* <Route path="/portfolio/contact" element={<ContactPage />} /> */}
             <Route path="/portfolio/design-system" element={<DesignSystemPage />} />
             <Route path="/portfolio/graphics" element={<GraphicsPage />} />

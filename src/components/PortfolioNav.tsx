@@ -8,7 +8,6 @@ const navOrder = [
   "work",
   "articles",
   // "career",
-  "testimonials",
   "design-system",
 ];
 
@@ -18,7 +17,6 @@ const idToRoute: Record<string, string> = {
   work: "/portfolio/design-system",
   articles: "/portfolio/articles",
   // career: "/portfolio/career",
-  testimonials: "/portfolio/testimonials",
   "design-system": "/portfolio/design-system",
 };
 
@@ -93,7 +91,7 @@ const PortfolioNav = ({ currentPage }: { currentPage?: string }) => (
                 className={currentPage === "graphics" ? activeClass : inactiveClass}
                 style={currentPage === "graphics" ? { fontWeight: 700 } : undefined}
               >
-                Graphics
+                UX/UI
               </Link>
               <div className="ml-auto" />
               <Link

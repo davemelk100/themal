@@ -24,9 +24,6 @@ const LazyBriefcase = lazy(() =>
 const LazyMail = lazy(() =>
   import("lucide-react").then((mod) => ({ default: mod.Mail }))
 );
-const LazyQuote = lazy(() =>
-  import("lucide-react").then((mod) => ({ default: mod.Quote }))
-);
 
 const idToRoute: Record<string, string> = {
   "current-projects": "/portfolio/lab",
@@ -34,7 +31,6 @@ const idToRoute: Record<string, string> = {
   work: "/portfolio/design-system",
   articles: "/portfolio/articles",
   // career: "/portfolio/career",
-  testimonials: "/portfolio/testimonials",
   contact: "/portfolio/contact",
 };
 
@@ -77,12 +73,6 @@ const MobileTrayMenu: React.FC = () => {
             <LazyBriefcase {...iconProps} />
           </Suspense>
         );
-      case "testimonials":
-        return (
-          <Suspense fallback={fallback}>
-            <LazyQuote {...iconProps} />
-          </Suspense>
-        );
       case "contact":
         return (
           <Suspense fallback={fallback}>
@@ -109,58 +99,50 @@ const MobileTrayMenu: React.FC = () => {
       {/* Mobile Bottom Navigation */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
         <div className="flex items-center justify-between w-full px-2 py-2">
-          {content.navigation.links
-            .filter((link) => link.id !== "design-system" && link.id !== "career" && link.id !== "contact")
-            .sort((a, b) => {
-              const order = [
-                "current-projects",
-                "stories",
-                "work",
-                "articles",
-                // "career",
-                "testimonials",
-                "contact",
-              ];
-              const indexA = order.indexOf(a.id);
-              const indexB = order.indexOf(b.id);
-              return (
-                (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB)
-              );
-            })
-            .map((link) => {
-              const isActive = isActiveRoute(link.id);
-              const route = idToRoute[link.id] || "/portfolio";
-              return (
-                <Link
-                  key={link.id}
-                  to={route}
-                  className={`flex flex-col items-center gap-1 px-2 py-2 transition-colors ${
-                    isActive
-                      ? "text-brand-dynamic dark:text-white bg-brand-dynamic/10 dark:bg-gray-800 rounded-lg"
-                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
-                  }`}
-                  aria-label={`Navigate to ${link.text}`}
-                >
-                  {getNavIcon(link.id)}
-                  <span className="text-xs font-medium">{link.text}</span>
-                </Link>
-              );
-            })}
-          <Link
-            to="/case-studies"
-            className={`flex flex-col items-center gap-1 px-2 py-2 transition-colors ${
-              location.pathname === "/case-studies"
-                ? "text-brand-dynamic dark:text-white bg-brand-dynamic/10 dark:bg-gray-800 rounded-lg"
-                : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
-            }`}
-            aria-label="Navigate to Case Studies"
-          >
-            <svg className="w-6 h-6 text-brand-dynamic dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-              <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
-              <rect x="9" y="3" width="6" height="4" rx="1" />
-            </svg>
-            <span className="text-xs font-medium">Cases</span>
-          </Link>
+          {[
+            { id: "home", label: "Home", route: "/portfolio" },
+            { id: "work", label: "Design System", route: "/portfolio/design-system" },
+            { id: "case-studies", label: "Case Studies", route: "/case-studies" },
+            { id: "articles", label: "Articles", route: "/portfolio/articles" },
+            { id: "graphics", label: "UX/UI", route: "/portfolio/graphics" },
+            { id: "current-projects", label: "Lab", route: "/portfolio/lab" },
+          ].map((item) => {
+            const isActive = item.id === "home"
+              ? location.pathname === "/portfolio"
+              : item.route === "/case-studies" || item.route === "/portfolio/graphics"
+              ? location.pathname === item.route
+              : isActiveRoute(item.id);
+            return (
+              <Link
+                key={item.id}
+                to={item.route}
+                className={`flex flex-col items-center gap-1 px-2 py-2 transition-colors ${
+                  isActive
+                    ? "text-brand-dynamic dark:text-white bg-brand-dynamic/10 dark:bg-gray-800 rounded-lg"
+                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+                }`}
+                aria-label={`Navigate to ${item.label}`}
+              >
+                {item.id === "case-studies" ? (
+                  <svg className="w-6 h-6 text-brand-dynamic dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
+                    <rect x="9" y="3" width="6" height="4" rx="1" />
+                  </svg>
+                ) : item.id === "graphics" ? (
+                  <Suspense fallback={<span className="w-6 h-6">·</span>}>
+                    <LazyPalette className="w-6 h-6 text-brand-dynamic dark:text-gray-300" />
+                  </Suspense>
+                ) : item.id === "home" ? (
+                  <Suspense fallback={<span className="w-6 h-6">·</span>}>
+                    <LazyHome className="w-6 h-6 text-brand-dynamic dark:text-gray-300" />
+                  </Suspense>
+                ) : (
+                  getNavIcon(item.id)
+                )}
+                <span className="text-xs font-medium">{item.label}</span>
+              </Link>
+            );
+          })}
         </div>
       </nav>
 
@@ -205,7 +187,7 @@ const MobileTrayMenu: React.FC = () => {
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="block w-full text-left px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
                 >
-                  Graphics
+                  UX/UI
                 </Link>
                 {/* <Link
                   to="/portfolio/stories"
@@ -214,13 +196,6 @@ const MobileTrayMenu: React.FC = () => {
                 >
                   Storytelling
                 </Link> */}
-                <Link
-                  to="/portfolio/testimonials"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block w-full text-left px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
-                >
-                  Testimonials
-                </Link>
               </div>
 
               {/* Page-specific links */}

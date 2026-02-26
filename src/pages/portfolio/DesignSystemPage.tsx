@@ -167,12 +167,12 @@ const SITE_ICONS: { name: string; icon: React.LazyExoticComponent<any> }[] = [
   { name: "Layers", icon: LazyLayers },
 ];
 
-const THEME_COLORS_KEY = "ds-theme-colors";
-const PENDING_COLORS_KEY = "ds-pending-colors";
-const COLOR_HISTORY_KEY = "ds-color-history";
+export const THEME_COLORS_KEY = "ds-theme-colors";
+export const PENDING_COLORS_KEY = "ds-pending-colors";
+export const COLOR_HISTORY_KEY = "ds-color-history";
 
 // Contrast pairs: [foreground var, background var] that must meet WCAG AA (4.5:1)
-const CONTRAST_PAIRS: [string, string][] = [
+export const CONTRAST_PAIRS: [string, string][] = [
   ["--foreground", "--background"],
   ["--primary-foreground", "--primary"],
   ["--secondary-foreground", "--secondary"],
@@ -201,7 +201,7 @@ function luminance(r: number, g: number, b: number): number {
   return 0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b);
 }
 
-function contrastRatio(hsl1: string, hsl2: string): number {
+export function contrastRatio(hsl1: string, hsl2: string): number {
   const [r1, g1, b1] = hslToRgb(hsl1);
   const [r2, g2, b2] = hslToRgb(hsl2);
   const l1 = luminance(r1, g1, b1);
@@ -211,7 +211,7 @@ function contrastRatio(hsl1: string, hsl2: string): number {
   return (lighter + 0.05) / (darker + 0.05);
 }
 
-const EDITABLE_VARS = [
+export const EDITABLE_VARS = [
   { key: "--brand", label: "Brand Blue" },
   { key: "--secondary", label: "Secondary" },
   { key: "--background", label: "Background" },
@@ -233,7 +233,7 @@ const EDITABLE_VARS = [
   { key: "--ring", label: "Ring" },
 ] as const;
 
-function hslStringToHex(hsl: string): string {
+export function hslStringToHex(hsl: string): string {
   if (!hsl || !hsl.trim()) return "#000000";
   const parts = hsl.trim().split(/\s+/);
   if (parts.length < 3 || parts.some((p) => isNaN(parseFloat(p)))) return "#000000";
@@ -251,7 +251,7 @@ function hslStringToHex(hsl: string): string {
   return `#${f(0)}${f(8)}${f(4)}`;
 }
 
-function hexToHslString(hex: string): string {
+export function hexToHslString(hex: string): string {
   const r = parseInt(hex.slice(1, 3), 16) / 255;
   const g = parseInt(hex.slice(3, 5), 16) / 255;
   const b = parseInt(hex.slice(5, 7), 16) / 255;
@@ -283,56 +283,8 @@ export function applyStoredThemeColors() {
   }
 }
 
-export default function DesignSystemPage() {
-  const [colors, setColors] = useState<Record<string, string>>({});
-  const [showResetModal, setShowResetModal] = useState(false);
-  const [auditStatus, setAuditStatus] = useState<'idle' | 'running' | 'passed' | 'failed'>('idle');
-  const [auditViolations, setAuditViolations] = useState<{ selector: string; text: string }[]>([]);
-  const [generatedCode, setGeneratedCode] = useState<string | null>(null);
-  const [codeCopied, setCodeCopied] = useState(false);
-  const [prStatus, setPrStatus] = useState<'idle' | 'creating' | 'created' | 'error' | 'rate-limited'>('idle');
-  const [prUrl, setPrUrl] = useState<string | null>(null);
-  const [prError, setPrError] = useState<string | null>(null);
-
-  const readCurrentColors = useCallback(() => {
-    const style = getComputedStyle(document.documentElement);
-    const current: Record<string, string> = {};
-    let hasEmpty = false;
-    EDITABLE_VARS.forEach(({ key }) => {
-      const val = style.getPropertyValue(key).trim();
-      current[key] = val;
-      if (!val) hasEmpty = true;
-    });
-    setColors(current);
-    // Retry after a short delay if any CSS variable hasn't resolved yet
-    if (hasEmpty) {
-      setTimeout(() => {
-        const retryStyle = getComputedStyle(document.documentElement);
-        const retried: Record<string, string> = {};
-        EDITABLE_VARS.forEach(({ key }) => {
-          retried[key] = retryStyle.getPropertyValue(key).trim();
-        });
-        setColors(retried);
-      }, 100);
-    }
-  }, []);
-
-  useEffect(() => {
-    applyStoredThemeColors();
-    readCurrentColors();
-
-    // Re-read colors when ThemePreviewBar discards/undoes changes
-    const handlePendingUpdate = () => {
-      // Small delay to let inline styles be removed first
-      setTimeout(() => readCurrentColors(), 50);
-    };
-    window.addEventListener("theme-pending-update", handlePendingUpdate);
-    return () => window.removeEventListener("theme-pending-update", handlePendingUpdate);
-  }, [readCurrentColors]);
-
-
-  // When brand or secondary changes, derive related palette colors by shifting hue
-  const derivePaletteFromChange = (
+// When brand or secondary changes, derive related palette colors by shifting hue
+export const derivePaletteFromChange = (
     changedKey: string,
     newHsl: string,
     currentColors: Record<string, string>,
@@ -426,7 +378,7 @@ export default function DesignSystemPage() {
     return derived;
   };
 
-  const autoAdjustContrast = (
+export const autoAdjustContrast = (
     newColors: Record<string, string>,
   ): Record<string, string> => {
     const adjustments: Record<string, string> = {};
@@ -528,7 +480,51 @@ export default function DesignSystemPage() {
       working[fgKey] = adjusted;
     }
     return adjustments;
-  };
+};
+
+export default function DesignSystemPage() {
+  const [colors, setColors] = useState<Record<string, string>>({});
+  const [showResetModal, setShowResetModal] = useState(false);
+  const [auditStatus, setAuditStatus] = useState<'idle' | 'running' | 'passed' | 'failed'>('idle');
+  const [auditViolations, setAuditViolations] = useState<{ selector: string; text: string }[]>([]);
+  const [generatedCode, setGeneratedCode] = useState<string | null>(null);
+  const [codeCopied, setCodeCopied] = useState(false);
+  const [prStatus, setPrStatus] = useState<'idle' | 'creating' | 'created' | 'error' | 'rate-limited'>('idle');
+  const [prUrl, setPrUrl] = useState<string | null>(null);
+  const [prError, setPrError] = useState<string | null>(null);
+
+  const readCurrentColors = useCallback(() => {
+    const style = getComputedStyle(document.documentElement);
+    const current: Record<string, string> = {};
+    let hasEmpty = false;
+    EDITABLE_VARS.forEach(({ key }) => {
+      const val = style.getPropertyValue(key).trim();
+      current[key] = val;
+      if (!val) hasEmpty = true;
+    });
+    setColors(current);
+    if (hasEmpty) {
+      setTimeout(() => {
+        const retryStyle = getComputedStyle(document.documentElement);
+        const retried: Record<string, string> = {};
+        EDITABLE_VARS.forEach(({ key }) => {
+          retried[key] = retryStyle.getPropertyValue(key).trim();
+        });
+        setColors(retried);
+      }, 100);
+    }
+  }, []);
+
+  useEffect(() => {
+    applyStoredThemeColors();
+    readCurrentColors();
+
+    const handlePendingUpdate = () => {
+      setTimeout(() => readCurrentColors(), 50);
+    };
+    window.addEventListener("theme-pending-update", handlePendingUpdate);
+    return () => window.removeEventListener("theme-pending-update", handlePendingUpdate);
+  }, [readCurrentColors]);
 
   const generateCode = async () => {
     // CSS custom properties
@@ -897,35 +893,29 @@ export default function DesignSystemPage() {
       <section className="pt-4 pb-2 sm:pb-3 lg:pb-4 xl:pb-6 relative">
         <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
           {/* Title row */}
-          <div className="mb-4">
+          <div className="mb-8">
             <SectionHeader
               title={content.designSystem.title}
               subtitle={content.designSystem.subtitle}
               className=""
             />
+            <p className="text-muted-foreground text-sm mt-2">
+              Explore the interactive design system powering this site. Pick a brand color and watch every token, including primary, secondary, accent, and more, transform in real time with automatic WCAG AA contrast correction.
+            </p>
           </div>
-          <div className="flex flex-col lg:flex-row lg:items-start gap-4 mb-4">
-            <div className="lg:w-[20%]">
-              <div className="text-xs text-muted-foreground leading-relaxed space-y-2">
-                <p>Pick any brand color and watch the entire palette transform. Every token — primary, secondary, accent, muted, border, and foreground — shifts automatically to stay in harmony.</p>
-                <p>Behind the scenes, each color pair is validated against WCAG AA contrast standards in real time. If anything falls short of the 4.5:1 minimum, the system corrects it instantly — adjusting lightness until every ratio passes.</p>
-                <p>Your brand color stays protected too: if it's too light for the background, it darkens just enough to remain accessible. The result is a fully legible interface, no matter what color you choose.</p>
-              </div>
-            </div>
-            {/* Colors + Preview side by side */}
-            <div id="colors" className="lg:flex-1 min-w-0 scroll-mt-24">
+          <div id="colors" className="scroll-mt-24">
 
             {/* WCAG badge, Reset, Generate CSS */}
-            <div className="flex flex-wrap items-center gap-2 mb-4">
-              <div aria-live="assertive" aria-atomic="true" className="flex items-center">
+            <div className="flex flex-wrap items-stretch gap-2 mb-4">
+              <div aria-live="assertive" aria-atomic="true" className="flex items-stretch">
                 {auditStatus === 'running' && (
-                  <span data-axe-exclude className="flex items-center gap-1 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 px-4 h-9 text-xs font-medium text-gray-600 dark:text-gray-300">
+                  <span data-axe-exclude className="flex items-center gap-1 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 px-4 text-xs font-medium text-gray-600 dark:text-gray-300">
                     Running audit&hellip;
                   </span>
                 )}
                 {auditStatus === 'passed' && (
-                  <span data-axe-exclude className="flex items-center gap-1 rounded-lg border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30 px-4 h-9 text-xs font-medium text-green-700 dark:text-green-300">
-                    <span className="text-green-600 dark:text-green-400">&#10003;</span> Passed WCAG AA
+                  <span data-axe-exclude className="flex items-center gap-1 rounded-lg border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30 px-4 text-xs font-medium text-green-700 dark:text-green-300">
+                    <span className="text-green-600 dark:text-green-400">&#10003;</span> <span className="hidden sm:inline">Passed WCAG AA</span><span className="sm:hidden">WCAG</span>
                   </span>
                 )}
                 {auditStatus === 'failed' && (
@@ -967,13 +957,13 @@ export default function DesignSystemPage() {
                 onClick={() => setShowResetModal(true)}
                 className="px-4 h-9 text-xs font-medium rounded-lg border border-border bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
               >
-                Reset to Defaults
+                <span className="hidden sm:inline">Reset to Defaults</span><span className="sm:hidden">Reset</span>
               </button>
               <button
                 onClick={() => generateCode()}
                 className="px-4 h-9 text-xs font-medium rounded-lg border border-border bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
               >
-                Generate CSS
+                <span className="hidden sm:inline">Generate CSS</span><span className="sm:hidden">CSS</span>
               </button>
               <button
                 disabled={prStatus === 'creating'}
@@ -1236,7 +1226,7 @@ export default function DesignSystemPage() {
                 <div className="grid grid-cols-6 gap-2">
                   <Suspense fallback={null}>
                     {SITE_ICONS.map(({ name, icon: Icon }) => (
-                      <div key={name} className="flex items-center justify-center p-2 rounded-lg hover:bg-muted/50 transition-colors" title={name}>
+                      <div key={name} className="bg-brand-dynamic/10 dark:bg-brand-dynamic/20 hover:bg-brand-dynamic/20 dark:hover:bg-brand-dynamic/30 rounded-full p-2 shadow-sm hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center" title={name}>
                         <Icon className="h-5 w-5 text-brand-dynamic" aria-label={name} role="img" />
                       </div>
                     ))}
@@ -1274,7 +1264,6 @@ export default function DesignSystemPage() {
                 </div>
               </div>
             )}
-            </div>
           </div>
 
         </div>
