@@ -477,7 +477,7 @@ describe("constants integrity", () => {
   });
 
   it("CONTRAST_PAIRS references valid EDITABLE_VARS keys", () => {
-    const validKeys = new Set(EDITABLE_VARS.map((v) => v.key));
+    const validKeys = new Set<string>(EDITABLE_VARS.map((v) => v.key));
     for (const [fg, bg] of CONTRAST_PAIRS) {
       expect(validKeys.has(fg)).toBe(true);
       expect(validKeys.has(bg)).toBe(true);
