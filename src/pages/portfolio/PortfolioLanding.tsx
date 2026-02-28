@@ -743,7 +743,7 @@ export default function PortfolioLanding() {
                 {prevColors && (
                   <button
                     onClick={handleUndo}
-                    className="h-full px-2 text-xs font-semibold transition-colors hover:opacity-80 flex items-center gap-1 border-l"
+                    className="h-full pl-2 pr-4 text-xs font-semibold transition-colors hover:opacity-80 flex items-center gap-1 border-l"
                     style={{ borderColor: "hsl(var(--accent-foreground) / 0.3)" }}
                   >
                     <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 10h10a5 5 0 010 10H9m-6-10l4-4m-4 4l4 4" /></svg>
