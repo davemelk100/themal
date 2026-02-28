@@ -1016,7 +1016,7 @@ export default function DesignSystemPage() {
                     {content.designSystem.sections.colors}
                   </p>
                 </div>
-                <div className="grid grid-cols-3 gap-1.5">
+                <div className="grid grid-cols-4 gap-1.5">
                   {EDITABLE_VARS
                     .filter(v => !["--brand", "--secondary", "--accent", "--background", "--foreground", "--primary"].includes(v.key))
                     .map(({ key, label }) => {
@@ -1028,7 +1028,7 @@ export default function DesignSystemPage() {
                       const hexCode = hsl ? hslStringToHex(hsl) : "";
                       return (
                       <div key={key} data-color-key={key} className="text-left">
-                        <div className="relative w-full aspect-square rounded-md mb-1 overflow-hidden flex items-center justify-center shadow-md">
+                        <div className="relative h-12 w-12 rounded-md mb-1 overflow-hidden flex items-center justify-center shadow-md">
                           <div
                             className="absolute inset-0"
                             style={{
