@@ -21,7 +21,7 @@ const idToRoute: Record<string, string> = {
 };
 
 const activeClass =
-  "text-brand-dynamic dark:text-white px-3 py-2 rounded-md bg-accent-dynamic/10";
+  "text-brand-dynamic px-3 py-2 rounded-md bg-accent-dynamic/10";
 const inactiveClass =
   "hover:text-brand-dynamic transition-colors px-3 py-2 rounded-md";
 
@@ -37,8 +37,8 @@ const PortfolioNav = ({ currentPage }: { currentPage?: string }) => (
               to="/portfolio"
               className="no-underline inline-flex items-center gap-3 flex-shrink-0"
             >
-              <MelkonianLogo className="w-14 h-14 sm:w-20 sm:h-20 text-brand-dynamic dark:text-white" />
-              <h1 className="tracking-tighter mb-0 title-font leading-none relative z-10 text-left text-brand-dynamic dark:text-white">
+              <MelkonianLogo className="w-14 h-14 sm:w-20 sm:h-20 text-brand-dynamic" />
+              <h1 className="tracking-tighter mb-0 title-font leading-none relative z-10 text-left text-brand-dynamic">
                 {content.siteInfo.subtitle}
               </h1>
             </Link>

@@ -6,9 +6,12 @@ export default defineConfig({
   plugins: [react()],
   base: "/",
   resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./"),
-    },
+    alias: [
+      { find: "@", replacement: path.resolve(__dirname, "./") },
+      // Redirect lucide-react barrel to custom barrel with deep imports only
+      // This reduces the bundle from 648KB to ~30KB by avoiding the full icon barrel
+      { find: /^lucide-react$/, replacement: path.resolve(__dirname, "src/lib/lucide-icons.ts") },
+    ],
   },
   server: {
     proxy: {
@@ -40,7 +43,6 @@ export default defineConfig({
           const normalizedId = id.replace(/\\/g, "/");
 
           // Preserve content.ts as it has side effects (data exports)
-          // This is critical - content.ts must not be tree-shaken away
           if (
             (normalizedId.includes("/content.ts") ||
               normalizedId.endsWith("content.ts")) &&
@@ -59,13 +61,19 @@ export default defineConfig({
           if (normalizedId.endsWith(".css")) {
             return true;
           }
-          // Preserve all node_modules - they may have side effects
-          // This prevents empty vendor chunks and ensures dependencies work
+          // Packages that declare sideEffects: false - explicitly mark as side-effect-free
+          // to enable tree-shaking of unused exports (e.g., unused icons)
+          if (
+            normalizedId.includes("node_modules/lucide-react") ||
+            normalizedId.includes("node_modules/@radix-ui/react-icons")
+          ) {
+            return false;
+          }
+          // Other node_modules: preserve (they may have side effects)
           if (normalizedId.includes("node_modules")) {
             return true;
           }
-          // Preserve application code - don't tree-shake it away
-          // Only tree-shake unused exports, not entire modules
+          // Application code: preserve modules (dynamic imports need this)
           return true;
         },
         propertyReadSideEffects: false,
@@ -85,8 +93,6 @@ export default defineConfig({
     // Exclude large dependencies that are only used in lazy-loaded components
     // This prevents them from being pre-bundled and blocking the critical path in dev mode
     exclude: [
-      "lucide-react",
-      "@radix-ui/react-icons",
       "framer-motion", // Only used in lazy-loaded pages/components
     ],
     // Force exclude to prevent pre-bundling even if imported

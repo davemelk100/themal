@@ -98,7 +98,7 @@ const Discogs: React.FC = () => {
     */
 
     return (
-        <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white p-8 font-serif leading-relaxed">
+        <div className="min-h-screen bg-white dark:bg-black text-foreground p-8 font-serif leading-relaxed">
             <div className="max-w-4xl mx-auto space-y-12">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                     <h1 className="text-3xl font-bold tracking-tight">Discogs</h1>
@@ -152,7 +152,7 @@ const Discogs: React.FC = () => {
 
                 {files.length === 0 && (
                     <div className="text-center py-20 border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-xl">
-                        <p className="text-gray-500 dark:text-gray-400 font-sans">
+                        <p className="text-muted-foreground font-sans">
                             No records to show yet.
                         </p>
                     </div>

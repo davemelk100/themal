@@ -18,13 +18,13 @@ export default function TestimonialsPage() {
                 key={index}
                 className="border-l-2 border-accent-dynamic/60 pl-4"
               >
-                <p className="text-gray-700 dark:text-gray-300 leading-relaxed italic">
+                <p className="text-foreground/80 leading-relaxed italic">
                   "{testimonial.quote}"
                 </p>
-                <p className="mt-2 font-semibold text-gray-900 dark:text-white">
+                <p className="mt-2 font-semibold text-foreground">
                   {testimonial.author}
                 </p>
-                <p className="text-gray-500 dark:text-gray-400 text-sm">
+                <p className="text-muted-foreground text-sm">
                   {testimonial.role}
                 </p>
               </div>

@@ -4,6 +4,76 @@ import storage from "../../utils/storage";
 export const THEME_COLORS_KEY = "ds-theme-colors";
 export const PENDING_COLORS_KEY = "ds-pending-colors";
 export const COLOR_HISTORY_KEY = "ds-color-history";
+export const CONTRAST_KNOWLEDGE_KEY = "ds-contrast-knowledge";
+
+/** A learned contrast correction: when a background falls in a certain hue/lightness range,
+ *  a specific foreground key needed a specific value to pass WCAG AA. */
+export interface ContrastCorrection {
+  bgHueRange: [number, number];   // e.g. [40, 60] for yellows
+  bgLightRange: [number, number]; // e.g. [0, 15] for dark backgrounds
+  fgKey: string;                  // e.g. "--foreground"
+  correctedValue: string;         // e.g. "0 0% 100%"
+}
+
+/** Save a contrast correction to the knowledge base. Deduplicates by overlapping ranges. */
+export function saveContrastCorrection(bgHsl: string, fgKey: string, correctedValue: string) {
+  const parts = bgHsl.trim().split(/\s+/);
+  if (parts.length < 3) return;
+  const bgHue = parseFloat(parts[0]);
+  const bgLight = parseFloat(parts[2]);
+  const hueMargin = 15;
+  const lightMargin = 10;
+
+  const corrections = storage.get<ContrastCorrection[]>(CONTRAST_KNOWLEDGE_KEY) || [];
+
+  // Check if a similar correction already exists
+  const existing = corrections.find(c =>
+    c.fgKey === fgKey &&
+    bgHue >= c.bgHueRange[0] && bgHue <= c.bgHueRange[1] &&
+    bgLight >= c.bgLightRange[0] && bgLight <= c.bgLightRange[1]
+  );
+  if (existing) {
+    existing.correctedValue = correctedValue;
+  } else {
+    corrections.push({
+      bgHueRange: [
+        Math.max(0, bgHue - hueMargin),
+        Math.min(360, bgHue + hueMargin),
+      ],
+      bgLightRange: [
+        Math.max(0, bgLight - lightMargin),
+        Math.min(100, bgLight + lightMargin),
+      ],
+      fgKey,
+      correctedValue,
+    });
+  }
+
+  // Cap at 100 entries
+  if (corrections.length > 100) corrections.splice(0, corrections.length - 100);
+  storage.set(CONTRAST_KNOWLEDGE_KEY, corrections);
+}
+
+/** Look up known corrections for a given background HSL. Returns a map of fgKey → correctedValue. */
+export function applyKnownCorrections(bgHsl: string, lockedKeys: Set<string>): Record<string, string> {
+  const parts = bgHsl.trim().split(/\s+/);
+  if (parts.length < 3) return {};
+  const bgHue = parseFloat(parts[0]);
+  const bgLight = parseFloat(parts[2]);
+
+  const corrections = storage.get<ContrastCorrection[]>(CONTRAST_KNOWLEDGE_KEY) || [];
+  const result: Record<string, string> = {};
+
+  for (const c of corrections) {
+    if (lockedKeys.has(c.fgKey)) continue;
+    const hueMatch = bgHue >= c.bgHueRange[0] && bgHue <= c.bgHueRange[1];
+    const lightMatch = bgLight >= c.bgLightRange[0] && bgLight <= c.bgLightRange[1];
+    if (hueMatch && lightMatch) {
+      result[c.fgKey] = c.correctedValue;
+    }
+  }
+  return result;
+}
 
 // Contrast pairs: [foreground var, background var] that must meet WCAG AA (4.5:1)
 export const CONTRAST_PAIRS: [string, string][] = [
@@ -391,23 +461,20 @@ export const autoAdjustContrast = (
       }
     }
 
-    // Final safety: ensure --foreground is pure black or white for the current background
+    // Final safety: ensure --foreground, --card-foreground, --popover-foreground are always
+    // achromatic (pure black or white) — chromatic foreground colors look out of place.
     const finalBg = working["--background"];
     if (finalBg && !locked.has("--foreground")) {
       const bestFg = fgForBg(finalBg);
-      if (contrastRatio(working["--foreground"] || bestFg, finalBg) < 4.6) {
-        adjustments["--foreground"] = bestFg;
-        working["--foreground"] = bestFg;
-      }
+      adjustments["--foreground"] = bestFg;
+      working["--foreground"] = bestFg;
     }
     for (const [fgK, bgK] of [["--card-foreground", "--card"], ["--popover-foreground", "--popover"]] as const) {
       const bgV = working[bgK];
       if (bgV && !locked.has(fgK)) {
         const bestFg = fgForBg(bgV);
-        if (contrastRatio(working[fgK] || bestFg, bgV) < 4.6) {
-          adjustments[fgK] = bestFg;
-          working[fgK] = bestFg;
-        }
+        adjustments[fgK] = bestFg;
+        working[fgK] = bestFg;
       }
     }
     if (finalBg && !locked.has("--muted-foreground")) {
@@ -495,6 +562,13 @@ export const generateHarmonyPalette = (
   if (!locked.has('--accent')) result['--accent'] = accentHsl;
   Object.assign(result, secDerived, accDerived);
 
+  // Apply known corrections from the knowledge base
+  const bgForKnowledge = currentColors['--background'];
+  if (bgForKnowledge) {
+    const knownFixes = applyKnownCorrections(bgForKnowledge, locked);
+    Object.assign(result, knownFixes);
+  }
+
   const fullColors = { ...currentColors, ...result };
   const adjustments = autoAdjustContrast(fullColors, locked);
   Object.assign(result, adjustments);
@@ -579,6 +653,13 @@ export const generateRandomPalette = (
     const accDerived = derivePaletteFromChange('--accent', result['--accent'] || currentColors['--accent'], merged, locked);
     Object.assign(result, accDerived);
     merged = { ...merged, ...accDerived };
+  }
+
+  // Apply known corrections from the knowledge base before autoAdjustContrast
+  const bgForKnowledge = result['--background'] || currentColors['--background'];
+  if (bgForKnowledge) {
+    const knownFixes = applyKnownCorrections(bgForKnowledge, locked);
+    Object.assign(result, knownFixes);
   }
 
   const fullColors = { ...currentColors, ...result };

@@ -291,7 +291,7 @@ const AudioTranscript = () => {
 
   return (
     <div
-      className="min-h-screen bg-white text-gray-900 transition-colors duration-300 dark:bg-gray-900 dark:text-white font-serif roboto-serif-page"
+      className="min-h-screen bg-white text-gray-900 transition-colors duration-300 dark:bg-gray-900 text-foreground font-serif roboto-serif-page"
       style={{ fontFamily: "Roboto Serif, serif !important" }}
     >
       <Suspense
@@ -337,8 +337,8 @@ const AudioTranscript = () => {
                         onClick={() => setMode("audio")}
                         className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-200 ${
                           mode === "audio"
-                            ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm"
-                            : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                            ? "bg-white dark:bg-gray-700 text-foreground shadow-sm"
+                            : "text-foreground/70 hover:text-gray-900 dark:hover:text-white"
                         }`}
                       >
                         <Suspense fallback={<span className="w-4 h-4">🎧</span>}>
@@ -350,8 +350,8 @@ const AudioTranscript = () => {
                         onClick={() => setMode("video")}
                         className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-200 ${
                           mode === "video"
-                            ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm"
-                            : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                            ? "bg-white dark:bg-gray-700 text-foreground shadow-sm"
+                            : "text-foreground/70 hover:text-gray-900 dark:hover:text-white"
                         }`}
                       >
                         <Suspense fallback={<span className="w-4 h-4">🎥</span>}>
@@ -388,7 +388,7 @@ const AudioTranscript = () => {
                     {/* Audio Player Section */}
                     <div className="p-6 border-b border-gray-200 dark:border-gray-700">
                       <div className="mb-4">
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
+                        <h3 className="text-lg font-semibold text-foreground mb-1">
                           {track.title}
                         </h3>
                       </div>
@@ -411,7 +411,7 @@ const AudioTranscript = () => {
                         </button>
 
                         <div className="flex-1">
-                          <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
+                          <div className="flex justify-between text-xs text-muted-foreground mb-1">
                             <span>
                               {formatTime(currentTime[track.id] || 0)}
                             </span>
@@ -432,8 +432,8 @@ const AudioTranscript = () => {
 
                       {/* Volume Control */}
                       <div className="flex items-center gap-2">
-                        <Suspense fallback={<span className="w-4 h-4 text-gray-500 dark:text-gray-400">🔊</span>}>
-                          <LazyVolume2 className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                        <Suspense fallback={<span className="w-4 h-4 text-muted-foreground">🔊</span>}>
+                          <LazyVolume2 className="w-4 h-4 text-muted-foreground" />
                         </Suspense>
                         <input
                           type="range"
@@ -448,11 +448,11 @@ const AudioTranscript = () => {
 
                     {/* Transcript Section */}
                     <div className="p-6">
-                      <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
+                      <h4 className="text-sm font-semibold text-foreground mb-3">
                         Transcript
                       </h4>
                       <div className="h-48 overflow-y-auto bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
-                        <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
+                        <p className="text-sm text-foreground/80 leading-relaxed whitespace-pre-line">
                           {track.transcript}
                         </p>
                       </div>
@@ -505,7 +505,7 @@ const AudioTranscript = () => {
                     {/* Video Player Section */}
                     <div className="p-6 border-b border-gray-200 dark:border-gray-700">
                       <div className="mb-4">
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
+                        <h3 className="text-lg font-semibold text-foreground mb-1">
                           {video.title}
                         </h3>
                       </div>
@@ -528,7 +528,7 @@ const AudioTranscript = () => {
                         </button>
 
                         <div className="flex-1">
-                          <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
+                          <div className="flex justify-between text-xs text-muted-foreground mb-1">
                             <span>
                               {formatTime(videoCurrentTime[video.id] || 0)}
                             </span>
@@ -554,8 +554,8 @@ const AudioTranscript = () => {
 
                       {/* Volume Control */}
                       <div className="flex items-center gap-2">
-                        <Suspense fallback={<span className="w-4 h-4 text-gray-500 dark:text-gray-400">🔊</span>}>
-                          <LazyVolume2 className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                        <Suspense fallback={<span className="w-4 h-4 text-muted-foreground">🔊</span>}>
+                          <LazyVolume2 className="w-4 h-4 text-muted-foreground" />
                         </Suspense>
                         <input
                           type="range"

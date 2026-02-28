@@ -49,7 +49,7 @@ export default function ContactPage() {
             <div>
               <label
                 htmlFor="contact-name"
-                className="block text-gray-700 dark:text-gray-300 mb-1"
+                className="block text-foreground/80 mb-1"
               >
                 Name
               </label>
@@ -64,7 +64,7 @@ export default function ContactPage() {
             <div>
               <label
                 htmlFor="contact-email"
-                className="block text-gray-700 dark:text-gray-300 mb-1"
+                className="block text-foreground/80 mb-1"
               >
                 Email
               </label>
@@ -79,7 +79,7 @@ export default function ContactPage() {
             <div>
               <label
                 htmlFor="contact-message"
-                className="block text-gray-700 dark:text-gray-300 mb-1"
+                className="block text-foreground/80 mb-1"
               >
                 Message
               </label>

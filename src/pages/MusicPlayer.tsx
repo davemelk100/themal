@@ -215,7 +215,7 @@ const MusicPlayer: React.FC = () => {
                 className={`px-6 py-3 text-lg font-semibold transition-colors border-b-2 ${
                   currentBand === "balm"
                     ? "border-purple-600 text-purple-600 dark:text-purple-400"
-                    : "border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                    : "border-transparent text-muted-foreground hover:text-gray-700 dark:hover:text-gray-300"
                 }`}
               >
                 BALM
@@ -225,7 +225,7 @@ const MusicPlayer: React.FC = () => {
                 className={`px-6 py-3 text-lg font-semibold transition-colors border-b-2 ${
                   currentBand === "full-time-bionic"
                     ? "border-purple-600 text-purple-600 dark:text-purple-400"
-                    : "border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                    : "border-transparent text-muted-foreground hover:text-gray-700 dark:hover:text-gray-300"
                 }`}
               >
                 Full Time Bionic
@@ -235,15 +235,15 @@ const MusicPlayer: React.FC = () => {
 
           {/* Header */}
           <div className="text-left mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+            <h1 className="text-4xl font-bold text-foreground mb-2">
               {currentBandInfo.name}
             </h1>
             {currentBandInfo.composer && (
-              <p className="text-lg text-gray-600 dark:text-gray-400 mb-4">
+              <p className="text-lg text-foreground/70 mb-4">
                 Music and Composition: {currentBandInfo.composer}
               </p>
             )}
-            <div className="text-sm text-gray-500 dark:text-gray-400 space-y-1">
+            <div className="text-sm text-muted-foreground space-y-1">
               {currentBandInfo.contributors && (
                 <p className="mb-4">
                   <span className="font-medium">Contributors:</span>{" "}
@@ -267,8 +267,8 @@ const MusicPlayer: React.FC = () => {
                   onClick={() => setShowInstrumentals(false)}
                   className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                     !showInstrumentals
-                      ? "bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm"
-                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                      ? "bg-white dark:bg-gray-600 text-foreground shadow-sm"
+                      : "text-foreground/70 hover:text-gray-900 dark:hover:text-white"
                   }`}
                 >
                   Regular Tracks
@@ -277,8 +277,8 @@ const MusicPlayer: React.FC = () => {
                   onClick={() => setShowInstrumentals(true)}
                   className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                     showInstrumentals
-                      ? "bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm"
-                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                      ? "bg-white dark:bg-gray-600 text-foreground shadow-sm"
+                      : "text-foreground/70 hover:text-gray-900 dark:hover:text-white"
                   }`}
                 >
                   Instrumental Tracks
@@ -289,14 +289,14 @@ const MusicPlayer: React.FC = () => {
 
           {/* Current Track Info */}
           <div className="text-left mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-2xl font-semibold text-foreground">
               {tracks[currentTrack]?.title}
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 mt-1">
+            <p className="text-lg text-foreground/70 mt-1">
               {tracks[currentTrack]?.artist}
             </p>
             <div className="flex items-center gap-2 mt-2">
-              <span className="text-sm text-gray-500 dark:text-gray-400">
+              <span className="text-sm text-muted-foreground">
                 Version:
               </span>
               <span
@@ -328,7 +328,7 @@ const MusicPlayer: React.FC = () => {
                 </button>
               )}
             </div>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 font-mono">
+            <p className="text-sm text-muted-foreground mt-2 font-mono">
               URL:{" "}
               <a
                 href={getTrackUrl(tracks[currentTrack], trackVersion)}
@@ -372,7 +372,7 @@ const MusicPlayer: React.FC = () => {
 
           {/* Progress Bar */}
           <div className="mb-6">
-            <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
+            <div className="flex justify-between text-sm text-foreground/70 mb-2">
               <span>{formatTime(currentTime)}</span>
               <span>{formatTime(duration)}</span>
             </div>
@@ -400,7 +400,7 @@ const MusicPlayer: React.FC = () => {
               className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors"
               disabled={loading}
             >
-              <SkipBack className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <SkipBack className="h-6 w-6 text-foreground/80" />
             </button>
 
             <button
@@ -420,7 +420,7 @@ const MusicPlayer: React.FC = () => {
               className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors"
               disabled={loading}
             >
-              <SkipForward className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <SkipForward className="h-6 w-6 text-foreground/80" />
             </button>
           </div>
 
@@ -432,9 +432,9 @@ const MusicPlayer: React.FC = () => {
               aria-label={isMuted ? "Unmute" : "Mute"}
             >
               {isMuted ? (
-                <VolumeX className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+                <VolumeX className="h-5 w-5 text-foreground/80" />
               ) : (
-                <Volume2 className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+                <Volume2 className="h-5 w-5 text-foreground/80" />
               )}
             </button>
             <div className="flex items-center gap-2">
@@ -453,7 +453,7 @@ const MusicPlayer: React.FC = () => {
                 }}
                 aria-label="Volume control"
               />
-              <span className="text-sm text-gray-600 dark:text-gray-400 min-w-[3rem]">
+              <span className="text-sm text-foreground/70 min-w-[3rem]">
                 {Math.round((isMuted ? 0 : volume) * 100)}%
               </span>
             </div>
@@ -461,7 +461,7 @@ const MusicPlayer: React.FC = () => {
 
           {/* Playlist */}
           <div className="space-y-2">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h3 className="text-lg font-semibold text-foreground mb-4">
               {showInstrumentals ? "Instrumental Playlist" : "Regular Playlist"}
             </h3>
             {tracks.map((track, index) => (
@@ -481,13 +481,13 @@ const MusicPlayer: React.FC = () => {
                       className={`font-medium ${
                         index === currentTrack
                           ? "text-purple-900 dark:text-purple-100"
-                          : "text-gray-900 dark:text-white"
+                          : "text-foreground"
                       }`}
                     >
                       {track.title}
                     </p>
                   </div>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                  <span className="text-sm text-muted-foreground">
                     {track.duration}
                   </span>
                 </div>

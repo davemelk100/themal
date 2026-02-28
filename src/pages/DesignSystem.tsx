@@ -93,7 +93,7 @@ const DesignSystem: React.FC = () => {
         <div className="container mx-auto px-4 py-4 md:py-8">
           <div className="flex flex-col gap-y-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h1 className="text-5xl font-bold text-gray-900 dark:text-white mt-0 mb-2">
+              <h1 className="text-5xl font-bold text-foreground mt-0 mb-2">
                 {content.designSystem.title}
               </h1>
               <p className="text-lg text-gray-600 mt-0 mb-0">
@@ -117,7 +117,7 @@ const DesignSystem: React.FC = () => {
             <div className="flex flex-col gap-2 sm:flex-row sm:gap-3">
               <Link
                 to="/"
-                className="inline-flex items-center gap-2 w-full justify-center mb-2 sm:w-auto sm:mb-0 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                className="inline-flex items-center gap-2 w-full justify-center mb-2 sm:w-auto sm:mb-0 px-4 py-2 text-sm font-medium text-foreground/80 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
               >
                 <ArrowLeft className="h-4 w-4" />
                 {content.designSystem.backToSite}
@@ -131,36 +131,36 @@ const DesignSystem: React.FC = () => {
       <main className="container mx-auto px-2 sm:px-4 py-12">
         {/* Colors */}
         <section className="mb-16">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+          <h2 className="text-xl font-semibold text-foreground mb-6">
             {content.designSystem.sections.colors}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
             <div className="space-y-2">
               <div className="w-full h-20 bg-primary rounded-lg"></div>
               <div className="text-sm">
-                <p className="font-medium text-gray-900 dark:text-white">Primary</p>
-                <p className="text-gray-800 dark:text-gray-200">Primary</p>
+                <p className="font-medium text-foreground">Primary</p>
+                <p className="text-foreground/90">Primary</p>
               </div>
             </div>
             <div className="space-y-2">
               <div className="w-full h-20 bg-secondary rounded-lg"></div>
               <div className="text-sm">
-                <p className="font-medium text-gray-900 dark:text-white">Secondary</p>
-                <p className="text-gray-800 dark:text-gray-200">Secondary</p>
+                <p className="font-medium text-foreground">Secondary</p>
+                <p className="text-foreground/90">Secondary</p>
               </div>
             </div>
             <div className="space-y-2">
               <div className="w-full h-20 bg-gray-100 rounded-lg"></div>
               <div className="text-sm">
-                <p className="font-medium text-gray-900 dark:text-white">Gray 100</p>
-                <p className="text-gray-800 dark:text-gray-200">Gray 100</p>
+                <p className="font-medium text-foreground">Gray 100</p>
+                <p className="text-foreground/90">Gray 100</p>
               </div>
             </div>
             <div className="space-y-2">
               <div className="w-full h-20 bg-gray-200 rounded-lg"></div>
               <div className="text-sm">
-                <p className="font-medium text-gray-900 dark:text-white">Gray 200</p>
-                <p className="text-gray-800 dark:text-gray-200">Gray 200</p>
+                <p className="font-medium text-foreground">Gray 200</p>
+                <p className="text-foreground/90">Gray 200</p>
               </div>
             </div>
             <div className="space-y-2">
@@ -182,21 +182,21 @@ const DesignSystem: React.FC = () => {
 
         {/* Typography */}
         <section className="mb-16">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+          <h2 className="text-xl font-semibold text-foreground mb-6">
             {content.designSystem.sections.typography}
           </h2>
 
           {/* Font Information */}
           <div className="mb-8 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h3 className="text-lg font-semibold text-foreground mb-4">
               Font Families
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+                <h4 className="font-semibold text-foreground mb-2">
                   Aeonik
                 </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                <p className="text-sm text-foreground/70 mb-1">
                   Used for headings (H1-H6)
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-500">
@@ -204,10 +204,10 @@ const DesignSystem: React.FC = () => {
                 </p>
               </div>
               <div>
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+                <h4 className="font-semibold text-foreground mb-2">
                   Nunito Sans
                 </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                <p className="text-sm text-foreground/70 mb-1">
                   Used for body text and UI elements
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-500">
@@ -215,10 +215,10 @@ const DesignSystem: React.FC = () => {
                 </p>
               </div>
               <div>
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+                <h4 className="font-semibold text-foreground mb-2">
                   Roboto Flex
                 </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                <p className="text-sm text-foreground/70 mb-1">
                   Default sans-serif fallback
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-500">
@@ -226,10 +226,10 @@ const DesignSystem: React.FC = () => {
                 </p>
               </div>
               <div>
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+                <h4 className="font-semibold text-foreground mb-2">
                   Roboto Serif
                 </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                <p className="text-sm text-foreground/70 mb-1">
                   Used for Audio Transcript page
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-500">
@@ -241,39 +241,39 @@ const DesignSystem: React.FC = () => {
 
           <div className="space-y-4">
             <div>
-              <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+              <h1 className="text-4xl font-bold text-foreground mb-2">
                 Whereas disregard and contempt for human rights have resulted
               </h1>
-              <p className="text-sm text-gray-800 dark:text-gray-200">
+              <p className="text-sm text-foreground/90">
                 H1 - Aeonik, 4xl (2.25rem), Bold
               </p>
             </div>
             <div>
-              <h2 className="text-3xl font-semibold text-gray-900 dark:text-white mb-2">
+              <h2 className="text-3xl font-semibold text-foreground mb-2">
                 Whereas disregard and contempt for human rights have resulted
               </h2>
-              <p className="text-sm text-gray-800 dark:text-gray-200">
+              <p className="text-sm text-foreground/90">
                 H2 - Aeonik, 3xl (1.875rem), Semibold
               </p>
             </div>
             <div>
-              <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
+              <h3 className="text-2xl font-semibold text-foreground mb-2">
                 Whereas disregard and contempt for human rights have resulted
               </h3>
-              <p className="text-sm text-gray-800 dark:text-gray-200">
+              <p className="text-sm text-foreground/90">
                 H3 - Aeonik, 2xl (1.5rem), Semibold
               </p>
             </div>
             <div>
-              <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+              <h4 className="text-xl font-semibold text-foreground mb-2">
                 Whereas disregard and contempt for human rights have resulted
               </h4>
-              <p className="text-sm text-gray-800 dark:text-gray-200">
+              <p className="text-sm text-foreground/90">
                 H4 - Aeonik, xl (1.25rem), Semibold
               </p>
             </div>
             <div>
-              <p className="text-base text-gray-700 dark:text-gray-300 mb-2">
+              <p className="text-base text-foreground/80 mb-2">
                 Whereas disregard and contempt for human rights have resulted in
                 barbarous acts which have outraged the conscience of mankind.
               </p>
@@ -295,11 +295,11 @@ const DesignSystem: React.FC = () => {
 
         {/* Buttons */}
         <section className="mb-16">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+          <h2 className="text-xl font-semibold text-foreground mb-6">
             Buttons
           </h2>
           <div className="flex flex-wrap gap-4">
-            <button className="px-4 py-2 bg-blue-800 text-black rounded-lg hover:bg-blue-900 transition-colors dark:bg-blue-700 dark:hover:bg-blue-800 dark:text-white">
+            <button className="px-4 py-2 bg-blue-800 text-white rounded-lg hover:bg-blue-900 transition-colors dark:bg-blue-700 dark:hover:bg-blue-800">
               Primary Button
             </button>
             <button className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition-colors dark:bg-gray-600 dark:hover:bg-gray-700">
@@ -319,19 +319,19 @@ const DesignSystem: React.FC = () => {
 
         {/* Cards */}
         <section className="mb-16">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Cards</h2>
+          <h2 className="text-xl font-semibold text-foreground mb-6">Cards</h2>
 
           {/* Card Information */}
           <div className="mb-8 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h3 className="text-lg font-semibold text-foreground mb-4">
               Card Types
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+                <h4 className="font-semibold text-foreground mb-2">
                   Glassmorphic Cards
                 </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                <p className="text-sm text-foreground/70 mb-1">
                   Used in Lab, Articles, Design, and Storytelling sections
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-500">
@@ -340,10 +340,10 @@ const DesignSystem: React.FC = () => {
                 </p>
               </div>
               <div>
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+                <h4 className="font-semibold text-foreground mb-2">
                   Background Cards
                 </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                <p className="text-sm text-foreground/70 mb-1">
                   Used for testimonials and simple content
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-500">
@@ -351,10 +351,10 @@ const DesignSystem: React.FC = () => {
                 </p>
               </div>
               <div>
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+                <h4 className="font-semibold text-foreground mb-2">
                   Glassmorphic Cards with Gradients
                 </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                <p className="text-sm text-foreground/70 mb-1">
                   Used for premium card designs with gradient backgrounds
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-500">
@@ -363,10 +363,10 @@ const DesignSystem: React.FC = () => {
                 </p>
               </div>
               <div>
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+                <h4 className="font-semibold text-foreground mb-2">
                   Career Cards
                 </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                <p className="text-sm text-foreground/70 mb-1">
                   Used in Career section
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-500">
@@ -380,10 +380,10 @@ const DesignSystem: React.FC = () => {
             {/* Background Card */}
             <div className="group relative overflow-hidden rounded-lg bg-gray-100/80">
               <div className="p-6">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                <h3 className="text-lg font-semibold text-foreground mb-2">
                   Background Card
                 </h3>
-                <p className="text-gray-700 dark:text-gray-300">
+                <p className="text-foreground/80">
                   Used for testimonials and simple content display
                 </p>
                 <div className="mt-4 text-xs text-gray-500">
@@ -424,7 +424,7 @@ const DesignSystem: React.FC = () => {
                 <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
                   <div className="pr-12 flex flex-col gap-1">
                     <h3
-                      className="text-[20px] font-semibold mb-0 text-black dark:text-white title-font"
+                      className="text-[20px] font-semibold mb-0 text-foreground title-font"
                       style={{
                         letterSpacing: "-0.01em",
                       }}
@@ -455,7 +455,7 @@ const DesignSystem: React.FC = () => {
               <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
                 <div className="pr-12 flex items-center gap-2">
                   <h3
-                    className="text-[20px] font-semibold mb-1 text-black dark:text-white title-font"
+                    className="text-[20px] font-semibold mb-1 text-foreground title-font"
                     style={{
                       letterSpacing: "-0.01em",
                     }}
@@ -510,15 +510,15 @@ const DesignSystem: React.FC = () => {
             <div className="group relative overflow-visible rounded-lg bg-gray-100/80 shadow-md aspect-[3/4]">
               <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
                 <div className="pr-12 flex items-center gap-2">
-                  <h3 className="text-base sm:text-lg lg:text-xl font-semibold mb-1 dark:text-white title-font">
+                  <h3 className="text-base sm:text-lg lg:text-xl font-semibold mb-1 text-foreground title-font">
                     Career Card
                   </h3>
                   <div className="flex items-center gap-1 ml-2">
-                    <Briefcase className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+                    <Briefcase className="h-4 w-4 text-foreground/70" />
                   </div>
                 </div>
                 <div className="flex-1 flex flex-col">
-                  <p className="text-sm text-gray-600 dark:text-gray-300 mb-2 flex-1"></p>
+                  <p className="text-sm text-foreground/70 mb-2 flex-1"></p>
                 </div>
               </div>
               <div className="absolute bottom-2 left-2 text-xs text-gray-500 bg-white/80 px-2 py-1 rounded">
@@ -535,17 +535,17 @@ const DesignSystem: React.FC = () => {
             <div className="group relative overflow-visible sm:overflow-hidden rounded-lg bg-white/20 backdrop-blur-lg border border-white/30 flex flex-col shadow-xl h-[180px]">
               <div className="absolute top-1 right-1 sm:top-2 sm:right-2 z-20 hidden sm:block">
                 <div className="rounded-full p-1.5 w-8 h-8 flex items-center justify-center">
-                  <ExternalLink className="h-4 w-4 text-gray-600 dark:text-white" />
+                  <ExternalLink className="h-4 w-4 text-foreground/70" />
                 </div>
               </div>
               <div className="absolute inset-0 p-3 flex flex-col gap-2 z-10">
                 <div className="pr-12 flex items-center gap-2">
-                  <h3 className="text-base sm:text-lg lg:text-xl font-semibold mb-1 dark:text-white title-font">
+                  <h3 className="text-base sm:text-lg lg:text-xl font-semibold mb-1 text-foreground title-font">
                     News Card
                   </h3>
                 </div>
                 <div className="flex-1 flex flex-col">
-                  <p className="text-sm text-gray-600 dark:text-gray-300 mb-2 flex-1">
+                  <p className="text-sm text-foreground/70 mb-2 flex-1">
                     RSS feed content with carousel navigation
                   </p>
                 </div>
@@ -565,71 +565,71 @@ const DesignSystem: React.FC = () => {
 
         {/* Icons */}
         <section className="mb-16">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Icons</h2>
+          <h2 className="text-xl font-semibold text-foreground mb-6">Icons</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
             {/* Navigation & UI Icons */}
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <ArrowUp className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <ArrowUp className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">ArrowUp</span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <ArrowLeft className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <ArrowLeft className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">
                 ArrowLeft
               </span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <ArrowRight className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <ArrowRight className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">
                 ArrowRight
               </span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <Menu className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <Menu className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">Menu</span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <X className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <X className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">
                 X (Close)
               </span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <Eye className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <Eye className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">
                 Eye (View)
               </span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <ExternalLink className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <ExternalLink className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">
                 ExternalLink
               </span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <Search className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <Search className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">Search</span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <Calendar className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <Calendar className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">
                 Calendar
               </span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <Link2 className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <Link2 className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">Link2</span>
             </div>
 
             {/* Social & Brand Icons */}
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <Dribbble className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <Dribbble className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">
                 Dribbble
               </span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <LinkedInLogoIcon className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <LinkedInLogoIcon className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">
                 LinkedIn
               </span>
@@ -637,43 +637,43 @@ const DesignSystem: React.FC = () => {
 
             {/* Section Icons */}
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <FlaskConical className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <FlaskConical className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">
                 FlaskConical (Lab)
               </span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <BookOpen className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <BookOpen className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">
                 BookOpen (Articles)
               </span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <FileText className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <FileText className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">
                 FileText (Writing)
               </span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <Palette className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <Palette className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">
                 Palette (Design)
               </span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <Briefcase className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <Briefcase className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">
                 Briefcase (Career)
               </span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <Users className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <Users className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">
                 Users (Personal)
               </span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <Settings className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <Settings className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">
                 Settings
               </span>
@@ -681,47 +681,47 @@ const DesignSystem: React.FC = () => {
 
             {/* Music Player Icons */}
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <Play className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <Play className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">Play</span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <Pause className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <Pause className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">Pause</span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <SkipBack className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <SkipBack className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">
                 SkipBack
               </span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <SkipForward className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <SkipForward className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">
                 SkipForward
               </span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <Volume2 className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <Volume2 className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">Volume2</span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <VolumeX className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <VolumeX className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">VolumeX</span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <Loader2 className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <Loader2 className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">Loader2</span>
             </div>
 
             {/* Theme Icons */}
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <Sun className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <Sun className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">
                 Sun (Light)
               </span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <Moon className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <Moon className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">
                 Moon (Dark)
               </span>
@@ -729,7 +729,7 @@ const DesignSystem: React.FC = () => {
 
             {/* Action Icons */}
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <AlertCircle className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <AlertCircle className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">
                 AlertCircle
               </span>
@@ -737,49 +737,49 @@ const DesignSystem: React.FC = () => {
 
             {/* UI Component Icons */}
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <Check className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <Check className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">Check</span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <Circle className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <Circle className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">Circle</span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <ChevronDown className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <ChevronDown className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">
                 ChevronDown
               </span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <ChevronUp className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <ChevronUp className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">
                 ChevronUp
               </span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <ChevronLeft className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <ChevronLeft className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">
                 ChevronLeft
               </span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <ChevronRight className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <ChevronRight className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">
                 ChevronRight
               </span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <GripVertical className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <GripVertical className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">
                 GripVertical
               </span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <Dot className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <Dot className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">Dot</span>
             </div>
             <div className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg">
-              <MoreHorizontal className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+              <MoreHorizontal className="h-6 w-6 text-foreground/80" />
               <span className="text-xs text-gray-600 text-center">
                 MoreHorizontal
               </span>
@@ -789,7 +789,7 @@ const DesignSystem: React.FC = () => {
 
         {/* Spacing */}
         <section className="mb-16">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Spacing</h2>
+          <h2 className="text-xl font-semibold text-foreground mb-6">Spacing</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             <div className="flex items-center gap-4">
               <div className="w-4 h-4 bg-primary rounded"></div>
@@ -816,7 +816,7 @@ const DesignSystem: React.FC = () => {
 
         {/* Border Radius */}
         <section className="mb-16">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+          <h2 className="text-xl font-semibold text-foreground mb-6">
             Border Radius
           </h2>
           <div className="flex flex-wrap gap-4">

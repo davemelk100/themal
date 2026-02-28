@@ -1,14 +1,10 @@
-import React from "react";
 import PortfolioLayout from "../../components/PortfolioLayout";
 import SectionHeader from "../../components/SectionHeader";
 import IconWrapper from "../../components/IconWrapper";
 import { content } from "../../content";
 
-const LazyLinkedInLogoIcon = React.lazy(() =>
-  import("@radix-ui/react-icons").then((mod) => ({
-    default: mod.LinkedInLogoIcon,
-  })),
-);
+import { LinkedInLogoIcon } from "../../components/SocialIcons";
+const LazyLinkedInLogoIcon = LinkedInLogoIcon;
 
 export default function CareerPage() {
   return (
@@ -40,23 +36,23 @@ export default function CareerPage() {
                 key={position.title + position.period}
                 className="pl-4 border-l-2 border-secondary-dynamic/50"
               >
-                <h3 className="font-semibold mb-1 dark:text-white title-font">
+                <h3 className="font-semibold mb-1 text-foreground title-font">
                   {position.title}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-1">
+                <p className="text-foreground/70 mb-1">
                   {position.company}
                 </p>
-                <p className="text-gray-500 dark:text-gray-400 mb-2">
+                <p className="text-muted-foreground mb-2">
                   {position.period}
                 </p>
                 {Array.isArray(position.description) ? (
-                  <ul className="text-gray-700 dark:text-gray-300 leading-relaxed list-disc list-inside space-y-1">
+                  <ul className="text-foreground/80 leading-relaxed list-disc list-inside space-y-1">
                     {position.description.map((item, index) => (
                       <li key={index}>{item}</li>
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  <p className="text-foreground/80 leading-relaxed">
                     {position.description}
                   </p>
                 )}
@@ -64,10 +60,10 @@ export default function CareerPage() {
             ))}
           </div>
           <div className="mt-4 pt-2">
-            <h3 className="font-semibold mb-2 text-gray-800 dark:text-gray-200">
+            <h3 className="font-semibold mb-2 text-foreground/90">
               Certifications
             </h3>
-            <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 leading-relaxed space-y-1 mb-4">
+            <ul className="list-disc list-inside text-foreground/80 leading-relaxed space-y-1 mb-4">
               <li>Certified ScrumMaster (Scrum Alliance)</li>
               <li>
                 Certified Usability Analyst (Human Factors
@@ -75,10 +71,10 @@ export default function CareerPage() {
               </li>
               <li>ITIL Foundation Certificate (Axelos)</li>
             </ul>
-            <h3 className="font-semibold mb-2 text-gray-800 dark:text-gray-200">
+            <h3 className="font-semibold mb-2 text-foreground/90">
               Education
             </h3>
-            <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 leading-relaxed space-y-1">
+            <ul className="list-disc list-inside text-foreground/80 leading-relaxed space-y-1">
               <li>Oakland University | Rochester MI</li>
               <li>Bachelor of Arts in English</li>
               <li>Minor in Public Relations</li>

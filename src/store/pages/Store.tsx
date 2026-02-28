@@ -219,7 +219,7 @@ const Store = () => {
   }, [filteredProducts]);
 
   return (
-    <div className="min-h-screen text-gray-900 dark:text-white store-page pb-16 relative bg-[#f0f0f0]">
+    <div className="min-h-screen text-foreground store-page pb-16 relative bg-[#f0f0f0]">
       {/* Top Header with DM, Nav, Cart, and Profile */}
       <StoreHeader sticky={true} />
 

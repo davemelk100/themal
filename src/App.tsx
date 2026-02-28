@@ -50,6 +50,7 @@ const ArticlesPage = lazy(() => import("./pages/portfolio/ArticlesPage"));
 // const ContactPage = lazy(() => import("./pages/portfolio/ContactPage"));
 // const TestimonialsPage = lazy(() => import("./pages/portfolio/TestimonialsPage"));
 const DesignSystemPage = lazy(() => import("./pages/portfolio/DesignSystemPage"));
+const DesignSystemAbout = lazy(() => import("./pages/portfolio/DesignSystemAbout"));
 const GraphicsPage = lazy(() => import("./pages/portfolio/GraphicsPage"));
 
 // Lazy load non-critical UI components to reduce critical path
@@ -98,7 +99,7 @@ function App() {
   const isPortfolioPath = location.pathname === "/portfolio" || location.pathname.startsWith("/portfolio/");
 
   return (
-    <div className="min-h-screen text-gray-900 transition-colors duration-300 dark:text-white pb-20 lg:pb-0 flex flex-col relative">
+    <div className="min-h-screen text-foreground transition-colors duration-300 pb-20 lg:pb-0 flex flex-col relative">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-md focus:bg-white focus:text-gray-900 focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-brand-dynamic dark:focus:bg-gray-900 dark:focus:text-white"
@@ -164,6 +165,7 @@ function App() {
             {/* <Route path="/portfolio/career" element={<CareerPage />} /> */}
             {/* <Route path="/portfolio/testimonials" element={<TestimonialsPage />} /> */}
             {/* <Route path="/portfolio/contact" element={<ContactPage />} /> */}
+            <Route path="/portfolio/design-system/about" element={<DesignSystemAbout />} />
             <Route path="/portfolio/design-system" element={<DesignSystemPage />} />
             <Route path="/portfolio/graphics" element={<GraphicsPage />} />
             <Route path="/article/:slug" element={<Article />} />
@@ -250,7 +252,7 @@ function App() {
               aria-label="Toggle dark mode"
             >
               <svg
-                className="w-4 h-4 text-gray-700 dark:text-gray-300"
+                className="w-4 h-4 text-foreground/80"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -263,7 +265,7 @@ function App() {
                 />
               </svg>
               <svg
-                className="w-4 h-4 text-gray-700 dark:text-gray-300 absolute opacity-0 dark:opacity-100 transition-opacity duration-200"
+                className="w-4 h-4 text-foreground/80 absolute opacity-0 dark:opacity-100 transition-opacity duration-200"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"

@@ -162,7 +162,7 @@ const Checkout = () => {
 
   return (
     <div
-      className="min-h-screen text-gray-900 dark:text-white store-page pb-16 relative overflow-hidden"
+      className="min-h-screen text-foreground store-page pb-16 relative overflow-hidden"
       style={{
         backgroundColor: "#f0f0f0",
       }}
@@ -262,7 +262,7 @@ const Checkout = () => {
                           <div className="flex justify-end absolute top-0 right-0">
                             <button
                               onClick={() => removeItem(item.id)}
-                              className="p-1.5 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition-colors flex-shrink-0"
+                              className="p-1.5 text-muted-foreground hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition-colors flex-shrink-0"
                               aria-label="Remove item"
                             >
                               <X className="h-4 w-4" />

@@ -39,7 +39,7 @@ export default function ArticleModal({
         return (
           <h2
             key={index}
-            className="text-2xl font-bold mb-4 mt-6 dark:text-white"
+            className="text-2xl font-bold mb-4 mt-6 text-foreground"
           >
             {paragraph.replace("## ", "")}
           </h2>
@@ -116,7 +116,7 @@ export default function ArticleModal({
         >
           <div className="p-8">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-[20px] font-semibold dark:text-white">
+              <h2 className="text-[20px] font-semibold text-foreground">
                 {title}
               </h2>
               <button

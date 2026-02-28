@@ -318,7 +318,7 @@ const JsonAiPrompts = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 transition-colors duration-300 dark:bg-gray-900 dark:text-white">
+    <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
       {/* Hero Section */}
       <section className="py-4 sm:py-4xl:py-4 relative">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -373,7 +373,7 @@ const JsonAiPrompts = () => {
                           }
                         }, 100);
                       }}
-                      className="text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
+                      className="text-sm text-foreground/80 hover:text-gray-900 dark:hover:text-white transition-colors px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
                     >
                       {link.text}
                     </button>
@@ -463,7 +463,7 @@ const JsonAiPrompts = () => {
                               <div className="flex items-center justify-between w-full">
                                 <div className="flex items-center gap-3">
                                   <h3
-                                    className="text-[18px] font-semibold mb-1 title-font text-black dark:text-white whitespace-nowrap"
+                                    className="text-[18px] font-semibold mb-1 title-font text-foreground whitespace-nowrap"
                                     style={{
                                       letterSpacing: "-0.01em",
                                     }}
@@ -553,16 +553,16 @@ const JsonAiPrompts = () => {
                       ) : (
                         <Suspense
                           fallback={
-                            <span className="h-4 w-4 text-gray-600 dark:text-gray-400">
+                            <span className="h-4 w-4 text-foreground/70">
                               📋
                             </span>
                           }
                         >
-                          <LazyCopy className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                          <LazyCopy className="h-4 w-4 text-foreground/70" />
                         </Suspense>
                       )}
                     </button>
-                    <pre className="text-xs sm:text-sm font-mono text-gray-800 dark:text-gray-200 leading-relaxed pt-8">
+                    <pre className="text-xs sm:text-sm font-mono text-foreground/90 leading-relaxed pt-8">
                       {JSON.stringify(
                         {
                           application: {

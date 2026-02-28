@@ -26,7 +26,7 @@ const CheckoutSuccess = () => {
 
   return (
     <div
-      className="min-h-screen text-gray-900 dark:text-white store-page pb-16 relative overflow-hidden"
+      className="min-h-screen text-foreground store-page pb-16 relative overflow-hidden"
       style={{
         background:
           "linear-gradient(135deg, #d0d0d0 0%, #e0e0e0 20%, #c8c8c8 40%, #e5e5e5 60%, #d5d5d5 80%, #dddddd 100%)",

@@ -50,10 +50,10 @@ export default function Article() {
             </Suspense>
             Back to Articles
           </Link>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 font-card">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-6 font-card">
             Article Not Found
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-foreground/70">
             The article you're looking for doesn't exist.
           </p>
         </div>
@@ -85,7 +85,7 @@ export default function Article() {
         return (
           <h2
             key={`heading-${index}`}
-            className="text-xl font-bold mt-8 mb-4 text-gray-900 dark:text-white"
+            className="text-xl font-bold mt-8 mb-4 text-foreground"
           >
             {paragraph.replace("##", "").trim()}
           </h2>
@@ -108,7 +108,7 @@ export default function Article() {
             </div>
             <p
               key={`paragraph-${index}`}
-              className="mb-4 text-gray-700 dark:text-gray-300"
+              className="mb-4 text-foreground/80"
             >
               {paragraph}
             </p>
@@ -120,7 +120,7 @@ export default function Article() {
           <>
             <p
               key={`paragraph-${index}`}
-              className="mb-4 text-gray-700 dark:text-gray-300"
+              className="mb-4 text-foreground/80"
             >
               {paragraph}
             </p>
@@ -163,11 +163,11 @@ export default function Article() {
           </Suspense>
           Back to Articles
         </a>
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 font-card">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-6 font-card">
           {article.title}
         </h1>
         <div className="mb-6">
-          <div className="flex items-center gap-4 text-nav text-gray-600 dark:text-gray-400 mb-3">
+          <div className="flex items-center gap-4 text-nav text-foreground/70 mb-3">
             <span>Dave Melkonian</span>
             <span>•</span>
             <span>{article.date}</span>

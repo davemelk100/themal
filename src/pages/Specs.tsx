@@ -67,7 +67,7 @@ const Specs = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+    <div className="min-h-screen bg-white dark:bg-gray-900 text-foreground">
       {/* Hero Section */}
       <section className="py-4 sm:py-4xl:py-4 relative">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -132,7 +132,7 @@ const Specs = () => {
                             }
                           }, 100);
                         }}
-                        className="text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
+                        className="text-sm text-foreground/80 hover:text-gray-900 dark:hover:text-white transition-colors px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
                       >
                         {link.text}
                       </button>
@@ -156,10 +156,10 @@ const Specs = () => {
             >
               {/* Specs Header */}
               <motion.div variants={fadeInUp} className="text-center">
-                <h1 className="text-4xl md:text-6xl font-bold mb-6 text-gray-900 dark:text-white">
+                <h1 className="text-4xl md:text-6xl font-bold mb-6 text-foreground">
                   {pageContent.title}
                 </h1>
-                <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                <p className="text-lg md:text-xl text-foreground/70 max-w-3xl mx-auto">
                   {pageContent.subtitle}
                 </p>
               </motion.div>
@@ -187,19 +187,19 @@ const Specs = () => {
                             key={itemIndex}
                             className="border-l-2 border-primary/20 pl-4"
                           >
-                            <h4 className="font-medium text-gray-900 dark:text-white">
+                            <h4 className="font-medium text-foreground">
                               {item.name}
                             </h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                            <p className="text-sm text-foreground/70 mb-2">
                               {item.description}
                             </p>
                             {item.example && (
                               <div className="bg-white dark:bg-gray-700 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
-                                <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                                <p className="text-xs text-foreground/70 mb-2">
                                   {item.example.description}
                                 </p>
                                 <div className="bg-gray-50 dark:bg-gray-800 rounded px-2 py-1">
-                                  <code className="text-xs text-gray-700 dark:text-gray-300 font-mono">
+                                  <code className="text-xs text-foreground/80 font-mono">
                                     {item.example.code}
                                   </code>
                                 </div>
@@ -228,7 +228,7 @@ const Specs = () => {
                       <h3 className="text-xl font-semibold mb-3 text-primary">
                         {method.title}
                       </h3>
-                      <p className="text-gray-600 dark:text-gray-300">
+                      <p className="text-foreground/70">
                         {method.description}
                       </p>
                     </motion.div>
@@ -249,7 +249,7 @@ const Specs = () => {
                       className="flex items-center space-x-3 bg-gray-50 dark:bg-gray-800 rounded-lg p-4"
                     >
                       <div className="w-2 h-2 bg-primary rounded-full flex-shrink-0"></div>
-                      <span className="text-gray-700 dark:text-gray-300">
+                      <span className="text-foreground/80">
                         {feature}
                       </span>
                     </motion.div>
@@ -275,7 +275,7 @@ const Specs = () => {
                       <div className="text-lg font-semibold mb-2">
                         {item.metric}
                       </div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                      <div className="text-sm text-foreground/70">
                         {item.description}
                       </div>
                     </motion.div>
@@ -288,7 +288,7 @@ const Specs = () => {
                 variants={fadeInUp}
                 className="text-center pt-8 border-t border-gray-200 dark:border-gray-700"
               >
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-foreground/70">
                   {pageContent.footerText}
                 </p>
               </motion.div>

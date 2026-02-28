@@ -25,7 +25,7 @@ const SectionHeader = ({
     <div className={`${className}`}>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2 gap-2 sm:gap-3">
         <div className="flex items-center gap-2 sm:gap-3">
-          <h2 className="font-bold title-font leading-tight text-brand-dynamic dark:text-white">
+          <h2 className="font-bold title-font leading-tight text-brand-dynamic">
             {title}
           </h2>
           {icon && <div className="flex items-center gap-2">{icon}</div>}
@@ -37,7 +37,7 @@ const SectionHeader = ({
             >
               <IconWrapper
                 Icon={LazyArrowUp}
-                className="h-4 w-4 text-white dark:text-white"
+                className="h-4 w-4 text-white"
               />
             </button>
           )}
@@ -46,7 +46,7 @@ const SectionHeader = ({
           {showArchiveLink && (
             <Link
               to="/archive"
-              className="text-nav text-brand-dynamic hover:text-brand-dynamic/80 dark:text-white dark:hover:text-gray-300 underline sm:text-base"
+              className="text-nav text-brand-dynamic hover:text-brand-dynamic/80 underline sm:text-base"
             >
               View Archive
             </Link>

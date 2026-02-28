@@ -112,7 +112,7 @@ const SectionHeader = ({
     <div className={`${className}`}>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2 gap-2 sm:gap-3">
         <div className="flex items-center gap-2 sm:gap-3">
-          <h2 className="font-bold title-font leading-tight text-gray-900 dark:text-white">
+          <h2 className="font-bold title-font leading-tight text-foreground">
             {title}
           </h2>
         </div>
@@ -142,18 +142,18 @@ const ServiceSection = ({
   <section className="py-4 sm:py-6 lg:py-8 xl:py-12 relative">
     <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
       <SectionHeader title={title} className="mb-8 sm:mb-6" />
-      <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+      <p className="text-foreground/80 leading-relaxed mb-4">
         {intro}
       </p>
-      <p className="text-gray-700 dark:text-gray-300 font-medium mb-2">
+      <p className="text-foreground/80 font-medium mb-2">
         {bulletLabel}
       </p>
-      <ul className="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+      <ul className="list-disc list-inside space-y-1 text-foreground/80 leading-relaxed mb-4">
         {bullets.map((item, i) => (
           <li key={i}>{item}</li>
         ))}
       </ul>
-      <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+      <p className="text-foreground/80 leading-relaxed">
         {closing}
       </p>
     </div>
@@ -236,14 +236,14 @@ export default function Consult() {
                       alt="Melkonian Industries"
                       className="w-16 sm:w-20 lg:w-28 h-16 sm:h-20 lg:h-28 brightness-0 dark:invert"
                     />
-                    <h1 className="tracking-tighter title-font leading-none text-left text-gray-900 dark:text-white uppercase font-black">
+                    <h1 className="tracking-tighter title-font leading-none text-left text-foreground uppercase font-black">
                       Melkonian Industries
                     </h1>
                   </div>
-                  <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
+                  <h2 className="text-xl sm:text-2xl font-semibold text-foreground/90 mb-4">
                     Technical Execution, Strategy, and Digital Growth
                   </h2>
-                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                  <p className="text-foreground/80 leading-relaxed mb-4">
                     I help organizations improve performance, solve technical
                     challenges, and grow effectively by combining hands-on
                     engineering with business strategy. My work spans front-end
@@ -251,7 +251,7 @@ export default function Consult() {
                     acquisition - focused on the decisions that determine
                     whether digital investments actually pay off.
                   </p>
-                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                  <p className="text-foreground/80 leading-relaxed mb-4">
                     Unlike traditional agencies that operate in silos, I work
                     across strategy, design, and development to ensure
                     everything connects - from system architecture to user
@@ -260,7 +260,7 @@ export default function Consult() {
                     Usability Analyst (CUA) credential from HFI, and carry
                     ITIL Business certifications.
                   </p>
-                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  <p className="text-foreground/80 leading-relaxed">
                     I also consult on AI tooling and approaches - backed by
                     nearly 100 GitHub repos and countless working samples
                     spanning prompt engineering, AI-assisted development, and
@@ -378,10 +378,10 @@ export default function Consult() {
           <section className="py-4 sm:py-6 lg:py-8 xl:py-12 relative">
             <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
               <SectionHeader title="Who I Work With" className="mb-8 sm:mb-6" />
-              <p className="text-gray-700 dark:text-gray-300 font-medium mb-2">
+              <p className="text-foreground/80 font-medium mb-2">
                 I work with:
               </p>
-              <ul className="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+              <ul className="list-disc list-inside space-y-1 text-foreground/80 leading-relaxed mb-4">
                 <li>Small and mid-sized businesses</li>
                 <li>Nonprofits and mission-driven organizations</li>
                 <li>SaaS and B2B companies</li>
@@ -390,7 +390,7 @@ export default function Consult() {
                   Teams that need senior-level guidance without hiring full-time
                 </li>
               </ul>
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+              <p className="text-foreground/80 leading-relaxed">
                 If you need someone who understands business goals, technical
                 tradeoffs, and user behavior, you're in the right place.
               </p>
@@ -401,7 +401,7 @@ export default function Consult() {
           <section className="py-4 sm:py-6 lg:py-8 xl:py-12 relative">
             <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
               <SectionHeader title="How I Work" className="mb-8 sm:mb-6" />
-              <ul className="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+              <ul className="list-disc list-inside space-y-1 text-foreground/80 leading-relaxed mb-4">
                 <li>Clear scopes and honest recommendations</li>
                 <li>No black-box tactics or inflated metrics</li>
                 <li>
@@ -409,7 +409,7 @@ export default function Consult() {
                 </li>
                 <li>Collaboration with internal teams and vendors</li>
               </ul>
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+              <p className="text-foreground/80 leading-relaxed">
                 My role is to reduce risk, improve outcomes, and make complex
                 systems easier to manage.
               </p>
@@ -426,12 +426,12 @@ export default function Consult() {
                 title="Let's Improve Your Digital Performance"
                 className="mb-8 sm:mb-6"
               />
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-2">
+              <p className="text-foreground/80 leading-relaxed mb-2">
                 If you're looking to modernize technical foundations, improve
                 digital performance, or bring clarity to complex initiatives,
                 let's talk.
               </p>
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+              <p className="text-foreground/80 leading-relaxed mb-6">
                 Contact me to discuss your goals and determine next steps.
               </p>
               <form
@@ -442,7 +442,7 @@ export default function Consult() {
                 <div>
                   <label
                     htmlFor="contact-name"
-                    className="block text-gray-700 dark:text-gray-300 mb-1"
+                    className="block text-foreground/80 mb-1"
                   >
                     Name
                   </label>
@@ -457,7 +457,7 @@ export default function Consult() {
                 <div>
                   <label
                     htmlFor="contact-email"
-                    className="block text-gray-700 dark:text-gray-300 mb-1"
+                    className="block text-foreground/80 mb-1"
                   >
                     Email
                   </label>
@@ -472,7 +472,7 @@ export default function Consult() {
                 <div>
                   <label
                     htmlFor="contact-message"
-                    className="block text-gray-700 dark:text-gray-300 mb-1"
+                    className="block text-foreground/80 mb-1"
                   >
                     Message
                   </label>

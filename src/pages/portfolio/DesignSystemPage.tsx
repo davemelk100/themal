@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, lazy, Suspense } from "react";
-import axe, { type AxeResults } from "axe-core";
+import { Link } from "react-router-dom";
+import type { AxeResults } from "axe-core";
 import PortfolioLayout from "../../components/PortfolioLayout";
 import SectionHeader from "../../components/SectionHeader";
 import { content } from "../../content";
@@ -8,7 +9,6 @@ import {
   THEME_COLORS_KEY,
   PENDING_COLORS_KEY,
   COLOR_HISTORY_KEY,
-  CONTRAST_PAIRS,
   EDITABLE_VARS,
   fgForBg,
   contrastRatio,
@@ -22,14 +22,13 @@ import {
   generateRandomPalette,
   applyStoredThemeColors,
   useContrastEnforcement,
+  saveContrastCorrection,
 } from "./themeUtils";
 
-// Lazy-load icons used across the portfolio site
-const LazyLinkedInLogoIcon = lazy(() =>
-  import("@radix-ui/react-icons").then((mod) => ({ default: mod.LinkedInLogoIcon }))
-);
-const LazyGitHubLogoIcon = lazy(() =>
-  import("@radix-ui/react-icons").then((mod) => ({ default: mod.GitHubLogoIcon }))
+import { GitHubLogoIcon } from "../../components/SocialIcons";
+const LazyGitHubLogoIcon = GitHubLogoIcon;
+const LazyLinkedin = lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Linkedin }))
 );
 const LazyDribbble = lazy(() =>
   import("lucide-react").then((mod) => ({ default: mod.Dribbble }))
@@ -144,8 +143,8 @@ const LazyLayers = lazy(() =>
 );
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const SITE_ICONS: { name: string; icon: React.LazyExoticComponent<any> }[] = [
-  { name: "LinkedIn", icon: LazyLinkedInLogoIcon },
+const SITE_ICONS: { name: string; icon: React.LazyExoticComponent<any> | React.ComponentType<any> }[] = [
+  { name: "LinkedIn", icon: LazyLinkedin },
   { name: "GitHub", icon: LazyGitHubLogoIcon },
   { name: "Dribbble", icon: LazyDribbble },
   { name: "Home", icon: LazyHome },
@@ -191,7 +190,6 @@ export {
   THEME_COLORS_KEY,
   PENDING_COLORS_KEY,
   COLOR_HISTORY_KEY,
-  CONTRAST_PAIRS,
   EDITABLE_VARS,
   fgForBg,
   contrastRatio,
@@ -313,6 +311,7 @@ function fixElementContrast(contrastViolation: { nodes: { target: unknown[]; any
 export default function DesignSystemPage() {
   const [colors, setColors] = useState<Record<string, string>>({});
   const [showResetModal, setShowResetModal] = useState(false);
+  const [showSpecs, setShowSpecs] = useState(false);
   const [auditStatus, setAuditStatus] = useState<'idle' | 'running' | 'passed' | 'failed'>('idle');
   const [auditViolations, setAuditViolations] = useState<{ selector: string; text: string }[]>([]);
   const [violationIndex, setViolationIndex] = useState(0);
@@ -324,6 +323,7 @@ export default function DesignSystemPage() {
   const [harmonySchemeIndex, setHarmonySchemeIndex] = useState(0);
   const [shuffleOpen, setShuffleOpen] = useState(false);
   const [lockedKeys, setLockedKeys] = useState<Set<string>>(new Set());
+  const [prevColors, setPrevColors] = useState<Record<string, string> | null>(null);
 
   const readCurrentColors = useCallback(() => {
     const style = getComputedStyle(document.documentElement);
@@ -386,10 +386,13 @@ export default function DesignSystemPage() {
     setGeneratedCode(css + tw);
   };
 
-  const runAudit = () => axe.run(
-    { exclude: ['[data-axe-exclude]'] },
-    { runOnly: { type: 'rule', values: ['color-contrast'] } },
-  );
+  const runAudit = async () => {
+    const axe = (await import("axe-core")).default;
+    return axe.run(
+      { exclude: ['[data-axe-exclude]'] },
+      { runOnly: { type: 'rule', values: ['color-contrast'] } },
+    );
+  };
 
   const scrollToViolation = (v: { selector: string }) => {
     const el = document.querySelector(v.selector) as HTMLElement | null;
@@ -469,67 +472,57 @@ export default function DesignSystemPage() {
   const fixContrastIssues = async () => {
     setAuditStatus('running');
     try {
-      // 1. Aggressively fix CSS variable pairs
+      const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
+      const highlight = (el: HTMLElement, color: string, ms = 1500) => {
+        el.style.outline = `3px solid ${color}`;
+        el.style.outlineOffset = '2px';
+        el.style.transition = 'outline-color 0.3s';
+        setTimeout(() => { el.style.outline = ''; el.style.outlineOffset = ''; el.style.transition = ''; }, ms);
+      };
+
+      // 1. Read current CSS variable values
       const style = getComputedStyle(document.documentElement);
       const liveColors: Record<string, string> = {};
       EDITABLE_VARS.forEach(({ key }) => {
         liveColors[key] = style.getPropertyValue(key).trim();
       });
 
-      const parseHsl = (val: string) => {
-        const p = val.trim().split(/\s+/);
-        if (p.length < 3) return null;
-        return { h: parseFloat(p[0]), s: parseFloat(p[1]), l: parseFloat(p[2]) };
-      };
-      const toHsl = (h: number, s: number, l: number) => `${h} ${s}% ${l}%`;
-      const working = { ...liveColors };
+      // 2. Compute all CSS variable fixes
+      const fixes = autoAdjustContrast(liveColors, lockedKeys);
+      const working = { ...liveColors, ...fixes };
 
-      const fixPair = (fgKey: string, bgKey: string) => {
-        const fgVal = working[fgKey];
-        const bgv = working[bgKey];
-        if (!fgVal || !bgv || contrastRatio(fgVal, bgv) >= 4.6) return;
-        const fg = parseHsl(fgVal);
-        const bg = parseHsl(bgv);
-        if (!fg || !bg) return;
-
-        // Try foreground adjustment first, 1% steps, both directions
-        for (const dir of [bg.l > 50 ? -1 : 1, bg.l > 50 ? 1 : -1]) {
-          let l = fg.l;
-          let adjusted = fgVal;
-          for (let i = 0; i < 100; i++) {
-            l = Math.max(0, Math.min(100, l + dir));
-            adjusted = toHsl(fg.h, fg.s, l);
-            if (contrastRatio(adjusted, bgv) >= 4.6) break;
-          }
-          if (contrastRatio(adjusted, bgv) >= 4.6) {
-            document.documentElement.style.setProperty(fgKey, adjusted);
-            working[fgKey] = adjusted;
-            return;
-          }
+      // Force achromatic foregrounds if still failing
+      const bg = working["--background"];
+      const fg = working["--foreground"];
+      if (bg && fg && contrastRatio(fg, bg) < 4.5) {
+        const bestFg = fgForBg(bg);
+        working["--foreground"] = bestFg; fixes["--foreground"] = bestFg;
+        for (const k of ["--card-foreground", "--popover-foreground"]) {
+          if (!lockedKeys.has(k)) { working[k] = bestFg; fixes[k] = bestFg; }
         }
+      }
+      const mutedFg = working["--muted-foreground"];
+      if (bg && mutedFg && contrastRatio(mutedFg, bg) < 4.5 && !lockedKeys.has("--muted-foreground")) {
+        const bestMuted = fgForBg(bg);
+        working["--muted-foreground"] = bestMuted; fixes["--muted-foreground"] = bestMuted;
+      }
 
-        // If foreground alone can't fix it, also adjust background
-        for (const dir of [fg.l > 50 ? -1 : 1, fg.l > 50 ? 1 : -1]) {
-          let l = bg.l;
-          let adjBg = bgv;
-          for (let i = 0; i < 100; i++) {
-            l = Math.max(0, Math.min(100, l + dir));
-            adjBg = toHsl(bg.h, bg.s, l);
-            if (contrastRatio(working[fgKey], adjBg) >= 4.6) break;
-          }
-          if (contrastRatio(working[fgKey], adjBg) >= 4.6) {
-            document.documentElement.style.setProperty(bgKey, adjBg);
-            working[bgKey] = adjBg;
-            return;
-          }
+      // 3. Apply CSS variable fixes one at a time with visual feedback
+      const fixEntries = Object.entries(fixes).filter(([k, v]) => v !== liveColors[k]);
+      for (const [fixKey, fixVal] of fixEntries) {
+        const swatchEl = document.querySelector(`[data-color-key="${fixKey}"]`) as HTMLElement | null;
+        if (swatchEl) {
+          swatchEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          highlight(swatchEl, 'hsl(0 84% 60%)');
+          await delay(250);
         }
-      };
-
-      // Fix brand vs background
-      fixPair("--brand", "--background");
-      // Fix all contrast pairs
-      for (const [fgKey, bgKey] of CONTRAST_PAIRS) {
-        fixPair(fgKey, bgKey);
+        document.documentElement.style.setProperty(fixKey, fixVal);
+        if (bg) saveContrastCorrection(bg, fixKey, fixVal);
+        if (swatchEl) {
+          await delay(150);
+          highlight(swatchEl, 'hsl(142 76% 45%)');
+        }
+        await delay(100);
       }
 
       const contrastFixes: Record<string, string> = {};
@@ -540,15 +533,35 @@ export default function DesignSystemPage() {
       setColors(working);
       window.dispatchEvent(new Event("theme-pending-update"));
 
-      // 2. Fresh audit — then fix remaining per-element violations
-      const midResults = await runAudit();
-      const contrastViolation = midResults.violations.find((v) => v.id === 'color-contrast');
-      if (contrastViolation) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        fixElementContrast(contrastViolation as any);
+      // 4. Animated per-element fixes (up to 3 passes)
+      for (let pass = 0; pass < 3; pass++) {
+        await delay(300);
+        const midResults = await runAudit();
+        const contrastViolation = midResults.violations.find((v) => v.id === 'color-contrast');
+        if (!contrastViolation) break;
+        for (let ni = 0; ni < contrastViolation.nodes.length; ni++) {
+          const node = contrastViolation.nodes[ni];
+          const el = document.querySelector(node.target[0] as string) as HTMLElement | null;
+          if (!el) continue;
+
+          // Scroll and highlight
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          highlight(el, 'hsl(0 84% 60%)');
+          setViolationIndex(ni);
+          await delay(300);
+
+          // Fix the element using existing fixElementContrast for single node
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          fixElementContrast({ nodes: [node] } as any);
+
+          // Green confirm
+          highlight(el, 'hsl(142 76% 45%)');
+          await delay(200);
+        }
       }
 
-      // 3. Final audit
+      // 5. Final audit
+      await delay(400);
       setAuditFromResults(await runAudit());
     } catch {
       setAuditStatus('idle');
@@ -628,6 +641,7 @@ export default function DesignSystemPage() {
   };
 
   const handleGenerate = () => {
+    setPrevColors({ ...colors });
     const result = generateRandomPalette(colors, lockedKeys);
     const history = storage.get<{ key: string; previousValue: string }[]>(COLOR_HISTORY_KEY) || [];
     const pending = storage.get<Record<string, string>>(PENDING_COLORS_KEY) || {};
@@ -645,6 +659,20 @@ export default function DesignSystemPage() {
     storage.set(PENDING_COLORS_KEY, pending);
     window.dispatchEvent(new Event('theme-pending-update'));
     setHarmonySchemeIndex(-1);
+    runAccessibilityAudit();
+  };
+
+  const handleUndo = () => {
+    if (!prevColors) return;
+    const pending = storage.get<Record<string, string>>(PENDING_COLORS_KEY) || {};
+    for (const [key, val] of Object.entries(prevColors)) {
+      document.documentElement.style.setProperty(key, val);
+      pending[key] = val;
+    }
+    setColors(prevColors);
+    storage.set(PENDING_COLORS_KEY, pending);
+    window.dispatchEvent(new Event('theme-pending-update'));
+    setPrevColors(null);
     runAccessibilityAudit();
   };
 
@@ -685,22 +713,25 @@ export default function DesignSystemPage() {
               className=""
             />
             <p className="text-sm mt-2" style={{ color: "hsl(var(--muted-foreground))" }}>
-              Explore the interactive design system powering this site. Pick a brand color and watch every token, including primary, secondary, accent, and more, transform in real time with automatic WCAG AA contrast correction.
+              Explore the interactive design system powering this site. Pick a brand color and watch every token, including primary, secondary, accent, and more, transform in real time with automatic WCAG AA contrast correction.{" "}Here's how it works:{" "}
+              <button onClick={() => setShowSpecs(true)} className="underline text-brand-dynamic hover:opacity-80">
+                Specs
+              </button>
             </p>
           </div>
           <div id="colors" className="scroll-mt-24">
 
             {/* Audit badges + action buttons */}
-            <div className="flex flex-wrap items-stretch gap-2 mb-4">
-              <div className="relative">
+            <div className="flex flex-wrap md:flex-nowrap items-stretch gap-2 mb-4">
+              <div className="relative w-full sm:w-auto md:flex-1">
                 <button
                   onClick={() => setShuffleOpen(!shuffleOpen)}
-                  className="px-4 h-9 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 flex items-center gap-1.5"
+                  className="w-full h-9 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
                   style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}
                 >
                   <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>
-                  <span className="hidden sm:inline">Shuffle</span>
-                  <svg className="hidden sm:block w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}><path d="M6 9l6 6 6-6" /></svg>
+                  <span className="truncate">Shuffle</span>
+                  <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}><path d="M6 9l6 6 6-6" /></svg>
                 </button>
                 {shuffleOpen && (
                   <>
@@ -721,29 +752,41 @@ export default function DesignSystemPage() {
                   </>
                 )}
               </div>
-              <button
-                onClick={handleGenerate}
-                className="px-4 h-9 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 flex items-center gap-1"
-                style={{ backgroundColor: "hsl(var(--accent))", color: "hsl(var(--accent-foreground))" }}
-              >
-                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
-                <span className="hidden sm:inline">Generate New</span>
-              </button>
-              <button
-                onClick={() => setShowResetModal(true)}
-                className="px-4 h-9 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 flex items-center gap-1"
-                style={{ backgroundColor: "transparent", color: "hsl(var(--brand))", border: "1px solid hsl(var(--brand))" }}
-              >
-                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" /></svg>
-                <span className="hidden sm:inline">Reset to Defaults</span>
-              </button>
+              <div className="flex w-full sm:w-auto sm:contents gap-2">
+                <div className="flex-1 md:flex-1 h-9 flex rounded-lg overflow-hidden" style={{ backgroundColor: "hsl(var(--accent))", color: "hsl(var(--accent-foreground))" }}>
+                  <button
+                    onClick={handleGenerate}
+                    className="h-full px-3 text-xs font-semibold transition-colors hover:opacity-80 flex items-center justify-center gap-1 whitespace-nowrap"
+                  >
+                    <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                    <span>Generate New</span>
+                  </button>
+                  {prevColors && (
+                    <button
+                      onClick={handleUndo}
+                      className="h-full px-2 text-xs font-semibold transition-colors hover:opacity-80 flex items-center gap-1 border-l"
+                      style={{ borderColor: "hsl(var(--accent-foreground) / 0.3)" }}
+                    >
+                      <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 10h10a5 5 0 010 10H9m-6-10l4-4m-4 4l4 4" /></svg>
+                    </button>
+                  )}
+                </div>
+                <button
+                  onClick={() => setShowResetModal(true)}
+                  className="flex-1 md:flex-1 px-4 h-9 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+                  style={{ backgroundColor: "transparent", color: "hsl(var(--brand))", border: "1px solid hsl(var(--brand))" }}
+                >
+                  <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" /></svg>
+                  <span className="truncate">Reset Theme</span>
+                </button>
+              </div>
               <button
                 onClick={() => generateCode()}
-                className="px-4 h-9 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 inline-flex items-center gap-1.5"
+                className="md:flex-1 px-4 h-9 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 inline-flex items-center justify-center gap-1.5"
                 style={{ backgroundColor: "transparent", color: "hsl(var(--brand))", border: "1px solid hsl(var(--brand))" }}
               >
                 <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
-                <span className="hidden sm:inline">Show CSS</span>
+                <span className="truncate">Show CSS</span>
               </button>
               <button
                 disabled={prStatus === 'creating'}
@@ -780,7 +823,7 @@ export default function DesignSystemPage() {
                     setPrStatus('error');
                   }
                 }}
-                className={`px-4 h-9 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 disabled:opacity-50 inline-flex items-center gap-1.5 ${
+                className={`md:flex-1 px-4 h-9 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 disabled:opacity-50 inline-flex items-center justify-center gap-1.5 ${
                   prStatus === 'error' || prStatus === 'rate-limited'
                     ? 'border border-red-400 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'
                     : prStatus === 'created'
@@ -793,7 +836,7 @@ export default function DesignSystemPage() {
                 }
               >
                 <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" /></svg>
-                <span className="hidden sm:inline">{prStatus === 'creating' ? 'Preparing PR...' : prStatus === 'error' ? 'Retry PR' : prStatus === 'rate-limited' ? 'Retry PR' : 'Open PR'}</span>
+                <span className="truncate">{prStatus === 'creating' ? 'Preparing PR...' : prStatus === 'error' ? 'Retry PR' : prStatus === 'rate-limited' ? 'Retry PR' : 'Open PR'}</span>
               </button>
               {prStatus === 'rate-limited' && prError && (
                 <span className="inline-flex items-center px-4 h-9 text-xs font-medium rounded-lg border border-yellow-400 bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300">
@@ -821,19 +864,19 @@ export default function DesignSystemPage() {
                 </span>
               )}
               {auditStatus === 'running' && (
-                <span aria-live="assertive" data-axe-exclude className="ml-auto flex items-center gap-1 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 px-4 text-xs font-medium text-gray-600 dark:text-gray-300">
+                <span aria-live="assertive" data-axe-exclude className="ml-auto flex items-center gap-1 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 px-4 text-xs font-medium text-foreground/70">
                   Running audit&hellip;
                 </span>
               )}
               {auditStatus === 'passed' && (
-                <span aria-live="assertive" data-axe-exclude className="ml-auto flex items-center gap-1 rounded-lg border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30 px-4 text-xs font-medium text-green-700 dark:text-green-300">
-                  <span className="text-green-600 dark:text-green-400">&#10003;</span> <span className="hidden sm:inline">Passed WCAG AA</span><span className="sm:hidden">WCAG</span>
+                <span aria-live="assertive" data-axe-exclude className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 inline-flex items-center gap-1.5 rounded-xl border-2 border-green-400 dark:border-green-600 bg-green-100 dark:bg-green-950 px-4 h-10 text-sm font-semibold text-green-800 dark:text-green-200 shadow-2xl ring-1 ring-green-300/50 dark:ring-green-700/50">
+                  <span className="text-green-600 dark:text-green-400">&#10003;</span> Passed WCAG AA
                 </span>
               )}
             </div>
             {auditStatus === 'failed' && (
-              <div aria-live="assertive" data-axe-exclude className="fixed bottom-4 right-4 z-50 flex justify-end">
-                <span className="inline-flex items-center gap-1.5 rounded-lg border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/30 px-3 h-9 text-xs font-medium text-red-700 dark:text-red-300 shadow-lg">
+              <div aria-live="assertive" data-axe-exclude className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex justify-center">
+                <span className="inline-flex items-center gap-1.5 rounded-xl border-2 border-red-400 dark:border-red-600 bg-red-100 dark:bg-red-950 px-4 h-10 text-sm font-semibold text-red-800 dark:text-red-200 shadow-2xl ring-1 ring-red-300/50 dark:ring-red-700/50">
                   <span>&#10007; {auditViolations.length} contrast issue{auditViolations.length !== 1 ? 's' : ''}</span>
                   <button
                     onClick={() => {
@@ -867,9 +910,9 @@ export default function DesignSystemPage() {
 
             {/* Generated code output — above hero swatches */}
             {generatedCode && (
-              <div className="mb-4 rounded-lg border border-border bg-gray-50 dark:bg-gray-900">
-                <div className="flex items-center justify-between px-3 py-1.5 border-b border-border">
-                  <span className="text-[10px] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider">Generated Theme</span>
+              <div className="mb-4 rounded-lg border" style={{ borderColor: "hsl(var(--border))", backgroundColor: "hsl(var(--card))" }}>
+                <div className="flex items-center justify-between px-3 py-1.5 border-b" style={{ borderColor: "hsl(var(--border))" }}>
+                  <span className="text-[10px] font-medium uppercase tracking-wider" style={{ color: "hsl(var(--card-foreground))", opacity: 0.7 }}>Generated Theme</span>
                   <div className="flex items-center gap-1">
                     <button
                       onClick={() => {
@@ -891,7 +934,7 @@ export default function DesignSystemPage() {
                     </button>
                   </div>
                 </div>
-                <pre className="p-3 overflow-x-auto max-h-64 text-xs leading-relaxed text-foreground font-mono">
+                <pre className="p-3 overflow-x-auto max-h-64 text-xs leading-relaxed font-mono" style={{ color: "hsl(var(--card-foreground))" }}>
                   <code>{generatedCode}</code>
                 </pre>
               </div>
@@ -941,7 +984,7 @@ export default function DesignSystemPage() {
                           const hex = hsl ? hslStringToHex(hsl) : "#000000";
                           return (
                             <div className="absolute bottom-1 left-1 min-w-0">
-                              <p className="text-[9px] sm:text-xs font-semibold truncate" style={{ color: tc }}>
+                              <p className="text-[14px] font-semibold truncate" style={{ color: tc }}>
                                 {hex}
                               </p>
                             </div>
@@ -994,7 +1037,7 @@ export default function DesignSystemPage() {
                       </button>
                     )}
                     <div className="min-w-0">
-                      <p className="text-xs font-medium text-gray-900 dark:text-white truncate">
+                      <p className="hidden md:block text-xs font-medium text-foreground truncate">
                         {displayLabel}
                       </p>
                     </div>
@@ -1008,15 +1051,15 @@ export default function DesignSystemPage() {
               );
             })()}
 
-            <div className="flex flex-col xl:flex-row gap-6">
+            <div className="flex flex-col md:flex-row md:items-stretch gap-2 md:gap-3 lg:gap-6">
               {/* Color swatches (non-hero) */}
-              <div className="w-fit xl:flex-shrink-0 min-w-0 rounded-lg border border-white/20 dark:border-white/10 backdrop-blur-xl p-4" style={{ background: "linear-gradient(135deg, hsl(var(--background) / 0.6), hsl(var(--background) / 0.3))", boxShadow: "0 4px 30px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.15)" }}>
-                <div className="flex items-center justify-between mb-3">
-                  <p className="text-xs font-medium uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>
+              <div className="w-full md:w-fit min-w-0 rounded-lg border border-white/20 dark:border-white/10 backdrop-blur-xl p-2 md:p-4" style={{ background: "linear-gradient(135deg, hsl(var(--background) / 0.6), hsl(var(--background) / 0.3))", boxShadow: "0 4px 30px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.15)" }}>
+                <div className="flex items-center justify-between mb-2 md:mb-3">
+                  <p className="text-[10px] md:text-xs font-medium uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>
                     {content.designSystem.sections.colors}
                   </p>
                 </div>
-                <div className="grid grid-cols-4 gap-1.5">
+                <div className="grid grid-cols-6 md:grid-cols-4 gap-1.5">
                   {EDITABLE_VARS
                     .filter(v => !["--brand", "--secondary", "--accent", "--background", "--foreground", "--primary"].includes(v.key))
                     .map(({ key, label }) => {
@@ -1028,7 +1071,7 @@ export default function DesignSystemPage() {
                       const hexCode = hsl ? hslStringToHex(hsl) : "";
                       return (
                       <div key={key} data-color-key={key} className="text-left">
-                        <div className="relative h-12 w-12 rounded-md mb-1 overflow-hidden flex items-center justify-center shadow-md">
+                        <div className="relative w-full aspect-square rounded-md mb-1 overflow-hidden flex items-center justify-center shadow-md">
                           <div
                             className="absolute inset-0"
                             style={{
@@ -1037,9 +1080,9 @@ export default function DesignSystemPage() {
                                 : undefined,
                             }}
                           />
-                          <span className="relative text-[9px] font-medium truncate px-0.5 hidden sm:inline" style={{ color: swatchTextColor }}>{hexCode}</span>
+                          <span className="relative text-[14px] font-semibold truncate px-0.5" style={{ color: swatchTextColor }}>{hexCode}</span>
                         </div>
-                        <p className="text-xs font-medium text-gray-900 dark:text-white truncate">
+                        <p className="hidden md:block text-xs font-medium text-foreground truncate">
                           {label}
                         </p>
                       </div>
@@ -1048,57 +1091,59 @@ export default function DesignSystemPage() {
                 </div>
               </div>
 
-              {/* Chips, Buttons, Badges row */}
-              <div className="flex flex-row xl:contents gap-3 min-w-0">
-                {/* Chips column */}
-                <div className="flex-1 min-w-0 xl:w-auto rounded-lg border border-white/20 dark:border-white/10 backdrop-blur-xl p-4 space-y-3" style={{ background: "linear-gradient(135deg, hsl(var(--background) / 0.6), hsl(var(--background) / 0.3))", boxShadow: "0 4px 30px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.15)" }}>
-                  <p className="text-xs font-medium uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>Chips</p>
-                  <div className="grid grid-cols-2 gap-2">
-                    <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--brand))", color: colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "white" }}>Brand</span>
-                    <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}>Secondary</span>
-                    <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" }}>Muted</span>
-                    <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--accent))", color: "hsl(var(--accent-foreground))" }}>Accent</span>
-                    <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>Destructive</span>
-                    <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--success))", color: "hsl(var(--success-foreground))" }}>Success</span>
-                    <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))" }}>Warning</span>
+              {/* Chips, Badges, Buttons in one card */}
+              <div className="min-w-0 rounded-lg border border-white/20 dark:border-white/10 backdrop-blur-xl p-2 md:p-4 overflow-hidden" style={{ background: "linear-gradient(135deg, hsl(var(--background) / 0.6), hsl(var(--background) / 0.3))", boxShadow: "0 4px 30px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.15)" }}>
+                <div className="flex flex-col gap-3">
+                  {/* Chips */}
+                  <div className="min-w-0 space-y-2">
+                    <p className="text-[10px] md:text-xs font-medium uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>Chips</p>
+                    <div className="flex flex-row flex-wrap gap-1.5 md:grid md:grid-cols-2 md:gap-2 items-start">
+                      <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-xs font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--brand))", color: colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "white" }}>Brand</span>
+                      <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-xs font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}>Secondary</span>
+                      <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-xs font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" }}>Muted</span>
+                      <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-xs font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--accent))", color: "hsl(var(--accent-foreground))" }}>Accent</span>
+                      <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-xs font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>Destructive</span>
+                      <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-xs font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--success))", color: "hsl(var(--success-foreground))" }}>Success</span>
+                      <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-xs font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))" }}>Warning</span>
+                    </div>
                   </div>
-                </div>
 
-                {/* Buttons column */}
-                <div className="flex-1 min-w-0 xl:w-auto rounded-lg border border-white/20 dark:border-white/10 backdrop-blur-xl p-4 space-y-3" style={{ background: "linear-gradient(135deg, hsl(var(--background) / 0.6), hsl(var(--background) / 0.3))", boxShadow: "0 4px 30px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.15)" }}>
-                  <p className="text-xs font-medium uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>Buttons</p>
-                  <div className="grid grid-cols-2 gap-2">
-                    <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--brand))", color: colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "white" }}>Primary</button>
-                    <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}>Secondary</button>
-                    <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors max-w-full truncate" style={{ backgroundColor: "transparent", color: "hsl(var(--brand))", border: "1px solid hsl(var(--brand))" }}>Outlined</button>
-                    <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors max-w-full truncate" style={{ backgroundColor: "transparent", color: "hsl(var(--brand))" }}>Ghost</button>
-                    <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>Destructive</button>
-                    <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" }}>Muted</button>
-                    <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--success))", color: "hsl(var(--success-foreground))" }}>Success</button>
-                    <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))" }}>Warning</button>
+                  {/* Badges */}
+                  <div className="min-w-0 space-y-2 md:border-t md:border-border md:pt-2">
+                    <p className="text-[10px] md:text-xs font-medium uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>Badges</p>
+                    <div className="flex flex-row flex-wrap gap-1.5 md:grid md:grid-cols-2 md:gap-2 items-start">
+                      <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--brand))", color: colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "white" }}>Brand</span>
+                      <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}>Secondary</span>
+                      <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" }}>Muted</span>
+                      <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--accent))", color: "hsl(var(--accent-foreground))" }}>Accent</span>
+                      <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>Destructive</span>
+                      <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--success))", color: "hsl(var(--success-foreground))" }}>Success</span>
+                      <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))" }}>Warning</span>
+                      <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-medium border border-border max-w-full truncate" style={{ color: "hsl(var(--muted-foreground))" }}>Outlined</span>
+                    </div>
                   </div>
-                </div>
 
-                {/* Badges column */}
-                <div className="flex-1 min-w-0 xl:w-auto rounded-lg border border-white/20 dark:border-white/10 backdrop-blur-xl p-4 space-y-3" style={{ background: "linear-gradient(135deg, hsl(var(--background) / 0.6), hsl(var(--background) / 0.3))", boxShadow: "0 4px 30px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.15)" }}>
-                  <p className="text-xs font-medium uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>Badges</p>
-                  <div className="grid grid-cols-2 gap-2">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--brand))", color: colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "white" }}>Brand</span>
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}>Secondary</span>
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" }}>Muted</span>
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--accent))", color: "hsl(var(--accent-foreground))" }}>Accent</span>
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>Destructive</span>
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--success))", color: "hsl(var(--success-foreground))" }}>Success</span>
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))" }}>Warning</span>
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium border border-border max-w-full truncate" style={{ color: "hsl(var(--muted-foreground))" }}>Outlined</span>
+                  {/* Buttons */}
+                  <div className="min-w-0 space-y-2 md:border-t md:border-border md:pt-2">
+                    <p className="text-[10px] md:text-xs font-medium uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>Buttons</p>
+                    <div className="flex flex-row flex-wrap gap-1.5 md:grid md:grid-cols-2 md:gap-2 items-start">
+                      <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--brand))", color: colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "white" }}>Primary</button>
+                      <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}>Secondary</button>
+                      <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors max-w-full truncate" style={{ backgroundColor: "transparent", color: "hsl(var(--brand))", border: "1px solid hsl(var(--brand))" }}>Outlined</button>
+                      <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors max-w-full truncate" style={{ backgroundColor: "transparent", color: "hsl(var(--brand))" }}>Ghost</button>
+                      <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>Destructive</button>
+                      <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" }}>Muted</button>
+                      <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--success))", color: "hsl(var(--success-foreground))" }}>Success</button>
+                      <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))" }}>Warning</button>
+                    </div>
                   </div>
                 </div>
               </div>
 
               {/* Icons column */}
-              <div className="xl:flex-1 min-w-0 rounded-lg border border-white/20 dark:border-white/10 backdrop-blur-xl p-4 space-y-4" style={{ background: "linear-gradient(135deg, hsl(var(--background) / 0.6), hsl(var(--background) / 0.3))", boxShadow: "0 4px 30px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.15)" }}>
-                <p className="text-xs font-medium uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>Icons</p>
-                <div className="grid grid-cols-3 gap-2 place-items-center">
+              <div className="flex-1 min-w-0 rounded-lg border border-white/20 dark:border-white/10 backdrop-blur-xl p-2 md:p-4 space-y-2 md:space-y-4" style={{ background: "linear-gradient(135deg, hsl(var(--background) / 0.6), hsl(var(--background) / 0.3))", boxShadow: "0 4px 30px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.15)" }}>
+                <p className="text-[10px] md:text-xs font-medium uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>Icons</p>
+                <div className="flex flex-wrap gap-2 justify-center">
                   <Suspense fallback={null}>
                     {SITE_ICONS.map(({ name, icon: Icon }) => (
                       <div key={name} className="bg-brand-dynamic/10 dark:bg-brand-dynamic/20 hover:bg-brand-dynamic/20 dark:hover:bg-brand-dynamic/30 rounded-full p-2 shadow-sm hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center" title={name}>
@@ -1115,11 +1160,11 @@ export default function DesignSystemPage() {
             {/* Reset Confirmation Modal */}
             {showResetModal && (
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" role="dialog" aria-modal="true" aria-labelledby="reset-modal-title">
-                <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl p-6 w-full max-w-sm mx-4">
-                  <h4 id="reset-modal-title" className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                <div className="rounded-lg shadow-xl p-6 w-full max-w-sm mx-4" style={{ backgroundColor: "hsl(var(--card))", color: "hsl(var(--card-foreground))" }}>
+                  <h4 id="reset-modal-title" className="text-lg font-semibold mb-2">
                     Reset to Defaults?
                   </h4>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                  <p className="text-sm mb-4" style={{ color: "hsl(var(--muted-foreground))" }}>
                     This will revert all theme colors to their original values. Any saved customizations will be lost.
                   </p>
                   <div className="flex justify-end gap-2">
@@ -1142,6 +1187,50 @@ export default function DesignSystemPage() {
               </div>
             )}
           </div>
+
+            {/* Specs Modal */}
+            {showSpecs && (
+              <div
+                className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="specs-modal-title"
+                onClick={() => setShowSpecs(false)}
+                onKeyDown={(e) => { if (e.key === "Escape") setShowSpecs(false); }}
+              >
+                <div
+                  className="rounded-lg shadow-xl p-6 w-full max-w-lg mx-4 max-h-[80vh] overflow-y-auto relative"
+                  style={{ backgroundColor: "hsl(var(--card))", color: "hsl(var(--card-foreground))" }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <button
+                    onClick={() => setShowSpecs(false)}
+                    className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full hover:opacity-80 transition-opacity"
+                    style={{ color: "hsl(var(--muted-foreground))" }}
+                    aria-label="Close"
+                  >
+                    ✕
+                  </button>
+                  <h4 id="specs-modal-title" className="text-lg font-semibold mb-4">
+                    How It Works
+                  </h4>
+                  {content.designSystem.specsContent.split("\n\n").map((paragraph, i) => (
+                    <p key={i} className="text-sm mb-3" style={{ color: "hsl(var(--muted-foreground))" }}>
+                      {paragraph}
+                    </p>
+                  ))}
+                  <div className="mt-4 pt-3 border-t" style={{ borderColor: "hsl(var(--border))" }}>
+                    <Link
+                      to="/portfolio/design-system/about"
+                      className="text-sm underline hover:opacity-80"
+                      style={{ color: "hsl(var(--brand))" }}
+                    >
+                      View as standalone page →
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            )}
 
         </div>
       </section>

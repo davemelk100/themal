@@ -512,7 +512,8 @@
   }
 
   .article-intro p {
-    @apply text-base text-gray-700 dark:text-gray-300 m-0;
+    @apply text-base m-0;
+    color: hsl(var(--foreground) / 0.8);
   }
 
   .point-section {
@@ -538,11 +539,13 @@
 
   .point-section p,
   .counter-point-section p {
-    @apply text-gray-700 dark:text-gray-300 m-0;
+    @apply m-0;
+    color: hsl(var(--foreground) / 0.8);
   }
 
   .article-date {
-    @apply text-xs text-gray-500 dark:text-gray-400 mt-8 text-center;
+    @apply text-xs mt-8 text-center;
+    color: hsl(var(--muted-foreground));
   }
 
   .article-content {
@@ -550,7 +553,8 @@
   }
 
   .article-content h2 {
-    @apply text-xl font-bold mt-8 mb-4 text-gray-900 dark:text-white;
+    @apply text-xl font-bold mt-8 mb-4;
+    color: hsl(var(--foreground));
   }
 
   .article-content h3 {
@@ -559,7 +563,8 @@
   }
 
   .article-content p {
-    @apply mb-4 text-gray-700 dark:text-gray-300;
+    @apply mb-4;
+    color: hsl(var(--foreground) / 0.8);
   }
 
   .article-content ul,
@@ -569,7 +574,8 @@
   }
 
   .article-content li {
-    @apply mb-2 text-gray-700 dark:text-gray-300;
+    @apply mb-2;
+    color: hsl(var(--foreground) / 0.8);
     list-style: inherit;
   }
 
@@ -582,7 +588,8 @@
 
   .point-section li,
   .counter-point-section li {
-    @apply mb-2 text-gray-700 dark:text-gray-300;
+    @apply mb-2;
+    color: hsl(var(--foreground) / 0.8);
   }
 
   /* Volume slider styling */

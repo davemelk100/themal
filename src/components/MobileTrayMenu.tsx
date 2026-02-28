@@ -156,7 +156,7 @@ const MobileTrayMenu: React.FC = () => {
         <div className="fixed inset-0 bg-black/50 z-[10000] lg:hidden">
           <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 rounded-t-2xl shadow-2xl p-6 max-h-[80vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-lg font-semibold text-foreground">
                 Menu
               </h2>
               <button
@@ -176,28 +176,28 @@ const MobileTrayMenu: React.FC = () => {
                 <Link
                   to="/portfolio/lab"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="block w-full text-left px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
+                  className="block w-full text-left px-4 py-3 rounded-lg text-foreground/80 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
                 >
                   Lab
                 </Link>
                 <Link
                   to="/portfolio/articles"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="block w-full text-left px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
+                  className="block w-full text-left px-4 py-3 rounded-lg text-foreground/80 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
                 >
                   Articles
                 </Link>
                 <Link
                   to="/portfolio/graphics"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="block w-full text-left px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
+                  className="block w-full text-left px-4 py-3 rounded-lg text-foreground/80 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
                 >
                   UX/UI
                 </Link>
                 {/* <Link
                   to="/portfolio/stories"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="block w-full text-left px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
+                  className="block w-full text-left px-4 py-3 rounded-lg text-foreground/80 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
                 >
                   Storytelling
                 </Link> */}
@@ -208,14 +208,14 @@ const MobileTrayMenu: React.FC = () => {
                 <Link
                   to="/"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
+                  className="block px-4 py-3 rounded-lg text-foreground/80 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
                 >
                   Home
                 </Link>
                 <Link
                   to="/case-studies"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
+                  className="block px-4 py-3 rounded-lg text-foreground/80 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
                 >
                   Case Studies
                 </Link>
@@ -228,7 +228,7 @@ const MobileTrayMenu: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
+                  className="block px-4 py-3 rounded-lg text-foreground/80 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
                 >
                   LinkedIn
                 </a>
@@ -237,7 +237,7 @@ const MobileTrayMenu: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
+                  className="block px-4 py-3 rounded-lg text-foreground/80 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
                 >
                   Dribbble
                 </a>

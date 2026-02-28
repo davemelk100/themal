@@ -334,14 +334,14 @@ export default function ThemePreviewBar() {
           <div className="flex gap-2 flex-shrink-0">
             <button
               onClick={handleDiscard}
-              className="px-3 py-1.5 text-sm rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              className="px-3 py-1.5 text-sm rounded-md text-foreground/80 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
             >
               Discard
             </button>
             <button
               onClick={handleUndo}
               disabled={historyLength === 0}
-              className="px-3 py-1.5 text-sm rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              className="px-3 py-1.5 text-sm rounded-md text-foreground/80 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
               Undo
             </button>

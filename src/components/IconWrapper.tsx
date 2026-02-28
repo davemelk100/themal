@@ -5,7 +5,7 @@ const IconWrapper = ({
   className,
   fallback = "↗",
 }: {
-  Icon: React.LazyExoticComponent<React.ComponentType<any>>;
+  Icon: React.LazyExoticComponent<React.ComponentType<any>> | React.ComponentType<any>;
   className?: string;
   fallback?: string;
 }) => (

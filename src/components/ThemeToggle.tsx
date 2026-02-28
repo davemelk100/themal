@@ -14,7 +14,7 @@ interface ThemeToggleProps {
 }
 
 const ThemeToggle: React.FC<ThemeToggleProps> = ({
-  className = "text-black dark:text-white",
+  className = "text-foreground",
 }) => {
   const { isDarkMode, toggleDarkMode } = useTheme();
 

@@ -115,7 +115,7 @@ const ProductDetail = () => {
 
   return (
     <div
-      className="min-h-screen text-gray-900 dark:text-white store-page pb-16 relative overflow-hidden"
+      className="min-h-screen text-foreground store-page pb-16 relative overflow-hidden"
       style={{
         backgroundColor: "#f0f0f0",
       }}
@@ -184,7 +184,7 @@ const ProductDetail = () => {
                     className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-800 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-10"
                     aria-label="Previous image"
                   >
-                    <ChevronLeft className="h-5 w-5 text-gray-900 dark:text-white" />
+                    <ChevronLeft className="h-5 w-5 text-foreground" />
                   </button>
                   <button
                     onClick={(e) => {
@@ -194,7 +194,7 @@ const ProductDetail = () => {
                     className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-800 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-10"
                     aria-label="Next image"
                   >
-                    <ChevronRight className="h-5 w-5 text-gray-900 dark:text-white" />
+                    <ChevronRight className="h-5 w-5 text-foreground" />
                   </button>
 
                   {/* Dots Indicator */}
