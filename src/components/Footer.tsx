@@ -38,7 +38,7 @@ export const Footer = () => {
   };
 
   return (
-    <footer className="bg-white dark:bg-gray-900 border-t border-border mt-auto">
+    <footer className="border-t border-border mt-auto" style={{ backgroundColor: "hsl(var(--background))" }}>
       {/* Contact Form */}
       <div className="w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <h3 className="text-lg font-semibold text-foreground mb-4">Contact</h3>
@@ -60,7 +60,7 @@ export const Footer = () => {
               type="text"
               name="user_name"
               required
-              className="w-full px-4 py-2 rounded-md border border-border bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-accent-dynamic"
+              className="w-full px-4 py-2 rounded-md border border-border text-[color:hsl(var(--foreground))] focus:outline-none focus:ring-2 focus:ring-accent-dynamic"
             />
           </div>
           <div>
@@ -75,7 +75,7 @@ export const Footer = () => {
               type="email"
               name="user_email"
               required
-              className="w-full px-4 py-2 rounded-md border border-border bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-accent-dynamic"
+              className="w-full px-4 py-2 rounded-md border border-border text-[color:hsl(var(--foreground))] focus:outline-none focus:ring-2 focus:ring-accent-dynamic"
             />
           </div>
           <div>
@@ -90,7 +90,7 @@ export const Footer = () => {
               name="message"
               required
               rows={5}
-              className="w-full px-4 py-2 rounded-md border border-border bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-accent-dynamic resize-vertical"
+              className="w-full px-4 py-2 rounded-md border border-border text-[color:hsl(var(--foreground))] focus:outline-none focus:ring-2 focus:ring-accent-dynamic resize-vertical"
             />
           </div>
           <button
@@ -124,7 +124,7 @@ export const Footer = () => {
           <div className="flex flex-col items-center sm:items-start gap-2">
             <a
               href="mailto:davemelk@gmail.com"
-              className="text-sm sm:text-base text-foreground/70 hover:text-gray-900 dark:hover:text-white transition-colors"
+              className="text-sm sm:text-base text-foreground/70 hover:text-foreground transition-colors"
             >
               davemelk@gmail.com
             </a>

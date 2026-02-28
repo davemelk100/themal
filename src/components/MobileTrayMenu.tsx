@@ -97,11 +97,10 @@ const MobileTrayMenu: React.FC = () => {
   return (
     <>
       {/* Mobile Bottom Navigation */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 border-t" style={{ backgroundColor: "hsl(var(--background))", borderColor: "hsl(var(--border))" }}>
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 border-t" style={{ backgroundColor: "hsl(var(--background))", borderColor: "hsl(var(--border))" }}>
         <div className="flex items-center justify-between w-full px-2 py-2">
           {[
             { id: "home", label: "Home", route: "/portfolio" },
-            { id: "work", label: "Design", route: "/portfolio/design-system" },
             { id: "case-studies", label: "Studies", route: "/case-studies" },
             { id: "articles", label: "Articles", route: "/portfolio/articles" },
             { id: "graphics", label: "UX/UI", route: "/portfolio/graphics" },
@@ -118,7 +117,7 @@ const MobileTrayMenu: React.FC = () => {
                 to={item.route}
                 className={`flex flex-col items-center gap-1 px-2 py-2 transition-colors rounded-lg ${
                   isActive
-                    ? "border-2 border-accent-dynamic text-brand-dynamic"
+                    ? "border-2 border-brand-dynamic text-brand-dynamic"
                     : "border-2 border-transparent"
                 }`}
                 style={!isActive ? { color: "hsl(var(--foreground))" } : undefined}
@@ -153,7 +152,7 @@ const MobileTrayMenu: React.FC = () => {
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 bg-black/50 z-[10000] lg:hidden">
+        <div className="fixed inset-0 bg-black/50 z-[10000] md:hidden">
           <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 rounded-t-2xl shadow-2xl p-6 max-h-[80vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-lg font-semibold text-foreground">

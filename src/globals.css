@@ -1,5 +1,4 @@
-/* League Gothic Font */
-@import url('https://fonts.googleapis.com/css2?family=League+Gothic&display=swap');
+/* League Gothic Font — loaded async in index.html to avoid render-blocking */
 
 @tailwind base;
 @tailwind components;

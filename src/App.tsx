@@ -11,6 +11,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
+  Navigate,
   Link,
   useLocation,
 } from "react-router-dom";
@@ -49,7 +50,7 @@ const ArticlesPage = lazy(() => import("./pages/portfolio/ArticlesPage"));
 // const CareerPage = lazy(() => import("./pages/portfolio/CareerPage"));
 // const ContactPage = lazy(() => import("./pages/portfolio/ContactPage"));
 // const TestimonialsPage = lazy(() => import("./pages/portfolio/TestimonialsPage"));
-const DesignSystemPage = lazy(() => import("./pages/portfolio/DesignSystemPage"));
+// const DesignSystemPage = lazy(() => import("./pages/portfolio/DesignSystemPage"));
 const DesignSystemAbout = lazy(() => import("./pages/portfolio/DesignSystemAbout"));
 const GraphicsPage = lazy(() => import("./pages/portfolio/GraphicsPage"));
 
@@ -166,7 +167,7 @@ function App() {
             {/* <Route path="/portfolio/testimonials" element={<TestimonialsPage />} /> */}
             {/* <Route path="/portfolio/contact" element={<ContactPage />} /> */}
             <Route path="/portfolio/design-system/about" element={<DesignSystemAbout />} />
-            <Route path="/portfolio/design-system" element={<DesignSystemPage />} />
+            <Route path="/portfolio/design-system" element={<Navigate to="/portfolio" replace />} />
             <Route path="/portfolio/graphics" element={<GraphicsPage />} />
             <Route path="/article/:slug" element={<Article />} />
             <Route path="/archive" element={<Archive />} />
@@ -220,8 +221,7 @@ function App() {
       {location.pathname !== "/" &&
       !location.pathname.startsWith("/store") &&
       location.pathname !== "/discogs" &&
-      location.pathname !== "/cygnet" &&
-      location.pathname !== "/portfolio/design-system" ? (
+      location.pathname !== "/cygnet" ? (
         <Suspense fallback={null} key={location.pathname}>
           <Footer />
         </Suspense>

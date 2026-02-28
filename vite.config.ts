@@ -83,6 +83,14 @@ export default defineConfig({
         entryFileNames: `assets/[name]-[hash].js`,
         chunkFileNames: `assets/[name]-[hash].js`,
         assetFileNames: `assets/[name]-[hash].[ext]`,
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            if (id.includes("react-dom")) return "react-dom";
+            if (id.includes("react-router")) return "react-router";
+            if (id.includes("framer-motion")) return "motion";
+            if (id.includes("axe-core")) return "axe";
+          }
+        },
       },
     },
     chunkSizeWarningLimit: 1000,

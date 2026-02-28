@@ -1,4 +1,5 @@
 import { lazy } from "react";
+import { Link } from "react-router-dom";
 import PortfolioLayout from "../../components/PortfolioLayout";
 import SectionHeader from "../../components/SectionHeader";
 import IconWrapper from "../../components/IconWrapper";
@@ -35,35 +36,42 @@ export default function GraphicsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {content.work.projects
               .filter((project: any) => project.title !== "3D Conversion UX Plan")
-              .map((project: any, index: number) => (
-                <a
-                  key={index}
-                  href={project.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group relative rounded-lg bg-white/20 backdrop-blur-lg flex flex-col shadow-xl hover:shadow-2xl transition-shadow cursor-pointer"
-                >
-                  <div className="relative w-full overflow-hidden bg-transparent">
-                    <img
-                      src={project.image}
-                      alt={project.alt || project.title}
-                      className="w-full h-auto group-hover:scale-105 transition-transform duration-300"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </div>
-                  <div className="p-4 sm:p-6 flex flex-col gap-2 flex-1 card-hover-secondary">
-                    <h3 className="font-semibold text-brand-dynamic group-hover:font-bold transition-all">
-                      {project.title}
-                    </h3>
-                    {project.description && (
-                      <p className="text-foreground/70 line-clamp-2">
-                        {project.description}
-                      </p>
-                    )}
-                  </div>
-                </a>
-              ))}
+              .map((project: any, index: number) => {
+                const isInternal = project.url?.startsWith("/");
+                const cardClass = "group relative rounded-lg bg-white/20 backdrop-blur-lg flex flex-col shadow-xl hover:shadow-2xl transition-shadow cursor-pointer";
+                const cardContent = (
+                  <>
+                    <div className="relative w-full max-h-64 overflow-hidden bg-transparent">
+                      <img
+                        src={project.image}
+                        alt={project.alt || project.title}
+                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </div>
+                    <div className="p-4 sm:p-6 flex flex-col gap-2 flex-1 card-hover-secondary">
+                      <h3 className="font-semibold text-brand-dynamic group-hover:font-bold transition-all">
+                        {project.title}
+                      </h3>
+                      {project.description && (
+                        <p className="text-foreground/70 line-clamp-2">
+                          {project.description}
+                        </p>
+                      )}
+                    </div>
+                  </>
+                );
+                return isInternal ? (
+                  <Link key={index} to={project.url} className={cardClass}>
+                    {cardContent}
+                  </Link>
+                ) : (
+                  <a key={index} href={project.url} target="_blank" rel="noopener noreferrer" className={cardClass}>
+                    {cardContent}
+                  </a>
+                );
+              })}
           </div>
         </div>
       </section>

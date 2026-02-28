@@ -312,7 +312,7 @@ export default function DesignSystemPage() {
   const [colors, setColors] = useState<Record<string, string>>({});
   const [showResetModal, setShowResetModal] = useState(false);
   const [showSpecs, setShowSpecs] = useState(false);
-  const [auditStatus, setAuditStatus] = useState<'idle' | 'running' | 'passed' | 'failed'>('idle');
+  const [auditStatus, setAuditStatus] = useState<'idle' | 'running' | 'failed'>('idle');
   const [auditViolations, setAuditViolations] = useState<{ selector: string; text: string }[]>([]);
   const [violationIndex, setViolationIndex] = useState(0);
   const [generatedCode, setGeneratedCode] = useState<string | null>(null);
@@ -405,7 +405,7 @@ export default function DesignSystemPage() {
 
   const setAuditFromResults = (results: AxeResults) => {
     if (results.violations.length === 0) {
-      setAuditStatus('passed');
+      setAuditStatus('idle');
       setAuditViolations([]);
       setViolationIndex(0);
     } else {
@@ -694,12 +694,6 @@ export default function DesignSystemPage() {
     window.dispatchEvent(new Event("theme-pending-update"));
   };
 
-  // Auto-audit on mount
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    const timer = setTimeout(() => runAccessibilityAudit(), 500);
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <PortfolioLayout currentPage="design-system">
@@ -721,16 +715,16 @@ export default function DesignSystemPage() {
           </div>
           <div id="colors" className="scroll-mt-24">
 
-            {/* Audit badges + action buttons */}
-            <div className="flex flex-wrap md:flex-nowrap items-stretch gap-2 mb-4">
-              <div className="relative w-full sm:w-auto md:flex-1">
+            {/* Action buttons + alerts row */}
+            <div className="flex flex-wrap md:flex-nowrap items-center gap-2 sm:gap-4 mb-4">
+              <div className="relative w-full sm:w-auto md:flex-1 min-w-0">
                 <button
                   onClick={() => setShuffleOpen(!shuffleOpen)}
                   className="w-full h-9 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
                   style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}
                 >
                   <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>
-                  <span className="truncate">Shuffle</span>
+                  <span className="truncate">{harmonySchemeIndex >= 0 ? HARMONY_SCHEMES[harmonySchemeIndex] : "Harmony"}</span>
                   <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}><path d="M6 9l6 6 6-6" /></svg>
                 </button>
                 {shuffleOpen && (
@@ -742,10 +736,10 @@ export default function DesignSystemPage() {
                           key={scheme}
                           onClick={() => handleRegenerate(idx)}
                           className="w-full text-left px-4 py-2 text-xs font-medium transition-colors hover:opacity-80 flex items-center justify-between"
-                          style={{ color: colors["--foreground"] && colors["--background"] && contrastRatio(colors["--foreground"], colors["--background"]) < 4.6 ? (colors["--background"] ? `hsl(${fgForBg(colors["--background"])})` : "hsl(var(--foreground))") : "hsl(var(--foreground))" }}
+                          style={{ color: "hsl(var(--foreground))" }}
                         >
                           {scheme}
-                          {idx === harmonySchemeIndex && <span style={{ color: colors["--background"] ? `hsl(${fgForBg(colors["--background"])})` : undefined }} aria-label="Selected">&#10003;</span>}
+                          {idx === harmonySchemeIndex && <span className="text-green-600 dark:text-green-400">&#10003;</span>}
                         </button>
                       ))}
                     </div>
@@ -753,7 +747,7 @@ export default function DesignSystemPage() {
                 )}
               </div>
               <div className="flex w-full sm:w-auto sm:contents gap-2">
-                <div className="flex-1 md:flex-1 h-9 flex rounded-lg overflow-hidden" style={{ backgroundColor: "hsl(var(--accent))", color: "hsl(var(--accent-foreground))" }}>
+                <div className="flex-1 min-w-0 h-9 flex rounded-lg overflow-hidden" style={{ backgroundColor: "hsl(var(--accent))", color: "hsl(var(--accent-foreground))" }}>
                   <button
                     onClick={handleGenerate}
                     className="h-full px-3 text-xs font-semibold transition-colors hover:opacity-80 flex items-center justify-center gap-1 whitespace-nowrap"
@@ -773,7 +767,7 @@ export default function DesignSystemPage() {
                 </div>
                 <button
                   onClick={() => setShowResetModal(true)}
-                  className="flex-1 md:flex-1 px-4 h-9 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+                  className="flex-1 min-w-0 h-9 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
                   style={{ backgroundColor: "transparent", color: "hsl(var(--brand))", border: "1px solid hsl(var(--brand))" }}
                 >
                   <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" /></svg>
@@ -781,12 +775,12 @@ export default function DesignSystemPage() {
                 </button>
               </div>
               <button
-                onClick={() => generateCode()}
-                className="md:flex-1 px-4 h-9 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 inline-flex items-center justify-center gap-1.5"
+                onClick={() => generatedCode ? setGeneratedCode(null) : generateCode()}
+                className="flex-1 min-w-0 h-9 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
                 style={{ backgroundColor: "transparent", color: "hsl(var(--brand))", border: "1px solid hsl(var(--brand))" }}
               >
                 <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
-                <span className="truncate">Show CSS</span>
+                <span className="truncate">{generatedCode ? "Hide CSS" : "Show CSS"}</span>
               </button>
               <button
                 disabled={prStatus === 'creating'}
@@ -794,7 +788,6 @@ export default function DesignSystemPage() {
                   setPrStatus('creating');
                   setPrUrl(null);
                   try {
-                    // Build CSS from current colors
                     let css = ":root {\n";
                     EDITABLE_VARS.forEach(({ key }) => {
                       const val = colors[key];
@@ -823,7 +816,7 @@ export default function DesignSystemPage() {
                     setPrStatus('error');
                   }
                 }}
-                className={`md:flex-1 px-4 h-9 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 disabled:opacity-50 inline-flex items-center justify-center gap-1.5 ${
+                className={`flex-1 min-w-0 h-9 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 disabled:opacity-50 flex items-center justify-center gap-1 ${
                   prStatus === 'error' || prStatus === 'rate-limited'
                     ? 'border border-red-400 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'
                     : prStatus === 'created'
@@ -836,77 +829,49 @@ export default function DesignSystemPage() {
                 }
               >
                 <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" /></svg>
-                <span className="truncate">{prStatus === 'creating' ? 'Preparing PR...' : prStatus === 'error' ? 'Retry PR' : prStatus === 'rate-limited' ? 'Retry PR' : 'Open PR'}</span>
+                <span className="truncate">{prStatus === 'creating' ? 'Preparing...' : prStatus === 'error' ? 'Retry PR' : prStatus === 'rate-limited' ? 'Retry PR' : 'Open PR'}</span>
               </button>
-              {prStatus === 'rate-limited' && prError && (
-                <span className="inline-flex items-center px-4 h-9 text-xs font-medium rounded-lg border border-yellow-400 bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300">
-                  {prError}
-                </span>
-              )}
-              {prStatus === 'created' && prUrl && (
-                <span className="inline-flex items-center gap-2 px-4 h-9 text-xs font-medium rounded-lg border border-green-400 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300">
-                  PR Created!
-                  <a
-                    href={prUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline font-semibold hover:text-green-900 dark:hover:text-green-100 transition-colors"
-                  >
-                    View PR
-                  </a>
-                  <button
-                    onClick={() => { setPrStatus('idle'); setPrUrl(null); }}
-                    className="ml-1 text-green-500 hover:text-green-800 dark:hover:text-green-100 transition-colors"
-                    aria-label="Dismiss PR notification"
-                  >
-                    &#10005;
-                  </button>
-                </span>
-              )}
-              {auditStatus === 'running' && (
-                <span aria-live="assertive" data-axe-exclude className="ml-auto flex items-center gap-1 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 px-4 text-xs font-medium text-foreground/70">
-                  Running audit&hellip;
-                </span>
-              )}
-              {auditStatus === 'passed' && (
-                <span aria-live="assertive" data-axe-exclude className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 inline-flex items-center gap-1.5 rounded-xl border-2 border-green-400 dark:border-green-600 bg-green-100 dark:bg-green-950 px-4 h-10 text-sm font-semibold text-green-800 dark:text-green-200 shadow-2xl ring-1 ring-green-300/50 dark:ring-green-700/50">
-                  <span className="text-green-600 dark:text-green-400">&#10003;</span> Passed WCAG AA
-                </span>
-              )}
-            </div>
-            {auditStatus === 'failed' && (
-              <div aria-live="assertive" data-axe-exclude className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex justify-center">
-                <span className="inline-flex items-center gap-1.5 rounded-xl border-2 border-red-400 dark:border-red-600 bg-red-100 dark:bg-red-950 px-4 h-10 text-sm font-semibold text-red-800 dark:text-red-200 shadow-2xl ring-1 ring-red-300/50 dark:ring-red-700/50">
-                  <span>&#10007; {auditViolations.length} contrast issue{auditViolations.length !== 1 ? 's' : ''}</span>
-                  <button
-                    onClick={() => {
-                      const idx = (violationIndex - 1 + auditViolations.length) % auditViolations.length;
-                      setViolationIndex(idx);
-                      scrollToViolation(auditViolations[idx]);
-                    }}
-                    className="text-red-600 dark:text-red-400 hover:opacity-70 disabled:opacity-30"
-                    disabled={auditViolations.length <= 1}
-                  >&#9664;</button>
-                  <span className="text-[10px] tabular-nums">{violationIndex + 1}/{auditViolations.length}</span>
-                  <button
-                    onClick={() => {
-                      const idx = (violationIndex + 1) % auditViolations.length;
-                      setViolationIndex(idx);
-                      scrollToViolation(auditViolations[idx]);
-                    }}
-                    className="text-red-600 dark:text-red-400 hover:opacity-70 disabled:opacity-30"
-                    disabled={auditViolations.length <= 1}
-                  >&#9654;</button>
-                  <button
-                    onClick={() => fixContrastIssues()}
-                    className="ml-1 px-2 py-0.5 text-[10px] font-semibold rounded transition-colors hover:opacity-80 whitespace-nowrap"
-                    style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}
-                  >
-                    Fix Contrast
-                  </button>
-                </span>
+              {/* Alerts: full-width row on mobile, inline on sm+ */}
+              <div className="w-full sm:w-auto order-first sm:order-last sm:ml-auto flex-shrink-0 min-h-[36px]" data-axe-exclude>
+                {prStatus === 'rate-limited' && prError && (
+                  <span className="inline-flex items-center px-3 h-9 text-xs font-medium rounded-lg border border-yellow-400 bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300">
+                    {prError}
+                  </span>
+                )}
+                {prStatus === 'created' && prUrl && (
+                  <span className="inline-flex items-center gap-2 px-3 h-9 text-xs font-medium rounded-lg border border-green-400 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300">
+                    PR Created!
+                    <a href={prUrl} target="_blank" rel="noopener noreferrer" className="underline font-semibold hover:text-green-900 dark:hover:text-green-100 transition-colors">View</a>
+                    <button onClick={() => { setPrStatus('idle'); setPrUrl(null); }} className="text-green-500 hover:text-green-800 dark:hover:text-green-100 transition-colors" aria-label="Dismiss PR notification">&#10005;</button>
+                  </span>
+                )}
+                {auditStatus === 'failed' && (
+                  <span aria-live="assertive" className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 inline-flex items-center gap-1.5 rounded-xl border-2 border-red-400 dark:border-red-600 bg-red-100 dark:bg-red-950 px-4 h-10 text-sm font-semibold text-red-800 dark:text-red-200 shadow-2xl ring-1 ring-red-300/50 dark:ring-red-700/50">
+                    <span>&#10007; {auditViolations.length} issue{auditViolations.length !== 1 ? 's' : ''}</span>
+                    <button
+                      onClick={() => {
+                        const idx = (violationIndex - 1 + auditViolations.length) % auditViolations.length;
+                        setViolationIndex(idx);
+                        scrollToViolation(auditViolations[idx]);
+                      }}
+                      className="text-red-600 dark:text-red-400 hover:opacity-70 disabled:opacity-30"
+                      disabled={auditViolations.length <= 1}
+                    >&#9664;</button>
+                    <span className="text-[10px] tabular-nums">{violationIndex + 1}/{auditViolations.length}</span>
+                    <button
+                      onClick={() => {
+                        const idx = (violationIndex + 1) % auditViolations.length;
+                        setViolationIndex(idx);
+                        scrollToViolation(auditViolations[idx]);
+                      }}
+                      className="text-red-600 dark:text-red-400 hover:opacity-70 disabled:opacity-30"
+                      disabled={auditViolations.length <= 1}
+                    >&#9654;</button>
+                    <button onClick={() => fixContrastIssues()} className="ml-1 px-2 py-0.5 text-[10px] font-semibold rounded transition-colors hover:opacity-80 whitespace-nowrap" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>Fix</button>
+                  </span>
+                )}
               </div>
-            )}
+            </div>
 
             {/* Generated code output — above hero swatches */}
             {generatedCode && (

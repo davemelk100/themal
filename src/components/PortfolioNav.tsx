@@ -8,7 +8,7 @@ const navOrder = [
   "work",
   "articles",
   // "career",
-  "design-system",
+  // "design-system",
 ];
 
 const idToRoute: Record<string, string> = {
@@ -46,7 +46,7 @@ const PortfolioNav = ({ currentPage }: { currentPage?: string }) => (
 
           {/* Nav links */}
           <div
-            className="hidden lg:flex flex-wrap items-center gap-2 sm:gap-3 mt-2 lg:mt-0 rounded-lg px-3 py-2 flex-shrink-0"
+            className="hidden md:flex flex-wrap items-center gap-2 sm:gap-3 mt-2 lg:mt-0 rounded-lg px-3 py-2 flex-shrink-0"
             style={{
               background:
                 "linear-gradient(135deg, hsl(var(--brand) / 0.08), hsl(var(--secondary) / 0.12), hsl(var(--brand) / 0.05))",
@@ -62,21 +62,6 @@ const PortfolioNav = ({ currentPage }: { currentPage?: string }) => (
               }
             >
               Home
-            </Link>
-            <Link
-              to="/portfolio/design-system"
-              className={
-                currentPage === "design-system" || currentPage === "work"
-                  ? activeClass
-                  : inactiveClass
-              }
-              style={
-                currentPage === "design-system" || currentPage === "work"
-                  ? { fontWeight: 700 }
-                  : { color: "hsl(var(--foreground))" }
-              }
-            >
-              Design System
             </Link>
             <Link
               to="/case-studies"

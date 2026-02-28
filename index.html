@@ -121,6 +121,7 @@
           const fontLinks = [
             "https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,400;0,8..144,700;1,8..144,400;1,8..144,700&display=swap",
             "https://fonts.googleapis.com/css2?family=Story+Script&display=swap",
+            "https://fonts.googleapis.com/css2?family=League+Gothic&display=swap",
           ];
 
           fontLinks.forEach(function (href) {
@@ -206,6 +207,7 @@
           document.fonts.load("500 1em 'Nunito Sans'"),
           document.fonts.load("700 1em 'Nunito Sans'"),
           document.fonts.load("400 1em 'Story Script'"),
+          document.fonts.load("400 1em 'League Gothic'"),
         ])
           .then(() => {
             document.documentElement.classList.add("wf-active");
@@ -265,6 +267,14 @@
       </style>
     </div>
     <script type="module" src="/src/main.tsx"></script>
-    <script async src="https://js.stripe.com/v3/buy-button.js"></script>
+    <script>
+      // Load Stripe buy-button only on store pages
+      if (location.pathname.startsWith('/store')) {
+        var s = document.createElement('script');
+        s.src = 'https://js.stripe.com/v3/buy-button.js';
+        s.async = true;
+        document.body.appendChild(s);
+      }
+    </script>
   </body>
 </html>

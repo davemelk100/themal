@@ -60,6 +60,22 @@ export const content = {
     subtitle: "There is much more I am unable to show, unfortunately.",
     projects: [
       {
+        title: "Mini Graphs and Their Various States",
+        description: "Design system spec for chart and data visualization component states",
+        categories: "Design Systems, UI Components, Data Visualization",
+        image: "/img/dribbble-design-system.png",
+        alt: "Mini graphs showing bar chart and data visualization UI patterns in various states",
+        url: "https://dribbble.com/shots/26345725-Mini-graphs-and-their-various-states",
+      },
+      {
+        title: "Lab Projects",
+        description: "Interactive chatbots, design panes, and AI NUI experiments",
+        categories: "AI, Design, Prototyping",
+        image: "/img/lab-preview.png",
+        alt: "Lab projects including Chatbots, Design Panes, and AI NUI",
+        url: "/portfolio/lab",
+      },
+      {
         title: "Delta Dental Member Portal",
         description: "Led UI design implementation for a SaaS product",
         categories: "",
