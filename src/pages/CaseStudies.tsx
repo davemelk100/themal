@@ -56,9 +56,10 @@ export default function CaseStudies() {
               }}
               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                 activeStudy === study.id
-                  ? "bg-brand-dynamic text-white"
+                  ? "bg-brand-dynamic"
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
               }`}
+              style={activeStudy === study.id ? { color: "hsl(var(--foreground))" } : undefined}
             >
               {study.label}
             </button>
@@ -74,7 +75,7 @@ export default function CaseStudies() {
             <h2 className="font-bold title-font leading-tight text-foreground mb-2">
               Operationalizing Accessibility Across an Enterprise Healthcare Organization
             </h2>
-            <p className="text-muted-foreground mb-8">
+            <p className="text-foreground/80 mb-8">
               Senior UX Developer and Accessibility Strategist, Delta Dental of Michigan
             </p>
 
@@ -404,7 +405,7 @@ export default function CaseStudies() {
             <h2 className="font-bold title-font leading-tight text-foreground mb-2">
               Designing AI Powered Interpretation for Real Time Enterprise Communication
             </h2>
-            <p className="text-muted-foreground mb-8">
+            <p className="text-foreground/80 mb-8">
               UX Lead and Front End Architect, Propio Language Services
             </p>
 
@@ -774,7 +775,7 @@ export default function CaseStudies() {
             <h2 className="font-bold title-font leading-tight text-foreground mb-2">
               Designing a Cross Product User Testing Platform with Unified Data and Theming Architecture
             </h2>
-            <p className="text-muted-foreground mb-8">
+            <p className="text-foreground/80 mb-8">
               UX Architect and Software Engineer, Melkonian Industries
             </p>
 
@@ -1124,7 +1125,7 @@ export default function CaseStudies() {
             <h2 className="font-bold title-font leading-tight text-foreground mb-2">
               AI-Augmented Inventory System & CRM Integration
             </h2>
-            <p className="text-muted-foreground mb-8">
+            <p className="text-foreground/80 mb-8">
               Full-Stack Product, AI, & Systems Design for Nextier
             </p>
 
@@ -1361,7 +1362,7 @@ export default function CaseStudies() {
             <h2 className="font-bold title-font leading-tight text-foreground mb-2">
               Establishing Delivery Discipline Across Distributed, Regulated Environments
             </h2>
-            <p className="text-muted-foreground mb-8">
+            <p className="text-foreground/80 mb-8">
               Organization-Wide Operational Transformation -- Agile, Process, & Delivery Excellence
             </p>
 

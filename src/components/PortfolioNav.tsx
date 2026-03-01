@@ -112,31 +112,17 @@ const PortfolioNav = ({ currentPage }: { currentPage?: string }) => (
                 );
               })}
             <Link
-              to="/portfolio/graphics"
-              className={
-                currentPage === "graphics" ? activeClass : inactiveClass
-              }
-              style={
-                currentPage === "graphics"
-                  ? { fontWeight: 700 }
-                  : { color: "hsl(var(--foreground))" }
-              }
-            >
-              UX/UI
-            </Link>
-            <div className="ml-auto" />
-            <Link
               to="/portfolio/lab"
               className={
-                currentPage === "current-projects" ? activeClass : inactiveClass
+                currentPage === "design-dev" ? activeClass : inactiveClass
               }
               style={
-                currentPage === "current-projects"
+                currentPage === "design-dev"
                   ? { fontWeight: 700 }
                   : { color: "hsl(var(--foreground))" }
               }
             >
-              Lab
+              Design & Dev
             </Link>
           </div>
         </div>

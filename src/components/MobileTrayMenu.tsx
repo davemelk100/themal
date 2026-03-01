@@ -103,13 +103,14 @@ const MobileTrayMenu: React.FC = () => {
             { id: "home", label: "Home", route: "/portfolio" },
             { id: "case-studies", label: "Studies", route: "/case-studies" },
             { id: "articles", label: "Articles", route: "/portfolio/articles" },
-            { id: "graphics", label: "UX/UI", route: "/portfolio/graphics" },
-            { id: "current-projects", label: "Lab", route: "/portfolio/lab" },
+            { id: "design-dev", label: "Design & Dev", route: "/portfolio/lab" },
           ].map((item) => {
             const isActive = item.id === "home"
               ? location.pathname === "/portfolio"
-              : item.route === "/case-studies" || item.route === "/portfolio/graphics"
+              : item.route === "/case-studies"
               ? location.pathname === item.route
+              : item.id === "design-dev"
+              ? location.pathname === "/portfolio/lab" || location.pathname === "/portfolio/graphics"
               : isActiveRoute(item.id);
             return (
               <Link
@@ -131,7 +132,7 @@ const MobileTrayMenu: React.FC = () => {
                       <rect x="9" y="3" width="6" height="4" rx="1" />
                     </svg>
                   );
-                  if (item.id === "graphics") return (
+                  if (item.id === "design-dev") return (
                     <Suspense fallback={<span className="w-6 h-6">·</span>}>
                       <LazyPalette className={iconClass} />
                     </Suspense>
@@ -177,7 +178,7 @@ const MobileTrayMenu: React.FC = () => {
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="block w-full text-left px-4 py-3 rounded-lg text-foreground/80 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
                 >
-                  Lab
+                  Design & Dev
                 </Link>
                 <Link
                   to="/portfolio/articles"
@@ -185,13 +186,6 @@ const MobileTrayMenu: React.FC = () => {
                   className="block w-full text-left px-4 py-3 rounded-lg text-foreground/80 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
                 >
                   Articles
-                </Link>
-                <Link
-                  to="/portfolio/graphics"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block w-full text-left px-4 py-3 rounded-lg text-foreground/80 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium"
-                >
-                  UX/UI
                 </Link>
                 {/* <Link
                   to="/portfolio/stories"

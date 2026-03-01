@@ -100,20 +100,20 @@ export default function PortfolioLanding() {
                 <h3 className="font-semibold mb-1 title-font">
                   {position.title}
                 </h3>
-                <p className="text-[color:hsl(var(--muted-foreground))] mb-1">
+                <p className="text-foreground/80 mb-1">
                   {position.company}
                 </p>
-                <p className="text-[color:hsl(var(--muted-foreground))] mb-2">
+                <p className="text-foreground/80 mb-2">
                   {position.period}
                 </p>
                 {Array.isArray(position.description) ? (
-                  <ul className="text-[color:hsl(var(--muted-foreground))] leading-relaxed list-disc list-inside space-y-1">
+                  <ul className="text-foreground/80 leading-relaxed list-disc list-inside space-y-1">
                     {position.description.map((item, index) => (
                       <li key={index}>{item}</li>
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-[color:hsl(var(--muted-foreground))] leading-relaxed">
+                  <p className="text-foreground/80 leading-relaxed">
                     {position.description}
                   </p>
                 )}
@@ -124,7 +124,7 @@ export default function PortfolioLanding() {
             <h3 className="font-semibold mb-2 text-[color:hsl(var(--foreground))]">
               Certifications
             </h3>
-            <ul className="list-disc list-inside text-[color:hsl(var(--muted-foreground))] leading-relaxed space-y-1 mb-4">
+            <ul className="list-disc list-inside text-foreground/80 leading-relaxed space-y-1 mb-4">
               <li>Certified ScrumMaster (Scrum Alliance)</li>
               <li>
                 Certified Usability Analyst (Human Factors
@@ -135,7 +135,7 @@ export default function PortfolioLanding() {
             <h3 className="font-semibold mb-2 text-[color:hsl(var(--foreground))]">
               Education
             </h3>
-            <ul className="list-disc list-inside text-[color:hsl(var(--muted-foreground))] leading-relaxed space-y-1">
+            <ul className="list-disc list-inside text-foreground/80 leading-relaxed space-y-1">
               <li>Oakland University | Rochester MI</li>
               <li>Bachelor of Arts in English</li>
               <li>Minor in Public Relations</li>
@@ -158,13 +158,13 @@ export default function PortfolioLanding() {
                 key={index}
                 className="border-l-2 border-accent-dynamic/60 pl-4"
               >
-                <p className="text-[color:hsl(var(--muted-foreground))] leading-relaxed italic">
+                <p className="text-foreground/80 leading-relaxed italic">
                   "{testimonial.quote}"
                 </p>
                 <p className="mt-2 font-semibold text-[color:hsl(var(--foreground))]">
                   {testimonial.author}
                 </p>
-                <p className="text-[color:hsl(var(--muted-foreground))] text-sm">
+                <p className="text-foreground/80 text-sm">
                   {testimonial.role}
                 </p>
               </div>

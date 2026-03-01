@@ -168,7 +168,7 @@ function App() {
             {/* <Route path="/portfolio/contact" element={<ContactPage />} /> */}
             <Route path="/portfolio/design-system/about" element={<DesignSystemAbout />} />
             <Route path="/portfolio/design-system" element={<Navigate to="/portfolio" replace />} />
-            <Route path="/portfolio/graphics" element={<GraphicsPage />} />
+            <Route path="/portfolio/graphics" element={<Navigate to="/portfolio/lab" replace />} />
             <Route path="/article/:slug" element={<Article />} />
             <Route path="/archive" element={<Archive />} />
             <Route path="/json" element={<JsonAiPrompts />} />

@@ -924,7 +924,7 @@ export default function DesignSystemPage() {
                     className="relative text-left group cursor-pointer"
                   >
                     <div
-                      className="relative w-full aspect-square rounded-lg mb-1 transition-all overflow-hidden shadow-md group-hover:shadow-lg"
+                      className="relative w-full aspect-square max-w-[100px] max-h-[100px] rounded-lg mb-1 transition-all overflow-hidden shadow-md group-hover:shadow-lg"
                       onClick={() => {
                         const input = document.getElementById(inputId) as HTMLInputElement | null;
                         input?.click();
@@ -1010,7 +1010,7 @@ export default function DesignSystemPage() {
                 );
               };
               return (
-                <div className="grid grid-cols-6 gap-4 mb-4" data-axe-exclude>
+                <div className="grid grid-cols-6 gap-2 md:gap-4 mb-4" data-axe-exclude>
                   {heroKeys.map((v) => renderHeroSwatch(v))}
                 </div>
               );
@@ -1018,7 +1018,7 @@ export default function DesignSystemPage() {
 
             <div className="flex flex-col md:flex-row md:items-stretch gap-2 md:gap-3 lg:gap-6">
               {/* Color swatches (non-hero) */}
-              <div className="w-full md:w-fit min-w-0 rounded-lg border border-white/20 dark:border-white/10 backdrop-blur-xl p-2 md:p-4" style={{ background: "linear-gradient(135deg, hsl(var(--background) / 0.6), hsl(var(--background) / 0.3))", boxShadow: "0 4px 30px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.15)" }}>
+              <div className="w-fit min-w-0 rounded-lg border border-white/20 dark:border-white/10 backdrop-blur-xl p-2 md:p-4" style={{ background: "linear-gradient(135deg, hsl(var(--background) / 0.6), hsl(var(--background) / 0.3))", boxShadow: "0 4px 30px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.15)" }}>
                 <div className="flex items-center justify-between mb-2 md:mb-3">
                   <p className="text-[10px] md:text-xs font-medium uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>
                     {content.designSystem.sections.colors}
@@ -1036,7 +1036,7 @@ export default function DesignSystemPage() {
                       const hexCode = hsl ? hslStringToHex(hsl) : "";
                       return (
                       <div key={key} data-color-key={key} className="text-left">
-                        <div className="relative w-full aspect-square rounded-md mb-1 overflow-hidden flex items-center justify-center shadow-md">
+                        <div className="relative w-full aspect-square max-w-[100px] max-h-[100px] rounded-md mb-1 overflow-hidden flex items-center justify-center shadow-md">
                           <div
                             className="absolute inset-0"
                             style={{
@@ -1057,7 +1057,7 @@ export default function DesignSystemPage() {
               </div>
 
               {/* Chips, Badges, Buttons in one card */}
-              <div className="min-w-0 rounded-lg border border-white/20 dark:border-white/10 backdrop-blur-xl p-2 md:p-4 overflow-hidden" style={{ background: "linear-gradient(135deg, hsl(var(--background) / 0.6), hsl(var(--background) / 0.3))", boxShadow: "0 4px 30px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.15)" }}>
+              <div className="flex-1 min-w-0 rounded-lg border border-white/20 dark:border-white/10 backdrop-blur-xl p-2 md:p-4 overflow-hidden" style={{ background: "linear-gradient(135deg, hsl(var(--background) / 0.6), hsl(var(--background) / 0.3))", boxShadow: "0 4px 30px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.15)" }}>
                 <div className="flex flex-col gap-3">
                   {/* Chips */}
                   <div className="min-w-0 space-y-2">
@@ -1105,20 +1105,20 @@ export default function DesignSystemPage() {
                 </div>
               </div>
 
-              {/* Icons column */}
-              <div className="flex-1 min-w-0 rounded-lg border border-white/20 dark:border-white/10 backdrop-blur-xl p-2 md:p-4 space-y-2 md:space-y-4" style={{ background: "linear-gradient(135deg, hsl(var(--background) / 0.6), hsl(var(--background) / 0.3))", boxShadow: "0 4px 30px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.15)" }}>
-                <p className="text-[10px] md:text-xs font-medium uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>Icons</p>
-                <div className="flex flex-wrap gap-2 justify-center">
-                  <Suspense fallback={null}>
-                    {SITE_ICONS.map(({ name, icon: Icon }) => (
-                      <div key={name} className="bg-brand-dynamic/10 dark:bg-brand-dynamic/20 hover:bg-brand-dynamic/20 dark:hover:bg-brand-dynamic/30 rounded-full p-2 shadow-sm hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center" title={name}>
-                        <Icon className="h-5 w-5 text-brand-dynamic" aria-label={name} role="img" />
-                      </div>
-                    ))}
-                  </Suspense>
-                </div>
-              </div>
+            </div>
 
+            {/* Icons row */}
+            <div className="min-w-0 rounded-lg border border-white/20 dark:border-white/10 backdrop-blur-xl p-2 md:p-4 space-y-2 md:space-y-4" style={{ background: "linear-gradient(135deg, hsl(var(--background) / 0.6), hsl(var(--background) / 0.3))", boxShadow: "0 4px 30px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.15)" }}>
+              <p className="text-[10px] md:text-xs font-medium uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>Icons</p>
+              <div className="flex flex-wrap gap-2 justify-center">
+                <Suspense fallback={null}>
+                  {SITE_ICONS.map(({ name, icon: Icon }) => (
+                    <div key={name} className="bg-brand-dynamic/10 dark:bg-brand-dynamic/20 hover:bg-brand-dynamic/20 dark:hover:bg-brand-dynamic/30 rounded-full p-2 shadow-sm hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center" title={name}>
+                      <Icon className="h-5 w-5 text-brand-dynamic" aria-label={name} role="img" />
+                    </div>
+                  ))}
+                </Suspense>
+              </div>
             </div>
 
 
