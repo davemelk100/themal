@@ -614,8 +614,9 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
         setAuditViolations(elements);
         setViolationIndex(0);
       }
-    } catch {
-      setAuditStatus('idle');
+    } catch (err) {
+      console.error("fixContrastIssues failed:", err);
+      setAuditStatus('failed');
     }
   };
 
@@ -625,7 +626,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
         {/* Title and description */}
         <div className="w-full mb-4">
           <h2 className="font-bold mb-1 title-font" style={{ color: "hsl(var(--foreground))" }}>NEW - Live Design System!</h2>
-          <p className="text-sm" style={{ color: "hsl(var(--foreground) / 0.85)" }}>
+          <p className="text-sm" style={{ color: "hsl(var(--foreground))" }}>
             Explore the interactive design system powering this site. Pick a brand color and watch every token transform in real time. Automatic WCAG AA contrast correction. Generate a CSS snapshot of your custom theme. Open a pull request to propose changes directly to the repo.{" "}Here's how it works:{" "}
             <button onClick={() => setShowSpecs(true)} className="underline text-brand-dynamic hover:opacity-80">
               Specs
@@ -638,7 +639,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
           <div className="relative w-full sm:w-auto md:flex-1 min-w-0">
             <button
               onClick={() => setShuffleOpen(!shuffleOpen)}
-              className="w-full h-9 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+              className="w-full h-12 sm:h-9 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
               style={{ backgroundColor: "hsl(var(--secondary))", color: colors["--secondary"] ? `hsl(${fgForBg(colors["--secondary"])})` : "hsl(var(--secondary-foreground))" }}
             >
               <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>
@@ -664,7 +665,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
               </>
             )}
           </div>
-          <div className="h-9 flex items-center rounded-lg overflow-hidden" style={{ backgroundColor: "hsl(var(--accent))", color: colors["--accent"] ? `hsl(${fgForBg(colors["--accent"])})` : "hsl(var(--accent-foreground))" }}>
+          <div className="h-12 sm:h-9 flex items-center rounded-lg overflow-hidden" style={{ backgroundColor: "hsl(var(--accent))", color: colors["--accent"] ? `hsl(${fgForBg(colors["--accent"])})` : "hsl(var(--accent-foreground))" }}>
             <button
               onClick={handleGenerate}
               className="h-full px-3 text-xs font-semibold transition-colors hover:opacity-80 flex items-center justify-center gap-1 whitespace-nowrap"
@@ -684,7 +685,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
           </div>
           <button
             onClick={() => setShowResetModal(true)}
-            className="h-9 px-2 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+            className="h-12 sm:h-9 px-2 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
             style={{ backgroundColor: "transparent", color: "hsl(var(--brand))", border: "1px solid hsl(var(--brand))" }}
           >
             <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" /></svg>
@@ -692,7 +693,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
           </button>
           <button
             onClick={() => generatedCode ? setGeneratedCode(null) : generateCode()}
-            className="h-9 px-2 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+            className="h-12 sm:h-9 px-2 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
             style={{ backgroundColor: "transparent", color: "hsl(var(--brand))", border: "1px solid hsl(var(--brand))" }}
           >
             <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
@@ -740,7 +741,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
                 popup?.close();
               }
             }}
-            className={`h-9 px-2 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 disabled:opacity-50 flex items-center justify-center gap-1 ${
+            className={`h-12 sm:h-9 px-2 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 disabled:opacity-50 flex items-center justify-center gap-1 ${
               prStatus === 'error' || prStatus === 'rate-limited'
                 ? 'border border-red-400 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'
                 : prStatus === 'created'
@@ -809,7 +810,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
         {generatedCode && (
           <div className="mb-4 rounded-lg border" style={{ borderColor: "hsl(var(--border))", backgroundColor: "hsl(var(--card))" }}>
             <div className="flex items-center justify-between px-3 py-1.5 border-b" style={{ borderColor: "hsl(var(--border))" }}>
-              <span className="text-[10px] font-medium uppercase tracking-wider" style={{ color: "hsl(var(--card-foreground))", opacity: 0.7 }}>Generated Theme</span>
+              <span className="text-[10px] font-medium uppercase tracking-wider" style={{ color: "hsl(var(--card-foreground))" }}>Generated Theme</span>
               <div className="flex items-center gap-1">
                 <button
                   onClick={() => {
@@ -844,7 +845,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
               <h4 id="home-reset-modal-title" className="text-lg font-semibold mb-2">
                 Reset to Defaults?
               </h4>
-              <p className="text-sm mb-4" style={{ color: "hsl(var(--card-foreground) / 0.85)" }}>
+              <p className="text-sm mb-4" style={{ color: "hsl(var(--card-foreground))" }}>
                 This will revert all theme colors to their original values. Any saved customizations will be lost.
               </p>
               <div className="flex justify-end gap-2">
@@ -894,7 +895,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
                 How It Works
               </h4>
               {content.designSystem.specsContent.split("\n\n").map((paragraph, i) => (
-                <p key={i} className="text-sm mb-3" style={{ color: "hsl(var(--card-foreground) / 0.85)" }}>
+                <p key={i} className="text-sm mb-3" style={{ color: "hsl(var(--card-foreground))" }}>
                   {paragraph}
                 </p>
               ))}
@@ -1032,7 +1033,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
                   {content.designSystem.sections.colors}
                 </p>
               </div>
-              <div className="grid gap-1.5" style={{ gridTemplateColumns: "repeat(4, 100px)" }}>
+              <div className="grid gap-1.5" style={{ gridTemplateColumns: "repeat(5, 76px)" }}>
                 {COLOR_SWATCHES.filter(v => !["--brand", "--secondary", "--accent", "--background", "--foreground", "--primary"].includes(v.key)).map(({ key, label }) => {
                   const hsl = colors[key];
                   const bgHsl = hsl || "0 0% 50%";
@@ -1042,7 +1043,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
                   const hexCode = hsl ? hslStringToHex(hsl) : "";
                   return (
                   <div key={key} data-color-key={key} className="text-left">
-                    <div className="relative w-[100px] h-[100px] rounded-md mb-1 overflow-hidden flex items-center justify-center shadow-md">
+                    <div className="relative w-[76px] h-[76px] rounded-md mb-1 overflow-hidden flex items-center justify-center shadow-md">
                       <div
                         className="absolute inset-0"
                         style={{
