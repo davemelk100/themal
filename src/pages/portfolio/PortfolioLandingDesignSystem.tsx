@@ -639,7 +639,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
             <button
               onClick={() => setShuffleOpen(!shuffleOpen)}
               className="w-full h-9 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
-              style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}
+              style={{ backgroundColor: "hsl(var(--secondary))", color: colors["--secondary"] ? `hsl(${fgForBg(colors["--secondary"])})` : "hsl(var(--secondary-foreground))" }}
             >
               <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>
               <span className="truncate">{harmonySchemeIndex >= 0 ? HARMONY_SCHEMES[harmonySchemeIndex] : "Harmony"}</span>
@@ -665,7 +665,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
             )}
           </div>
           <div className="flex w-full sm:w-auto sm:contents gap-2">
-            <div className="h-9 flex items-center rounded-lg overflow-hidden" style={{ backgroundColor: "hsl(var(--accent))", color: "hsl(var(--accent-foreground))" }}>
+            <div className="h-9 flex items-center rounded-lg overflow-hidden" style={{ backgroundColor: "hsl(var(--accent))", color: colors["--accent"] ? `hsl(${fgForBg(colors["--accent"])})` : "hsl(var(--accent-foreground))" }}>
               <button
                 onClick={handleGenerate}
                 className="h-full px-3 text-xs font-semibold transition-colors hover:opacity-80 flex items-center justify-center gap-1 whitespace-nowrap"
