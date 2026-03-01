@@ -642,7 +642,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
               style={{ backgroundColor: "hsl(var(--secondary))", color: colors["--secondary"] ? `hsl(${fgForBg(colors["--secondary"])})` : "hsl(var(--secondary-foreground))" }}
             >
               <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>
-              <span className="truncate">{harmonySchemeIndex >= 0 ? HARMONY_SCHEMES[harmonySchemeIndex] : "Harmony"}</span>
+              <span className="truncate">{harmonySchemeIndex >= 0 ? HARMONY_SCHEMES[harmonySchemeIndex] : "Variations"}</span>
               <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}><path d="M6 9l6 6 6-6" /></svg>
             </button>
             {shuffleOpen && (
@@ -664,34 +664,32 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
               </>
             )}
           </div>
-          <div className="flex w-full sm:w-auto sm:contents gap-2">
-            <div className="h-9 flex items-center rounded-lg overflow-hidden" style={{ backgroundColor: "hsl(var(--accent))", color: colors["--accent"] ? `hsl(${fgForBg(colors["--accent"])})` : "hsl(var(--accent-foreground))" }}>
-              <button
-                onClick={handleGenerate}
-                className="h-full px-3 text-xs font-semibold transition-colors hover:opacity-80 flex items-center justify-center gap-1 whitespace-nowrap"
-              >
-                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
-                Refresh
-              </button>
-              {prevColors && (
-                <button
-                  onClick={handleUndo}
-                  className="h-full pl-2 pr-4 text-xs font-semibold transition-colors hover:opacity-80 flex items-center gap-1 border-l"
-                  style={{ borderColor: "hsl(var(--accent-foreground) / 0.3)" }}
-                >
-                  <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 10h10a5 5 0 010 10H9m-6-10l4-4m-4 4l4 4" /></svg>
-                </button>
-              )}
-            </div>
+          <div className="h-9 flex items-center rounded-lg overflow-hidden" style={{ backgroundColor: "hsl(var(--accent))", color: colors["--accent"] ? `hsl(${fgForBg(colors["--accent"])})` : "hsl(var(--accent-foreground))" }}>
             <button
-              onClick={() => setShowResetModal(true)}
-              className="h-9 px-2 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
-              style={{ backgroundColor: "transparent", color: "hsl(var(--brand))", border: "1px solid hsl(var(--brand))" }}
+              onClick={handleGenerate}
+              className="h-full px-3 text-xs font-semibold transition-colors hover:opacity-80 flex items-center justify-center gap-1 whitespace-nowrap"
             >
-              <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" /></svg>
-              <span className="truncate"><span className="sm:hidden">Reset</span><span className="hidden sm:inline">Reset Theme</span></span>
+              <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+              Refresh
             </button>
+            {prevColors && (
+              <button
+                onClick={handleUndo}
+                className="h-full pl-2 pr-4 text-xs font-semibold transition-colors hover:opacity-80 flex items-center gap-1 border-l"
+                style={{ borderColor: "hsl(var(--accent-foreground) / 0.3)" }}
+              >
+                <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 10h10a5 5 0 010 10H9m-6-10l4-4m-4 4l4 4" /></svg>
+              </button>
+            )}
           </div>
+          <button
+            onClick={() => setShowResetModal(true)}
+            className="h-9 px-2 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+            style={{ backgroundColor: "transparent", color: "hsl(var(--brand))", border: "1px solid hsl(var(--brand))" }}
+          >
+            <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" /></svg>
+            <span className="truncate"><span className="sm:hidden">Reset</span><span className="hidden sm:inline">Reset Theme</span></span>
+          </button>
           <button
             onClick={() => generatedCode ? setGeneratedCode(null) : generateCode()}
             className="h-9 px-2 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
@@ -705,6 +703,8 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
             onClick={async () => {
               setPrStatus('creating');
               setPrUrl(null);
+              // Open window synchronously to avoid popup blocker
+              const popup = window.open('about:blank', '_blank');
               try {
                 let css = ":root {\n";
                 EDITABLE_VARS.forEach(({ key }) => {
@@ -722,6 +722,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
                   if (res.status === 429) {
                     setPrStatus('rate-limited');
                     setPrError(data.error);
+                    popup?.close();
                     return;
                   }
                   throw new Error(data.error || 'Failed to create PR');
@@ -729,9 +730,14 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
                 setPrStatus('created');
                 setPrUrl(data.url);
                 setPrError(null);
-                window.open(data.url, '_blank');
+                if (popup) {
+                  popup.location.href = data.url;
+                } else {
+                  window.open(data.url, '_blank');
+                }
               } catch {
                 setPrStatus('error');
+                popup?.close();
               }
             }}
             className={`h-9 px-2 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 disabled:opacity-50 flex items-center justify-center gap-1 ${

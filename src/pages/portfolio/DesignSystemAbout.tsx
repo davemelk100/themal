@@ -8,7 +8,7 @@ export default function DesignSystemAbout() {
     <PortfolioLayout currentPage="design-system">
       <section className="pt-4 pb-8 sm:pb-12 lg:pb-16">
         <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 max-w-2xl">
-          <SectionHeader title="Live Design System - How It Works" subtitle="" className="" />
+          <SectionHeader title="How It Works" subtitle="" className="" />
           <div className="mt-6">
             {content.designSystem.specsContent.split("\n\n").map((paragraph, i) => (
               <p key={i} className="text-sm mb-4" style={{ color: "hsl(var(--muted-foreground))" }}>
