@@ -220,6 +220,10 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
   const [shuffleOpen, setShuffleOpen] = useState(false);
 
   const handleColorChange = (key: string, hex: string) => {
+    if (key === "--brand") {
+      const lower = hex.toLowerCase();
+      if (lower === "#000000" || lower === "#ffffff") return;
+    }
     const hsl = hexToHslString(hex);
 
     const history = storage.get<{ key: string; previousValue: string }[]>(COLOR_HISTORY_KEY) || [];
@@ -632,7 +636,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
             <button
               onClick={() => setShuffleOpen(!shuffleOpen)}
               className="w-full h-12 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
-              style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 1px 3px rgba(0,0,0,0.18)" }}
+              style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
             >
               <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>
               <span className="truncate">{harmonySchemeIndex >= 0 ? HARMONY_SCHEMES[harmonySchemeIndex] : "Variations"}</span>
@@ -657,7 +661,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
               </>
             )}
           </div>
-          <div className="h-12 flex-1 md:flex-none flex items-center rounded-lg overflow-hidden" style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 1px 3px rgba(0,0,0,0.18)" }}>
+          <div className="h-12 flex-1 md:flex-none flex items-center rounded-lg overflow-hidden" style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}>
             <button
               onClick={handleGenerate}
               className="h-full flex-1 px-3 text-xs font-semibold transition-colors hover:opacity-80 flex items-center justify-center gap-1 whitespace-nowrap"
@@ -677,16 +681,16 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
           </div>
           <button
             onClick={() => setShowResetModal(true)}
-            className="h-12 px-2 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
-            style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 1px 3px rgba(0,0,0,0.18)" }}
+            className="h-12 px-3 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+            style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
           >
             <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" /></svg>
             <span className="truncate"><span className="sm:hidden">Reset</span><span className="hidden sm:inline">Reset Theme</span></span>
           </button>
           <button
             onClick={() => generatedCode ? setGeneratedCode(null) : generateCode()}
-            className="h-12 px-2 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
-            style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 1px 3px rgba(0,0,0,0.18)" }}
+            className="h-12 px-3 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+            style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
           >
             <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
             <span className="truncate"><span className="sm:hidden">{generatedCode ? "Hide" : "CSS"}</span><span className="hidden sm:inline">{generatedCode ? "Hide CSS" : "Show CSS"}</span></span>
@@ -733,7 +737,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
                 popup?.close();
               }
             }}
-            className={`h-12 px-2 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 disabled:opacity-50 flex items-center justify-center gap-1 ${
+            className={`h-12 px-3 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 disabled:opacity-50 flex items-center justify-center gap-1 ${
               prStatus === 'error' || prStatus === 'rate-limited'
                 ? 'border border-red-400 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'
                 : prStatus === 'created'

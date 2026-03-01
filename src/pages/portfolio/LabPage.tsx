@@ -34,7 +34,7 @@ export default function LabPage() {
         <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3 mb-6">
             <SectionHeader
-              title="UX/UI"
+              title="Design"
               subtitle="Design work and visual explorations"
               className=""
             />
@@ -96,7 +96,7 @@ export default function LabPage() {
           <div className="grid grid-cols-1 gap-6 sm:gap-8">
             <div className="pt-4 px-4 sm:pt-6 sm:px-6 relative bg-transparent">
               <SectionHeader
-                title={content.currentProjects.title}
+                title="Development"
                 subtitle={content.currentProjects.subtitle}
                 className="mb-6"
                 showUpArrow={false}

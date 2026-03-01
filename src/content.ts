@@ -837,6 +837,70 @@ There isn't always a clear way to select a technology. The newest, shiniest prod
         tags: ["Development", "Team Building", "Best Practices", "Leadership"],
       },
       {
+        id: "live-design-system",
+        title: "A Design System That Designs Itself",
+        description: "What happens when you hand the color wheel to your users and let the machine enforce the rules.",
+        url: "live-design-system",
+        content: `<h1>A Design System That Designs Itself</h1>
+
+<p>Design systems are documentation that nobody reads. They're Figma files that drift out of sync the moment a developer touches real code. They're PDFs that get emailed around, printed out, pinned to walls, and promptly ignored.</p>
+
+<p>So I built one that's alive.</p>
+
+<p>On my portfolio site, there's a design system section where you can pick any brand color you want. Any color. The system then derives an entire palette from that single choice - secondary, accent, background, foreground, destructive, success, warning - all of it. In real time. On the actual live site. Not a mockup. Not a prototype. The real thing.</p>
+
+<h2>The Problem With Static Systems</h2>
+
+<p>We've spent years building elaborate design systems. Tokens, variables, semantic naming conventions. We write documentation explaining that <code>--brand</code> should maintain a 4.5:1 contrast ratio against <code>--background</code>. We create Figma libraries with auto-layout and variant components. We hold meetings about the meetings we need to schedule about color governance.</p>
+
+<p>And then somebody changes a hex value in a CSS file and the whole thing collapses like a house of cards in a wind tunnel.</p>
+
+<p>The fundamental issue isn't discipline or process. It's that static documentation can't enforce its own rules. A PDF that says "maintain WCAG AA contrast" has no mechanism to actually do that. It's a suggestion masquerading as a system.</p>
+
+<h2>Let The Machine Do The Math</h2>
+
+<p>The live design system runs accessibility audits after every color change. It uses axe-core to check contrast ratios in real time, then automatically adjusts colors to meet WCAG AA standards. You pick a brand color that violates contrast requirements? The system fixes it. Quietly. Immediately. No committee meeting required.</p>
+
+<p>It doesn't just check and complain. It learns. The system remembers which corrections work for which hue and lightness ranges. Similar colors in the future get corrected proactively, before the violation even occurs. It's building its own institutional knowledge, which is more than I can say for most organizations I've worked with.</p>
+
+<h2>Harmony Without The Theory Degree</h2>
+
+<p>There's a Variations dropdown with four harmony schemes: complementary, analogous, triadic, and split-complementary. These aren't random words from a design textbook that someone memorized for a job interview. They're mathematical relationships between hues on the color wheel.</p>
+
+<p>Pick "triadic" and the system rotates your brand hue by 120 and 240 degrees to derive secondary and accent colors. Pick "analogous" and it shifts 30 degrees in each direction. The math is old. The color wheel hasn't changed since Newton. But now you don't need to know any of it. You click a button, and the system handles the theory.</p>
+
+<p>Hit Refresh and get a completely new random palette. Don't like it? Undo. Try another. The cost of experimentation is zero, which means people actually experiment.</p>
+
+<h2>From Pixels to Pull Requests</h2>
+
+<p>Here's where it gets interesting. Once you've built a palette you like, you can export the CSS variables or generate a Tailwind config snippet. One click, clipboard. But that's table stakes.</p>
+
+<p>The "Open PR" button sends your custom theme to a serverless function that creates a pull request directly on the GitHub repository. From the browser. No Git knowledge required. No terminal. No merge conflicts. A designer - or anyone with an opinion about color - can propose changes to the actual codebase without ever leaving the site.</p>
+
+<p>We've spent a decade talking about bridging the gap between design and development. Turns out the bridge is just a button.</p>
+
+<h2>Same Problems, Different Instruments</h2>
+
+<p>None of this is conceptually new. Color theory is centuries old. Accessibility standards have been around for decades. Design systems have existed since the first brand guidelines were printed on paper. We're still solving the same problems: consistency, accessibility, collaboration.</p>
+
+<p>What's changed is the tooling. CSS custom properties let us swap entire palettes at runtime. Contrast ratio math runs in milliseconds. Serverless functions handle the plumbing between a browser and a Git repository. The individual pieces are all well-established. The interesting part is wiring them together into something that actually works without human intervention.</p>
+
+<p>The system enforces its own rules. It corrects its own mistakes. It learns from its own corrections. It turns design decisions into code contributions without a handoff meeting, a Jira ticket, or a Slack thread with 47 emoji reactions.</p>
+
+<h2>Less Typing, More Thinking</h2>
+
+<p>The real value isn't the technology. It's the time it gives back. When you don't have to manually check contrast ratios, manually derive palette variations, manually translate design tokens into code - you can spend that time on the things that actually require a human brain. Layout decisions. Content hierarchy. Whether that interaction pattern actually makes sense for your users.</p>
+
+<p>The machine handles the math. The machine enforces the rules. The machine remembers what worked before. And we get to keep our hands clean and our brains busy with the work that matters.</p>
+
+<p>That's the whole point. Not to replace the designer. To remove the tedium so the designer can actually design.</p>
+
+`,
+        image: "/img/design-system-article.png",
+        date: "March 1, 2026",
+        tags: ["Design Systems", "Accessibility", "Development", "UX Design"],
+      },
+      {
         id: "seven-interviews-excessive",
         title: "Seven Interviews?",
         description: "Some folks say that's excessive.",
