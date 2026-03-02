@@ -624,7 +624,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
       <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Title and description */}
         <div className="w-full mb-4">
-          <h2 className="font-light mb-1 title-font" style={{ color: "hsl(var(--foreground))" }}>NEW - Live Design System!</h2>
+          <h2 className="font-light pt-4 pb-3 title-font" style={{ color: "hsl(var(--foreground))" }}>NEW - Live Design System!</h2>
           <p className="text-[17px]" style={{ color: "hsl(var(--foreground))" }}>
             Explore the interactive design system powering this site. Pick a brand color and watch every token transform in real time. Automatic WCAG AA contrast correction. Generate a CSS snapshot of your custom theme. Open a pull request to propose changes directly to the repo.
           </p>
