@@ -1,5 +1,3 @@
-/* League Gothic Font — loaded async in index.html to avoid render-blocking */
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -36,18 +34,9 @@
   .focus\:ring-accent-dynamic:focus { --tw-ring-color: hsl(var(--accent)); }
 }
 
-.font-league-gothic {
-  font-family: "League Gothic", sans-serif !important;
-}
-
-.font-helvetica,
-.font-helvetica * {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-}
-
 .portfolio-page,
 .portfolio-page * {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: normal;
 }
 
@@ -161,65 +150,29 @@
     @apply border-gray-200;
   }
 
-  /* Base body style */
   body {
     @apply overflow-x-hidden antialiased;
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
-    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif;
-    font-size: 16px;
+    font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif;
+    font-size: 15px;
     line-height: 1.7;
   }
 
-  /* Store page body font override - higher specificity */
-  body.store-page,
-  html body.store-page {
-    font-family: "Geist Mono", monospace;
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif;
   }
 
-  /* Default font for all elements except store page */
-  *:not(.store-page):not(.store-page *) {
-    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif;
-  }
-
-  /* Use Nunito Sans for headings (except store page) */
-  h1:not(.store-page *):not(.store-page),
-  h2:not(.store-page *):not(.store-page),
-  h3:not(.store-page *):not(.store-page),
-  h4:not(.store-page *):not(.store-page),
-  h5:not(.store-page *):not(.store-page),
-  h6:not(.store-page *):not(.store-page) {
-    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif;
-  }
-
-  /* Set letter spacing for h1 and h2 tags */
-  h1:not(.font-helvetica *):not(.font-helvetica),
-  h1:not(.store-page *):not(.store-page):not(.font-helvetica *),
-  h2:not(.font-helvetica *):not(.font-helvetica),
-  h2:not(.store-page *):not(.store-page):not(.font-helvetica *) {
+  h1, h2 {
     letter-spacing: 0 !important;
   }
 
-  /* Use Nunito Sans for body text and other elements (except store page) */
-  p:not(.store-page *):not(.store-page),
-  span:not(.store-page *):not(.store-page),
-  div:not(.store-page *):not(.store-page),
-  button:not(.store-page *):not(.store-page),
-  input:not(.store-page *):not(.store-page),
-  textarea:not(.store-page *):not(.store-page),
-  select:not(.store-page *):not(.store-page),
-  label:not(.store-page *):not(.store-page),
-  a:not(.store-page *):not(.store-page) {
-    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif;
-  }
-
-  /* Button text sizing */
   button {
     font-size: 1.25rem;
     line-height: 1.7;
   }
 
-  /* Fix up arrow button size to prevent mobile scaling - very specific selector */
+  /* Fix up arrow button size */
   button[aria-label="Scroll to top"] {
     width: 32px;
     height: 32px;
@@ -240,206 +193,44 @@
     max-height: 16px;
   }
 
-  /* Ensure lab card text doesn't get cut off on mobile */
-  @media (max-width: 639px) {
-    .group.overflow-visible {
-      min-height: 180px;
-    }
-
-    .group.overflow-visible .lab-card-title {
-      padding-bottom: 0;
-      margin-bottom: 0;
-    }
-  }
-
-  /* Set font-size for all non-title text elements */
-  p,
-  ul,
-  ol,
-  a,
-  button {
+  p, ul, ol, a, button {
     line-height: 1.5;
-    font-size: 16x;
+    font-size: 15px;
   }
 
-  /* Set line-height and font-size for all paragraph tags */
-  p:not(.news-card-excerpt):not(.hero-intro),
-  p.text-sm:not(.news-card-excerpt):not(.hero-intro),
-  p.text-base:not(.news-card-excerpt):not(.hero-intro),
-  p.text-lg:not(.news-card-excerpt):not(.hero-intro),
-  .article-intro p,
-  .point-section p,
-  .counter-point-section p {
+  p {
     line-height: 1.5;
-    font-size: 16px;
+    font-size: 15px;
   }
 
-  /* News page paragraph line-height */
-  .news-page p,
-  .news-page .news-card-excerpt {
-    line-height: 1.75rem;
-  }
-
-  /* Hero intro text - WCAG 2.1 AA requires minimum 1.5 line-height for body text */
   .hero-intro {
     font-size: 1.25rem;
     line-height: 1.75;
   }
 
-  /* Responsive paragraph sizing for small screens */
+  /* Responsive sizing */
   @media (max-width: 410px) {
-
-    p:not(.hero-intro),
-    ul,
-    ol,
-    p.text-sm:not(.hero-intro),
-    p.text-base:not(.hero-intro),
-    p.text-lg:not(.hero-intro),
-    .article-intro p,
-    .point-section p,
-    .counter-point-section p {
+    p, ul, ol {
       font-size: 0.75rem;
     }
-  }
 
-  /* Font utility classes */
-  .font-sans,
-  .font-card {
-    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif;
-  }
-
-  .font-title {
-    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif;
-  }
-
-  /* Ensure Tailwind utilities use appropriate fonts */
-  h1[class*="font-"]:not(.font-serif):not(.font-mono):not(.roboto-serif-page *):not(.store-page *),
-  h2[class*="font-"]:not(.font-serif):not(.font-mono):not(.roboto-serif-page *):not(.store-page *),
-  h3[class*="font-"]:not(.font-serif):not(.font-mono):not(.roboto-serif-page *):not(.store-page *),
-  h4[class*="font-"]:not(.font-serif):not(.font-mono):not(.roboto-serif-page *):not(.store-page *),
-  h5[class*="font-"]:not(.font-serif):not(.font-mono):not(.roboto-serif-page *):not(.store-page *),
-  h6[class*="font-"]:not(.font-serif):not(.font-mono):not(.roboto-serif-page *):not(.store-page *) {
-    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif;
-  }
-
-  [class*="font-"]:not(.font-serif):not(.font-mono):not(.roboto-serif-page *):not(.store-page *):not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) {
-    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif;
-  }
-
-  /* Responsive improvements */
-  @media (max-width: 410px) {
     body {
       font-size: 12px;
     }
 
-    /* Make all text elements smaller on very small screens */
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6,
-    p,
-    ul,
-    ol,
-    span,
-    div,
-    button,
-    input,
-    textarea,
-    select,
-    label,
-    a {
+    h1, h2, h3, h4, h5, h6, p, ul, ol, span, div, button, input, textarea, select, label, a {
       font-size: 14px;
     }
 
-    /* Specific adjustments for common text classes */
-    .text-xs {
-      font-size: 0.625rem;
-    }
-
-    .text-sm {
-      font-size: 0.6875rem;
-    }
-
-    .text-base {
-      font-size: 0.75rem;
-    }
-
-    .text-lg {
-      font-size: 0.8125rem;
-    }
-
-    .text-xl {
-      font-size: 0.875rem;
-    }
-
-    .text-2xl {
-      font-size: 1rem;
-    }
-
-    .text-3xl {
-      font-size: 1.125rem;
-    }
-
-    .text-4xl {
-      font-size: 1.25rem;
-    }
-
-    .text-5xl {
-      font-size: 1.5rem;
-    }
-
-    /* Card and component specific adjustments */
-    .card-title {
-      font-size: 0.875rem;
-    }
-
-    .card-body {
-      font-size: 0.6875rem;
-    }
-
-    .nav {
-      font-size: 0.6875rem;
-    }
-
-    .caption {
-      font-size: 0.625rem;
-    }
-
-    /* Article content adjustments */
-    .article-content h2 {
-      font-size: 1rem;
-    }
-
-    .article-content h3 {
-      font-size: 0.875rem;
-    }
-
-    .article-content p {
-      font-size: 0.75rem;
-    }
-
-    /* Point sections */
-    .point-section h3,
-    .counter-point-section h3 {
-      font-size: 0.8125rem;
-    }
-
-    .point-section p,
-    .counter-point-section p {
-      font-size: 0.75rem;
-    }
-
-    /* Article intro */
-    .article-intro p {
-      font-size: 0.75rem;
-    }
-
-    /* Article date */
-    .article-date {
-      font-size: 0.625rem;
-    }
+    .text-xs { font-size: 0.625rem; }
+    .text-sm { font-size: 0.6875rem; }
+    .text-base { font-size: 0.75rem; }
+    .text-lg { font-size: 0.8125rem; }
+    .text-xl { font-size: 0.875rem; }
+    .text-2xl { font-size: 1rem; }
+    .text-3xl { font-size: 1.125rem; }
+    .text-4xl { font-size: 1.25rem; }
+    .text-5xl { font-size: 1.5rem; }
   }
 
   @media (max-width: 640px) {
@@ -448,7 +239,6 @@
     }
   }
 
-  /* Smooth image rendering for all images */
   img {
     image-rendering: auto;
     image-rendering: -webkit-optimize-contrast;
@@ -458,7 +248,6 @@
     will-change: auto;
   }
 
-  /* Enhanced smoothing for specific image types */
   img[class*="object-cover"],
   img[class*="object-contain"] {
     image-rendering: auto;
@@ -467,31 +256,26 @@
     -webkit-backface-visibility: hidden;
   }
 
-  /* Prevent digitization on hover effects */
   img:hover {
     image-rendering: auto;
     image-rendering: smooth;
   }
 
-  /* Additional smoothing for scaled images */
   img[class*="scale-"],
   img[class*="transform"] {
     image-rendering: auto;
     image-rendering: smooth;
   }
 
-  /* Responsive text improvements */
   @media (max-width: 768px) {
     .title-font {
       font-size: clamp(1.25rem, 4vw, 2rem);
     }
   }
 
-  /* Touch-friendly improvements for mobile */
   @media (max-width: 768px) {
-
-    button:not(.carousel-button):not(.lab-card-title):not(.quantity-toggle),
-    a:not(.carousel-button):not(.lab-card-title) {
+    button:not(.carousel-button),
+    a:not(.carousel-button) {
       min-height: 44px;
       min-width: 44px;
     }
@@ -503,348 +287,17 @@
   .group:hover .card-hover-secondary { border-color: hsl(var(--secondary) / 0.5); }
 
   .title-font {
-    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif;
+    font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif;
   }
 
-  .article-intro {
-    @apply mb-8;
+  .font-sans,
+  .font-card {
+    font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif;
   }
 
-  .article-intro p {
-    @apply text-base m-0;
-    color: hsl(var(--foreground) / 0.8);
-  }
-
-  .point-section {
-    @apply mb-6;
-  }
-
-  .counter-point-section {
-    @apply mb-6;
-  }
-
-  .point-section h3,
-  .counter-point-section h3 {
-    @apply text-base font-semibold mb-3;
-  }
-
-  .point-section h3 {
-    @apply text-green-800 dark:text-green-300;
-  }
-
-  .counter-point-section h3 {
-    @apply text-orange-800 dark:text-orange-300;
-  }
-
-  .point-section p,
-  .counter-point-section p {
-    @apply m-0;
-    color: hsl(var(--foreground) / 0.8);
-  }
-
-  .article-date {
-    @apply text-xs mt-8 text-center;
-    color: hsl(var(--muted-foreground));
-  }
-
-  .article-content {
-    @apply text-base leading-relaxed;
-  }
-
-  .article-content h2 {
-    @apply text-xl font-bold mt-8 mb-4;
-    color: hsl(var(--foreground));
-  }
-
-  .article-content h3 {
-    @apply text-lg font-semibold mb-3;
-    line-height: 1.25;
-  }
-
-  .article-content p {
-    @apply mb-4;
-    color: hsl(var(--foreground) / 0.8);
-  }
-
-  .article-content ul,
-  .article-content ol {
-    @apply mb-4 ml-6;
-    list-style: disc;
-  }
-
-  .article-content li {
-    @apply mb-2;
-    color: hsl(var(--foreground) / 0.8);
-    list-style: inherit;
-  }
-
-  .point-section ul,
-  .point-section ol,
-  .counter-point-section ul,
-  .counter-point-section ol {
-    @apply mb-4 ml-6;
-  }
-
-  .point-section li,
-  .counter-point-section li {
-    @apply mb-2;
-    color: hsl(var(--foreground) / 0.8);
-  }
-
-  /* Volume slider styling */
-  .slider {
-    -webkit-appearance: none;
-    appearance: none;
-    outline: none;
-  }
-
-  .slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #8b5cf6;
-    cursor: pointer;
-    border: 2px solid #ffffff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  }
-
-  .slider::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #8b5cf6;
-    cursor: pointer;
-    border: 2px solid #ffffff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  }
-
-  .slider::-webkit-slider-track {
-    height: 8px;
-    border-radius: 4px;
-    background: transparent;
-  }
-
-  .slider::-moz-range-track {
-    height: 8px;
-    border-radius: 4px;
-    background: transparent;
-  }
-
-  /* Dark mode slider styling */
-  .dark .slider::-webkit-slider-thumb {
-    background: #8b5cf6;
-    border: 2px solid #374151;
-  }
-
-  .dark .slider::-moz-range-thumb {
-    background: #8b5cf6;
-    border: 2px solid #374151;
-  }
-
-  /* Roboto Serif override for Audio and Transcript page */
-  .roboto-serif-page,
-  .roboto-serif-page * {
-    font-family: "Roboto Serif", serif;
-  }
-
-  /* Story Script font for Store page titles - only for title-font elements */
-  .store-page h1.title-font,
-  .store-page h2.title-font,
-  .store-page h4.title-font,
-  .store-page h5.title-font,
-  .store-page h6.title-font,
-  .store-page p.title-font,
-  .store-page .title-font {
-    font-family: "Story Script", cursive;
-  }
-
-  /* Custom breakpoint for 1400px */
   @media (min-width: 1400px) {
     .grid-cols-3-at-1400 {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
-}
-
-/* Story Script font for Store page - placed outside @layer for higher priority */
-.store-page .title-font,
-.store-page h1.title-font,
-.store-page h2.title-font,
-.store-page p.title-font,
-.store-page span.title-font {
-  font-family: "Story Script", cursive;
-}
-
-/* Store page font sizes - placed outside @layer for higher priority */
-.store-page .store-card-content h3,
-.store-page .store-card-content p,
-.store-page .store-card-content span,
-.store-page .store-card-content button,
-.store-page .group h3.store-card-text,
-.store-page .group p.store-card-text,
-.store-page .group span.store-card-text,
-.store-page .group button.store-card-button,
-.store-page [class*="group"] h3.store-card-text,
-.store-page [class*="group"] p.store-card-text,
-.store-page [class*="group"] span.store-card-text,
-.store-page [class*="group"] button.store-card-button,
-.store-page h3.store-card-text,
-.store-page p.store-card-text,
-.store-page span.store-card-text,
-.store-page button.store-card-button,
-.store-page .store-card-text,
-.store-page .store-card-button {
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-/* Store page h3 tags use Geist Mono */
-.store-page h3,
-.store-page h3[class*="font-"]:not(.font-serif):not(.font-mono),
-.store-page h3.title-font,
-.store-page .group .store-card-content h3.store-card-h3,
-.store-page [class*="group"] .store-card-content h3.store-card-h3,
-.store-page .store-card-content h3.store-card-h3,
-.store-page .group h3.store-card-h3,
-.store-page [class*="group"] h3.store-card-h3,
-.store-page h3.store-card-h3,
-.store-page .group .store-card-content h3.store-card-text,
-.store-page [class*="group"] .store-card-content h3.store-card-text,
-.store-page .store-card-content h3.store-card-text,
-.store-page .group h3.store-card-text,
-.store-page [class*="group"] h3.store-card-text,
-.store-page h3.store-card-text,
-.store-page .group .store-card-content h3,
-.store-page [class*="group"] .store-card-content h3,
-.store-page .store-card-content h3 {
-  font-family: "Geist Mono", monospace;
-}
-
-/* Additional font sizes for elements inside product cards */
-.store-page .group h3,
-.store-page .group p,
-.store-page .group span,
-.store-page .group button,
-.store-page [class*="group"] h3,
-.store-page [class*="group"] p,
-.store-page [class*="group"] span,
-.store-page [class*="group"] button {
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-/* Store page font override - Geist Mono - placed at end for maximum priority */
-/* Override body tag for store pages */
-body.store-page,
-html body.store-page,
-html body .store-page {
-  font-family: "Geist Mono", monospace;
-}
-
-/* Override all elements in store pages except title-font and balm-logo elements - highest specificity at end */
-.store-page,
-.store-page *:not(.title-font):not(.balm-logo),
-.store-page h1:not(.title-font):not(.balm-logo),
-.store-page h2:not(.title-font):not(.balm-logo),
-.store-page h3:not(.balm-logo),
-.store-page h4:not(.title-font):not(.balm-logo),
-.store-page h5:not(.title-font):not(.balm-logo),
-.store-page h6:not(.title-font):not(.balm-logo),
-.store-page p:not(.title-font):not(.balm-logo),
-.store-page span:not(.title-font):not(.balm-logo),
-.store-page div:not(.title-font):not(.balm-logo),
-.store-page button:not(.title-font):not(.balm-logo),
-.store-page input:not(.balm-logo),
-.store-page textarea:not(.balm-logo),
-.store-page select:not(.balm-logo),
-.store-page label:not(.balm-logo),
-.store-page a:not(.title-font):not(.balm-logo),
-.store-page li:not(.balm-logo),
-.store-page ul:not(.balm-logo),
-.store-page ol:not(.balm-logo),
-.store-page .store-card-content:not(.balm-logo),
-.store-page .store-card-content *:not(.balm-logo),
-.store-page .store-card-text:not(.balm-logo),
-.store-page .store-card-button:not(.balm-logo),
-.store-page .group:not(.balm-logo),
-.store-page .group *:not(.balm-logo) {
-  font-family: "Geist Mono", monospace;
-}
-
-/* Ensure BALM logo keeps its original font - highest specificity */
-.store-page .balm-logo,
-.store-page span.balm-logo,
-.store-page button .balm-logo,
-.store-page button span.balm-logo {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif !important;
-}
-
-/* Ensure product titles use font-weight 400 - override any font-semibold */
-.store-page h3.store-card-h3,
-.store-page .store-card-content h3.store-card-h3,
-.store-page .store-card-content h3.store-card-text.store-card-h3,
-.store-page h3.store-card-h3.font-semibold,
-.store-page .store-card-content h3.store-card-h3.font-semibold,
-.store-page h1.mb-4,
-.store-page h1.mb-4.font-semibold {
-  font-weight: 400 !important;
-}
-
-/* Ensure avatar span doesn't appear red - very specific selector to override inline styles */
-span.flex.h-full.w-full.items-center.justify-center.rounded-full.bg-gray-200,
-span.flex.h-full.w-full.items-center.justify-center.rounded-full.bg-gray-700 {
-  color: rgb(55, 65, 81);
-  background-color: rgb(229, 231, 235);
-}
-
-.dark span.flex.h-full.w-full.items-center.justify-center.rounded-full.bg-gray-700 {
-  color: rgb(209, 213, 219);
-  background-color: rgb(55, 65, 81);
-}
-
-/* Stripe Buy Button styling to match Add to Cart button */
-.store-page .stripe-buy-button-wrapper {
-  width: 100%;
-  display: block;
-}
-
-.store-page .stripe-buy-button-wrapper stripe-buy-button {
-  width: 100%;
-  display: block;
-}
-
-/* Ensure stripe-buy-button is always block-level on product detail page */
-.store-page stripe-buy-button {
-  display: block !important;
-  width: 100% !important;
-}
-
-/* Product detail page button layout - ensure buttons are on separate rows */
-.store-page .product-buy-button-wrapper {
-  display: block !important;
-  width: 100% !important;
-  margin-bottom: 1rem;
-}
-
-.store-page .product-buy-button-wrapper stripe-buy-button {
-  display: block !important;
-  width: 100% !important;
-}
-
-.store-page .product-add-to-cart-wrapper {
-  display: block !important;
-  width: 100% !important;
-}
-
-/* Target button inside shadow DOM - these selectors may not work due to Shadow DOM isolation */
-.store-page .stripe-buy-button-wrapper stripe-buy-button::part(button) {
-  width: 100% !important;
-  font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Arial", sans-serif !important;
-  font-size: 14px !important;
-  border-radius: 0.375rem !important;
-  padding: 0.875rem 0.5rem !important;
-  min-height: 44px !important;
-  font-weight: 600 !important;
 }

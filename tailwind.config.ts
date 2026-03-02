@@ -21,7 +21,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: [
-          "Roboto Flex",
+          "Roboto",
           "-apple-system",
           "BlinkMacSystemFont",
           "Segoe UI",
@@ -29,7 +29,7 @@ const config: Config = {
           "sans-serif",
         ],
         title: [
-          "Aeonik",
+          "Roboto",
           "-apple-system",
           "BlinkMacSystemFont",
           "Segoe UI",
@@ -37,16 +37,16 @@ const config: Config = {
           "sans-serif",
         ],
         card: [
-          "Roboto Flex",
+          "Roboto",
           "-apple-system",
           "BlinkMacSystemFont",
           "Segoe UI",
           "Arial",
           "sans-serif",
         ],
-        serif: ["Roboto Serif", "Georgia", "Times", "Times New Roman", "serif"],
+        serif: ["Roboto", "Georgia", "Times", "Times New Roman", "serif"],
         roboto: [
-          "Roboto Flex",
+          "Roboto",
           "-apple-system",
           "BlinkMacSystemFont",
           "Segoe UI",
@@ -54,14 +54,14 @@ const config: Config = {
           "sans-serif",
         ],
         "roboto-slab": [
-          "Roboto Slab",
+          "Roboto",
           "Georgia",
           "Times",
           "Times New Roman",
           "serif",
         ],
         aeonik: [
-          "Aeonik",
+          "Roboto",
           "-apple-system",
           "BlinkMacSystemFont",
           "Segoe UI",
@@ -70,19 +70,19 @@ const config: Config = {
         ],
       },
       fontSize: {
-        // Custom typography scale
-        xs: ["0.75rem", { lineHeight: "1rem" }],
-        sm: ["0.875rem", { lineHeight: "1.25rem" }],
-        base: ["1rem", { lineHeight: "1.5rem" }],
-        lg: ["1.125rem", { lineHeight: "1.75rem" }],
-        xl: ["1.25rem", { lineHeight: "1.75rem" }],
-        "2xl": ["1.5rem", { lineHeight: "2rem" }],
-        "3xl": ["1.875rem", { lineHeight: "2.25rem" }],
-        "4xl": ["2.25rem", { lineHeight: "2.5rem" }],
-        "5xl": ["3rem", { lineHeight: "1" }],
-        "6xl": ["3.75rem", { lineHeight: "1" }],
-        "7xl": ["4.5rem", { lineHeight: "1" }],
-        "8xl": ["6rem", { lineHeight: "1" }],
+        // Custom typography scale (15px base)
+        xs: ["0.703rem", { lineHeight: "0.9375rem" }],
+        sm: ["0.82rem", { lineHeight: "1.172rem" }],
+        base: ["0.9375rem", { lineHeight: "1.406rem" }],
+        lg: ["1.055rem", { lineHeight: "1.64rem" }],
+        xl: ["1.172rem", { lineHeight: "1.64rem" }],
+        "2xl": ["1.406rem", { lineHeight: "1.875rem" }],
+        "3xl": ["1.758rem", { lineHeight: "2.11rem" }],
+        "4xl": ["2.11rem", { lineHeight: "2.344rem" }],
+        "5xl": ["2.813rem", { lineHeight: "1" }],
+        "6xl": ["3.516rem", { lineHeight: "1" }],
+        "7xl": ["4.219rem", { lineHeight: "1" }],
+        "8xl": ["5.625rem", { lineHeight: "1" }],
         "9xl": ["8rem", { lineHeight: "1" }],
         // Custom sizes for specific use cases - EGREGIOUSLY LARGE
         hero: [
