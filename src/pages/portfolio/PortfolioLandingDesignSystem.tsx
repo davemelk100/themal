@@ -1022,7 +1022,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
             </div>
 
             {/* Chips, Buttons, Badges in one card */}
-            <div className="flex-1 min-w-0 rounded-lg border border-white/20 dark:border-white/10 backdrop-blur-xl p-2 md:p-4 overflow-hidden" style={{ background: "linear-gradient(135deg, hsl(var(--background) / 0.6), hsl(var(--background) / 0.3))", boxShadow: "0 4px 30px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.15)" }}>
+            <div className="flex-1 min-w-0 p-2 md:p-4 overflow-hidden">
               <div className="flex flex-col gap-3">
                 {/* Chips */}
                 <div className="min-w-0 space-y-2">
@@ -1073,7 +1073,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
           </div>
 
           {/* Icons row */}
-          <div className="min-w-0 rounded-lg border border-white/20 dark:border-white/10 backdrop-blur-xl p-2 md:p-4 space-y-2 md:space-y-4" style={{ background: "linear-gradient(135deg, hsl(var(--background) / 0.6), hsl(var(--background) / 0.3))", boxShadow: "0 4px 30px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.15)" }}>
+          <div className="min-w-0 p-2 md:p-4 space-y-2 md:space-y-4">
             <p className="text-[17px] font-light uppercase tracking-wider" style={{ color: "hsl(var(--foreground))" }}>Icons</p>
             <div className="flex flex-wrap gap-2 justify-center">
               <Suspense fallback={null}>
