@@ -988,7 +988,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
             );
           })()}
 
-          <div className="flex flex-col md:flex-row md:items-stretch gap-2 md:gap-3 lg:gap-6">
+          <div className="flex flex-col md:flex-row md:items-stretch gap-4 md:gap-6 lg:gap-10">
             {/* Color swatches (non-hero) */}
             <div className="min-w-0 rounded-lg p-2 md:p-4">
               <div className="flex items-center justify-between mb-2 md:mb-3">
@@ -1028,7 +1028,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
 
             {/* Chips & Badges | Buttons — two columns */}
             <div className="flex-1 min-w-0 p-2 md:p-4 overflow-hidden">
-              <div className="flex flex-col md:flex-row gap-4">
+              <div className="flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-10">
                 {/* Left column: Chips + Badges */}
                 <div className="flex-1 min-w-0 flex flex-col gap-3">
                   {/* Chips */}
