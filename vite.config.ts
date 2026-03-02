@@ -52,6 +52,7 @@ export default defineConfig({
         manualChunks(id) {
           if (id.includes("node_modules")) {
             if (id.includes("react-dom")) return "react-dom";
+            if (id.includes("react-router")) return "react-router";
             if (id.includes("axe-core")) return "axe";
           }
         },

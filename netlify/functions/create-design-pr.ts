@@ -30,6 +30,13 @@ async function ghFetch(path: string, token: string, options: RequestInit = {}) {
   return res.json();
 }
 
+const SECTION_LABELS: Record<string, string> = {
+  colors: "Colors",
+  card: "Card Style",
+  typography: "Typography",
+  alerts: "Alerts",
+};
+
 function replaceRootBlock(fileContent: string, newCssVars: string): string {
   // Extract variable assignments from the incoming :root { ... } block
   const varMatch = newCssVars.match(/:root\s*\{([^}]+)\}/s);
@@ -48,14 +55,27 @@ function replaceRootBlock(fileContent: string, newCssVars: string): string {
 
   const existingBlock = match[2];
   const updatedLines: string[] = [];
+  const matched = new Set<string>();
 
   for (const line of existingBlock.split("\n")) {
     const varLineMatch = line.match(/^(\s*)(--[\w-]+)\s*:\s*.+;$/);
     if (varLineMatch && newVars[varLineMatch[2]] !== undefined) {
       updatedLines.push(`${varLineMatch[1]}${varLineMatch[2]}: ${newVars[varLineMatch[2]]};`);
+      matched.add(varLineMatch[2]);
     } else {
       updatedLines.push(line);
     }
+  }
+
+  // Append any new vars that don't exist yet in the file
+  const newEntries = Object.entries(newVars).filter(([k]) => !matched.has(k));
+  if (newEntries.length > 0) {
+    // Find the last non-empty line to insert before closing
+    let insertIdx = updatedLines.length - 1;
+    while (insertIdx > 0 && updatedLines[insertIdx].trim() === "") insertIdx--;
+    const indent = "    "; // match existing indentation
+    const newLines = newEntries.map(([k, v]) => `${indent}${k}: ${v};`);
+    updatedLines.splice(insertIdx + 1, 0, ...newLines);
   }
 
   return fileContent.replace(layerBaseRegex, `${match[1]}${updatedLines.join("\n")}${match[3]}`);
@@ -103,7 +123,7 @@ export const handler = async (event: any) => {
   }
 
   try {
-    const { css } = JSON.parse(event.body || "{}");
+    const { css, sections } = JSON.parse(event.body || "{}");
     if (!css) {
       return {
         statusCode: 400,
@@ -111,6 +131,14 @@ export const handler = async (event: any) => {
         body: JSON.stringify({ error: "Missing css field" }),
       };
     }
+
+    // Build human-readable label from sections
+    const sectionList: string[] = Array.isArray(sections) && sections.length > 0
+      ? sections
+      : ["colors", "card", "typography", "alerts"];
+    const sectionLabel = sectionList
+      .map((s: string) => SECTION_LABELS[s] || s)
+      .join(", ");
 
     // 1. Get current file from main
     const fileData = await ghFetch(
@@ -140,7 +168,7 @@ export const handler = async (event: any) => {
     await ghFetch(`/repos/${REPO}/contents/${FILE_PATH}`, token, {
       method: "PUT",
       body: JSON.stringify({
-        message: "Update design system color tokens",
+        message: `Update design system: ${sectionLabel}`,
         content: Buffer.from(updatedContent).toString("base64"),
         sha: fileData.sha,
         branch: branchName,
@@ -148,7 +176,7 @@ export const handler = async (event: any) => {
     });
 
     // 6. Return GitHub compare URL so the user can review and submit the PR
-    const compareUrl = `https://github.com/${REPO}/compare/main...${branchName}?expand=1&title=${encodeURIComponent("Update design system color tokens")}&body=${encodeURIComponent("Updates light-mode CSS custom properties in `globals.css` from the live Design System color picker.")}`;
+    const compareUrl = `https://github.com/${REPO}/compare/main...${branchName}?expand=1&title=${encodeURIComponent(`Update design system: ${sectionLabel}`)}&body=${encodeURIComponent(`Updates CSS custom properties in \`globals.css\` from the live Design System editor.\n\nSections: ${sectionLabel}`)}`;
 
     return {
       statusCode: 200,

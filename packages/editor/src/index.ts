@@ -12,5 +12,7 @@ export {
   applyStoredCardStyle,
   TYPOGRAPHY_KEY,
   applyStoredTypography,
+  ALERT_STYLE_KEY,
+  applyStoredAlertStyle,
 } from "./utils/themeUtils";
-export type { HarmonyScheme, CardStyleState, TypographyState } from "./utils/themeUtils";
+export type { HarmonyScheme, CardStyleState, TypographyState, AlertStyleState } from "./utils/themeUtils";

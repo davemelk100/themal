@@ -957,6 +957,73 @@ export function applyStoredTypography(): TypographyState | null {
   return null;
 }
 
+export const ALERT_STYLE_KEY = "ds-alert-style";
+
+export interface AlertStyleState {
+  preset: "filled" | "soft" | "outline" | "minimal" | "custom";
+  borderRadius: number;
+  borderWidth: number;
+  iconStyle: "circle" | "plain";
+  padding: number;
+}
+
+export const DEFAULT_ALERT_STYLE: AlertStyleState = {
+  preset: "filled",
+  borderRadius: 8,
+  borderWidth: 0,
+  iconStyle: "circle",
+  padding: 16,
+};
+
+export const ALERT_PRESETS: Record<string, AlertStyleState> = {
+  filled: { ...DEFAULT_ALERT_STYLE },
+  soft: {
+    preset: "soft",
+    borderRadius: 8,
+    borderWidth: 0,
+    iconStyle: "circle",
+    padding: 16,
+  },
+  outline: {
+    preset: "outline",
+    borderRadius: 8,
+    borderWidth: 2,
+    iconStyle: "plain",
+    padding: 16,
+  },
+  minimal: {
+    preset: "minimal",
+    borderRadius: 0,
+    borderWidth: 0,
+    iconStyle: "plain",
+    padding: 16,
+  },
+};
+
+export function applyAlertStyle(state: AlertStyleState) {
+  const root = document.documentElement;
+  root.style.setProperty("--alert-radius", `${state.borderRadius}px`);
+  root.style.setProperty("--alert-border-width", `${state.borderWidth}px`);
+  root.style.setProperty("--alert-padding", `${state.padding}px`);
+  storage.set(ALERT_STYLE_KEY, state);
+}
+
+export function removeAlertStyleProperties() {
+  const root = document.documentElement;
+  for (const prop of ["--alert-radius", "--alert-border-width", "--alert-padding"]) {
+    root.style.removeProperty(prop);
+  }
+}
+
+export function applyStoredAlertStyle(): AlertStyleState | null {
+  const saved = storage.get<AlertStyleState>(ALERT_STYLE_KEY);
+  if (saved) {
+    applyAlertStyle(saved);
+    return saved;
+  }
+  return null;
+}
+
 export function applyStoredThemeColors() {
   const saved = storage.get<Record<string, string>>(THEME_COLORS_KEY);
   if (saved) {
