@@ -114,6 +114,21 @@ const LazyDatabase = React.lazy(() =>
 const LazySmartphone = React.lazy(() =>
   import("lucide-react").then((mod) => ({ default: mod.Smartphone }))
 );
+const LazyCamera = React.lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Camera }))
+);
+const LazyMail = React.lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Mail }))
+);
+const LazyBell = React.lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Bell }))
+);
+const LazyClock = React.lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Clock }))
+);
+const LazyDownload = React.lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.Download }))
+);
 
 const GitHubLogoIcon = React.forwardRef<SVGSVGElement, React.SVGProps<SVGSVGElement>>(
   (props, ref) => (
@@ -151,15 +166,19 @@ const SITE_ICONS: { name: string; icon: React.LazyExoticComponent<any> | React.C
   { name: "Database", icon: LazyDatabase },
   { name: "Smartphone", icon: LazySmartphone },
   { name: "Link", icon: LazyLink2 },
+  { name: "Camera", icon: LazyCamera },
+  { name: "Mail", icon: LazyMail },
+  { name: "Bell", icon: LazyBell },
+  { name: "Clock", icon: LazyClock },
+  { name: "Download", icon: LazyDownload },
 ];
 
 const COLOR_SWATCHES = [
-  { key: "--brand", label: "Brand" },
+  { key: "--brand", label: "Primary" },
   { key: "--secondary", label: "Secondary" },
   { key: "--accent", label: "Accent" },
   { key: "--background", label: "Background" },
   { key: "--foreground", label: "Foreground" },
-  { key: "--primary", label: "Primary" },
   { key: "--primary-foreground", label: "Primary FG" },
   { key: "--secondary-foreground", label: "Secondary FG" },
   { key: "--muted", label: "Muted" },
@@ -186,7 +205,6 @@ export function DesignSystemEditor({
     colors,
     setColors,
     lockedKeys,
-    setLockedKeys,
     prevColors,
     setPrevColors,
     readCurrentColors,
@@ -411,7 +429,7 @@ export function DesignSystemEditor({
     const pending = storage.get<Record<string, string>>(PENDING_COLORS_KEY) || {};
     pending[key] = hsl;
 
-    const DERIVATION_TRIGGERS = ["--brand", "--secondary", "--accent", "--background", "--foreground", "--primary"];
+    const DERIVATION_TRIGGERS = ["--brand", "--secondary", "--accent", "--background", "--foreground"];
     if (DERIVATION_TRIGGERS.includes(key)) {
       const derived = derivePaletteFromChange(key, hsl, newColors, lockedKeys);
       for (const [dKey, dVal] of Object.entries(derived)) {
@@ -860,17 +878,14 @@ export function DesignSystemEditor({
                 <button
                   disabled={mainSt.status === 'creating'}
                   onClick={() => { if (mainSt.status !== 'creating') { setPrSections(new Set()); setShowPrModal(true); } }}
-                  className={`ml-auto sm:hidden px-1 text-[14px] font-light transition-colors hover:opacity-70 disabled:opacity-50 flex items-center justify-center gap-1 ${
+                  className={`ml-auto sm:hidden h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 disabled:opacity-50 flex items-center justify-center gap-1 ${
                     mainSt.status === 'error' || mainSt.status === 'rate-limited'
                       ? 'text-red-600 dark:text-red-400'
                       : mainSt.status === 'created'
                         ? 'text-green-600 dark:text-green-400'
                         : ''
                   }`}
-                  style={mainSt.status !== 'error' && mainSt.status !== 'rate-limited' && mainSt.status !== 'created'
-                    ? { color: "hsl(var(--foreground))" }
-                    : undefined
-                  }
+                  style={{ backgroundColor: "transparent", color: mainSt.status === 'error' || mainSt.status === 'rate-limited' ? undefined : mainSt.status === 'created' ? undefined : "hsl(var(--brand))", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
                 >
                   <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" /></svg>
                   <span className="truncate">{mainSt.status === 'creating' ? '...' : mainSt.status === 'error' ? 'Retry' : mainSt.status === 'rate-limited' ? 'Retry' : 'PR'}</span>
@@ -881,14 +896,14 @@ export function DesignSystemEditor({
             <div className="flex items-center gap-4 pb-2 sm:pb-0">
               <a
                 href="/how-it-works"
-                className="text-[14px] font-medium hover:opacity-70 transition-opacity"
+                className="text-[14px] font-light hover:opacity-70 transition-opacity"
                 style={{ color: "hsl(var(--muted-foreground))" }}
               >
                 How It Works &rarr;
               </a>
               <a
                 href="/readme"
-                className="text-[14px] font-medium hover:opacity-70 transition-opacity"
+                className="text-[14px] font-light hover:opacity-70 transition-opacity"
                 style={{ color: "hsl(var(--muted-foreground))" }}
               >
                 README &rarr;
@@ -900,17 +915,14 @@ export function DesignSystemEditor({
               <button
                 disabled={mainSt.status === 'creating'}
                 onClick={() => { if (mainSt.status !== 'creating') { setPrSections(new Set()); setShowPrModal(true); } }}
-                className={`ml-auto hidden sm:flex px-1 text-[14px] font-light transition-colors hover:opacity-70 disabled:opacity-50 items-center justify-center gap-1 ${
+                className={`ml-auto hidden sm:flex h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 disabled:opacity-50 items-center justify-center gap-1 ${
                   mainSt.status === 'error' || mainSt.status === 'rate-limited'
                     ? 'text-red-600 dark:text-red-400'
                     : mainSt.status === 'created'
                       ? 'text-green-600 dark:text-green-400'
                       : ''
                 }`}
-                style={mainSt.status !== 'error' && mainSt.status !== 'rate-limited' && mainSt.status !== 'created'
-                  ? { color: "hsl(var(--foreground))" }
-                  : undefined
-                }
+                style={{ backgroundColor: "transparent", color: mainSt.status === 'error' || mainSt.status === 'rate-limited' ? undefined : mainSt.status === 'created' ? undefined : "hsl(var(--brand))", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
               >
                 <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" /></svg>
                 <span className="truncate">{mainSt.status === 'creating' ? 'Preparing...' : mainSt.status === 'error' ? 'Retry PR' : mainSt.status === 'rate-limited' ? 'Retry PR' : 'Open PR'}</span>
@@ -1065,10 +1077,46 @@ export function DesignSystemEditor({
 
           {/* Colors section */}
           <div className="min-w-0 p-2 md:p-4 space-y-3">
-            <h2 className="text-[17px] font-light uppercase tracking-wider" style={{ color: "hsl(var(--foreground))" }}>Colors</h2>
+            <h2 className="text-[20px] font-normal uppercase tracking-wider" style={{ color: "hsl(var(--foreground))" }}>Colors</h2>
 
             {/* Color action buttons */}
-            <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+            <div className="flex flex-col-reverse sm:flex-row sm:flex-wrap sm:items-center gap-2 sm:gap-4 rounded-lg p-3" data-axe-exclude style={{ backgroundColor: "rgba(0,0,0,0.04)" }}>
+              <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+              {COLOR_SWATCHES.filter(({ key }) => ["--brand", "--secondary", "--accent", "--background", "--foreground"].includes(key)).map(({ key, label }) => {
+                const hsl = colors[key];
+                const bgHsl = hsl || "0 0% 50%";
+                const wc = contrastRatio("0 0% 100%", bgHsl);
+                const bc = contrastRatio("0 0% 0%", bgHsl);
+                const btnTextColor = (wc >= bc) ? "#ffffff" : "#000000";
+                const inputId = `brand-btn-color-input-${key}`;
+                return (
+                  <div key={key} className="relative group">
+                    <button
+                      className="h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1.5 cursor-pointer"
+                      style={{ backgroundColor: hsl ? `hsl(${hsl})` : "#e5e7eb", color: btnTextColor, boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
+                      onClick={() => {
+                        const input = document.getElementById(inputId) as HTMLInputElement | null;
+                        input?.click();
+                      }}
+                    >
+                      <span className="whitespace-nowrap">{label}</span>
+                      <svg className="w-2.5 h-2.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                      </svg>
+                    </button>
+                    <input
+                      id={inputId}
+                      type="color"
+                      aria-label={`Select ${label} color`}
+                      value={colors[key] ? hslStringToHex(colors[key]) : "#000000"}
+                      onChange={(e) => handleColorChange(key, e.target.value)}
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    />
+                  </div>
+                );
+              })}
+              </div>
+              <div className="ml-auto flex flex-wrap gap-2 sm:gap-4">
               <div className="relative">
                 <button
                   onClick={() => setShuffleOpen(!shuffleOpen)}
@@ -1117,22 +1165,25 @@ export function DesignSystemEditor({
                   </button>
                 )}
               </div>
-              <button
-                onClick={() => generatedCode ? setGeneratedCode(null) : generateCode()}
-                className="h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
-                style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
-              >
-                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
-                <span className="truncate"><span className="sm:hidden">{generatedCode ? "Hide" : "CSS"}</span><span className="hidden sm:inline">{generatedCode ? "Hide CSS" : "Show CSS"}</span></span>
-              </button>
-              <button
-                onClick={() => setShowResetModal(true)}
-                className="h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
-                style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
-              >
-                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" /></svg>
-                <span className="truncate">Reset</span>
-              </button>
+              <div className="flex gap-2 sm:gap-4">
+                <button
+                  onClick={() => generatedCode ? setGeneratedCode(null) : generateCode()}
+                  className="h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+                  style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
+                >
+                  <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+                  <span className="truncate"><span className="sm:hidden">{generatedCode ? "Hide" : "CSS"}</span><span className="hidden sm:inline">{generatedCode ? "Hide CSS" : "Show CSS"}</span></span>
+                </button>
+                <button
+                  onClick={() => setShowResetModal(true)}
+                  className="h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+                  style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
+                >
+                  <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" /></svg>
+                  <span className="truncate">Reset</span>
+                </button>
+              </div>
+              </div>
             </div>
 
             {/* Generated code output */}
@@ -1169,84 +1220,11 @@ export function DesignSystemEditor({
 
             {/* Controls + Preview */}
             <div className="flex flex-col md:flex-row md:flex-wrap gap-4 md:gap-6">
-              {/* Editable swatches column */}
-              <div className="flex-shrink-0" data-axe-exclude>
-                <p className="text-[14px] font-light uppercase tracking-wider mb-2 md:mb-3" style={{ color: "hsl(var(--muted-foreground))" }}>Brand</p>
-                <div className="grid grid-cols-6 gap-1 content-start md:grid-cols-[repeat(2,76px)] md:gap-1.5">
-                {COLOR_SWATCHES.filter(({ key }) => ["--brand", "--secondary", "--accent", "--background", "--foreground", "--primary"].includes(key)).map(({ key, label }) => {
-                  const hsl = colors[key];
-                  const bgHsl = hsl || "0 0% 50%";
-                  const wc = contrastRatio("0 0% 100%", bgHsl);
-                  const bc = contrastRatio("0 0% 0%", bgHsl);
-                  const swatchTextColor = (wc >= bc) ? "#ffffff" : "#000000";
-                  const inputId = `sidebar-color-input-${key}`;
-                  return (
-                    <div key={key} className="relative group cursor-pointer text-left">
-                      <div
-                        className="relative w-full aspect-square md:w-[76px] md:h-[76px] rounded-md mb-1 overflow-hidden flex items-center justify-center transition-shadow hover:shadow-lg"
-                        style={{ boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
-                        onClick={() => {
-                          const input = document.getElementById(inputId) as HTMLInputElement | null;
-                          input?.click();
-                        }}
-                      >
-                        <div className="absolute inset-0" style={{ backgroundColor: hsl ? `hsl(${hsl})` : undefined }} />
-                        <span className="relative text-[14px] font-light truncate" style={{ color: swatchTextColor }}>{hsl ? hslStringToHex(hsl) : ""}</span>
-                        <span className="absolute top-1 right-1 w-5 h-5 flex items-center justify-center flex-shrink-0 pointer-events-none" style={{ color: swatchTextColor }}>
-                          <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                          </svg>
-                        </span>
-                        <input
-                          id={inputId}
-                          type="color"
-                          aria-label={`Select ${label} color`}
-                          value={colors[key] ? hslStringToHex(colors[key]) : "#000000"}
-                          onChange={(e) => handleColorChange(key, e.target.value)}
-                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                        />
-                      </div>
-                      {key === "--brand" && (
-                        <button
-                          type="button"
-                          aria-label={lockedKeys.has(key) ? `Unlock ${label}` : `Lock ${label}`}
-                          className="absolute z-20 flex items-center justify-center cursor-pointer"
-                          style={{ top: "-6px", left: "-6px", width: "28px", height: "28px", minWidth: "28px", minHeight: "28px", padding: 0 }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            setLockedKeys(prev => {
-                              const next = new Set(prev);
-                              if (next.has(key)) next.delete(key);
-                              else next.add(key);
-                              return next;
-                            });
-                          }}
-                        >
-                          {lockedKeys.has(key) ? (
-                            <svg style={{ width: "16px", height: "16px", color: colors[key] ? `hsl(${fgForBg(colors[key])})` : undefined }} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
-                              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                            </svg>
-                          ) : (
-                            <svg className="opacity-0 group-hover:opacity-100 transition-opacity" style={{ width: "16px", height: "16px", color: colors[key] ? `hsl(${fgForBg(colors[key])})` : undefined }} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
-                              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                              <path d="M7 11V7a5 5 0 0 1 9.9-1" />
-                            </svg>
-                          )}
-                        </button>
-                      )}
-                      <p className="text-[14px] font-light truncate w-[76px]" style={{ color: "hsl(var(--foreground))" }}>{label}</p>
-                    </div>
-                  );
-                })}
-                </div>
-              </div>
               {/* Palette (controls column) */}
               <div className="flex-shrink-0" data-axe-exclude>
                 <p className="text-[14px] font-light uppercase tracking-wider mb-2 md:mb-3" style={{ color: "hsl(var(--muted-foreground))" }}>Palette</p>
                 <div className="grid grid-cols-6 gap-1 md:grid-cols-[repeat(4,76px)] md:gap-1.5">
-                  {COLOR_SWATCHES.filter(({ key }) => !["--brand", "--secondary", "--accent", "--background", "--foreground", "--primary"].includes(key)).map(({ key, label }) => {
+                  {COLOR_SWATCHES.filter(({ key }) => !["--brand", "--secondary", "--accent", "--background", "--foreground"].includes(key)).map(({ key, label }) => {
                     const hsl = colors[key];
                     const bgHsl = hsl || "0 0% 50%";
                     const wc = contrastRatio("0 0% 100%", bgHsl);
@@ -1342,10 +1320,10 @@ export function DesignSystemEditor({
 
           {/* Card Style section */}
           <div className="min-w-0 p-2 md:p-4 space-y-3 mt-8 md:mt-12">
-            <h2 className="text-[17px] font-light uppercase tracking-wider" style={{ color: "hsl(var(--foreground))" }}>Card Style</h2>
+            <h2 className="text-[20px] font-normal uppercase tracking-wider" style={{ color: "hsl(var(--foreground))" }}>Card Style</h2>
 
             {/* Preset buttons */}
-            <div className="flex flex-wrap gap-2 sm:gap-4">
+            <div className="flex flex-wrap gap-2 sm:gap-4 rounded-lg p-3" style={{ backgroundColor: "rgba(0,0,0,0.04)" }}>
               {(["liquid-glass", "solid", "gradient", "border-only"] as const).map((key) => {
                 const labels: Record<string, string> = { "liquid-glass": "Liquid Glass", solid: "Solid Color", gradient: "Gradient", "border-only": "Border Only" };
                 const icons: Record<string, React.ReactNode> = {
@@ -1370,22 +1348,24 @@ export function DesignSystemEditor({
                   </button>
                 );
               })}
-              <button
-                onClick={() => setCardCssVisible(!cardCssVisible)}
-                className="h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
-                style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
-              >
-                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
-                <span className="truncate"><span className="sm:hidden">{cardCssVisible ? "Hide" : "CSS"}</span><span className="hidden sm:inline">{cardCssVisible ? "Hide CSS" : "Show CSS"}</span></span>
-              </button>
-              <button
-                onClick={() => setShowCardResetModal(true)}
-                className="h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
-                style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
-              >
-                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" /></svg>
-                <span className="truncate">Reset</span>
-              </button>
+              <div className="ml-auto flex gap-2 sm:gap-4">
+                <button
+                  onClick={() => setCardCssVisible(!cardCssVisible)}
+                  className="h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+                  style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
+                >
+                  <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+                  <span className="truncate"><span className="sm:hidden">{cardCssVisible ? "Hide" : "CSS"}</span><span className="hidden sm:inline">{cardCssVisible ? "Hide CSS" : "Show CSS"}</span></span>
+                </button>
+                <button
+                  onClick={() => setShowCardResetModal(true)}
+                  className="h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+                  style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
+                >
+                  <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" /></svg>
+                  <span className="truncate">Reset</span>
+                </button>
+              </div>
             </div>
 
             {/* Card CSS output */}
@@ -1580,10 +1560,10 @@ export function DesignSystemEditor({
           </div>
         {/* Typography section */}
           <div className="min-w-0 p-2 md:p-4 space-y-3 mt-8 md:mt-12">
-            <h2 className="text-[17px] font-light uppercase tracking-wider" style={{ color: "hsl(var(--foreground))" }}>Typography</h2>
+            <h2 className="text-[20px] font-normal uppercase tracking-wider" style={{ color: "hsl(var(--foreground))" }}>Typography</h2>
 
             {/* Preset buttons */}
-            <div className="flex flex-wrap gap-2 sm:gap-4">
+            <div className="flex flex-wrap gap-2 sm:gap-4 rounded-lg p-3" style={{ backgroundColor: "rgba(0,0,0,0.04)" }}>
               {(["modern", "classic", "compact", "editorial"] as const).map((key) => {
                 const labels: Record<string, string> = { modern: "Modern", classic: "Classic", compact: "Compact", editorial: "Editorial" };
                 const icons: Record<string, React.ReactNode> = {
@@ -1608,22 +1588,24 @@ export function DesignSystemEditor({
                   </button>
                 );
               })}
-              <button
-                onClick={() => setTypoCssVisible(!typoCssVisible)}
-                className="h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
-                style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
-              >
-                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
-                <span className="truncate"><span className="sm:hidden">{typoCssVisible ? "Hide" : "CSS"}</span><span className="hidden sm:inline">{typoCssVisible ? "Hide CSS" : "Show CSS"}</span></span>
-              </button>
-              <button
-                onClick={() => setShowTypoResetModal(true)}
-                className="h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
-                style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
-              >
-                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" /></svg>
-                <span className="truncate">Reset</span>
-              </button>
+              <div className="ml-auto flex gap-2 sm:gap-4">
+                <button
+                  onClick={() => setTypoCssVisible(!typoCssVisible)}
+                  className="h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+                  style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
+                >
+                  <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+                  <span className="truncate"><span className="sm:hidden">{typoCssVisible ? "Hide" : "CSS"}</span><span className="hidden sm:inline">{typoCssVisible ? "Hide CSS" : "Show CSS"}</span></span>
+                </button>
+                <button
+                  onClick={() => setShowTypoResetModal(true)}
+                  className="h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+                  style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
+                >
+                  <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" /></svg>
+                  <span className="truncate">Reset</span>
+                </button>
+              </div>
             </div>
 
             {/* Typography CSS output */}
@@ -1793,10 +1775,10 @@ export function DesignSystemEditor({
 
           {/* Alerts section */}
           <div className="min-w-0 p-2 md:p-4 space-y-3 mt-8 md:mt-12">
-            <h2 className="text-[17px] font-light uppercase tracking-wider" style={{ color: "hsl(var(--foreground))" }}>Alerts</h2>
+            <h2 className="text-[20px] font-normal uppercase tracking-wider" style={{ color: "hsl(var(--foreground))" }}>Alerts</h2>
 
             {/* Preset buttons */}
-            <div className="flex flex-wrap gap-2 sm:gap-4">
+            <div className="flex flex-wrap gap-2 sm:gap-4 rounded-lg p-3" style={{ backgroundColor: "rgba(0,0,0,0.04)" }}>
               {(["filled", "soft", "outline", "minimal"] as const).map((key) => {
                 const labels: Record<string, string> = { filled: "Filled", soft: "Soft", outline: "Outline", minimal: "Minimal" };
                 const icons: Record<string, React.ReactNode> = {
@@ -1821,22 +1803,24 @@ export function DesignSystemEditor({
                   </button>
                 );
               })}
-              <button
-                onClick={() => setAlertCssVisible(!alertCssVisible)}
-                className="h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
-                style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
-              >
-                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
-                <span className="truncate"><span className="sm:hidden">{alertCssVisible ? "Hide" : "CSS"}</span><span className="hidden sm:inline">{alertCssVisible ? "Hide CSS" : "Show CSS"}</span></span>
-              </button>
-              <button
-                onClick={() => setShowAlertResetModal(true)}
-                className="h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
-                style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
-              >
-                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" /></svg>
-                <span className="truncate">Reset</span>
-              </button>
+              <div className="ml-auto flex gap-2 sm:gap-4">
+                <button
+                  onClick={() => setAlertCssVisible(!alertCssVisible)}
+                  className="h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+                  style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
+                >
+                  <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+                  <span className="truncate"><span className="sm:hidden">{alertCssVisible ? "Hide" : "CSS"}</span><span className="hidden sm:inline">{alertCssVisible ? "Hide CSS" : "Show CSS"}</span></span>
+                </button>
+                <button
+                  onClick={() => setShowAlertResetModal(true)}
+                  className="h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+                  style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
+                >
+                  <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" /></svg>
+                  <span className="truncate">Reset</span>
+                </button>
+              </div>
             </div>
 
             {/* Alert CSS output */}

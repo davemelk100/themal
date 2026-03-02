@@ -5,9 +5,12 @@
 export { default as AlertCircle } from "lucide-react/dist/esm/icons/alert-circle";
 export { default as ArrowLeft } from "lucide-react/dist/esm/icons/arrow-left";
 export { default as ArrowRight } from "lucide-react/dist/esm/icons/arrow-right";
+export { default as Bell } from "lucide-react/dist/esm/icons/bell";
 export { default as BookOpen } from "lucide-react/dist/esm/icons/book-open";
 export { default as Briefcase } from "lucide-react/dist/esm/icons/briefcase";
 export { default as Calendar } from "lucide-react/dist/esm/icons/calendar";
+export { default as Camera } from "lucide-react/dist/esm/icons/camera";
+export { default as Clock } from "lucide-react/dist/esm/icons/clock";
 export { default as Check } from "lucide-react/dist/esm/icons/check";
 export { default as ChevronDown } from "lucide-react/dist/esm/icons/chevron-down";
 export { default as ChevronLeft } from "lucide-react/dist/esm/icons/chevron-left";
@@ -15,6 +18,7 @@ export { default as ChevronRight } from "lucide-react/dist/esm/icons/chevron-rig
 export { default as ChevronUp } from "lucide-react/dist/esm/icons/chevron-up";
 export { default as Code } from "lucide-react/dist/esm/icons/code";
 export { default as Database } from "lucide-react/dist/esm/icons/database";
+export { default as Download } from "lucide-react/dist/esm/icons/download";
 export { default as Dribbble } from "lucide-react/dist/esm/icons/dribbble";
 export { default as ExternalLink } from "lucide-react/dist/esm/icons/external-link";
 export { default as Eye } from "lucide-react/dist/esm/icons/eye";
@@ -26,6 +30,7 @@ export { default as Home } from "lucide-react/dist/esm/icons/home";
 export { default as Linkedin } from "lucide-react/dist/esm/icons/linkedin";
 export { default as Link2 } from "lucide-react/dist/esm/icons/link-2";
 export { default as Loader2 } from "lucide-react/dist/esm/icons/loader-2";
+export { default as Mail } from "lucide-react/dist/esm/icons/mail";
 export { default as Menu } from "lucide-react/dist/esm/icons/menu";
 export { default as Moon } from "lucide-react/dist/esm/icons/moon";
 export { default as Palette } from "lucide-react/dist/esm/icons/palette";
