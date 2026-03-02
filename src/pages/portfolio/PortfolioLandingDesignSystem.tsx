@@ -218,10 +218,19 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
   const [shuffleOpen, setShuffleOpen] = useState(false);
 
   const handleColorChange = (key: string, hex: string) => {
-    if (key === "--brand") {
-      const lower = hex.toLowerCase();
-      if (lower === "#000000" || lower === "#ffffff") return;
+    const lower = hex.toLowerCase();
+
+    // Always block pure B&W on brand
+    if (key === "--brand" && (lower === "#000000" || lower === "#ffffff")) return;
+
+    // If background or foreground is pure B&W, block that same color from other swatches
+    if (key !== "--background" && key !== "--foreground") {
+      const bgHex = colors["--background"] ? hslStringToHex(colors["--background"]).toLowerCase() : "";
+      const fgHex = colors["--foreground"] ? hslStringToHex(colors["--foreground"]).toLowerCase() : "";
+      if ((bgHex === "#000000" || bgHex === "#ffffff") && lower === bgHex) return;
+      if ((fgHex === "#000000" || fgHex === "#ffffff") && lower === fgHex) return;
     }
+
     const hsl = hexToHslString(hex);
 
     const history = storage.get<{ key: string; previousValue: string }[]>(COLOR_HISTORY_KEY) || [];
