@@ -1,7 +1,7 @@
 import { useEffect, lazy, Suspense } from "react";
 
 import { ThemeProvider } from "./context/ThemeContext";
-import { applyStoredThemeColors } from "./pages/portfolio/themeUtils";
+import { applyStoredThemeColors } from "@design-alive/editor";
 
 const PortfolioLanding = lazy(() => import("./pages/portfolio/PortfolioLanding"));
 

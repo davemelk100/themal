@@ -1,7 +1,8 @@
 import React, { Suspense, useState, useRef } from "react";
 import type { AxeResults } from "axe-core";
-import { content } from "../../content";
-import storage from "../../utils/storage";
+import type { DesignSystemEditorProps } from "./types";
+import { useColorState } from "./hooks/useColorState";
+import storage from "./utils/storage";
 import {
   EDITABLE_VARS,
   contrastRatio,
@@ -18,10 +19,9 @@ import {
   fgForBg,
   persistContrastFixes,
   saveContrastCorrection,
-} from "./themeUtils";
+} from "./utils/themeUtils";
+import "./styles/editor.css";
 
-import { GitHubLogoIcon } from "../../components/SocialIcons";
-const LazyGitHubLogoIcon = GitHubLogoIcon;
 const LazyLinkedin = React.lazy(() =>
   import("lucide-react").then((mod) => ({ default: mod.Linkedin }))
 );
@@ -128,9 +128,19 @@ const LazySmartphone = React.lazy(() =>
   import("lucide-react").then((mod) => ({ default: mod.Smartphone }))
 );
 
+const GitHubLogoIcon = React.forwardRef<SVGSVGElement, React.SVGProps<SVGSVGElement>>(
+  (props, ref) => (
+    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" {...props} ref={ref}>
+      <path d="M7.49933 0.25C3.49635 0.25 0.25 3.49593 0.25 7.50024C0.25 10.703 2.32715 13.4206 5.2081 14.3797C5.57084 14.446 5.70302 14.2222 5.70302 14.0299C5.70302 13.8576 5.69679 13.4019 5.69323 12.797C3.67661 13.235 3.25112 11.825 3.25112 11.825C2.92132 10.9874 2.44599 10.7644 2.44599 10.7644C1.78773 10.3149 2.49584 10.3238 2.49584 10.3238C3.22353 10.375 3.60629 11.0711 3.60629 11.0711C4.25298 12.1788 5.30335 11.8588 5.71638 11.6732C5.78225 11.205 5.96962 10.8854 6.17658 10.7043C4.56675 10.5209 2.87415 9.89918 2.87415 7.12104C2.87415 6.32925 3.15677 5.68257 3.62053 5.17563C3.54576 4.99226 3.29697 4.25521 3.69174 3.25691C3.69174 3.25691 4.30015 3.06196 5.68522 3.99973C6.26337 3.83906 6.8838 3.75895 7.50022 3.75583C8.1162 3.75895 8.73619 3.83906 9.31523 3.99973C10.6994 3.06196 11.3069 3.25691 11.3069 3.25691C11.7026 4.25521 11.4538 4.99226 11.3795 5.17563C11.8441 5.68257 12.1245 6.32925 12.1245 7.12104C12.1245 9.9063 10.4292 10.5192 8.81452 10.6985C9.07444 10.9224 9.30633 11.3648 9.30633 12.0413C9.30633 13.0102 9.29742 13.7922 9.29742 14.0299C9.29742 14.2239 9.42828 14.4496 9.79591 14.3788C12.6746 13.4179 14.75 10.7025 14.75 7.50024C14.75 3.49593 11.5036 0.25 7.49933 0.25Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"/>
+    </svg>
+  )
+);
+GitHubLogoIcon.displayName = "GitHubLogoIcon";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const SITE_ICONS: { name: string; icon: React.LazyExoticComponent<any> | React.ComponentType<any> }[] = [
   { name: "LinkedIn", icon: LazyLinkedin },
-  { name: "GitHub", icon: LazyGitHubLogoIcon },
+  { name: "GitHub", icon: GitHubLogoIcon },
   { name: "Dribbble", icon: LazyDribbble },
   { name: "Home", icon: LazyHome },
   { name: "Palette", icon: LazyPalette },
@@ -188,17 +198,27 @@ const COLOR_SWATCHES = [
   { key: "--border", label: "Border" },
 ];
 
-interface Props {
-  colors: Record<string, string>;
-  setColors: React.Dispatch<React.SetStateAction<Record<string, string>>>;
-  lockedKeys: Set<string>;
-  setLockedKeys: React.Dispatch<React.SetStateAction<Set<string>>>;
-  prevColors: Record<string, string> | null;
-  setPrevColors: React.Dispatch<React.SetStateAction<Record<string, string> | null>>;
-  readCurrentColors: () => void;
-}
+const SPECS_CONTENT = `All palette colors are HSL custom properties on :root — shift a hue by 180° for complementary, ±150° for split-complementary, and so on. From one brand color the system derives the full token set (secondary, accent, muted, destructive) using your choice of harmony scheme: complementary, triadic, analogous, split-complementary, or tetradic.
 
-export default function PortfolioLandingDesignSystem({ colors, setColors, lockedKeys, setLockedKeys, prevColors, setPrevColors, readCurrentColors }: Props) {
+Every foreground/background pair is audited against WCAG AA (4.5:1) via axe-core. Failing pairs are auto-corrected by adjusting foreground lightness, and fixes are cached so subsequent visits skip the redundant audit. Your theme persists in localStorage across reloads.`;
+
+export function DesignSystemEditor({
+  prEndpointUrl,
+  accessibilityAudit = true,
+  onChange,
+  onExport,
+  className,
+}: DesignSystemEditorProps) {
+  const {
+    colors,
+    setColors,
+    lockedKeys,
+    setLockedKeys,
+    prevColors,
+    setPrevColors,
+    readCurrentColors,
+  } = useColorState();
+
   const [showResetModal, setShowResetModal] = useState(false);
   const [generatedCode, setGeneratedCode] = useState<string | null>(null);
   const [codeCopied, setCodeCopied] = useState(false);
@@ -212,13 +232,15 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
   const [harmonySchemeIndex, setHarmonySchemeIndex] = useState(-1);
   const [shuffleOpen, setShuffleOpen] = useState(false);
 
+  const fireOnChange = (newColors: Record<string, string>) => {
+    onChange?.(newColors);
+  };
+
   const handleColorChange = (key: string, hex: string) => {
     const lower = hex.toLowerCase();
 
-    // Always block pure B&W on brand
     if (key === "--brand" && (lower === "#000000" || lower === "#ffffff")) return;
 
-    // If background or foreground is pure B&W, block that same color from other swatches
     if (key !== "--background" && key !== "--foreground") {
       const bgHex = colors["--background"] ? hslStringToHex(colors["--background"]).toLowerCase() : "";
       const fgHex = colors["--foreground"] ? hslStringToHex(colors["--foreground"]).toLowerCase() : "";
@@ -263,9 +285,12 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
     storage.set(PENDING_COLORS_KEY, pending);
     persistContrastFixes(adjustments);
     window.dispatchEvent(new Event("theme-pending-update"));
+    fireOnChange(newColors);
 
-    if (auditTimerRef.current) clearTimeout(auditTimerRef.current);
-    auditTimerRef.current = setTimeout(() => runAccessibilityAudit(), 800);
+    if (accessibilityAudit) {
+      if (auditTimerRef.current) clearTimeout(auditTimerRef.current);
+      auditTimerRef.current = setTimeout(() => runAccessibilityAudit(), 800);
+    }
   };
 
   const generateCode = () => {
@@ -289,7 +314,13 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
     tw += `  ring: "hsl(var(--ring))",\n`;
     tw += "}";
 
-    setGeneratedCode(css + tw);
+    const fullCode = css + tw;
+
+    if (onExport) {
+      onExport(fullCode);
+    } else {
+      setGeneratedCode(fullCode);
+    }
   };
 
   const handleRegenerate = (schemeIdx: number) => {
@@ -315,12 +346,14 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
     window.dispatchEvent(new Event('theme-pending-update'));
     setHarmonySchemeIndex(schemeIdx);
     setShuffleOpen(false);
-    runAccessibilityAudit();
+    fireOnChange(newColors);
+    if (accessibilityAudit) runAccessibilityAudit();
   };
 
   const handleGenerate = () => {
     setPrevColors({ ...colors });
-    const result = generateRandomPalette(colors, lockedKeys);
+    const isDark = document.documentElement.classList.contains('dark');
+    const result = generateRandomPalette(colors, lockedKeys, isDark);
     const history = storage.get<{ key: string; previousValue: string }[]>(COLOR_HISTORY_KEY) || [];
     const pending = storage.get<Record<string, string>>(PENDING_COLORS_KEY) || {};
     const newColors = { ...colors };
@@ -337,7 +370,8 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
     storage.set(PENDING_COLORS_KEY, pending);
     window.dispatchEvent(new Event('theme-pending-update'));
     setHarmonySchemeIndex(-1);
-    runAccessibilityAudit();
+    fireOnChange(newColors);
+    if (accessibilityAudit) runAccessibilityAudit();
   };
 
   const handleUndo = () => {
@@ -351,7 +385,8 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
     storage.set(PENDING_COLORS_KEY, pending);
     window.dispatchEvent(new Event('theme-pending-update'));
     setPrevColors(null);
-    runAccessibilityAudit();
+    fireOnChange(prevColors);
+    if (accessibilityAudit) runAccessibilityAudit();
   };
 
   const handleReset = () => {
@@ -379,6 +414,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
   };
 
   const runAccessibilityAudit = async () => {
+    if (!accessibilityAudit) return;
     setAuditStatus('running');
     setAuditViolations([]);
     setViolationIndex(0);
@@ -393,7 +429,6 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
         setAuditViolations([]);
         setViolationIndex(0);
       } else {
-
         const style = getComputedStyle(document.documentElement);
         const liveColors: Record<string, string> = {};
         EDITABLE_VARS.forEach(({ key }) => {
@@ -476,7 +511,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
         fixes["--muted-foreground"] = bestMuted;
       }
 
-      const fixEntries = Object.entries(fixes).filter(([k, v]) => v !== liveColors[k]);
+      const fixEntries = Object.entries(fixes).filter(([k]) => fixes[k] !== liveColors[k]);
       for (let i = 0; i < fixEntries.length; i++) {
         const [fixKey, fixVal] = fixEntries[i];
         const swatchEl = document.querySelector(`[data-color-key="${fixKey}"]`) as HTMLElement | null;
@@ -538,7 +573,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
         return `rgb(${Math.round(f(0) * 255)}, ${Math.round(f(8) * 255)}, ${Math.round(f(4) * 255)})`;
       };
 
-      const fixElementAnimated = async (node: { target: any[] }) => {
+      const fixElementAnimated = async (node: { target: unknown[] }) => {
         const el = document.querySelector(node.target[0] as string) as HTMLElement | null;
         if (!el) return;
         const computed = getComputedStyle(el);
@@ -619,261 +654,261 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
   };
 
   return (
-    <section className="pt-4 sm:pt-6 lg:pt-8 pb-2 sm:pb-3 lg:pb-4 xl:pb-6 relative">
-      <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Title and description */}
-        <div className="w-full mb-4">
-          <h2 className="font-light pt-4 pb-3 title-font" style={{ color: "hsl(var(--foreground))" }}>NEW - Live Design System!</h2>
-          <p className="text-[17px]" style={{ color: "hsl(var(--foreground))" }}>
-            Explore the interactive design system powering this site. Pick a brand color and watch every token transform in real time. Automatic WCAG AA contrast correction. Generate a CSS snapshot of your custom theme. Open a pull request to propose changes directly to the repo.
-          </p>
-        </div>
-
-        {/* Specs content */}
-        <div className="mb-4 space-y-3">
-          {content.designSystem.specsContent.split("\n\n").map((paragraph, i) => (
-            <p key={i} className="text-[17px]" style={{ color: "hsl(var(--foreground))" }}>
-              {paragraph}
+    <div className={`ds-editor${className ? ` ${className}` : ''}`}>
+      <section className="pt-4 sm:pt-6 lg:pt-8 pb-2 sm:pb-3 lg:pb-4 xl:pb-6 relative">
+        <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Title and description */}
+          <div className="w-full mb-4">
+            <h2 className="font-light pt-4 pb-3 title-font" style={{ color: "hsl(var(--foreground))" }}>NEW - Live Design System!</h2>
+            <p className="text-[17px]" style={{ color: "hsl(var(--foreground))" }}>
+              Explore the interactive design system powering this site. Pick a brand color and watch every token transform in real time. Automatic WCAG AA contrast correction. Generate a CSS snapshot of your custom theme. Open a pull request to propose changes directly to the repo.
             </p>
-          ))}
-        </div>
+          </div>
 
-        {/* Action buttons + alerts row */}
-        <div className="flex flex-wrap md:flex-nowrap items-center gap-2 sm:gap-4 mb-4">
-          <div className="relative w-full md:w-auto md:flex-1 min-w-0">
+          {/* Specs content */}
+          <div className="mb-4 space-y-3">
+            {SPECS_CONTENT.split("\n\n").map((paragraph, i) => (
+              <p key={i} className="text-[17px]" style={{ color: "hsl(var(--foreground))" }}>
+                {paragraph}
+              </p>
+            ))}
+          </div>
+
+          {/* Action buttons + alerts row */}
+          <div className="flex flex-wrap md:flex-nowrap items-center gap-2 sm:gap-4 mb-4">
+            <div className="relative w-full md:w-auto md:flex-1 min-w-0">
+              <button
+                onClick={() => setShuffleOpen(!shuffleOpen)}
+                className="w-full h-12 text-[17px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+                style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
+              >
+                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>
+                <span className="truncate">{harmonySchemeIndex >= 0 ? HARMONY_SCHEMES[harmonySchemeIndex] : "Variations"}</span>
+                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}><path d="M6 9l6 6 6-6" /></svg>
+              </button>
+              {shuffleOpen && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setShuffleOpen(false)} />
+                  <div className="absolute left-0 top-full mt-1 z-50 min-w-[180px] rounded-lg shadow-lg py-1 border" style={{ backgroundColor: "hsl(var(--background))", borderColor: "hsl(var(--border))" }}>
+                    {HARMONY_SCHEMES.map((scheme, idx) => (
+                      <button
+                        key={scheme}
+                        onClick={() => handleRegenerate(idx)}
+                        className="w-full text-left px-4 py-2 text-[17px] font-light transition-colors hover:opacity-80 flex items-center justify-between"
+                        style={{ color: "hsl(var(--foreground))" }}
+                      >
+                        {scheme}
+                        {idx === harmonySchemeIndex && <span className="text-green-600 dark:text-green-400">&#10003;</span>}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+            <div className="h-12 flex-1 md:flex-none flex items-center rounded-lg overflow-hidden" style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}>
+              <button
+                onClick={handleGenerate}
+                className="h-full flex-1 px-3 text-[17px] font-light transition-colors hover:opacity-80 flex items-center justify-center gap-1 whitespace-nowrap"
+              >
+                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                Refresh
+              </button>
+              {prevColors && (
+                <button
+                  onClick={handleUndo}
+                  aria-label="Undo last color change"
+                  className="h-full pl-2 pr-3 text-[17px] font-light transition-colors hover:opacity-80 flex items-center justify-center border-l"
+                  style={{ borderColor: "rgba(17,17,17,0.2)" }}
+                >
+                  <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 10h10a5 5 0 010 10H9m-6-10l4-4m-4 4l4 4" /></svg>
+                </button>
+              )}
+            </div>
             <button
-              onClick={() => setShuffleOpen(!shuffleOpen)}
-              className="w-full h-12 text-[17px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+              onClick={() => setShowResetModal(true)}
+              className="h-12 px-3 text-[17px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
               style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
             >
-              <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>
-              <span className="truncate">{harmonySchemeIndex >= 0 ? HARMONY_SCHEMES[harmonySchemeIndex] : "Variations"}</span>
-              <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}><path d="M6 9l6 6 6-6" /></svg>
+              <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" /></svg>
+              <span className="truncate"><span className="sm:hidden">Reset</span><span className="hidden sm:inline">Reset Theme</span></span>
             </button>
-            {shuffleOpen && (
-              <>
-                <div className="fixed inset-0 z-40" onClick={() => setShuffleOpen(false)} />
-                <div className="absolute left-0 top-full mt-1 z-50 min-w-[180px] rounded-lg shadow-lg py-1 border" style={{ backgroundColor: "hsl(var(--background))", borderColor: "hsl(var(--border))" }}>
-                  {HARMONY_SCHEMES.map((scheme, idx) => (
-                    <button
-                      key={scheme}
-                      onClick={() => handleRegenerate(idx)}
-                      className="w-full text-left px-4 py-2 text-[17px] font-light transition-colors hover:opacity-80 flex items-center justify-between"
-                      style={{ color: "hsl(var(--foreground))" }}
-                    >
-                      {scheme}
-                      {idx === harmonySchemeIndex && <span className="text-green-600 dark:text-green-400">&#10003;</span>}
-                    </button>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-          <div className="h-12 flex-1 md:flex-none flex items-center rounded-lg overflow-hidden" style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}>
             <button
-              onClick={handleGenerate}
-              className="h-full flex-1 px-3 text-[17px] font-light transition-colors hover:opacity-80 flex items-center justify-center gap-1 whitespace-nowrap"
+              onClick={() => generatedCode ? setGeneratedCode(null) : generateCode()}
+              className="h-12 px-3 text-[17px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+              style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
             >
-              <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
-              Refresh
+              <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+              <span className="truncate"><span className="sm:hidden">{generatedCode ? "Hide" : "CSS"}</span><span className="hidden sm:inline">{generatedCode ? "Hide CSS" : "Show CSS"}</span></span>
             </button>
-            {prevColors && (
+            {prEndpointUrl && (
               <button
-                onClick={handleUndo}
-                aria-label="Undo last color change"
-                className="h-full pl-2 pr-3 text-[17px] font-light transition-colors hover:opacity-80 flex items-center justify-center border-l"
-                style={{ borderColor: "rgba(17,17,17,0.2)" }}
+                disabled={prStatus === 'creating'}
+                onClick={async () => {
+                  setPrStatus('creating');
+                  setPrUrl(null);
+                  const popup = window.open('about:blank', '_blank');
+                  try {
+                    let css = ":root {\n";
+                    EDITABLE_VARS.forEach(({ key }) => {
+                      const val = colors[key];
+                      if (val) css += `  ${key}: ${val};\n`;
+                    });
+                    css += "}";
+                    const res = await fetch(prEndpointUrl, {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ css }),
+                    });
+                    const data = await res.json();
+                    if (!res.ok) {
+                      if (res.status === 429) {
+                        setPrStatus('rate-limited');
+                        setPrError(data.error);
+                        popup?.close();
+                        return;
+                      }
+                      throw new Error(data.error || 'Failed to create PR');
+                    }
+                    setPrStatus('created');
+                    setPrUrl(data.url);
+                    setPrError(null);
+                    if (popup) {
+                      popup.location.href = data.url;
+                    } else {
+                      window.open(data.url, '_blank');
+                    }
+                  } catch {
+                    setPrStatus('error');
+                    popup?.close();
+                  }
+                }}
+                className={`h-12 px-3 text-[17px] font-light rounded-lg transition-colors hover:opacity-80 disabled:opacity-50 flex items-center justify-center gap-1 ${
+                  prStatus === 'error' || prStatus === 'rate-limited'
+                    ? 'border border-red-400 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'
+                    : prStatus === 'created'
+                      ? 'border border-green-400 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300'
+                      : ''
+                }`}
+                style={prStatus !== 'error' && prStatus !== 'rate-limited' && prStatus !== 'created'
+                  ? { backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }
+                  : undefined
+                }
               >
-                <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 10h10a5 5 0 010 10H9m-6-10l4-4m-4 4l4 4" /></svg>
+                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" /></svg>
+                <span className="truncate"><span className="sm:hidden">{prStatus === 'creating' ? '...' : prStatus === 'error' ? 'Retry' : prStatus === 'rate-limited' ? 'Retry' : 'PR'}</span><span className="hidden sm:inline">{prStatus === 'creating' ? 'Preparing...' : prStatus === 'error' ? 'Retry PR' : prStatus === 'rate-limited' ? 'Retry PR' : 'Open PR'}</span></span>
               </button>
             )}
-          </div>
-          <button
-            onClick={() => setShowResetModal(true)}
-            className="h-12 px-3 text-[17px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
-            style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
-          >
-            <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" /></svg>
-            <span className="truncate"><span className="sm:hidden">Reset</span><span className="hidden sm:inline">Reset Theme</span></span>
-          </button>
-          <button
-            onClick={() => generatedCode ? setGeneratedCode(null) : generateCode()}
-            className="h-12 px-3 text-[17px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
-            style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
-          >
-            <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
-            <span className="truncate"><span className="sm:hidden">{generatedCode ? "Hide" : "CSS"}</span><span className="hidden sm:inline">{generatedCode ? "Hide CSS" : "Show CSS"}</span></span>
-          </button>
-          <button
-            disabled={prStatus === 'creating'}
-            onClick={async () => {
-              setPrStatus('creating');
-              setPrUrl(null);
-              // Open window synchronously to avoid popup blocker
-              const popup = window.open('about:blank', '_blank');
-              try {
-                let css = ":root {\n";
-                EDITABLE_VARS.forEach(({ key }) => {
-                  const val = colors[key];
-                  if (val) css += `  ${key}: ${val};\n`;
-                });
-                css += "}";
-                const res = await fetch('/.netlify/functions/create-design-pr', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ css }),
-                });
-                const data = await res.json();
-                if (!res.ok) {
-                  if (res.status === 429) {
-                    setPrStatus('rate-limited');
-                    setPrError(data.error);
-                    popup?.close();
-                    return;
-                  }
-                  throw new Error(data.error || 'Failed to create PR');
-                }
-                setPrStatus('created');
-                setPrUrl(data.url);
-                setPrError(null);
-                if (popup) {
-                  popup.location.href = data.url;
-                } else {
-                  window.open(data.url, '_blank');
-                }
-              } catch {
-                setPrStatus('error');
-                popup?.close();
-              }
-            }}
-            className={`h-12 px-3 text-[17px] font-light rounded-lg transition-colors hover:opacity-80 disabled:opacity-50 flex items-center justify-center gap-1 ${
-              prStatus === 'error' || prStatus === 'rate-limited'
-                ? 'border border-red-400 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'
-                : prStatus === 'created'
-                  ? 'border border-green-400 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300'
-                  : ''
-            }`}
-            style={prStatus !== 'error' && prStatus !== 'rate-limited' && prStatus !== 'created'
-              ? { backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }
-              : undefined
-            }
-          >
-            <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" /></svg>
-            <span className="truncate"><span className="sm:hidden">{prStatus === 'creating' ? '...' : prStatus === 'error' ? 'Retry' : prStatus === 'rate-limited' ? 'Retry' : 'PR'}</span><span className="hidden sm:inline">{prStatus === 'creating' ? 'Preparing...' : prStatus === 'error' ? 'Retry PR' : prStatus === 'rate-limited' ? 'Retry PR' : 'Open PR'}</span></span>
-          </button>
-          {/* Alerts: full-width row on mobile (order -1), inline on sm+ — always rendered to reserve space */}
-          <div className="w-full sm:w-auto order-first sm:order-last sm:ml-auto flex-shrink-0 min-h-[36px]" data-axe-exclude>
-              {prStatus === 'rate-limited' && prError && (
-                <span className="inline-flex items-center px-3 h-9 text-[17px] font-light rounded-lg border border-yellow-400 bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300">
-                  {prError}
-                </span>
-              )}
-              {prStatus === 'created' && prUrl && (
-                <span className="inline-flex items-center gap-2 px-3 h-9 text-[17px] font-light rounded-lg border border-green-400 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300">
-                  PR Created!
-                  <a href={prUrl} target="_blank" rel="noopener noreferrer" className="underline font-light hover:text-green-900 dark:hover:text-green-100 transition-colors">View</a>
-                  <button onClick={() => { setPrStatus('idle'); setPrUrl(null); }} className="text-green-500 hover:text-green-800 dark:hover:text-green-100 transition-colors" aria-label="Dismiss PR notification">&#10005;</button>
-                </span>
-              )}
-              {auditStatus === 'failed' && (
-                <span aria-live="assertive" className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 inline-flex items-center gap-1.5 rounded-xl border-2 border-red-400 dark:border-red-600 bg-red-100 dark:bg-red-950 px-4 h-10 text-[17px] font-light text-red-800 dark:text-red-200 shadow-2xl ring-1 ring-red-300/50 dark:ring-red-700/50">
-                  <span>&#10007; {auditViolations.length} issue{auditViolations.length !== 1 ? 's' : ''}</span>
-                  <button
-                    onClick={() => {
-                      const idx = (violationIndex - 1 + auditViolations.length) % auditViolations.length;
-                      setViolationIndex(idx);
-                      scrollToViolation(auditViolations[idx]);
-                    }}
-                    className="text-red-600 dark:text-red-400 hover:opacity-70 disabled:opacity-30"
-                    disabled={auditViolations.length <= 1}
-                  >&#9664;</button>
-                  <span className="text-[17px] tabular-nums">{violationIndex + 1}/{auditViolations.length}</span>
-                  <button
-                    onClick={() => {
-                      const idx = (violationIndex + 1) % auditViolations.length;
-                      setViolationIndex(idx);
-                      scrollToViolation(auditViolations[idx]);
-                    }}
-                    className="text-red-600 dark:text-red-400 hover:opacity-70 disabled:opacity-30"
-                    disabled={auditViolations.length <= 1}
-                  >&#9654;</button>
-                  <button onClick={() => { if (auditViolations[violationIndex]) scrollToViolation(auditViolations[violationIndex]); setTimeout(() => fixContrastIssues(), 500); }} className="ml-1 px-2 py-0.5 text-[17px] font-light rounded transition-colors hover:opacity-80 whitespace-nowrap" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>Fix</button>
-                </span>
-              )}
-              {auditStatus === 'passed' && (
-                <span aria-live="assertive" className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 inline-flex items-center gap-1.5 rounded-xl border-2 border-green-400 dark:border-green-600 bg-green-100 dark:bg-green-950 px-4 h-10 text-[17px] font-light text-green-800 dark:text-green-200 shadow-2xl ring-1 ring-green-300/50 dark:ring-green-700/50">
-                  <span>&#10003; WCAG AA Passed</span>
-                  <button onClick={() => setAuditStatus('idle')} className="ml-1 text-green-500 hover:text-green-800 dark:hover:text-green-100 transition-colors" aria-label="Dismiss">&#10005;</button>
-                </span>
-              )}
-          </div>
-        </div>
-
-        <hr className="border-border my-6" />
-
-        {/* Generated code output */}
-        {generatedCode && (
-          <div className="mb-4 rounded-lg border" style={{ borderColor: "hsl(var(--border))" }}>
-            <div className="flex items-center justify-between px-3 py-1.5 border-b" style={{ borderColor: "hsl(var(--border))" }}>
-              <span className="text-[17px] font-light uppercase tracking-wider" style={{ color: "hsl(var(--card-foreground))" }}>Generated Theme</span>
-              <div className="flex items-center gap-1">
-                <button
-                  onClick={() => {
-                    navigator.clipboard.writeText(generatedCode);
-                    setCodeCopied(true);
-                    setTimeout(() => setCodeCopied(false), 2000);
-                  }}
-                  className="px-2 py-0.5 text-[17px] font-light rounded-lg transition-colors hover:opacity-80"
-                  style={{ backgroundColor: "hsl(var(--muted))", color: colors["--muted"] ? `hsl(${fgForBg(colors["--muted"])})` : "hsl(var(--muted-foreground))" }}
-                >
-                  {codeCopied ? "Copied!" : "Copy"}
-                </button>
-                <button
-                  onClick={() => setGeneratedCode(null)}
-                  className="px-2 py-0.5 text-[17px] font-light rounded-lg transition-colors hover:opacity-80"
-                  style={{ backgroundColor: "hsl(var(--muted))", color: colors["--muted"] ? `hsl(${fgForBg(colors["--muted"])})` : "hsl(var(--muted-foreground))" }}
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-            <pre className="p-3 overflow-x-auto max-h-64 text-xs leading-relaxed font-mono" style={{ color: "hsl(var(--card-foreground))" }}>
-              <code>{generatedCode}</code>
-            </pre>
-          </div>
-        )}
-
-        {/* Reset Confirmation Modal */}
-        {showResetModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" role="dialog" aria-modal="true" aria-labelledby="home-reset-modal-title">
-            <div className="rounded-lg shadow-xl p-6 w-full max-w-sm mx-4" style={{ backgroundColor: "hsl(var(--card))", color: "hsl(var(--card-foreground))" }}>
-              <h4 id="home-reset-modal-title" className="text-2xl font-light mb-2">
-                Reset to Defaults?
-              </h4>
-              <p className="text-[17px] mb-4" style={{ color: "hsl(var(--card-foreground))" }}>
-                This will revert all theme colors to their original values. Any saved customizations will be lost.
-              </p>
-              <div className="flex justify-end gap-2">
-                <button
-                  onClick={() => setShowResetModal(false)}
-                  className="px-3 py-1.5 text-[17px] font-light rounded-lg transition-colors hover:opacity-80"
-                  style={{ backgroundColor: "transparent", color: "hsl(var(--card-foreground))" }}
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={() => { handleReset(); setShowResetModal(false); }}
-                  className="px-3 py-1.5 text-[17px] font-light rounded-lg transition-colors hover:opacity-80"
-                  style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}
-                >
-                  Reset
-                </button>
-              </div>
+            {/* Alerts */}
+            <div className="w-full sm:w-auto order-first sm:order-last sm:ml-auto flex-shrink-0 min-h-[36px]" data-axe-exclude>
+                {prStatus === 'rate-limited' && prError && (
+                  <span className="inline-flex items-center px-3 h-9 text-[17px] font-light rounded-lg border border-yellow-400 bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300">
+                    {prError}
+                  </span>
+                )}
+                {prStatus === 'created' && prUrl && (
+                  <span className="inline-flex items-center gap-2 px-3 h-9 text-[17px] font-light rounded-lg border border-green-400 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300">
+                    PR Created!
+                    <a href={prUrl} target="_blank" rel="noopener noreferrer" className="underline font-light hover:text-green-900 dark:hover:text-green-100 transition-colors">View</a>
+                    <button onClick={() => { setPrStatus('idle'); setPrUrl(null); }} className="text-green-500 hover:text-green-800 dark:hover:text-green-100 transition-colors" aria-label="Dismiss PR notification">&#10005;</button>
+                  </span>
+                )}
+                {accessibilityAudit && auditStatus === 'failed' && (
+                  <span aria-live="assertive" className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 inline-flex items-center gap-1.5 rounded-xl border-2 border-red-400 dark:border-red-600 bg-red-100 dark:bg-red-950 px-4 h-10 text-[17px] font-light text-red-800 dark:text-red-200 shadow-2xl ring-1 ring-red-300/50 dark:ring-red-700/50">
+                    <span>&#10007; {auditViolations.length} issue{auditViolations.length !== 1 ? 's' : ''}</span>
+                    <button
+                      onClick={() => {
+                        const idx = (violationIndex - 1 + auditViolations.length) % auditViolations.length;
+                        setViolationIndex(idx);
+                        scrollToViolation(auditViolations[idx]);
+                      }}
+                      className="text-red-600 dark:text-red-400 hover:opacity-70 disabled:opacity-30"
+                      disabled={auditViolations.length <= 1}
+                    >&#9664;</button>
+                    <span className="text-[17px] tabular-nums">{violationIndex + 1}/{auditViolations.length}</span>
+                    <button
+                      onClick={() => {
+                        const idx = (violationIndex + 1) % auditViolations.length;
+                        setViolationIndex(idx);
+                        scrollToViolation(auditViolations[idx]);
+                      }}
+                      className="text-red-600 dark:text-red-400 hover:opacity-70 disabled:opacity-30"
+                      disabled={auditViolations.length <= 1}
+                    >&#9654;</button>
+                    <button onClick={() => { if (auditViolations[violationIndex]) scrollToViolation(auditViolations[violationIndex]); setTimeout(() => fixContrastIssues(), 500); }} className="ml-1 px-2 py-0.5 text-[17px] font-light rounded transition-colors hover:opacity-80 whitespace-nowrap" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>Fix</button>
+                  </span>
+                )}
+                {accessibilityAudit && auditStatus === 'passed' && (
+                  <span aria-live="assertive" className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 inline-flex items-center gap-1.5 rounded-xl border-2 border-green-400 dark:border-green-600 bg-green-100 dark:bg-green-950 px-4 h-10 text-[17px] font-light text-green-800 dark:text-green-200 shadow-2xl ring-1 ring-green-300/50 dark:ring-green-700/50">
+                    <span>&#10003; WCAG AA Passed</span>
+                    <button onClick={() => setAuditStatus('idle')} className="ml-1 text-green-500 hover:text-green-800 dark:hover:text-green-100 transition-colors" aria-label="Dismiss">&#10005;</button>
+                  </span>
+                )}
             </div>
           </div>
-        )}
 
-        {/* Specs Modal */}
+          <hr className="border-border my-6" />
+
+          {/* Generated code output */}
+          {generatedCode && (
+            <div className="mb-4 rounded-lg border" style={{ borderColor: "hsl(var(--border))" }}>
+              <div className="flex items-center justify-between px-3 py-1.5 border-b" style={{ borderColor: "hsl(var(--border))" }}>
+                <span className="text-[17px] font-light uppercase tracking-wider" style={{ color: "hsl(var(--card-foreground))" }}>Generated Theme</span>
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(generatedCode);
+                      setCodeCopied(true);
+                      setTimeout(() => setCodeCopied(false), 2000);
+                    }}
+                    className="px-2 py-0.5 text-[17px] font-light rounded-lg transition-colors hover:opacity-80"
+                    style={{ backgroundColor: "hsl(var(--muted))", color: colors["--muted"] ? `hsl(${fgForBg(colors["--muted"])})` : "hsl(var(--muted-foreground))" }}
+                  >
+                    {codeCopied ? "Copied!" : "Copy"}
+                  </button>
+                  <button
+                    onClick={() => setGeneratedCode(null)}
+                    className="px-2 py-0.5 text-[17px] font-light rounded-lg transition-colors hover:opacity-80"
+                    style={{ backgroundColor: "hsl(var(--muted))", color: colors["--muted"] ? `hsl(${fgForBg(colors["--muted"])})` : "hsl(var(--muted-foreground))" }}
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+              <pre className="p-3 overflow-x-auto max-h-64 text-xs leading-relaxed font-mono" style={{ color: "hsl(var(--card-foreground))" }}>
+                <code>{generatedCode}</code>
+              </pre>
+            </div>
+          )}
+
+          {/* Reset Confirmation Modal */}
+          {showResetModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" role="dialog" aria-modal="true" aria-labelledby="home-reset-modal-title">
+              <div className="rounded-lg shadow-xl p-6 w-full max-w-sm mx-4" style={{ backgroundColor: "hsl(var(--card))", color: "hsl(var(--card-foreground))" }}>
+                <h4 id="home-reset-modal-title" className="text-2xl font-light mb-2">
+                  Reset to Defaults?
+                </h4>
+                <p className="text-[17px] mb-4" style={{ color: "hsl(var(--card-foreground))" }}>
+                  This will revert all theme colors to their original values. Any saved customizations will be lost.
+                </p>
+                <div className="flex justify-end gap-2">
+                  <button
+                    onClick={() => setShowResetModal(false)}
+                    className="px-3 py-1.5 text-[17px] font-light rounded-lg transition-colors hover:opacity-80"
+                    style={{ backgroundColor: "transparent", color: "hsl(var(--card-foreground))" }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={() => { handleReset(); setShowResetModal(false); }}
+                    className="px-3 py-1.5 text-[17px] font-light rounded-lg transition-colors hover:opacity-80"
+                    style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}
+                  >
+                    Reset
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Hero colors row */}
           {(() => {
@@ -993,7 +1028,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
             <div className="min-w-0 rounded-lg p-2 md:p-4">
               <div className="flex items-center justify-between mb-2 md:mb-3">
                 <p className="text-[17px] font-light uppercase tracking-wider" style={{ color: "hsl(var(--foreground))" }}>
-                  {content.designSystem.sections.colors}
+                  Colors
                 </p>
               </div>
               <div className="flex flex-wrap gap-1.5 md:grid md:gap-1.5" style={{ gridTemplateColumns: "repeat(4, 76px)" }}>
@@ -1026,7 +1061,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
               </div>
             </div>
 
-            {/* Chips & Badges | Buttons — two columns */}
+            {/* Chips & Badges | Buttons */}
             <div className="flex-1 min-w-0 p-2 md:p-4 overflow-hidden">
               <div className="flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-10">
                 {/* Left column: Chips + Badges */}
@@ -1093,7 +1128,8 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
               </Suspense>
             </div>
           </div>
-      </div>
-    </section>
+        </div>
+      </section>
+    </div>
   );
 }

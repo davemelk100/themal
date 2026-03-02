@@ -1,21 +1,17 @@
-import React, { useEffect } from "react";
-import storage from "../../utils/storage";
+import storage from "./storage";
 
 export const THEME_COLORS_KEY = "ds-theme-colors";
 export const PENDING_COLORS_KEY = "ds-pending-colors";
 export const COLOR_HISTORY_KEY = "ds-color-history";
 export const CONTRAST_KNOWLEDGE_KEY = "ds-contrast-knowledge";
 
-/** A learned contrast correction: when a background falls in a certain hue/lightness range,
- *  a specific foreground key needed a specific value to pass WCAG AA. */
 export interface ContrastCorrection {
-  bgHueRange: [number, number];   // e.g. [40, 60] for yellows
-  bgLightRange: [number, number]; // e.g. [0, 15] for dark backgrounds
-  fgKey: string;                  // e.g. "--foreground"
-  correctedValue: string;         // e.g. "0 0% 100%"
+  bgHueRange: [number, number];
+  bgLightRange: [number, number];
+  fgKey: string;
+  correctedValue: string;
 }
 
-/** Save a contrast correction to the knowledge base. Deduplicates by overlapping ranges. */
 export function saveContrastCorrection(bgHsl: string, fgKey: string, correctedValue: string) {
   const parts = bgHsl.trim().split(/\s+/);
   if (parts.length < 3) return;
@@ -26,7 +22,6 @@ export function saveContrastCorrection(bgHsl: string, fgKey: string, correctedVa
 
   const corrections = storage.get<ContrastCorrection[]>(CONTRAST_KNOWLEDGE_KEY) || [];
 
-  // Check if a similar correction already exists
   const existing = corrections.find(c =>
     c.fgKey === fgKey &&
     bgHue >= c.bgHueRange[0] && bgHue <= c.bgHueRange[1] &&
@@ -49,12 +44,10 @@ export function saveContrastCorrection(bgHsl: string, fgKey: string, correctedVa
     });
   }
 
-  // Cap at 100 entries
   if (corrections.length > 100) corrections.splice(0, corrections.length - 100);
   storage.set(CONTRAST_KNOWLEDGE_KEY, corrections);
 }
 
-/** Look up known corrections for a given background HSL. Returns a map of fgKey → correctedValue. */
 export function applyKnownCorrections(bgHsl: string, lockedKeys: Set<string>): Record<string, string> {
   const parts = bgHsl.trim().split(/\s+/);
   if (parts.length < 3) return {};
@@ -75,7 +68,6 @@ export function applyKnownCorrections(bgHsl: string, lockedKeys: Set<string>): R
   return result;
 }
 
-// Contrast pairs: [foreground var, background var] that must meet WCAG AA (4.5:1)
 export const CONTRAST_PAIRS: [string, string][] = [
   ["--foreground", "--background"],
   ["--brand", "--background"],
@@ -197,7 +189,6 @@ export function persistContrastFixes(fixes: Record<string, string>) {
   storage.set(THEME_COLORS_KEY, { ...saved, ...fixes });
 }
 
-// When brand or secondary changes, derive related palette colors by shifting hue
 export const derivePaletteFromChange = (
     changedKey: string,
     newHsl: string,
@@ -346,7 +337,6 @@ export const autoAdjustContrast = (
     const toHsl = (h: number, s: number, l: number) =>
       `${h} ${s}% ${l}%`;
 
-    // Check brand against background
     let brandVal = working["--brand"];
     const bgVal = working["--background"];
     if (brandVal && bgVal && contrastRatio(brandVal, bgVal) < 4.6) {
@@ -399,7 +389,6 @@ export const autoAdjustContrast = (
       }
     }
 
-    // Check all foreground/background contrast pairs
     for (const [fgKey, bgKey] of CONTRAST_PAIRS) {
       const fgVal = working[fgKey];
       const bgv = working[bgKey];
@@ -461,8 +450,6 @@ export const autoAdjustContrast = (
       }
     }
 
-    // Final safety: ensure --foreground, --card-foreground, --popover-foreground are always
-    // achromatic (pure black or white) — chromatic foreground colors look out of place.
     const finalBg = working["--background"];
     if (finalBg && !locked.has("--foreground")) {
       const bestFg = fgForBg(finalBg);
@@ -562,7 +549,6 @@ export const generateHarmonyPalette = (
   if (!locked.has('--accent')) result['--accent'] = accentHsl;
   Object.assign(result, secDerived, accDerived);
 
-  // Apply known corrections from the knowledge base
   const bgForKnowledge = currentColors['--background'];
   if (bgForKnowledge) {
     const knownFixes = applyKnownCorrections(bgForKnowledge, locked);
@@ -580,14 +566,15 @@ export const generateHarmonyPalette = (
 export const generateRandomPalette = (
   currentColors: Record<string, string>,
   lockedKeys?: Set<string>,
+  isDark?: boolean,
 ): Record<string, string> => {
   const locked = lockedKeys ?? new Set<string>();
   const result: Record<string, string> = {};
-  const isDark = document.documentElement.classList.contains('dark');
+  const dark = isDark ?? document.documentElement.classList.contains('dark');
 
   const hue = Math.random() * 360;
   const sat = 55 + Math.random() * 35;
-  const light = isDark
+  const light = dark
     ? 50 + Math.random() * 20
     : 35 + Math.random() * 25;
   const brandHsl = `${hue.toFixed(1)} ${sat.toFixed(1)}% ${light.toFixed(1)}%`;
@@ -606,8 +593,8 @@ export const generateRandomPalette = (
 
   const secOffset = 90 + Math.random() * 180;
   const accOffset = 30 + Math.random() * 120;
-  const lightMin = isDark ? 40 : 15;
-  const lightMax = isDark ? 75 : 90;
+  const lightMin = dark ? 40 : 15;
+  const lightMax = dark ? 75 : 90;
   const clampLight = (v: number) => Math.min(lightMax, Math.max(lightMin, v));
   const secHsl = `${wrap(bHue + secOffset).toFixed(1)} ${Math.min(100, bSat * (0.7 + Math.random() * 0.3)).toFixed(1)}% ${clampLight(bLight * (0.8 + Math.random() * 0.4)).toFixed(1)}%`;
   const accHsl = `${wrap(bHue + accOffset).toFixed(1)} ${Math.min(100, bSat * (0.7 + Math.random() * 0.3)).toFixed(1)}% ${clampLight(bLight * (0.8 + Math.random() * 0.4)).toFixed(1)}%`;
@@ -616,7 +603,7 @@ export const generateRandomPalette = (
   if (!locked.has('--accent')) result['--accent'] = accHsl;
 
   if (!locked.has('--background')) {
-    const bgLight = isDark ? 3 + Math.random() * 7 : 95 + Math.random() * 5;
+    const bgLight = dark ? 3 + Math.random() * 7 : 95 + Math.random() * 5;
     result['--background'] = `${wrap(bHue + 20).toFixed(1)} ${(15 + Math.random() * 20).toFixed(1)}% ${bgLight.toFixed(1)}%`;
   }
   const bg = result['--background'] || currentColors['--background'];
@@ -632,11 +619,11 @@ export const generateRandomPalette = (
     result['--muted-foreground'] = `0 0% ${mutedL}%`;
   }
   if (!locked.has('--border')) {
-    const borderLight = isDark ? 15 + Math.random() * 10 : 85 + Math.random() * 10;
+    const borderLight = dark ? 15 + Math.random() * 10 : 85 + Math.random() * 10;
     result['--border'] = `${wrap(bHue + 15).toFixed(1)} ${(15 + Math.random() * 15).toFixed(1)}% ${borderLight.toFixed(1)}%`;
   }
   if (!locked.has('--muted')) {
-    const mutedLight = isDark ? 12 + Math.random() * 8 : 90 + Math.random() * 8;
+    const mutedLight = dark ? 12 + Math.random() * 8 : 90 + Math.random() * 8;
     result['--muted'] = `${wrap(bHue + 15).toFixed(1)} ${(15 + Math.random() * 15).toFixed(1)}% ${mutedLight.toFixed(1)}%`;
   }
 
@@ -655,7 +642,6 @@ export const generateRandomPalette = (
     merged = { ...merged, ...accDerived };
   }
 
-  // Apply known corrections from the knowledge base before autoAdjustContrast
   const bgForKnowledge = result['--background'] || currentColors['--background'];
   if (bgForKnowledge) {
     const knownFixes = applyKnownCorrections(bgForKnowledge, locked);
@@ -683,7 +669,6 @@ export function applyStoredThemeColors() {
     });
   }
 
-  // Enforce contrast after applying stored colors
   const applied: Record<string, string> = {};
   EDITABLE_VARS.forEach((v) => {
     const val = document.documentElement.style.getPropertyValue(v.key)?.trim();
@@ -696,34 +681,4 @@ export function applyStoredThemeColors() {
     });
     persistContrastFixes(fixes);
   }
-}
-
-export function useContrastEnforcement(
-  colors: Record<string, string>,
-  setColors: React.Dispatch<React.SetStateAction<Record<string, string>>>,
-  lockedKeys: Set<string>,
-) {
-  useEffect(() => {
-    const handleModeChange = () => {
-      setTimeout(() => {
-        const live: Record<string, string> = {};
-        EDITABLE_VARS.forEach((v) => {
-          const val = getComputedStyle(document.documentElement)
-            .getPropertyValue(v.key)?.trim();
-          if (val) live[v.key] = val;
-        });
-        if (Object.keys(live).length > 0) {
-          const fixes = autoAdjustContrast(live, lockedKeys);
-          Object.entries(fixes).forEach(([k, v]) => {
-            document.documentElement.style.setProperty(k, v);
-          });
-          setColors(prev => ({ ...prev, ...live, ...fixes }));
-          persistContrastFixes(fixes);
-          window.dispatchEvent(new Event("theme-pending-update"));
-        }
-      }, 50);
-    };
-    window.addEventListener("theme-mode-changed", handleModeChange);
-    return () => window.removeEventListener("theme-mode-changed", handleModeChange);
-  }, [colors, setColors, lockedKeys]);
 }

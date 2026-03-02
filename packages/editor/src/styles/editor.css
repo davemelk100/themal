@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .text-brand-dynamic { color: hsl(var(--brand)); }
+  .bg-brand-dynamic { background-color: hsl(var(--brand)); }
+  .bg-brand-dynamic\/10 { background-color: hsl(var(--brand) / 0.1); }
+  .bg-brand-dynamic\/20 { background-color: hsl(var(--brand) / 0.2); }
+  .hover\:bg-brand-dynamic\/20:hover { background-color: hsl(var(--brand) / 0.2); }
+  .hover\:bg-brand-dynamic\/30:hover { background-color: hsl(var(--brand) / 0.3); }
+  .focus\:ring-brand-dynamic:focus { --tw-ring-color: hsl(var(--brand)); }
+}
