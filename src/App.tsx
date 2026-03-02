@@ -32,7 +32,7 @@ export default function App() {
               </Routes>
             </Suspense>
           </main>
-          <footer className="h-10 flex items-center justify-center text-[13px] font-light" style={{ color: "hsl(var(--muted-foreground))" }}>
+          <footer className="h-16 flex items-center justify-center text-[13px] font-light" style={{ color: "hsl(var(--muted-foreground))" }}>
             <a href="https://davemelk.com" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">melkonian industries</a>
           </footer>
         </div>

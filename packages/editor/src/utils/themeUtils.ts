@@ -896,6 +896,7 @@ export const FONT_FAMILY_OPTIONS = [
   { label: "System UI", value: "system-ui, sans-serif" },
   { label: "Courier New", value: '"Courier New", monospace' },
   { label: "Playfair Display", value: '"Playfair Display", serif' },
+  { label: "Segoe UI", value: '"Segoe UI", sans-serif' },
   { label: "Space Grotesk", value: '"Space Grotesk", sans-serif' },
 ];
 
