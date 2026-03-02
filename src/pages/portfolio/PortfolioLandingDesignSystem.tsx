@@ -622,7 +622,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
         {/* Title and description */}
         <div className="w-full mb-4">
           <h2 className="font-bold mb-1 title-font" style={{ color: "hsl(var(--foreground))" }}>NEW - Live Design System!</h2>
-          <p className="text-sm" style={{ color: "hsl(var(--foreground))" }}>
+          <p className="text-[17px]" style={{ color: "hsl(var(--foreground))" }}>
             Explore the interactive design system powering this site. Pick a brand color and watch every token transform in real time. Automatic WCAG AA contrast correction. Generate a CSS snapshot of your custom theme. Open a pull request to propose changes directly to the repo.{" "}Here's how it works:{" "}
             <button onClick={() => setShowSpecs(true)} className="underline text-brand-dynamic hover:opacity-80">
               Specs
@@ -635,7 +635,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
           <div className="relative w-full md:w-auto md:flex-1 min-w-0">
             <button
               onClick={() => setShuffleOpen(!shuffleOpen)}
-              className="w-full h-12 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+              className="w-full h-12 text-[17px] font-normal rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
               style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
             >
               <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>
@@ -650,7 +650,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
                     <button
                       key={scheme}
                       onClick={() => handleRegenerate(idx)}
-                      className="w-full text-left px-4 py-2 text-xs font-medium transition-colors hover:opacity-80 flex items-center justify-between"
+                      className="w-full text-left px-4 py-2 text-[17px] font-light transition-colors hover:opacity-80 flex items-center justify-between"
                       style={{ color: "hsl(var(--foreground))" }}
                     >
                       {scheme}
@@ -664,7 +664,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
           <div className="h-12 flex-1 md:flex-none flex items-center rounded-lg overflow-hidden" style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}>
             <button
               onClick={handleGenerate}
-              className="h-full flex-1 px-3 text-xs font-semibold transition-colors hover:opacity-80 flex items-center justify-center gap-1 whitespace-nowrap"
+              className="h-full flex-1 px-3 text-[17px] font-normal transition-colors hover:opacity-80 flex items-center justify-center gap-1 whitespace-nowrap"
             >
               <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
               Refresh
@@ -672,7 +672,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
             {prevColors && (
               <button
                 onClick={handleUndo}
-                className="h-full pl-2 pr-3 text-xs font-semibold transition-colors hover:opacity-80 flex items-center justify-center border-l"
+                className="h-full pl-2 pr-3 text-[17px] font-normal transition-colors hover:opacity-80 flex items-center justify-center border-l"
                 style={{ borderColor: "rgba(17,17,17,0.2)" }}
               >
                 <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 10h10a5 5 0 010 10H9m-6-10l4-4m-4 4l4 4" /></svg>
@@ -681,7 +681,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
           </div>
           <button
             onClick={() => setShowResetModal(true)}
-            className="h-12 px-3 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+            className="h-12 px-3 text-[17px] font-normal rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
             style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
           >
             <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" /></svg>
@@ -689,7 +689,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
           </button>
           <button
             onClick={() => generatedCode ? setGeneratedCode(null) : generateCode()}
-            className="h-12 px-3 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+            className="h-12 px-3 text-[17px] font-normal rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
             style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
           >
             <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
@@ -737,7 +737,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
                 popup?.close();
               }
             }}
-            className={`h-12 px-3 text-xs font-semibold rounded-lg transition-colors hover:opacity-80 disabled:opacity-50 flex items-center justify-center gap-1 ${
+            className={`h-12 px-3 text-[17px] font-normal rounded-lg transition-colors hover:opacity-80 disabled:opacity-50 flex items-center justify-center gap-1 ${
               prStatus === 'error' || prStatus === 'rate-limited'
                 ? 'border border-red-400 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'
                 : prStatus === 'created'
@@ -745,7 +745,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
                   : ''
             }`}
             style={prStatus !== 'error' && prStatus !== 'rate-limited' && prStatus !== 'created'
-              ? { backgroundColor: "#e5e7eb", color: "#111" }
+              ? { backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }
               : undefined
             }
           >
@@ -755,19 +755,19 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
           {/* Alerts: full-width row on mobile (order -1), inline on sm+ — always rendered to reserve space */}
           <div className="w-full sm:w-auto order-first sm:order-last sm:ml-auto flex-shrink-0 min-h-[36px]" data-axe-exclude>
               {prStatus === 'rate-limited' && prError && (
-                <span className="inline-flex items-center px-3 h-9 text-xs font-medium rounded-lg border border-yellow-400 bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300">
+                <span className="inline-flex items-center px-3 h-9 text-[17px] font-light rounded-lg border border-yellow-400 bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300">
                   {prError}
                 </span>
               )}
               {prStatus === 'created' && prUrl && (
-                <span className="inline-flex items-center gap-2 px-3 h-9 text-xs font-medium rounded-lg border border-green-400 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300">
+                <span className="inline-flex items-center gap-2 px-3 h-9 text-[17px] font-light rounded-lg border border-green-400 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300">
                   PR Created!
                   <a href={prUrl} target="_blank" rel="noopener noreferrer" className="underline font-semibold hover:text-green-900 dark:hover:text-green-100 transition-colors">View</a>
                   <button onClick={() => { setPrStatus('idle'); setPrUrl(null); }} className="text-green-500 hover:text-green-800 dark:hover:text-green-100 transition-colors" aria-label="Dismiss PR notification">&#10005;</button>
                 </span>
               )}
               {auditStatus === 'failed' && (
-                <span aria-live="assertive" className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 inline-flex items-center gap-1.5 rounded-xl border-2 border-red-400 dark:border-red-600 bg-red-100 dark:bg-red-950 px-4 h-10 text-sm font-semibold text-red-800 dark:text-red-200 shadow-2xl ring-1 ring-red-300/50 dark:ring-red-700/50">
+                <span aria-live="assertive" className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 inline-flex items-center gap-1.5 rounded-xl border-2 border-red-400 dark:border-red-600 bg-red-100 dark:bg-red-950 px-4 h-10 text-[17px] font-normal text-red-800 dark:text-red-200 shadow-2xl ring-1 ring-red-300/50 dark:ring-red-700/50">
                   <span>&#10007; {auditViolations.length} issue{auditViolations.length !== 1 ? 's' : ''}</span>
                   <button
                     onClick={() => {
@@ -778,7 +778,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
                     className="text-red-600 dark:text-red-400 hover:opacity-70 disabled:opacity-30"
                     disabled={auditViolations.length <= 1}
                   >&#9664;</button>
-                  <span className="text-[10px] tabular-nums">{violationIndex + 1}/{auditViolations.length}</span>
+                  <span className="text-[17px] tabular-nums">{violationIndex + 1}/{auditViolations.length}</span>
                   <button
                     onClick={() => {
                       const idx = (violationIndex + 1) % auditViolations.length;
@@ -788,11 +788,11 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
                     className="text-red-600 dark:text-red-400 hover:opacity-70 disabled:opacity-30"
                     disabled={auditViolations.length <= 1}
                   >&#9654;</button>
-                  <button onClick={() => { if (auditViolations[violationIndex]) scrollToViolation(auditViolations[violationIndex]); setTimeout(() => fixContrastIssues(), 500); }} className="ml-1 px-2 py-0.5 text-[10px] font-semibold rounded transition-colors hover:opacity-80 whitespace-nowrap" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>Fix</button>
+                  <button onClick={() => { if (auditViolations[violationIndex]) scrollToViolation(auditViolations[violationIndex]); setTimeout(() => fixContrastIssues(), 500); }} className="ml-1 px-2 py-0.5 text-[17px] font-normal rounded transition-colors hover:opacity-80 whitespace-nowrap" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>Fix</button>
                 </span>
               )}
               {auditStatus === 'passed' && (
-                <span aria-live="assertive" className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 inline-flex items-center gap-1.5 rounded-xl border-2 border-green-400 dark:border-green-600 bg-green-100 dark:bg-green-950 px-4 h-10 text-sm font-semibold text-green-800 dark:text-green-200 shadow-2xl ring-1 ring-green-300/50 dark:ring-green-700/50">
+                <span aria-live="assertive" className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 inline-flex items-center gap-1.5 rounded-xl border-2 border-green-400 dark:border-green-600 bg-green-100 dark:bg-green-950 px-4 h-10 text-[17px] font-normal text-green-800 dark:text-green-200 shadow-2xl ring-1 ring-green-300/50 dark:ring-green-700/50">
                   <span>&#10003; WCAG AA Passed</span>
                   <button onClick={() => setAuditStatus('idle')} className="ml-1 text-green-500 hover:text-green-800 dark:hover:text-green-100 transition-colors" aria-label="Dismiss">&#10005;</button>
                 </span>
@@ -806,7 +806,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
         {generatedCode && (
           <div className="mb-4 rounded-lg border" style={{ borderColor: "hsl(var(--border))", backgroundColor: "hsl(var(--card))" }}>
             <div className="flex items-center justify-between px-3 py-1.5 border-b" style={{ borderColor: "hsl(var(--border))" }}>
-              <span className="text-[10px] font-medium uppercase tracking-wider" style={{ color: "hsl(var(--card-foreground))" }}>Generated Theme</span>
+              <span className="text-[17px] font-light uppercase tracking-wider" style={{ color: "hsl(var(--card-foreground))" }}>Generated Theme</span>
               <div className="flex items-center gap-1">
                 <button
                   onClick={() => {
@@ -814,14 +814,14 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
                     setCodeCopied(true);
                     setTimeout(() => setCodeCopied(false), 2000);
                   }}
-                  className="px-2 py-0.5 text-[10px] font-semibold rounded-lg transition-colors hover:opacity-80"
+                  className="px-2 py-0.5 text-[17px] font-normal rounded-lg transition-colors hover:opacity-80"
                   style={{ backgroundColor: "hsl(var(--muted))", color: colors["--muted"] ? `hsl(${fgForBg(colors["--muted"])})` : "hsl(var(--muted-foreground))" }}
                 >
                   {codeCopied ? "Copied!" : "Copy"}
                 </button>
                 <button
                   onClick={() => setGeneratedCode(null)}
-                  className="px-2 py-0.5 text-[10px] font-semibold rounded-lg transition-colors hover:opacity-80"
+                  className="px-2 py-0.5 text-[17px] font-normal rounded-lg transition-colors hover:opacity-80"
                   style={{ backgroundColor: "hsl(var(--muted))", color: colors["--muted"] ? `hsl(${fgForBg(colors["--muted"])})` : "hsl(var(--muted-foreground))" }}
                 >
                   Close
@@ -838,23 +838,23 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
         {showResetModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" role="dialog" aria-modal="true" aria-labelledby="home-reset-modal-title">
             <div className="rounded-lg shadow-xl p-6 w-full max-w-sm mx-4" style={{ backgroundColor: "hsl(var(--card))", color: "hsl(var(--card-foreground))" }}>
-              <h4 id="home-reset-modal-title" className="text-lg font-semibold mb-2">
+              <h4 id="home-reset-modal-title" className="text-2xl font-medium mb-2">
                 Reset to Defaults?
               </h4>
-              <p className="text-sm mb-4" style={{ color: "hsl(var(--card-foreground))" }}>
+              <p className="text-[17px] mb-4" style={{ color: "hsl(var(--card-foreground))" }}>
                 This will revert all theme colors to their original values. Any saved customizations will be lost.
               </p>
               <div className="flex justify-end gap-2">
                 <button
                   onClick={() => setShowResetModal(false)}
-                  className="px-3 py-1.5 text-sm font-semibold rounded-lg transition-colors hover:opacity-80"
+                  className="px-3 py-1.5 text-[17px] font-normal rounded-lg transition-colors hover:opacity-80"
                   style={{ backgroundColor: "transparent", color: "hsl(var(--card-foreground))" }}
                 >
                   Cancel
                 </button>
                 <button
                   onClick={() => { handleReset(); setShowResetModal(false); }}
-                  className="px-3 py-1.5 text-sm font-semibold rounded-lg transition-colors hover:opacity-80"
+                  className="px-3 py-1.5 text-[17px] font-normal rounded-lg transition-colors hover:opacity-80"
                   style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}
                 >
                   Reset
@@ -887,18 +887,18 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
               >
                 ✕
               </button>
-              <h4 id="home-specs-modal-title" className="text-lg font-semibold mb-4">
+              <h4 id="home-specs-modal-title" className="text-2xl font-medium mb-4">
                 How It Works
               </h4>
               {content.designSystem.specsContent.split("\n\n").map((paragraph, i) => (
-                <p key={i} className="text-sm mb-3" style={{ color: "hsl(var(--card-foreground))" }}>
+                <p key={i} className="text-[17px] mb-3" style={{ color: "hsl(var(--card-foreground))" }}>
                   {paragraph}
                 </p>
               ))}
               <div className="mt-4 pt-3 border-t" style={{ borderColor: "hsl(var(--border))" }}>
                 <Link
                   to="/portfolio/design-system/about"
-                  className="text-sm underline hover:opacity-80"
+                  className="text-[17px] underline hover:opacity-80"
                   style={{ color: "hsl(var(--card-foreground))" }}
                 >
                   View as standalone page →
@@ -956,7 +956,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
                         const hexCode = colors[key] ? hslStringToHex(colors[key]) : "#000000";
                         return (
                           <div className="absolute inset-0 flex items-center justify-center min-w-0">
-                            <p className="text-[11px] md:text-[14px] font-semibold truncate" style={{ color: textColor }}>
+                            <p className="text-[17px] font-normal truncate" style={{ color: textColor }}>
                               {hexCode}
                             </p>
                           </div>
@@ -1008,7 +1008,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
                       )}
                     </button>
                   )}
-                  <p className="hidden md:block text-[10px] sm:text-xs font-medium text-[color:hsl(var(--foreground))] truncate mt-1">
+                  <p className="hidden md:block text-[17px] font-light text-[color:hsl(var(--foreground))] truncate mt-1">
                     {displayLabel}
                   </p>
                 </div>
@@ -1025,7 +1025,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
             {/* Color swatches (non-hero) */}
             <div className="min-w-0 rounded-lg border border-white/20 dark:border-white/10 backdrop-blur-xl p-2 md:p-4" style={{ background: "linear-gradient(135deg, hsl(var(--background) / 0.6), hsl(var(--background) / 0.3))", boxShadow: "0 4px 30px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.15)" }}>
               <div className="flex items-center justify-between mb-2 md:mb-3">
-                <p className="text-[10px] md:text-xs font-medium uppercase tracking-wider" style={{ color: "hsl(var(--foreground))" }}>
+                <p className="text-[17px] font-light uppercase tracking-wider" style={{ color: "hsl(var(--foreground))" }}>
                   {content.designSystem.sections.colors}
                 </p>
               </div>
@@ -1048,9 +1048,9 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
                             : undefined,
                         }}
                       />
-                      <span className="relative text-[11px] md:text-[14px] font-semibold truncate" style={{ color: swatchTextColor }}>{hexCode}</span>
+                      <span className="relative text-[17px] font-normal truncate" style={{ color: swatchTextColor }}>{hexCode}</span>
                     </div>
-                    <p className="hidden md:block text-xs font-medium text-[color:hsl(var(--foreground))] truncate">
+                    <p className="hidden md:block text-[17px] font-light text-[color:hsl(var(--foreground))] truncate">
                       {label}
                     </p>
                   </div>
@@ -1064,45 +1064,45 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
               <div className="flex flex-col gap-3">
                 {/* Chips */}
                 <div className="min-w-0 space-y-2">
-                  <p className="text-[10px] md:text-xs font-medium uppercase tracking-wider" style={{ color: "hsl(var(--foreground))" }}>Chips</p>
+                  <p className="text-[17px] font-light uppercase tracking-wider" style={{ color: "hsl(var(--foreground))" }}>Chips</p>
                   <div className="flex flex-row flex-wrap gap-1.5 items-start">
-                    <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-xs font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--brand))", color: colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "white" }}>Brand</span>
-                    <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-xs font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}>Secondary</span>
-                    <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-xs font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--muted))", color: colors["--muted"] ? `hsl(${fgForBg(colors["--muted"])})` : "hsl(var(--muted-foreground))" }}>Muted</span>
-                    <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-xs font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--accent))", color: "hsl(var(--accent-foreground))" }}>Accent</span>
-                    <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-xs font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>Destructive</span>
-                    <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-xs font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--success))", color: "hsl(var(--success-foreground))" }}>Success</span>
-                    <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-xs font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))" }}>Warning</span>
+                    <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[17px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--brand))", color: colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "white" }}>Brand</span>
+                    <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[17px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}>Secondary</span>
+                    <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[17px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--muted))", color: colors["--muted"] ? `hsl(${fgForBg(colors["--muted"])})` : "hsl(var(--muted-foreground))" }}>Muted</span>
+                    <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[17px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--accent))", color: "hsl(var(--accent-foreground))" }}>Accent</span>
+                    <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[17px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>Destructive</span>
+                    <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[17px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--success))", color: "hsl(var(--success-foreground))" }}>Success</span>
+                    <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[17px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))" }}>Warning</span>
                   </div>
                 </div>
 
                 {/* Badges */}
                 <div className="min-w-0 space-y-2 md:border-t md:border-border md:pt-2">
-                  <p className="text-[10px] md:text-xs font-medium uppercase tracking-wider" style={{ color: "hsl(var(--foreground))" }}>Badges</p>
+                  <p className="text-[17px] font-light uppercase tracking-wider" style={{ color: "hsl(var(--foreground))" }}>Badges</p>
                   <div className="flex flex-row flex-wrap gap-1.5 items-start">
-                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--brand))", color: colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "white" }}>Brand</span>
-                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}>Secondary</span>
-                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--muted))", color: colors["--muted"] ? `hsl(${fgForBg(colors["--muted"])})` : "hsl(var(--muted-foreground))" }}>Muted</span>
-                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--accent))", color: "hsl(var(--accent-foreground))" }}>Accent</span>
-                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>Destructive</span>
-                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--success))", color: "hsl(var(--success-foreground))" }}>Success</span>
-                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-medium max-w-full truncate" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))" }}>Warning</span>
-                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-medium border border-border max-w-full truncate" style={{ color: "hsl(var(--foreground))" }}>Outlined</span>
+                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[17px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--brand))", color: colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "white" }}>Brand</span>
+                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[17px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}>Secondary</span>
+                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[17px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--muted))", color: colors["--muted"] ? `hsl(${fgForBg(colors["--muted"])})` : "hsl(var(--muted-foreground))" }}>Muted</span>
+                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[17px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--accent))", color: "hsl(var(--accent-foreground))" }}>Accent</span>
+                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[17px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>Destructive</span>
+                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[17px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--success))", color: "hsl(var(--success-foreground))" }}>Success</span>
+                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[17px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))" }}>Warning</span>
+                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[17px] font-light border border-border max-w-full truncate" style={{ color: "hsl(var(--foreground))" }}>Outlined</span>
                   </div>
                 </div>
 
                 {/* Buttons */}
                 <div className="min-w-0 space-y-2 md:border-t md:border-border md:pt-2">
-                  <p className="text-[10px] md:text-xs font-medium uppercase tracking-wider" style={{ color: "hsl(var(--foreground))" }}>Buttons</p>
+                  <p className="text-[17px] font-light uppercase tracking-wider" style={{ color: "hsl(var(--foreground))" }}>Buttons</p>
                   <div className="flex flex-row flex-wrap gap-1.5 items-start">
-                    <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--primary))", color: colors["--primary"] ? `hsl(${fgForBg(colors["--primary"])})` : "hsl(var(--primary-foreground))" }}>Primary</button>
-                    <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}>Secondary</button>
-                    <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors max-w-full truncate" style={{ backgroundColor: "transparent", color: "hsl(var(--brand))", border: "1px solid hsl(var(--brand))" }}>Outlined</button>
-                    <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors max-w-full truncate" style={{ backgroundColor: "transparent", color: "hsl(var(--brand))" }}>Ghost</button>
-                    <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>Destructive</button>
-                    <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--muted))", color: colors["--muted"] ? `hsl(${fgForBg(colors["--muted"])})` : "hsl(var(--muted-foreground))" }}>Muted</button>
-                    <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--success))", color: "hsl(var(--success-foreground))" }}>Success</button>
-                    <button className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))" }}>Warning</button>
+                    <button className="px-4 py-2 rounded-lg font-normal text-[17px] transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--primary))", color: colors["--primary"] ? `hsl(${fgForBg(colors["--primary"])})` : "hsl(var(--primary-foreground))" }}>Primary</button>
+                    <button className="px-4 py-2 rounded-lg font-normal text-[17px] transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}>Secondary</button>
+                    <button className="px-4 py-2 rounded-lg font-normal text-[17px] transition-colors max-w-full truncate" style={{ backgroundColor: "transparent", color: "hsl(var(--brand))", border: "1px solid hsl(var(--brand))" }}>Outlined</button>
+                    <button className="px-4 py-2 rounded-lg font-normal text-[17px] transition-colors max-w-full truncate" style={{ backgroundColor: "transparent", color: "hsl(var(--brand))" }}>Ghost</button>
+                    <button className="px-4 py-2 rounded-lg font-normal text-[17px] transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>Destructive</button>
+                    <button className="px-4 py-2 rounded-lg font-normal text-[17px] transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--muted))", color: colors["--muted"] ? `hsl(${fgForBg(colors["--muted"])})` : "hsl(var(--muted-foreground))" }}>Muted</button>
+                    <button className="px-4 py-2 rounded-lg font-normal text-[17px] transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--success))", color: "hsl(var(--success-foreground))" }}>Success</button>
+                    <button className="px-4 py-2 rounded-lg font-normal text-[17px] transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))" }}>Warning</button>
                   </div>
                 </div>
               </div>
@@ -1112,7 +1112,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
 
           {/* Icons row */}
           <div className="min-w-0 rounded-lg border border-white/20 dark:border-white/10 backdrop-blur-xl p-2 md:p-4 space-y-2 md:space-y-4" style={{ background: "linear-gradient(135deg, hsl(var(--background) / 0.6), hsl(var(--background) / 0.3))", boxShadow: "0 4px 30px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.15)" }}>
-            <p className="text-[10px] md:text-xs font-medium uppercase tracking-wider" style={{ color: "hsl(var(--foreground))" }}>Icons</p>
+            <p className="text-[17px] font-light uppercase tracking-wider" style={{ color: "hsl(var(--foreground))" }}>Icons</p>
             <div className="flex flex-wrap gap-2 justify-center">
               <Suspense fallback={null}>
                 {SITE_ICONS.map(({ name, icon: Icon }) => (
