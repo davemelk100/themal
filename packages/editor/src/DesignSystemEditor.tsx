@@ -57,17 +57,11 @@ const LazyPalette = React.lazy(() =>
 const LazyBookOpen = React.lazy(() =>
   import("lucide-react").then((mod) => ({ default: mod.BookOpen }))
 );
-const LazyFileText = React.lazy(() =>
-  import("lucide-react").then((mod) => ({ default: mod.FileText }))
-);
 const LazyBriefcase = React.lazy(() =>
   import("lucide-react").then((mod) => ({ default: mod.Briefcase }))
 );
 const LazySearch = React.lazy(() =>
   import("lucide-react").then((mod) => ({ default: mod.Search }))
-);
-const LazyCalendar = React.lazy(() =>
-  import("lucide-react").then((mod) => ({ default: mod.Calendar }))
 );
 const LazySun = React.lazy(() =>
   import("lucide-react").then((mod) => ({ default: mod.Sun }))
@@ -81,32 +75,8 @@ const LazyEye = React.lazy(() =>
 const LazyHeart = React.lazy(() =>
   import("lucide-react").then((mod) => ({ default: mod.Heart }))
 );
-const LazyMenu = React.lazy(() =>
-  import("lucide-react").then((mod) => ({ default: mod.Menu }))
-);
-const LazyX = React.lazy(() =>
-  import("lucide-react").then((mod) => ({ default: mod.X }))
-);
 const LazyCheck = React.lazy(() =>
   import("lucide-react").then((mod) => ({ default: mod.Check }))
-);
-const LazyArrowLeft = React.lazy(() =>
-  import("lucide-react").then((mod) => ({ default: mod.ArrowLeft }))
-);
-const LazyArrowRight = React.lazy(() =>
-  import("lucide-react").then((mod) => ({ default: mod.ArrowRight }))
-);
-const LazyChevronLeft = React.lazy(() =>
-  import("lucide-react").then((mod) => ({ default: mod.ChevronLeft }))
-);
-const LazyChevronRight = React.lazy(() =>
-  import("lucide-react").then((mod) => ({ default: mod.ChevronRight }))
-);
-const LazyChevronDown = React.lazy(() =>
-  import("lucide-react").then((mod) => ({ default: mod.ChevronDown }))
-);
-const LazyChevronUp = React.lazy(() =>
-  import("lucide-react").then((mod) => ({ default: mod.ChevronUp }))
 );
 const LazyExternalLink = React.lazy(() =>
   import("lucide-react").then((mod) => ({ default: mod.ExternalLink }))
@@ -122,9 +92,6 @@ const LazyUsers = React.lazy(() =>
 );
 const LazyAlertCircle = React.lazy(() =>
   import("lucide-react").then((mod) => ({ default: mod.AlertCircle }))
-);
-const LazyLoader2 = React.lazy(() =>
-  import("lucide-react").then((mod) => ({ default: mod.Loader2 }))
 );
 const LazyZap = React.lazy(() =>
   import("lucide-react").then((mod) => ({ default: mod.Zap }))
@@ -165,29 +132,17 @@ const SITE_ICONS: { name: string; icon: React.LazyExoticComponent<any> | React.C
   { name: "Home", icon: LazyHome },
   { name: "Palette", icon: LazyPalette },
   { name: "BookOpen", icon: LazyBookOpen },
-  { name: "FileText", icon: LazyFileText },
   { name: "Briefcase", icon: LazyBriefcase },
   { name: "Search", icon: LazySearch },
-  { name: "Calendar", icon: LazyCalendar },
   { name: "Sun", icon: LazySun },
   { name: "Moon", icon: LazyMoon },
   { name: "Eye", icon: LazyEye },
   { name: "Heart", icon: LazyHeart },
-  { name: "Menu", icon: LazyMenu },
-  { name: "X", icon: LazyX },
   { name: "Check", icon: LazyCheck },
-  { name: "ArrowLeft", icon: LazyArrowLeft },
-  { name: "ArrowRight", icon: LazyArrowRight },
-  { name: "ChevronLeft", icon: LazyChevronLeft },
-  { name: "ChevronRight", icon: LazyChevronRight },
-  { name: "ChevronDown", icon: LazyChevronDown },
-  { name: "ChevronUp", icon: LazyChevronUp },
   { name: "ExternalLink", icon: LazyExternalLink },
-  { name: "Link", icon: LazyLink2 },
   { name: "FlaskConical", icon: LazyFlaskConical },
   { name: "Users", icon: LazyUsers },
   { name: "AlertCircle", icon: LazyAlertCircle },
-  { name: "Loader", icon: LazyLoader2 },
   { name: "Zap", icon: LazyZap },
   { name: "Globe", icon: LazyGlobe },
   { name: "Shield", icon: LazyShield },
@@ -195,6 +150,7 @@ const SITE_ICONS: { name: string; icon: React.LazyExoticComponent<any> | React.C
   { name: "Code", icon: LazyCode },
   { name: "Database", icon: LazyDatabase },
   { name: "Smartphone", icon: LazySmartphone },
+  { name: "Link", icon: LazyLink2 },
 ];
 
 const COLOR_SWATCHES = [
@@ -895,29 +851,56 @@ export function DesignSystemEditor({
       <section className="pt-4 sm:pt-6 lg:pt-8 pb-2 sm:pb-3 lg:pb-4 xl:pb-6 relative">
         <div className="w-full px-4 sm:px-6 lg:px-8">
           {/* Title + nav links */}
-          <div className="w-full mb-4 flex items-center flex-wrap gap-x-4 gap-y-2">
-            <h1 className="font-light pt-4 pb-3 mr-4 title-font" style={{ color: "hsl(var(--foreground))" }}>NEW - Live Design System!</h1>
-            <a
-              href="/how-it-works"
-              className="text-[14px] font-medium hover:opacity-70 transition-opacity"
-              style={{ color: "hsl(var(--muted-foreground))" }}
-            >
-              How It Works &rarr;
-            </a>
-            <a
-              href="/readme"
-              className="text-[14px] font-medium hover:opacity-70 transition-opacity"
-              style={{ color: "hsl(var(--muted-foreground))" }}
-            >
-              README &rarr;
-            </a>
+          <div className="w-full mb-4 flex flex-col sm:flex-row sm:items-center flex-wrap gap-x-4 gap-y-1 sm:gap-y-2">
+            <div className="flex items-center gap-4 w-full sm:w-auto">
+              <h1 className="font-light pt-4 pb-1 sm:pb-3 sm:mr-4 title-font" style={{ color: "hsl(var(--foreground))" }}>NEW - Live Design System!</h1>
+              {prEndpointUrl && (() => {
+                const mainSt = sectionPrStatus["main"] || { status: 'idle' as const };
+                return (
+                <button
+                  disabled={mainSt.status === 'creating'}
+                  onClick={() => { if (mainSt.status !== 'creating') { setPrSections(new Set()); setShowPrModal(true); } }}
+                  className={`ml-auto sm:hidden px-1 text-[14px] font-light transition-colors hover:opacity-70 disabled:opacity-50 flex items-center justify-center gap-1 ${
+                    mainSt.status === 'error' || mainSt.status === 'rate-limited'
+                      ? 'text-red-600 dark:text-red-400'
+                      : mainSt.status === 'created'
+                        ? 'text-green-600 dark:text-green-400'
+                        : ''
+                  }`}
+                  style={mainSt.status !== 'error' && mainSt.status !== 'rate-limited' && mainSt.status !== 'created'
+                    ? { color: "hsl(var(--foreground))" }
+                    : undefined
+                  }
+                >
+                  <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" /></svg>
+                  <span className="truncate">{mainSt.status === 'creating' ? '...' : mainSt.status === 'error' ? 'Retry' : mainSt.status === 'rate-limited' ? 'Retry' : 'PR'}</span>
+                </button>
+                );
+              })()}
+            </div>
+            <div className="flex items-center gap-4 pb-2 sm:pb-0">
+              <a
+                href="/how-it-works"
+                className="text-[14px] font-medium hover:opacity-70 transition-opacity"
+                style={{ color: "hsl(var(--muted-foreground))" }}
+              >
+                How It Works &rarr;
+              </a>
+              <a
+                href="/readme"
+                className="text-[14px] font-medium hover:opacity-70 transition-opacity"
+                style={{ color: "hsl(var(--muted-foreground))" }}
+              >
+                README &rarr;
+              </a>
+            </div>
             {prEndpointUrl && (() => {
               const mainSt = sectionPrStatus["main"] || { status: 'idle' as const };
               return (
               <button
                 disabled={mainSt.status === 'creating'}
                 onClick={() => { if (mainSt.status !== 'creating') { setPrSections(new Set()); setShowPrModal(true); } }}
-                className={`ml-auto px-1 text-[14px] font-light transition-colors hover:opacity-70 disabled:opacity-50 flex items-center justify-center gap-1 ${
+                className={`ml-auto hidden sm:flex px-1 text-[14px] font-light transition-colors hover:opacity-70 disabled:opacity-50 items-center justify-center gap-1 ${
                   mainSt.status === 'error' || mainSt.status === 'rate-limited'
                     ? 'text-red-600 dark:text-red-400'
                     : mainSt.status === 'created'
@@ -930,7 +913,7 @@ export function DesignSystemEditor({
                 }
               >
                 <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" /></svg>
-                <span className="truncate"><span className="sm:hidden">{mainSt.status === 'creating' ? '...' : mainSt.status === 'error' ? 'Retry' : mainSt.status === 'rate-limited' ? 'Retry' : 'PR'}</span><span className="hidden sm:inline">{mainSt.status === 'creating' ? 'Preparing...' : mainSt.status === 'error' ? 'Retry PR' : mainSt.status === 'rate-limited' ? 'Retry PR' : 'Open PR'}</span></span>
+                <span className="truncate">{mainSt.status === 'creating' ? 'Preparing...' : mainSt.status === 'error' ? 'Retry PR' : mainSt.status === 'rate-limited' ? 'Retry PR' : 'Open PR'}</span>
               </button>
               );
             })()}
@@ -1189,7 +1172,7 @@ export function DesignSystemEditor({
               {/* Editable swatches column */}
               <div className="flex-shrink-0" data-axe-exclude>
                 <p className="text-[14px] font-light uppercase tracking-wider mb-2 md:mb-3" style={{ color: "hsl(var(--muted-foreground))" }}>Brand</p>
-                <div className="grid gap-1.5 content-start" style={{ gridTemplateColumns: "repeat(6, 76px)" }}>
+                <div className="grid grid-cols-6 gap-1 content-start md:grid-cols-[repeat(2,76px)] md:gap-1.5">
                 {COLOR_SWATCHES.filter(({ key }) => ["--brand", "--secondary", "--accent", "--background", "--foreground", "--primary"].includes(key)).map(({ key, label }) => {
                   const hsl = colors[key];
                   const bgHsl = hsl || "0 0% 50%";
@@ -1200,7 +1183,7 @@ export function DesignSystemEditor({
                   return (
                     <div key={key} className="relative group cursor-pointer text-left">
                       <div
-                        className="relative w-[76px] h-[76px] rounded-md mb-1 overflow-hidden flex items-center justify-center transition-shadow hover:shadow-lg"
+                        className="relative w-full aspect-square md:w-[76px] md:h-[76px] rounded-md mb-1 overflow-hidden flex items-center justify-center transition-shadow hover:shadow-lg"
                         style={{ boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
                         onClick={() => {
                           const input = document.getElementById(inputId) as HTMLInputElement | null;
@@ -1262,7 +1245,7 @@ export function DesignSystemEditor({
               {/* Palette (controls column) */}
               <div className="flex-shrink-0" data-axe-exclude>
                 <p className="text-[14px] font-light uppercase tracking-wider mb-2 md:mb-3" style={{ color: "hsl(var(--muted-foreground))" }}>Palette</p>
-                <div className="flex flex-wrap gap-1.5 md:grid md:gap-1.5" style={{ gridTemplateColumns: "repeat(4, 76px)" }}>
+                <div className="grid grid-cols-6 gap-1 md:grid-cols-[repeat(4,76px)] md:gap-1.5">
                   {COLOR_SWATCHES.filter(({ key }) => !["--brand", "--secondary", "--accent", "--background", "--foreground", "--primary"].includes(key)).map(({ key, label }) => {
                     const hsl = colors[key];
                     const bgHsl = hsl || "0 0% 50%";
@@ -1273,7 +1256,7 @@ export function DesignSystemEditor({
                     return (
                     <div key={key} data-color-key={key} className="text-left">
                       <div
-                        className="relative w-[76px] h-[76px] rounded-md mb-1 overflow-hidden flex items-center justify-center shadow-md"
+                        className="relative w-full aspect-square md:w-[76px] md:h-[76px] rounded-md mb-1 overflow-hidden flex items-center justify-center shadow-md"
                       >
                         <div
                           className="absolute inset-0"
@@ -1344,7 +1327,7 @@ export function DesignSystemEditor({
               {/* Icons column */}
               <div className="hidden md:block flex-shrink-0">
                 <p className="text-[14px] font-light uppercase tracking-wider mb-2 md:mb-3" style={{ color: "hsl(var(--muted-foreground))" }}>Icons</p>
-                <div className="grid grid-cols-4 gap-2">
+                <div className="grid grid-cols-5 gap-2">
                   <Suspense fallback={null}>
                     {SITE_ICONS.map(({ name, icon: Icon }) => (
                       <div key={name} className="bg-brand-dynamic/10 dark:bg-brand-dynamic/20 hover:bg-brand-dynamic/20 dark:hover:bg-brand-dynamic/30 rounded-full p-2 shadow-sm hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center" title={name}>
@@ -1750,6 +1733,7 @@ export function DesignSystemEditor({
               <div className="flex-1 min-w-0 flex items-start justify-center pt-2">
                 <div
                   className="w-full max-w-[320px] rounded-lg p-5 space-y-3"
+                  data-axe-exclude
                   style={{
                     backgroundColor: "hsl(var(--card))",
                     color: "hsl(var(--card-foreground))",
@@ -1774,7 +1758,7 @@ export function DesignSystemEditor({
                       fontWeight: typographyState.headingWeight,
                       lineHeight: typographyState.lineHeight,
                       letterSpacing: `${typographyState.headingLetterSpacing}em`,
-                      color: "hsl(var(--muted-foreground))",
+                      color: "hsl(var(--card-foreground) / 0.7)",
                     }}
                   >
                     Subheading Text
@@ -1797,7 +1781,7 @@ export function DesignSystemEditor({
                       fontWeight: typographyState.bodyWeight,
                       lineHeight: typographyState.lineHeight,
                       letterSpacing: `${typographyState.letterSpacing}em`,
-                      color: "hsl(var(--muted-foreground))",
+                      color: "hsl(var(--card-foreground) / 0.7)",
                     }}
                   >
                     Small / Caption text for secondary information and labels.

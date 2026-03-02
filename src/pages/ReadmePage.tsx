@@ -6,7 +6,7 @@ export default function ReadmePage() {
       <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <Link
           to="/"
-          className="inline-flex items-center gap-1 text-[15px] font-medium mb-6 hover:opacity-70 transition-opacity"
+          className="inline-flex items-center gap-1 text-sm font-medium mb-6 hover:opacity-70 transition-opacity"
           style={{ color: "hsl(var(--muted-foreground))" }}
         >
           &larr; Back to Editor
@@ -16,7 +16,7 @@ export default function ReadmePage() {
           @design-alive/editor
         </h1>
 
-        <p className="text-[17px] leading-relaxed mb-8" style={{ color: "hsl(var(--foreground))" }}>
+        <p className="text-sm leading-relaxed mb-8" style={{ color: "hsl(var(--foreground))" }}>
           Interactive design system editor for React apps. Pick colors, generate harmony palettes, enforce WCAG AA contrast, and export CSS custom properties — all in real time.
         </p>
 
@@ -26,10 +26,10 @@ export default function ReadmePage() {
           <pre className="rounded-lg p-4 text-sm overflow-x-auto" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
             <code>npm install @design-alive/editor</code>
           </pre>
-          <p className="text-[15px] mt-2" style={{ color: "hsl(var(--muted-foreground))" }}>
+          <p className="text-sm mt-2" style={{ color: "hsl(var(--muted-foreground))" }}>
             Peer dependencies: <code className="font-mono text-sm">react</code> and <code className="font-mono text-sm">react-dom</code> (v18+).
           </p>
-          <p className="text-[15px] mt-1" style={{ color: "hsl(var(--muted-foreground))" }}>
+          <p className="text-sm mt-1" style={{ color: "hsl(var(--muted-foreground))" }}>
             Optional peers: <code className="font-mono text-sm">axe-core</code> (accessibility auditing), <code className="font-mono text-sm">lucide-react</code> (icon previews).
           </p>
         </section>
@@ -45,7 +45,7 @@ function App() {
   return <DesignSystemEditor />;
 }`}</code>
           </pre>
-          <p className="text-[15px] mt-2" style={{ color: "hsl(var(--muted-foreground))" }}>
+          <p className="text-sm mt-2" style={{ color: "hsl(var(--muted-foreground))" }}>
             The editor writes CSS custom properties (HSL values) to <code className="font-mono text-sm">:root</code>, so it works with any framework that consumes CSS variables.
           </p>
         </section>
@@ -103,17 +103,17 @@ function App() {
         <section className="mb-8">
           <h2 className="text-xl font-medium mb-3" style={{ color: "hsl(var(--foreground))" }}>Usage Examples</h2>
 
-          <h3 className="text-[15px] font-medium mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>Basic — color picker only</h3>
+          <h3 className="text-sm font-medium mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>Basic — color picker only</h3>
           <pre className="rounded-lg p-4 text-sm overflow-x-auto mb-4" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
             <code>{`<DesignSystemEditor accessibilityAudit={false} />`}</code>
           </pre>
 
-          <h3 className="text-[15px] font-medium mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>With PR creation</h3>
+          <h3 className="text-sm font-medium mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>With PR creation</h3>
           <pre className="rounded-lg p-4 text-sm overflow-x-auto mb-4" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
             <code>{`<DesignSystemEditor prEndpointUrl="/api/create-design-pr" />`}</code>
           </pre>
 
-          <h3 className="text-[15px] font-medium mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>Listen for changes</h3>
+          <h3 className="text-sm font-medium mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>Listen for changes</h3>
           <pre className="rounded-lg p-4 text-sm overflow-x-auto mb-4" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
             <code>{`<DesignSystemEditor
   onChange={(colors) => {
@@ -122,7 +122,7 @@ function App() {
 />`}</code>
           </pre>
 
-          <h3 className="text-[15px] font-medium mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>Custom export handler</h3>
+          <h3 className="text-sm font-medium mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>Custom export handler</h3>
           <pre className="rounded-lg p-4 text-sm overflow-x-auto mb-4" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
             <code>{`<DesignSystemEditor
   onExport={(css) => {
@@ -151,7 +151,7 @@ function App() {
         {/* Tailwind Scoping */}
         <section className="mb-8">
           <h2 className="text-xl font-medium mb-3" style={{ color: "hsl(var(--foreground))" }}>Tailwind Scoping</h2>
-          <p className="text-[17px] leading-relaxed" style={{ color: "hsl(var(--foreground))" }}>
+          <p className="text-sm leading-relaxed" style={{ color: "hsl(var(--foreground))" }}>
             The editor ships pre-compiled CSS via <code className="font-mono text-sm">@design-alive/editor/style.css</code>. Styles are scoped using Tailwind's <code className="font-mono text-sm">{`important: '.ds-editor'`}</code> so they don't conflict with your app's styles. The root element is automatically wrapped in <code className="font-mono text-sm">{`<div className="ds-editor">`}</code>.
           </p>
         </section>
