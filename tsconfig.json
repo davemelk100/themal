@@ -18,7 +18,8 @@
     "types": [],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@design-alive/editor": ["packages/editor/src/index.ts"]
     }
   },
   "include": ["src"],

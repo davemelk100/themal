@@ -7,6 +7,7 @@ export default defineConfig({
   base: "/",
   resolve: {
     alias: [
+      { find: "@design-alive/editor", replacement: path.resolve(__dirname, "packages/editor/src/index.ts") },
       { find: "@", replacement: path.resolve(__dirname, "./") },
       // Redirect lucide-react barrel to custom barrel with deep imports only
       // This reduces the bundle from 648KB to ~30KB by avoiding the full icon barrel
