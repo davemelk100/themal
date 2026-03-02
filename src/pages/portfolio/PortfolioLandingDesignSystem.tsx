@@ -186,7 +186,6 @@ const COLOR_SWATCHES = [
   { key: "--warning", label: "Warning" },
   { key: "--warning-foreground", label: "Warning FG" },
   { key: "--border", label: "Border" },
-  { key: "--ring", label: "Ring" },
 ];
 
 interface Props {
@@ -924,7 +923,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
                         const hexCode = colors[key] ? hslStringToHex(colors[key]) : "#000000";
                         return (
                           <div className="absolute inset-0 flex items-center justify-center min-w-0">
-                            <p className="text-[17px] font-light truncate" style={{ color: textColor }}>
+                            <p className="text-[14px] font-light truncate" style={{ color: textColor }}>
                               {hexCode}
                             </p>
                           </div>
@@ -976,7 +975,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
                       )}
                     </button>
                   )}
-                  <p className="hidden md:block text-[17px] font-light text-[color:hsl(var(--foreground))] truncate mt-1">
+                  <p className="hidden md:block text-[14px] font-light text-[color:hsl(var(--foreground))] truncate mt-1">
                     {displayLabel}
                   </p>
                 </div>
@@ -997,7 +996,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
                   {content.designSystem.sections.colors}
                 </p>
               </div>
-              <div className="flex flex-wrap gap-1.5 md:grid md:gap-1.5" style={{ gridTemplateColumns: "repeat(5, 76px)" }}>
+              <div className="flex flex-wrap gap-1.5 md:grid md:gap-1.5" style={{ gridTemplateColumns: "repeat(4, 76px)" }}>
                 {COLOR_SWATCHES.filter(v => !["--brand", "--secondary", "--accent", "--background", "--foreground", "--primary"].includes(v.key)).map(({ key, label }) => {
                   const hsl = colors[key];
                   const bgHsl = hsl || "0 0% 50%";
@@ -1016,9 +1015,9 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
                             : undefined,
                         }}
                       />
-                      <span className="relative text-[17px] font-light truncate" style={{ color: swatchTextColor }}>{hexCode}</span>
+                      <span className="relative text-[14px] font-light truncate" style={{ color: swatchTextColor }}>{hexCode}</span>
                     </div>
-                    <p className="hidden md:block text-[17px] font-light text-[color:hsl(var(--foreground))] truncate">
+                    <p className="hidden md:block text-[14px] font-light text-[color:hsl(var(--foreground))] truncate">
                       {label}
                     </p>
                   </div>
