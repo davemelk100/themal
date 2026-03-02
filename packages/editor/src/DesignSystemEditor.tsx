@@ -1153,7 +1153,7 @@ export function DesignSystemEditor({
             </div>
 
             {/* Color swatch buttons */}
-            <div className="flex flex-wrap items-center gap-2 sm:gap-4 rounded-lg p-3" data-axe-exclude style={{ backgroundColor: "rgba(0,0,0,0.04)" }}>
+            <div className="grid grid-cols-5 gap-1.5 rounded-lg p-3" data-axe-exclude style={{ backgroundColor: "rgba(0,0,0,0.04)" }}>
               {COLOR_SWATCHES.filter(({ key }) => ["--brand", "--secondary", "--accent", "--background", "--foreground"].includes(key)).map(({ key, label }) => {
                 const hsl = colors[key];
                 const bgHsl = hsl || "0 0% 50%";
@@ -1167,7 +1167,7 @@ export function DesignSystemEditor({
                 return (
                   <div key={key} className="relative group flex items-stretch rounded-lg overflow-hidden" style={{ boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}>
                     <button
-                      className="w-28 h-20 text-[14px] font-light transition-colors hover:opacity-80 flex flex-col items-center justify-center gap-0.5 cursor-pointer"
+                      className="w-full h-20 text-[14px] font-light transition-colors hover:opacity-80 flex flex-col items-center justify-center gap-0.5 cursor-pointer"
                       style={{ backgroundColor: hsl ? `hsl(${hsl})` : "#e5e7eb", color: btnTextColor }}
                       onClick={() => {
                         const input = document.getElementById(inputId) as HTMLInputElement | null;
@@ -1258,11 +1258,11 @@ export function DesignSystemEditor({
             )}
 
             {/* Controls + Preview */}
-            <div className="flex flex-col md:flex-row md:flex-wrap gap-4 md:gap-6">
-              {/* Palette (controls column) */}
-              <div className="flex-shrink-0" data-axe-exclude>
+            <div className="flex flex-col gap-4 md:gap-6">
+              {/* Palette (own row) */}
+              <div className="w-full" data-axe-exclude>
                 <p className="text-[14px] font-light uppercase tracking-wider mb-2 md:mb-3" style={{ color: "hsl(var(--muted-foreground))" }}>Palette</p>
-                <div className="grid grid-cols-6 gap-1 md:grid-cols-[repeat(4,76px)] md:gap-1.5">
+                <div className="grid grid-cols-6 gap-1 md:grid-cols-[repeat(auto-fit,minmax(76px,1fr))] md:gap-1.5">
                   {COLOR_SWATCHES.filter(({ key }) => !["--brand", "--secondary", "--accent", "--background", "--foreground"].includes(key)).map(({ key, label }) => {
                     const hsl = colors[key];
                     const bgHsl = hsl || "0 0% 50%";
@@ -1273,7 +1273,7 @@ export function DesignSystemEditor({
                     return (
                     <div key={key} data-color-key={key} className="text-left">
                       <div
-                        className="relative w-full aspect-square md:w-[76px] md:h-[76px] rounded-md mb-1 overflow-hidden flex items-center justify-center shadow-md"
+                        className="relative w-full aspect-square rounded-md mb-1 overflow-hidden flex items-center justify-center shadow-md"
                       >
                         <div
                           className="absolute inset-0"
@@ -1285,7 +1285,7 @@ export function DesignSystemEditor({
                         />
                         <span className="relative text-[14px] font-light truncate" style={{ color: swatchTextColor }}>{hexCode}</span>
                       </div>
-                      <p className="hidden md:block text-[14px] font-light text-[color:hsl(var(--foreground))] truncate" style={{ maxWidth: "76px" }}>
+                      <p className="hidden md:block text-[14px] font-light text-[color:hsl(var(--foreground))] truncate">
                         {label}
                       </p>
                     </div>
@@ -1294,57 +1294,47 @@ export function DesignSystemEditor({
                 </div>
               </div>
 
-              {/* Live preview */}
-              <div className="flex-1 min-w-[280px] flex flex-col gap-3">
-                {/* Chips */}
-                <div className="min-w-0 space-y-2">
-                  <p className="text-[14px] font-light uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>Chips</p>
-                  <div className="flex flex-row flex-wrap gap-1.5 items-start">
-                    <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--brand))", color: colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "white" }}>Brand</span>
-                    <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}>Secondary</span>
-                    <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--muted))", color: colors["--muted"] ? `hsl(${fgForBg(colors["--muted"])})` : "hsl(var(--muted-foreground))" }}>Muted</span>
-                    <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--accent))", color: "hsl(var(--accent-foreground))" }}>Accent</span>
-                    <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>Destructive</span>
-                    <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--success))", color: "hsl(var(--success-foreground))" }}>Success</span>
-                    <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))" }}>Warning</span>
-                  </div>
-                </div>
-
-                {/* Badges */}
-                <div className="min-w-0 space-y-2">
-                  <p className="text-[14px] font-light uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>Badges</p>
-                  <div className="flex flex-row flex-wrap gap-1.5 items-start">
-                    <span className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--brand))", color: colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "white" }}>Brand</span>
-                    <span className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}>Secondary</span>
-                    <span className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--muted))", color: colors["--muted"] ? `hsl(${fgForBg(colors["--muted"])})` : "hsl(var(--muted-foreground))" }}>Muted</span>
-                    <span className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--accent))", color: "hsl(var(--accent-foreground))" }}>Accent</span>
-                    <span className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>Destructive</span>
-                    <span className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--success))", color: "hsl(var(--success-foreground))" }}>Success</span>
-                    <span className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))" }}>Warning</span>
-                    <span className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-[14px] font-light border border-border max-w-full truncate" style={{ color: "hsl(var(--foreground))" }}>Outlined</span>
-                  </div>
-                </div>
-
-                {/* Buttons */}
-                <div className="min-w-0 space-y-2">
-                  <p className="text-[14px] font-light uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>Buttons</p>
-                  <div className="flex flex-row flex-wrap gap-1.5 items-start">
-                    <button className="h-12 px-3 rounded-lg font-light text-[14px] transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--primary))", color: colors["--primary"] ? `hsl(${fgForBg(colors["--primary"])})` : "hsl(var(--primary-foreground))", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}>Primary</button>
-                    <button className="h-12 px-3 rounded-lg font-light text-[14px] transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}>Secondary</button>
-                    <button className="h-12 px-3 rounded-lg font-light text-[14px] transition-colors max-w-full truncate" style={{ backgroundColor: "transparent", color: "hsl(var(--brand))", border: "1px solid hsl(var(--brand))", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}>Outlined</button>
-                    <button className="h-12 px-3 rounded-lg font-light text-[14px] transition-colors max-w-full truncate" style={{ backgroundColor: "transparent", color: "hsl(var(--brand))", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}>Ghost</button>
-                    <button className="h-12 px-3 rounded-lg font-light text-[14px] transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}>Destructive</button>
-                    <button className="h-12 px-3 rounded-lg font-light text-[14px] transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--muted))", color: colors["--muted"] ? `hsl(${fgForBg(colors["--muted"])})` : "hsl(var(--muted-foreground))", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}>Muted</button>
-                    <button className="h-12 px-3 rounded-lg font-light text-[14px] transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--success))", color: "hsl(var(--success-foreground))", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}>Success</button>
-                    <button className="h-12 px-3 rounded-lg font-light text-[14px] transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}>Warning</button>
-                  </div>
+              {/* Chips / Badges row */}
+              <div className="w-full space-y-2">
+                <p className="text-[14px] font-light uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>Chips / Badges</p>
+                <div className="flex flex-row flex-wrap gap-1.5 items-start">
+                  <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--brand))", color: colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "white" }}>Brand</span>
+                  <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}>Secondary</span>
+                  <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--muted))", color: colors["--muted"] ? `hsl(${fgForBg(colors["--muted"])})` : "hsl(var(--muted-foreground))" }}>Muted</span>
+                  <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--accent))", color: "hsl(var(--accent-foreground))" }}>Accent</span>
+                  <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>Destructive</span>
+                  <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--success))", color: "hsl(var(--success-foreground))" }}>Success</span>
+                  <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))" }}>Warning</span>
+                  <span className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--brand))", color: colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "white" }}>Brand</span>
+                  <span className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))" }}>Secondary</span>
+                  <span className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--muted))", color: colors["--muted"] ? `hsl(${fgForBg(colors["--muted"])})` : "hsl(var(--muted-foreground))" }}>Muted</span>
+                  <span className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--accent))", color: "hsl(var(--accent-foreground))" }}>Accent</span>
+                  <span className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}>Destructive</span>
+                  <span className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--success))", color: "hsl(var(--success-foreground))" }}>Success</span>
+                  <span className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-[14px] font-light max-w-full truncate" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))" }}>Warning</span>
+                  <span className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-[14px] font-light border border-border max-w-full truncate" style={{ color: "hsl(var(--foreground))" }}>Outlined</span>
                 </div>
               </div>
 
-              {/* Icons column */}
-              <div className="hidden md:block flex-shrink-0">
+              {/* Buttons row */}
+              <div className="w-full space-y-2">
+                <p className="text-[14px] font-light uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>Buttons</p>
+                <div className="flex flex-row flex-wrap gap-1.5 items-start">
+                  <button className="h-12 px-3 rounded-lg font-light text-[14px] transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--primary))", color: colors["--primary"] ? `hsl(${fgForBg(colors["--primary"])})` : "hsl(var(--primary-foreground))", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}>Primary</button>
+                  <button className="h-12 px-3 rounded-lg font-light text-[14px] transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--secondary))", color: "hsl(var(--secondary-foreground))", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}>Secondary</button>
+                  <button className="h-12 px-3 rounded-lg font-light text-[14px] transition-colors max-w-full truncate" style={{ backgroundColor: "transparent", color: "hsl(var(--brand))", border: "1px solid hsl(var(--brand))", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}>Outlined</button>
+                  <button className="h-12 px-3 rounded-lg font-light text-[14px] transition-colors max-w-full truncate" style={{ backgroundColor: "transparent", color: "hsl(var(--brand))", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}>Ghost</button>
+                  <button className="h-12 px-3 rounded-lg font-light text-[14px] transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}>Destructive</button>
+                  <button className="h-12 px-3 rounded-lg font-light text-[14px] transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--muted))", color: colors["--muted"] ? `hsl(${fgForBg(colors["--muted"])})` : "hsl(var(--muted-foreground))", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}>Muted</button>
+                  <button className="h-12 px-3 rounded-lg font-light text-[14px] transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--success))", color: "hsl(var(--success-foreground))", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}>Success</button>
+                  <button className="h-12 px-3 rounded-lg font-light text-[14px] transition-colors max-w-full truncate" style={{ backgroundColor: "hsl(var(--warning))", color: "hsl(var(--warning-foreground))", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}>Warning</button>
+                </div>
+              </div>
+
+              {/* Icons row */}
+              <div className="w-full hidden md:block">
                 <p className="text-[14px] font-light uppercase tracking-wider mb-2 md:mb-3" style={{ color: "hsl(var(--muted-foreground))" }}>Icons</p>
-                <div className="grid grid-cols-5 gap-2">
+                <div className="flex flex-row flex-wrap gap-2">
                   <Suspense fallback={null}>
                     {SITE_ICONS.map(({ name, icon: Icon }) => (
                       <div key={name} className="bg-brand-dynamic/10 dark:bg-brand-dynamic/20 hover:bg-brand-dynamic/20 dark:hover:bg-brand-dynamic/30 rounded-full p-2 shadow-sm hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center" title={name}>
@@ -1498,7 +1488,6 @@ export function DesignSystemEditor({
               <div className="flex-1 min-w-0 flex items-center justify-center">
                 {(() => {
                   // Compute the effective text color based on what the card bg actually looks like
-                  const bgHsl = colors["--background"] || "0 0% 100%";
                   const brandHsl = colors["--brand"] || "220 70% 50%";
                   const secondaryHsl = colors["--secondary"] || "220 30% 60%";
                   const accentHsl = colors["--accent"] || "220 50% 55%";
@@ -1510,8 +1499,9 @@ export function DesignSystemEditor({
                     previewTextColor = `hsl(${fgForBg(brandHsl)})`;
                     previewSubtextColor = previewTextColor;
                   } else if (cardStyle.bgType === "transparent" || cardStyle.bgOpacity < 0.4) {
-                    previewTextColor = `hsl(${fgForBg(bgHsl)})`;
-                    previewSubtextColor = previewTextColor;
+                    // When glass bg is showing, use white text since the gradient backdrop is typically dark
+                    previewTextColor = "#ffffff";
+                    previewSubtextColor = "rgba(255,255,255,0.85)";
                   } else {
                     previewTextColor = "hsl(var(--card-foreground))";
                     previewSubtextColor = "hsl(var(--muted-foreground))";
@@ -1583,11 +1573,11 @@ export function DesignSystemEditor({
                           padding: "20px",
                         }}
                       >
-                        <h4 className="text-[14px] font-light mb-1" style={{ color: previewTextColor }}>Card Title</h4>
-                        <p className="text-[14px] font-light mb-3" style={{ color: previewSubtextColor }}>This is a preview of your card style with customizable shadow, radius, and background.</p>
+                        <h4 className="text-[14px] font-light mb-1" style={{ color: previewTextColor, textShadow: showGlassBg ? "0 1px 4px rgba(0,0,0,0.5)" : undefined }}>Card Title</h4>
+                        <p className="text-[14px] font-light mb-3" style={{ color: previewSubtextColor, textShadow: showGlassBg ? "0 1px 4px rgba(0,0,0,0.5)" : undefined }}>This is a preview of your card style with customizable shadow, radius, and background.</p>
                         <button
                           className="h-9 px-3 text-[14px] font-light rounded-lg"
-                          style={{ backgroundColor: "hsl(var(--brand))", color: colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "#fff" }}
+                          style={{ backgroundColor: "hsl(var(--brand))", color: colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "#fff", boxShadow: showGlassBg ? "0 2px 8px rgba(0,0,0,0.3)" : undefined }}
                         >
                           Action
                         </button>
