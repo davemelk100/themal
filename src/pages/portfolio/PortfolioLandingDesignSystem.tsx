@@ -681,6 +681,7 @@ export default function PortfolioLandingDesignSystem({ colors, setColors, locked
             {prevColors && (
               <button
                 onClick={handleUndo}
+                aria-label="Undo last color change"
                 className="h-full pl-2 pr-3 text-[17px] font-light transition-colors hover:opacity-80 flex items-center justify-center border-l"
                 style={{ borderColor: "rgba(17,17,17,0.2)" }}
               >
