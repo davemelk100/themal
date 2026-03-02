@@ -1,4 +1,4 @@
-const CACHE_NAME = "dm-2025-v5";
+const CACHE_NAME = "design-alive-v1";
 const urlsToCache = ["/", "/index.html", "/favicon.svg"];
 
 // Install event - cache resources

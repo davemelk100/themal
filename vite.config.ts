@@ -33,10 +33,7 @@ export default defineConfig({
           if (normalizedId.endsWith(".css")) {
             return true;
           }
-          if (
-            normalizedId.includes("node_modules/lucide-react") ||
-            normalizedId.includes("node_modules/@radix-ui/react-icons")
-          ) {
+          if (normalizedId.includes("node_modules/lucide-react")) {
             return false;
           }
           if (normalizedId.includes("node_modules")) {
@@ -54,8 +51,6 @@ export default defineConfig({
         manualChunks(id) {
           if (id.includes("node_modules")) {
             if (id.includes("react-dom")) return "react-dom";
-            if (id.includes("react-router")) return "react-router";
-            if (id.includes("framer-motion")) return "motion";
             if (id.includes("axe-core")) return "axe";
           }
         },
@@ -65,7 +60,6 @@ export default defineConfig({
     reportCompressedSize: false,
   },
   optimizeDeps: {
-    include: ["react", "react-dom", "react/jsx-runtime", "react-router-dom"],
-    exclude: ["framer-motion"],
+    include: ["react", "react-dom", "react/jsx-runtime"],
   },
 });

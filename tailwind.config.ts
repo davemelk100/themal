@@ -28,46 +28,6 @@ const config: Config = {
           "Arial",
           "sans-serif",
         ],
-        title: [
-          "Roboto",
-          "-apple-system",
-          "BlinkMacSystemFont",
-          "Segoe UI",
-          "Arial",
-          "sans-serif",
-        ],
-        card: [
-          "Roboto",
-          "-apple-system",
-          "BlinkMacSystemFont",
-          "Segoe UI",
-          "Arial",
-          "sans-serif",
-        ],
-        serif: ["Roboto", "Georgia", "Times", "Times New Roman", "serif"],
-        roboto: [
-          "Roboto",
-          "-apple-system",
-          "BlinkMacSystemFont",
-          "Segoe UI",
-          "Arial",
-          "sans-serif",
-        ],
-        "roboto-slab": [
-          "Roboto",
-          "Georgia",
-          "Times",
-          "Times New Roman",
-          "serif",
-        ],
-        aeonik: [
-          "Roboto",
-          "-apple-system",
-          "BlinkMacSystemFont",
-          "Segoe UI",
-          "Arial",
-          "sans-serif",
-        ],
       },
       fontSize: {
         // 17px base with ~1.2 major third scale
@@ -84,15 +44,6 @@ const config: Config = {
         "7xl": ["80px", { lineHeight: "1" }],
         "8xl": ["104px", { lineHeight: "1" }],
         "9xl": ["136px", { lineHeight: "1" }],
-        "card-title": ["28px", { lineHeight: "1.4", fontWeight: "400" }],
-        "card-body": ["17px", { lineHeight: "1.5" }],
-        nav: ["17px", { lineHeight: "1.25" }],
-        caption: ["15px", { lineHeight: "1.4" }],
-      },
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -134,13 +85,6 @@ const config: Config = {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        chart: {
-          "1": "hsl(var(--chart-1))",
-          "2": "hsl(var(--chart-2))",
-          "3": "hsl(var(--chart-3))",
-          "4": "hsl(var(--chart-4))",
-          "5": "hsl(var(--chart-5))",
-        },
       },
       keyframes: {
         "scroll-banner": {
