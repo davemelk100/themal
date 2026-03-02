@@ -22,7 +22,9 @@
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",
-    "react-dom": "^18.0.0 || ^19.0.0"
+    "react-dom": "^18.0.0 || ^19.0.0",
+    "axe-core": ">=4.0.0",
+    "lucide-react": ">=0.300.0"
   },
   "peerDependenciesMeta": {
     "axe-core": {
@@ -43,5 +45,19 @@
     "vite": "^5.0.0",
     "vite-plugin-dts": "^3.7.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davemelk100/design-alive.git",
+    "directory": "packages/editor"
+  },
+  "keywords": [
+    "design-system",
+    "css-variables",
+    "react",
+    "color-picker",
+    "wcag",
+    "accessibility"
+  ],
+  "homepage": "https://github.com/davemelk100/design-alive/tree/main/packages/editor"
 }

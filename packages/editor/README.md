@@ -8,11 +8,20 @@ Interactive design system editor for React apps. Pick colors, generate harmony p
 npm install @design-alive/editor
 ```
 
-Peer dependencies: `react` and `react-dom` (v18+).
+### Peer Dependencies
 
-Optional peers for full functionality:
-- `axe-core` — accessibility auditing
-- `lucide-react` — icon previews
+| Package | Version | Required |
+|---------|---------|----------|
+| `react` | `^18.0.0 \|\| ^19.0.0` | Yes |
+| `react-dom` | `^18.0.0 \|\| ^19.0.0` | Yes |
+| `axe-core` | `>=4.0.0` | Optional — enables accessibility auditing |
+| `lucide-react` | `>=0.300.0` | Optional — enables icon previews |
+
+Install optional peers for full functionality:
+
+```bash
+npm install axe-core lucide-react
+```
 
 ## Quick Start
 
@@ -96,6 +105,28 @@ import {
 4. **Persistence** — Theme colors are saved to `localStorage` and restored on reload.
 5. **CSS export** — Generate a `:root` CSS block and Tailwind config snippet for your custom theme.
 
+## Package Architecture
+
+The editor is built with Vite in library mode and published as an ES module:
+
+```
+@design-alive/editor
+├── dist/index.js      # ESM bundle (all components + utilities)
+├── dist/index.d.ts    # TypeScript declarations
+└── dist/style.css     # Pre-compiled, scoped Tailwind styles
+```
+
+### Exports Map
+
+```json
+{
+  ".":            { "import": "./dist/index.js", "types": "./dist/index.d.ts" },
+  "./style.css":  "./dist/style.css"
+}
+```
+
+Import the main entry point for components and utilities, and `style.css` separately for styles. This keeps CSS opt-in and avoids side effects during tree-shaking.
+
 ## Tailwind Scoping
 
 The editor ships pre-compiled CSS via `@design-alive/editor/style.css`. Styles are scoped using Tailwind's `important: '.ds-editor'` so they don't conflict with your app's styles. The root element is automatically wrapped in `<div className="ds-editor">`.
@@ -113,6 +144,27 @@ npm run build
 # Watch mode
 npm run dev
 ```
+
+## Publishing to npm
+
+The package is published as `@design-alive/editor` on npm. To publish a new version:
+
+```bash
+# 1. Build
+cd packages/editor
+npm run build
+
+# 2. Verify the tarball contents (should only include dist/)
+npm pack --dry-run
+
+# 3. Bump the version
+npm version patch   # or minor / major
+
+# 4. Publish (scoped packages require --access public on first publish)
+npm publish --access public
+```
+
+You must be logged in to npm (`npm login`) with publish access to the `@design-alive` scope.
 
 ## License
 

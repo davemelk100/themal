@@ -907,6 +907,11 @@ export function DesignSystemEditor({
                     >&#10005;</button>
                   </div>
                 )}
+                {mainSt.status === 'rate-limited' && mainSt.error && (
+                  <span className="text-[14px] font-light text-yellow-700 dark:text-yellow-300">
+                    {mainSt.error}
+                  </span>
+                )}
                 <button
                   disabled={mainSt.status === 'creating'}
                   onClick={() => { if (mainSt.status !== 'creating') { setPrSections(new Set()); setShowPrModal(true); } }}
@@ -931,11 +936,6 @@ export function DesignSystemEditor({
                 {(() => {
                   const mainSt = sectionPrStatus["main"] || { status: 'idle' as const };
                   return (<>
-                    {mainSt.status === 'rate-limited' && mainSt.error && (
-                      <span className="inline-flex items-center px-3 h-9 text-[14px] font-light rounded-lg border border-yellow-400 bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300">
-                        {mainSt.error}
-                      </span>
-                    )}
                     {mainSt.status === 'created' && mainSt.url && (
                       <span className="inline-flex items-center gap-2 px-3 h-12 text-[14px] font-light rounded-lg border border-green-400 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300">
                         PR Created!

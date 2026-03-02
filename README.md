@@ -8,6 +8,25 @@ All palette colors are HSL custom properties on `:root`. From one brand color, t
 
 Every foreground/background pair is audited against WCAG AA (4.5:1) via axe-core. Failing pairs are auto-corrected by adjusting foreground lightness. Your theme persists in localStorage across reloads.
 
+## npm Package
+
+The editor is published to npm as [`@design-alive/editor`](https://www.npmjs.com/package/@design-alive/editor) and can be installed in any React app:
+
+```bash
+npm install @design-alive/editor
+```
+
+```tsx
+import { DesignSystemEditor } from '@design-alive/editor';
+import '@design-alive/editor/style.css';
+
+function App() {
+  return <DesignSystemEditor />;
+}
+```
+
+Requires `react` and `react-dom` v18+. Optionally install `axe-core` (accessibility auditing) and `lucide-react` (icon previews) for full functionality. See [`packages/editor/README.md`](packages/editor/README.md) for full API docs, props, and exported utilities.
+
 ## Tech Stack
 
 - React 18 + TypeScript
