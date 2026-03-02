@@ -127,9 +127,6 @@ const LazyDatabase = React.lazy(() =>
 const LazySmartphone = React.lazy(() =>
   import("lucide-react").then((mod) => ({ default: mod.Smartphone }))
 );
-const LazyLayers = React.lazy(() =>
-  import("lucide-react").then((mod) => ({ default: mod.Layers }))
-);
 
 const SITE_ICONS: { name: string; icon: React.LazyExoticComponent<any> | React.ComponentType<any> }[] = [
   { name: "LinkedIn", icon: LazyLinkedin },
@@ -168,7 +165,6 @@ const SITE_ICONS: { name: string; icon: React.LazyExoticComponent<any> | React.C
   { name: "Code", icon: LazyCode },
   { name: "Database", icon: LazyDatabase },
   { name: "Smartphone", icon: LazySmartphone },
-  { name: "Layers", icon: LazyLayers },
 ];
 
 const COLOR_SWATCHES = [

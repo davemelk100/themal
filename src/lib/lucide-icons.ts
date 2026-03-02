@@ -23,7 +23,6 @@ export { default as FlaskConical } from "lucide-react/dist/esm/icons/flask-conic
 export { default as Globe } from "lucide-react/dist/esm/icons/globe";
 export { default as Heart } from "lucide-react/dist/esm/icons/heart";
 export { default as Home } from "lucide-react/dist/esm/icons/home";
-export { default as Layers } from "lucide-react/dist/esm/icons/layers";
 export { default as Linkedin } from "lucide-react/dist/esm/icons/linkedin";
 export { default as Link2 } from "lucide-react/dist/esm/icons/link-2";
 export { default as Loader2 } from "lucide-react/dist/esm/icons/loader-2";
