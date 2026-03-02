@@ -603,7 +603,15 @@ export const generateRandomPalette = (
   if (!locked.has('--accent')) result['--accent'] = accHsl;
 
   if (!locked.has('--background')) {
-    const bgLight = dark ? 3 + Math.random() * 7 : 95 + Math.random() * 5;
+    let bgLight: number;
+    if (dark) {
+      bgLight = 3 + Math.random() * 7;
+    } else if (Math.random() < 0.3) {
+      // ~30% chance of a dark background in light mode
+      bgLight = 5 + Math.random() * 15;
+    } else {
+      bgLight = 95 + Math.random() * 5;
+    }
     result['--background'] = `${wrap(bHue + 20).toFixed(1)} ${(15 + Math.random() * 20).toFixed(1)}% ${bgLight.toFixed(1)}%`;
   }
   const bg = result['--background'] || currentColors['--background'];
@@ -619,11 +627,13 @@ export const generateRandomPalette = (
     result['--muted-foreground'] = `0 0% ${mutedL}%`;
   }
   if (!locked.has('--border')) {
-    const borderLight = dark ? 15 + Math.random() * 10 : 85 + Math.random() * 10;
+    const bgL = parseFloat(bg.trim().split(/\s+/)[2]);
+    const borderLight = bgL < 50 ? 15 + Math.random() * 10 : 85 + Math.random() * 10;
     result['--border'] = `${wrap(bHue + 15).toFixed(1)} ${(15 + Math.random() * 15).toFixed(1)}% ${borderLight.toFixed(1)}%`;
   }
   if (!locked.has('--muted')) {
-    const mutedLight = dark ? 12 + Math.random() * 8 : 90 + Math.random() * 8;
+    const bgL = parseFloat(bg.trim().split(/\s+/)[2]);
+    const mutedLight = bgL < 50 ? 12 + Math.random() * 8 : 90 + Math.random() * 8;
     result['--muted'] = `${wrap(bHue + 15).toFixed(1)} ${(15 + Math.random() * 15).toFixed(1)}% ${mutedLight.toFixed(1)}%`;
   }
 
