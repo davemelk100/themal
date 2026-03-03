@@ -1075,7 +1075,7 @@ export function DesignSystemEditor({
                 key={s.id}
                 href={`#${s.id}`}
                 className="px-3 py-1.5 text-[13px] font-light uppercase tracking-wider rounded-md transition-colors hover:opacity-70 whitespace-nowrap"
-                style={{ color: "hsl(var(--muted-foreground))", backgroundColor: "hsl(var(--muted-foreground) / 0.08)" }}
+                style={{ color: "hsl(var(--foreground))", backgroundColor: "hsl(var(--muted-foreground) / 0.08)" }}
               >
                 {s.label}
               </a>
@@ -1198,10 +1198,10 @@ export function DesignSystemEditor({
                       value={colors[key] ? hslStringToHex(colors[key]) : "#000000"}
                       onChange={(e) => handleColorChange(key, e.target.value)}
                       className="absolute inset-0 opacity-0 cursor-pointer"
-                      style={{ width: "calc(100% - 28px)", height: "100%" }}
+                      style={{ width: "calc(100% - 32px)", height: "100%" }}
                     />
                     <button
-                      className="w-7 flex items-center justify-center transition-all cursor-pointer"
+                      className="w-8 flex items-center justify-center transition-all cursor-pointer"
                       style={{
                         backgroundColor: isLocked ? `hsl(${bgHsl})` : "rgba(0,0,0,0.08)",
                         color: isLocked ? btnTextColor : "hsl(var(--muted-foreground))",
@@ -1506,7 +1506,12 @@ export function DesignSystemEditor({
                   let previewTextColor: string;
                   let previewSubtextColor: string;
 
-                  if (cardStyle.bgType === "gradient") {
+                  if (cardStyle.preset === "border-only") {
+                    // Border-only: no card bg, text sits on page background
+                    const pageBg = colors["--background"] || "0 0% 100%";
+                    previewTextColor = `hsl(${fgForBg(pageBg)})`;
+                    previewSubtextColor = previewTextColor;
+                  } else if (cardStyle.bgType === "gradient") {
                     previewTextColor = `hsl(${fgForBg(brandHsl)})`;
                     previewSubtextColor = previewTextColor;
                   } else if (cardStyle.bgType === "transparent" || cardStyle.bgOpacity < 0.4) {
@@ -1514,59 +1519,83 @@ export function DesignSystemEditor({
                     previewTextColor = "#ffffff";
                     previewSubtextColor = "rgba(255,255,255,0.85)";
                   } else {
-                    previewTextColor = "hsl(var(--card-foreground))";
-                    previewSubtextColor = "hsl(var(--muted-foreground))";
+                    // Solid card: compute accessible text color from the card background
+                    const cardBg = colors["--card"] || "0 0% 100%";
+                    previewTextColor = `hsl(${fgForBg(cardBg)})`;
+                    previewSubtextColor = previewTextColor;
                   }
 
-                  const showGlassBg = cardStyle.bgType === "transparent" || cardStyle.bgOpacity < 1 || cardStyle.backdropBlur > 0;
+                  const showGlassBg = cardStyle.preset !== "border-only" && (cardStyle.bgType === "transparent" || cardStyle.bgOpacity < 1 || cardStyle.backdropBlur > 0);
 
                   return (
                     <>
-                      {showGlassBg && (
-                        <style>{`
-                          @keyframes ds-glass-gradient {
-                            0%, 100% { background-position: 0% 50%; }
-                            50% { background-position: 100% 50%; }
-                          }
-                          @keyframes ds-glass-float-1 {
-                            0%, 100% { transform: translate(0, 0) scale(1); }
-                            33% { transform: translate(15px, -20px) scale(1.1); }
-                            66% { transform: translate(-10px, 10px) scale(0.95); }
-                          }
-                          @keyframes ds-glass-float-2 {
-                            0%, 100% { transform: translate(0, 0) scale(1); }
-                            33% { transform: translate(-12px, 15px) scale(1.05); }
-                            66% { transform: translate(18px, -8px) scale(0.9); }
-                          }
-                          @keyframes ds-glass-float-3 {
-                            0%, 100% { transform: translate(0, 0) scale(1); }
-                            33% { transform: translate(10px, 12px) scale(0.9); }
-                            66% { transform: translate(-15px, -15px) scale(1.1); }
-                          }
-                        `}</style>
-                      )}
-                    <div
-                      className="relative w-full md:max-w-[320px] rounded-xl overflow-hidden flex items-center justify-center"
-                      style={{
-                        minHeight: "240px",
-                        padding: "20px",
-                        background: showGlassBg
-                          ? `linear-gradient(135deg, hsl(${brandHsl}), hsl(${secondaryHsl}), hsl(${accentHsl}), hsl(${brandHsl}))`
-                          : "transparent",
-                        backgroundSize: showGlassBg ? "300% 300%" : undefined,
-                        animation: showGlassBg ? "ds-glass-gradient 8s ease infinite" : undefined,
-                      }}
-                    >
-                      {showGlassBg && (
-                        <>
-                          <div className="absolute" style={{ width: "100px", height: "100px", borderRadius: "50%", backgroundColor: `hsl(${brandHsl} / 0.6)`, top: "15%", left: "10%", filter: "blur(20px)", animation: "ds-glass-float-1 6s ease-in-out infinite" }} />
-                          <div className="absolute" style={{ width: "80px", height: "80px", borderRadius: "50%", backgroundColor: `hsl(${accentHsl} / 0.5)`, bottom: "15%", right: "12%", filter: "blur(18px)", animation: "ds-glass-float-2 7s ease-in-out infinite" }} />
-                          <div className="absolute" style={{ width: "60px", height: "60px", borderRadius: "50%", backgroundColor: `hsl(${secondaryHsl} / 0.4)`, top: "50%", left: "55%", filter: "blur(15px)", animation: "ds-glass-float-3 5s ease-in-out infinite" }} />
-                        </>
-                      )}
+                    <style>{`
+                      @keyframes ds-glass-gradient {
+                        0%, 100% { background-position: 0% 50%; }
+                        50% { background-position: 100% 50%; }
+                      }
+                      @keyframes ds-glass-float-1 {
+                        0%, 100% { transform: translate(0, 0) scale(1); }
+                        33% { transform: translate(15px, -20px) scale(1.1); }
+                        66% { transform: translate(-10px, 10px) scale(0.95); }
+                      }
+                      @keyframes ds-glass-float-2 {
+                        0%, 100% { transform: translate(0, 0) scale(1); }
+                        33% { transform: translate(-12px, 15px) scale(1.05); }
+                        66% { transform: translate(18px, -8px) scale(0.9); }
+                      }
+                      @keyframes ds-glass-float-3 {
+                        0%, 100% { transform: translate(0, 0) scale(1); }
+                        33% { transform: translate(10px, 12px) scale(0.9); }
+                        66% { transform: translate(-15px, -15px) scale(1.1); }
+                      }
+                    `}</style>
+                    {showGlassBg ? (
+                      /* Glass: outer gradient container with inset glass card */
                       <div
-                        className="relative w-full md:max-w-[280px] overflow-hidden"
+                        className="relative w-full md:max-w-[320px] overflow-hidden flex flex-col"
                         style={{
+                          minHeight: "240px",
+                          borderRadius: `${cardStyle.borderRadius}px`,
+                          background: `linear-gradient(135deg, hsl(${brandHsl}), hsl(${secondaryHsl}), hsl(${accentHsl}), hsl(${brandHsl}))`,
+                          backgroundSize: "300% 300%",
+                          animation: "ds-glass-gradient 8s ease infinite",
+                          padding: "10px",
+                        }}
+                      >
+                        <div className="absolute" style={{ width: "100px", height: "100px", borderRadius: "50%", backgroundColor: `hsl(${brandHsl} / 0.6)`, top: "15%", left: "10%", filter: "blur(20px)", animation: "ds-glass-float-1 6s ease-in-out infinite" }} />
+                        <div className="absolute" style={{ width: "80px", height: "80px", borderRadius: "50%", backgroundColor: `hsl(${accentHsl} / 0.5)`, bottom: "15%", right: "12%", filter: "blur(18px)", animation: "ds-glass-float-2 7s ease-in-out infinite" }} />
+                        <div className="absolute" style={{ width: "60px", height: "60px", borderRadius: "50%", backgroundColor: `hsl(${secondaryHsl} / 0.4)`, top: "50%", left: "55%", filter: "blur(15px)", animation: "ds-glass-float-3 5s ease-in-out infinite" }} />
+                        <div
+                          className="relative overflow-hidden flex-1"
+                          style={{
+                            borderRadius: `${Math.max(0, cardStyle.borderRadius - 4)}px`,
+                            background: (() => { const p = (colors["--card"] || "0 0% 100%").trim().split(/\s+/); return p.length >= 3 ? `hsla(${p[0]}, ${p[1]}, ${p[2]}, ${cardStyle.bgOpacity})` : "transparent"; })(),
+                            border: cardStyle.borderWidth > 0 ? `${cardStyle.borderWidth}px solid hsl(${colors["--border"] || "0 0% 80%"})` : "none",
+                            backdropFilter: cardStyle.backdropBlur > 0 ? `blur(${cardStyle.backdropBlur}px)` : "none",
+                            WebkitBackdropFilter: cardStyle.backdropBlur > 0 ? `blur(${cardStyle.backdropBlur}px)` : "none",
+                            boxShadow: cardStyle.shadowBlur === 0 && cardStyle.shadowOffsetX === 0 && cardStyle.shadowOffsetY === 0 && cardStyle.shadowSpread === 0
+                              ? "none"
+                              : `${cardStyle.shadowOffsetX}px ${cardStyle.shadowOffsetY}px ${cardStyle.shadowBlur}px ${cardStyle.shadowSpread}px ${cardStyle.shadowColor}`,
+                            padding: "20px",
+                          }}
+                        >
+                          <p className="text-[16px] font-normal mb-1" style={{ color: previewTextColor, textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}>Card Title</p>
+                          <p className="text-[14px] font-light mb-3" style={{ color: previewSubtextColor, textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}>This is a preview of your card style with customizable shadow, radius, and background.</p>
+                          <button
+                            className="h-9 px-3 text-[14px] font-light rounded-lg"
+                            style={{ backgroundColor: "hsl(var(--brand))", color: colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "#fff", boxShadow: "0 2px 8px rgba(0,0,0,0.3)" }}
+                          >
+                            Action
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      /* Non-glass: single card */
+                      <div
+                        className="relative w-full md:max-w-[320px] overflow-hidden"
+                        style={{
+                          minHeight: "240px",
                           borderRadius: `${cardStyle.borderRadius}px`,
                           boxShadow: cardStyle.shadowBlur === 0 && cardStyle.shadowOffsetX === 0 && cardStyle.shadowOffsetY === 0 && cardStyle.shadowSpread === 0
                             ? "none"
@@ -1575,25 +1604,21 @@ export function DesignSystemEditor({
                             ? "transparent"
                             : cardStyle.bgType === "gradient"
                               ? `linear-gradient(${cardStyle.bgGradientAngle}deg, hsl(${colors["--brand"] || "220 70% 50%"}), hsl(${colors["--secondary"] || "220 30% 60%"}), hsl(${colors["--accent"] || "220 50% 55%"}))`
-                              : cardStyle.bgOpacity < 1
-                                ? (() => { const p = (colors["--card"] || "0 0% 100%").trim().split(/\s+/); return p.length >= 3 ? `hsla(${p[0]}, ${p[1]}, ${p[2]}, ${cardStyle.bgOpacity})` : `hsl(${colors["--card"] || "0 0% 100%"})`; })()
-                                : `hsl(${colors["--card"] || "0 0% 100%"})`,
+                              : `hsl(${colors["--card"] || "0 0% 100%"})`,
                           border: cardStyle.borderWidth > 0 ? `${cardStyle.borderWidth}px solid hsl(${colors["--border"] || "0 0% 80%"})` : "none",
-                          backdropFilter: cardStyle.backdropBlur > 0 ? `blur(${cardStyle.backdropBlur}px)` : "none",
-                          WebkitBackdropFilter: cardStyle.backdropBlur > 0 ? `blur(${cardStyle.backdropBlur}px)` : "none",
                           padding: "20px",
                         }}
                       >
-                        <h4 className="text-[14px] font-light mb-1" style={{ color: previewTextColor, textShadow: showGlassBg ? "0 1px 4px rgba(0,0,0,0.5)" : undefined }}>Card Title</h4>
-                        <p className="text-[14px] font-light mb-3" style={{ color: previewSubtextColor, textShadow: showGlassBg ? "0 1px 4px rgba(0,0,0,0.5)" : undefined }}>This is a preview of your card style with customizable shadow, radius, and background.</p>
+                        <p className="text-[16px] font-normal mb-1" style={{ color: previewTextColor }}>Card Title</p>
+                        <p className="text-[14px] font-light mb-3" style={{ color: previewSubtextColor }}>This is a preview of your card style with customizable shadow, radius, and background.</p>
                         <button
                           className="h-9 px-3 text-[14px] font-light rounded-lg"
-                          style={{ backgroundColor: "hsl(var(--brand))", color: colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "#fff", boxShadow: showGlassBg ? "0 2px 8px rgba(0,0,0,0.3)" : undefined }}
+                          style={{ backgroundColor: "hsl(var(--brand))", color: colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "#fff" }}
                         >
                           Action
                         </button>
                       </div>
-                    </div>
+                    )}
                     </>
                   );
                 })()}
