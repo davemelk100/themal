@@ -858,7 +858,7 @@ export function DesignSystemEditor({
   };
 
   return (
-    <div className={`ds-editor${className ? ` ${className}` : ''}`}>
+    <div id="top" className={`ds-editor${className ? ` ${className}` : ''}`}>
       <section className="pt-4 sm:pt-6 lg:pt-8 pb-2 sm:pb-3 lg:pb-4 xl:pb-6 relative">
         <div className="w-full px-4 sm:px-6 lg:px-8">
           {/* Title + nav links */}
@@ -1064,7 +1064,7 @@ export function DesignSystemEditor({
           )}
 
           {/* Jump nav */}
-          <nav className="flex items-center gap-1 sm:gap-2 py-2 mb-2 overflow-x-auto sticky top-0 z-20" style={{ backgroundColor: "hsl(var(--background))" }}>
+          <nav className="flex items-center gap-1 sm:gap-2 py-2 mb-2 overflow-x-auto sticky top-0 z-20" data-axe-exclude style={{ backgroundColor: "hsl(var(--background))" }}>
             {[
               { id: "colors", label: "Colors" },
               { id: "card-style", label: "Card Style" },
@@ -1085,7 +1085,7 @@ export function DesignSystemEditor({
           {/* Colors section */}
           <div id="colors" className="min-w-0 p-2 md:p-4 space-y-3 scroll-mt-16">
             <div className="flex items-center flex-wrap gap-2 sm:gap-4" data-axe-exclude>
-              <h2 className="text-[20px] font-normal uppercase tracking-wider" style={{ color: "hsl(var(--foreground))" }}>Colors</h2>
+              <h2 className="text-[20px] font-normal uppercase tracking-wider flex items-center gap-2" style={{ color: "hsl(var(--foreground))" }}>Colors <a href="#top" className="opacity-30 hover:opacity-70 transition-opacity" aria-label="Back to top"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 19V5m0 0l-7 7m7-7l7 7" /></svg></a></h2>
               <div className="ml-auto flex flex-wrap items-center gap-1 sm:gap-2">
               <div className="relative">
                 <button
@@ -1361,7 +1361,7 @@ export function DesignSystemEditor({
           {/* Card Style section */}
           <div id="card-style" className="min-w-0 p-2 md:p-4 space-y-3 mt-8 md:mt-12 scroll-mt-16">
             <div className="flex items-center flex-wrap gap-2 sm:gap-4" data-axe-exclude>
-              <h2 className="text-[20px] font-normal uppercase tracking-wider" style={{ color: "hsl(var(--foreground))" }}>Card Style</h2>
+              <h2 className="text-[20px] font-normal uppercase tracking-wider flex items-center gap-2" style={{ color: "hsl(var(--foreground))" }}>Card Style <a href="#top" className="opacity-30 hover:opacity-70 transition-opacity" aria-label="Back to top"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 19V5m0 0l-7 7m7-7l7 7" /></svg></a></h2>
               <div className="ml-auto flex flex-wrap items-center gap-1 sm:gap-2">
                 <button
                   onClick={() => setCardCssVisible(!cardCssVisible)}
@@ -1603,7 +1603,7 @@ export function DesignSystemEditor({
         {/* Typography section */}
           <div id="typography" className="min-w-0 p-2 md:p-4 space-y-3 mt-8 md:mt-12 scroll-mt-16">
             <div className="flex items-center flex-wrap gap-2 sm:gap-4" data-axe-exclude>
-              <h2 className="text-[20px] font-normal uppercase tracking-wider" style={{ color: "hsl(var(--foreground))" }}>Typography</h2>
+              <h2 className="text-[20px] font-normal uppercase tracking-wider flex items-center gap-2" style={{ color: "hsl(var(--foreground))" }}>Typography <a href="#top" className="opacity-30 hover:opacity-70 transition-opacity" aria-label="Back to top"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 19V5m0 0l-7 7m7-7l7 7" /></svg></a></h2>
               <div className="ml-auto flex flex-wrap items-center gap-1 sm:gap-2">
                 <button
                   onClick={() => setTypoCssVisible(!typoCssVisible)}
@@ -1819,7 +1819,7 @@ export function DesignSystemEditor({
           {/* Alerts section */}
           <div id="alerts" className="min-w-0 p-2 md:p-4 space-y-3 mt-8 md:mt-12 scroll-mt-16">
             <div className="flex items-center flex-wrap gap-2 sm:gap-4" data-axe-exclude>
-              <h2 className="text-[20px] font-normal uppercase tracking-wider" style={{ color: "hsl(var(--foreground))" }}>Alerts</h2>
+              <h2 className="text-[20px] font-normal uppercase tracking-wider flex items-center gap-2" style={{ color: "hsl(var(--foreground))" }}>Alerts <a href="#top" className="opacity-30 hover:opacity-70 transition-opacity" aria-label="Back to top"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 19V5m0 0l-7 7m7-7l7 7" /></svg></a></h2>
               <div className="ml-auto flex flex-wrap items-center gap-1 sm:gap-2">
                 <button
                   onClick={() => setAlertCssVisible(!alertCssVisible)}
