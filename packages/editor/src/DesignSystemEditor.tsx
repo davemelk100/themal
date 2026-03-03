@@ -1075,7 +1075,7 @@ export function DesignSystemEditor({
                 key={s.id}
                 href={`#${s.id}`}
                 className="px-3 py-1.5 text-[13px] font-light uppercase tracking-wider rounded-md transition-colors hover:opacity-70 whitespace-nowrap"
-                style={{ color: "hsl(var(--muted-foreground))", backgroundColor: "hsl(var(--muted-foreground) / 0.08)" }}
+                style={{ color: "hsl(var(--foreground))", backgroundColor: "hsl(var(--muted-foreground) / 0.08)" }}
               >
                 {s.label}
               </a>
@@ -1198,10 +1198,10 @@ export function DesignSystemEditor({
                       value={colors[key] ? hslStringToHex(colors[key]) : "#000000"}
                       onChange={(e) => handleColorChange(key, e.target.value)}
                       className="absolute inset-0 opacity-0 cursor-pointer"
-                      style={{ width: "calc(100% - 28px)", height: "100%" }}
+                      style={{ width: "calc(100% - 32px)", height: "100%" }}
                     />
                     <button
-                      className="w-7 flex items-center justify-center transition-all cursor-pointer"
+                      className="w-8 flex items-center justify-center transition-all cursor-pointer"
                       style={{
                         backgroundColor: isLocked ? `hsl(${bgHsl})` : "rgba(0,0,0,0.08)",
                         color: isLocked ? btnTextColor : "hsl(var(--muted-foreground))",
@@ -1506,7 +1506,12 @@ export function DesignSystemEditor({
                   let previewTextColor: string;
                   let previewSubtextColor: string;
 
-                  if (cardStyle.bgType === "gradient") {
+                  if (cardStyle.preset === "border-only") {
+                    // Border-only: no card bg, text sits on page background
+                    const pageBg = colors["--background"] || "0 0% 100%";
+                    previewTextColor = `hsl(${fgForBg(pageBg)})`;
+                    previewSubtextColor = previewTextColor;
+                  } else if (cardStyle.bgType === "gradient") {
                     previewTextColor = `hsl(${fgForBg(brandHsl)})`;
                     previewSubtextColor = previewTextColor;
                   } else if (cardStyle.bgType === "transparent" || cardStyle.bgOpacity < 0.4) {
@@ -1514,37 +1519,37 @@ export function DesignSystemEditor({
                     previewTextColor = "#ffffff";
                     previewSubtextColor = "rgba(255,255,255,0.85)";
                   } else {
-                    previewTextColor = "hsl(var(--card-foreground))";
-                    previewSubtextColor = "hsl(var(--muted-foreground))";
+                    // Solid card: compute accessible text color from the card background
+                    const cardBg = colors["--card"] || "0 0% 100%";
+                    previewTextColor = `hsl(${fgForBg(cardBg)})`;
+                    previewSubtextColor = previewTextColor;
                   }
 
-                  const showGlassBg = cardStyle.bgType === "transparent" || cardStyle.bgOpacity < 1 || cardStyle.backdropBlur > 0;
+                  const showGlassBg = cardStyle.preset !== "border-only" && (cardStyle.bgType === "transparent" || cardStyle.bgOpacity < 1 || cardStyle.backdropBlur > 0);
 
                   return (
                     <>
-                      {showGlassBg && (
-                        <style>{`
-                          @keyframes ds-glass-gradient {
-                            0%, 100% { background-position: 0% 50%; }
-                            50% { background-position: 100% 50%; }
-                          }
-                          @keyframes ds-glass-float-1 {
-                            0%, 100% { transform: translate(0, 0) scale(1); }
-                            33% { transform: translate(15px, -20px) scale(1.1); }
-                            66% { transform: translate(-10px, 10px) scale(0.95); }
-                          }
-                          @keyframes ds-glass-float-2 {
-                            0%, 100% { transform: translate(0, 0) scale(1); }
-                            33% { transform: translate(-12px, 15px) scale(1.05); }
-                            66% { transform: translate(18px, -8px) scale(0.9); }
-                          }
-                          @keyframes ds-glass-float-3 {
-                            0%, 100% { transform: translate(0, 0) scale(1); }
-                            33% { transform: translate(10px, 12px) scale(0.9); }
-                            66% { transform: translate(-15px, -15px) scale(1.1); }
-                          }
-                        `}</style>
-                      )}
+                    <style>{`
+                      @keyframes ds-glass-gradient {
+                        0%, 100% { background-position: 0% 50%; }
+                        50% { background-position: 100% 50%; }
+                      }
+                      @keyframes ds-glass-float-1 {
+                        0%, 100% { transform: translate(0, 0) scale(1); }
+                        33% { transform: translate(15px, -20px) scale(1.1); }
+                        66% { transform: translate(-10px, 10px) scale(0.95); }
+                      }
+                      @keyframes ds-glass-float-2 {
+                        0%, 100% { transform: translate(0, 0) scale(1); }
+                        33% { transform: translate(-12px, 15px) scale(1.05); }
+                        66% { transform: translate(18px, -8px) scale(0.9); }
+                      }
+                      @keyframes ds-glass-float-3 {
+                        0%, 100% { transform: translate(0, 0) scale(1); }
+                        33% { transform: translate(10px, 12px) scale(0.9); }
+                        66% { transform: translate(-15px, -15px) scale(1.1); }
+                      }
+                    `}</style>
                     <div
                       className="relative w-full md:max-w-[320px] rounded-xl overflow-hidden flex items-center justify-center"
                       style={{
@@ -1584,7 +1589,7 @@ export function DesignSystemEditor({
                           padding: "20px",
                         }}
                       >
-                        <h4 className="text-[14px] font-light mb-1" style={{ color: previewTextColor, textShadow: showGlassBg ? "0 1px 4px rgba(0,0,0,0.5)" : undefined }}>Card Title</h4>
+                        <p className="text-[16px] font-normal mb-1" style={{ color: previewTextColor, textShadow: showGlassBg ? "0 1px 4px rgba(0,0,0,0.5)" : undefined }}>Card Title</p>
                         <p className="text-[14px] font-light mb-3" style={{ color: previewSubtextColor, textShadow: showGlassBg ? "0 1px 4px rgba(0,0,0,0.5)" : undefined }}>This is a preview of your card style with customizable shadow, radius, and background.</p>
                         <button
                           className="h-9 px-3 text-[14px] font-light rounded-lg"

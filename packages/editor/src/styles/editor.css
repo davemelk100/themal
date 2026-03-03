@@ -11,3 +11,23 @@
   .hover\:bg-brand-dynamic\/30:hover { background-color: hsl(var(--brand) / 0.3); }
   .focus\:ring-brand-dynamic:focus { --tw-ring-color: hsl(var(--brand)); }
 }
+
+@keyframes ds-glass-gradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes ds-glass-float-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(15px, -20px) scale(1.1); }
+  66% { transform: translate(-10px, 10px) scale(0.95); }
+}
+@keyframes ds-glass-float-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-12px, 15px) scale(1.05); }
+  66% { transform: translate(18px, -8px) scale(0.9); }
+}
+@keyframes ds-glass-float-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(10px, 12px) scale(0.9); }
+  66% { transform: translate(-15px, -15px) scale(1.1); }
+}

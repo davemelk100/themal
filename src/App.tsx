@@ -26,7 +26,7 @@ export default function App() {
             Skip to content
           </a>
           <main id="main-content" className="flex-1 relative z-10">
-            <Suspense fallback={null}>
+            <Suspense fallback={<div className="min-h-[80vh]" />}>
               <Routes>
                 <Route path="/" element={<PortfolioLanding />} />
                 <Route path="/how-it-works" element={<HowItWorks />} />
