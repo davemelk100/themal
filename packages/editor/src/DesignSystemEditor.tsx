@@ -202,6 +202,7 @@ function DesignSystemEditorInner({
   className,
   showNavLinks = true,
   upgradeUrl,
+  headerRight,
 }: DesignSystemEditorProps) {
   const { isPremium } = useLicense();
   const {
@@ -932,95 +933,119 @@ function DesignSystemEditorInner({
     <div id="top" className={`ds-editor${className ? ` ${className}` : ''}`}>
       <section className="pt-4 sm:pt-6 lg:pt-8 pb-2 sm:pb-3 lg:pb-4 xl:pb-6 relative">
         <div className="w-full px-4 sm:px-6 lg:px-8">
-          {/* Title + nav links */}
-          <div className="w-full mb-4 flex items-center gap-x-4">
-            <div className="flex-1 min-w-0">
-              <h1 className="font-light pt-4 pb-1 sm:pb-3 title-font flex items-center gap-3" style={{ color: "hsl(var(--foreground))" }}>
-                <svg className="w-8 h-8 flex-shrink-0" viewBox="0 0 203 236" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0 9.966C0 4.462 4.462 0 9.966 0H59.793v71.752H9.966C4.462 71.752 0 67.29 0 61.786V9.966Z" fill="#FC0000"/>
-                  <path d="M202.5 9.966C202.5 4.462 198.038 0 192.534 0H142.707v71.752h49.827c5.504 0 9.966-4.462 9.966-9.966V9.966Z" fill="#0095FE"/>
-                  <rect x="59.793" y="71.752" width="41.457" height="82.116" fill="#FF8100"/>
-                  <rect x="59.793" width="41.457" height="71.752" fill="#FF4900"/>
-                  <path d="M59.793 153.868h41.457v82.116H69.759c-5.504 0-9.966-4.461-9.966-9.965v-72.151Z" fill="#FFB601"/>
-                  <rect x="101.25" y="71.752" width="41.457" height="82.116" fill="#15C58E"/>
-                  <rect x="101.25" width="41.457" height="71.752" fill="#3CBB0E"/>
-                  <path d="M101.25 153.868h41.457v72.151c0 5.504-4.462 9.965-9.966 9.965H101.25v-82.116Z" fill="#8831F9"/>
-                </svg>
-                Theemal
-                {!isPremium && (
-                  <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.05em", padding: "1px 5px", borderRadius: 4, backgroundColor: "hsl(var(--brand))", color: "hsl(var(--brand-foreground, 0 0% 100%))", verticalAlign: "super", lineHeight: 1 }}>PRO</span>
-                )}
-              </h1>
-              {showNavLinks && (
-                <div className="flex items-center gap-4 pb-2 sm:pb-0">
-                  <a
-                    href="/how-it-works"
-                    className="text-[14px] font-light hover:opacity-70 transition-opacity"
-                    style={{ color: "hsl(var(--muted-foreground))" }}
-                  >
-                    How It Works &rarr;
-                  </a>
-                  <a
-                    href="/readme"
-                    className="text-[14px] font-light hover:opacity-70 transition-opacity"
-                    style={{ color: "hsl(var(--muted-foreground))" }}
-                  >
-                    README &rarr;
-                  </a>
-                  <a
-                    href="/pricing"
-                    className="text-[14px] font-light hover:opacity-70 transition-opacity"
-                    style={{ color: "hsl(var(--muted-foreground))" }}
-                  >
-                    Pricing &rarr;
-                  </a>
-                </div>
-              )}
-            </div>
-            <PremiumGate feature="pr-integration" variant="inline" upgradeUrl={upgradeUrl}>
-            {(() => {
-              const mainSt = sectionPrStatus["main"] || { status: 'idle' as const };
-              return (
-              <div className="flex-shrink-0 flex items-center gap-3">
-                {prEndpointUrl && mainSt.status === 'created' && (
-                  <div className="flex items-center gap-2 text-[14px] font-light text-green-600 dark:text-green-400">
-                    <span>PR Created!</span>
-                    {mainSt.url && (
-                      <a href={mainSt.url} target="_blank" rel="noopener noreferrer" className="underline hover:opacity-70 transition-opacity">View</a>
-                    )}
-                    <button
-                      onClick={() => setSectionPrStatus(prev => ({ ...prev, main: { status: 'idle' } }))}
-                      className="hover:opacity-70 transition-opacity"
-                      aria-label="Dismiss"
-                    >&#10005;</button>
-                  </div>
-                )}
-                {prEndpointUrl && mainSt.status === 'rate-limited' && mainSt.error && (
-                  <span className="text-[14px] font-light text-yellow-700 dark:text-yellow-300">
-                    {mainSt.error}
-                  </span>
-                )}
-                <button
-                  disabled={mainSt.status === 'creating'}
-                  onClick={() => {
-                    if (mainSt.status === 'creating') return;
-                    if (!prEndpointUrl) { setShowPrSetupModal(true); return; }
-                    setPrSections(new Set()); setShowPrModal(true);
-                  }}
-                  className={`h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 disabled:opacity-50 flex items-center justify-center gap-1 ${
-                    mainSt.status === 'error' || mainSt.status === 'rate-limited'
-                      ? 'text-red-600 dark:text-red-400'
-                      : ''
-                  }`}
-                  style={{ backgroundColor: "transparent", color: mainSt.status === 'error' || mainSt.status === 'rate-limited' ? undefined : "hsl(var(--brand))", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
+          {/* Title + nav links — single header row */}
+          <div className="w-full mb-4 flex items-center gap-x-4 pt-4 flex-wrap">
+            <a href="#top" className="flex-shrink-0" style={{ color: "hsl(var(--foreground))" }}>
+              <svg className="h-8" viewBox="0 0 1740 485" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Theemel">
+                <path d="M0 20.1279C0 9.01158 9.01159 0 20.128 0H120.768V144.921H20.1279C9.01157 144.921 0 135.91 0 124.793V20.1279Z" fill="#FC0000"/>
+                <path d="M409 20.1279C409 9.01158 399.988 0 388.872 0H288.232V144.921H388.872C399.988 144.921 409 135.91 409 124.793V20.1279Z" fill="#0095FE"/>
+                <path d="M120.768 144.921H204.5V310.776H120.768V144.921Z" fill="#FF8100"/>
+                <path d="M120.768 0H204.5V144.921H120.768V0Z" fill="#FF4900"/>
+                <path d="M120.768 310.776H204.5V476.63H140.896C129.779 476.63 120.768 467.618 120.768 456.502V310.776Z" fill="#FFB601"/>
+                <path d="M204.5 144.921H288.232V310.776H204.5V144.921Z" fill="#15C58E"/>
+                <path d="M204.5 0H288.232V144.921H204.5V0Z" fill="#3CBB0E"/>
+                <path d="M204.5 310.776H288.232V456.502C288.232 467.618 279.221 476.63 268.104 476.63H204.5V310.776Z" fill="#8831F9"/>
+                <path d="M568.258 190.086V224.266H471.578V477H432.125V224.266H335.445V190.086H568.258Z" fill="currentColor"/>
+                <path d="M579.312 189.109H614.469V296.141C622.802 285.594 630.289 278.172 636.93 273.875C648.258 266.453 662.385 262.742 679.312 262.742C709.651 262.742 730.224 273.354 741.031 294.578C746.891 306.167 749.82 322.247 749.82 342.82V477H713.688V345.164C713.688 329.799 711.734 318.536 707.828 311.375C701.448 299.917 689.469 294.188 671.891 294.188C657.307 294.188 644.091 299.201 632.242 309.227C620.393 319.253 614.469 338.198 614.469 366.062V477H579.312V189.109Z" fill="currentColor"/>
+                <path d="M869.078 263.133C883.922 263.133 898.31 266.648 912.242 273.68C926.174 280.581 936.786 289.565 944.078 300.633C951.109 311.18 955.797 323.484 958.141 337.547C960.224 347.182 961.266 362.547 961.266 383.641H807.945C808.596 404.865 813.609 421.922 822.984 434.812C832.359 447.573 846.878 453.953 866.539 453.953C884.898 453.953 899.547 447.898 910.484 435.789C916.734 428.758 921.161 420.62 923.766 411.375H958.336C957.424 419.057 954.365 427.651 949.156 437.156C944.078 446.531 938.349 454.214 931.969 460.203C921.292 470.62 908.076 477.651 892.32 481.297C883.857 483.38 874.286 484.422 863.609 484.422C837.568 484.422 815.497 474.982 797.398 456.102C779.299 437.091 770.25 410.529 770.25 376.414C770.25 342.82 779.365 315.542 797.594 294.578C815.823 273.615 839.651 263.133 869.078 263.133ZM925.133 355.711C923.701 340.477 920.38 328.302 915.172 319.188C905.536 302.26 889.456 293.797 866.93 293.797C850.784 293.797 837.242 299.656 826.305 311.375C815.367 322.964 809.573 337.742 808.922 355.711H925.133Z" fill="currentColor"/>
+                <path d="M1071.73 263.133C1086.58 263.133 1100.97 266.648 1114.9 273.68C1128.83 280.581 1139.44 289.565 1146.73 300.633C1153.77 311.18 1158.45 323.484 1160.8 337.547C1162.88 347.182 1163.92 362.547 1163.92 383.641H1010.6C1011.25 404.865 1016.27 421.922 1025.64 434.812C1035.02 447.573 1049.53 453.953 1069.2 453.953C1087.55 453.953 1102.2 447.898 1113.14 435.789C1119.39 428.758 1123.82 420.62 1126.42 411.375H1160.99C1160.08 419.057 1157.02 427.651 1151.81 437.156C1146.73 446.531 1141.01 454.214 1134.62 460.203C1123.95 470.62 1110.73 477.651 1094.98 481.297C1086.51 483.38 1076.94 484.422 1066.27 484.422C1040.22 484.422 1018.15 474.982 1000.05 456.102C981.956 437.091 972.906 410.529 972.906 376.414C972.906 342.82 982.021 315.542 1000.25 294.578C1018.48 273.615 1042.31 263.133 1071.73 263.133ZM1127.79 355.711C1126.36 340.477 1123.04 328.302 1117.83 319.188C1108.19 302.26 1092.11 293.797 1069.59 293.797C1053.44 293.797 1039.9 299.656 1028.96 311.375C1018.02 322.964 1012.23 337.742 1011.58 355.711H1127.79Z" fill="currentColor"/>
+                <path d="M1187.28 267.82H1222.05V297.508C1230.38 287.221 1237.93 279.734 1244.7 275.047C1256.29 267.104 1269.44 263.133 1284.16 263.133C1300.82 263.133 1314.23 267.234 1324.39 275.438C1330.12 280.125 1335.33 287.026 1340.02 296.141C1347.83 284.943 1357.01 276.674 1367.55 271.336C1378.1 265.867 1389.95 263.133 1403.1 263.133C1431.23 263.133 1450.37 273.289 1460.52 293.602C1465.99 304.539 1468.73 319.253 1468.73 337.742V477H1432.2V331.688C1432.2 317.755 1428.69 308.185 1421.66 302.977C1414.76 297.768 1406.29 295.164 1396.27 295.164C1382.46 295.164 1370.55 299.786 1360.52 309.031C1350.63 318.276 1345.68 333.706 1345.68 355.32V477H1309.94V340.477C1309.94 326.284 1308.24 315.932 1304.86 309.422C1299.52 299.656 1289.56 294.773 1274.98 294.773C1261.7 294.773 1249.59 299.917 1238.65 310.203C1227.84 320.49 1222.44 339.109 1222.44 366.062V477H1187.28V267.82Z" fill="currentColor"/>
+                <path d="M1587.59 263.133C1602.44 263.133 1616.83 266.648 1630.76 273.68C1644.69 280.581 1655.3 289.565 1662.59 300.633C1669.62 311.18 1674.31 323.484 1676.66 337.547C1678.74 347.182 1679.78 362.547 1679.78 383.641H1526.46C1527.11 404.865 1532.12 421.922 1541.5 434.812C1550.88 447.573 1565.39 453.953 1585.05 453.953C1603.41 453.953 1618.06 447.898 1629 435.789C1635.25 428.758 1639.68 420.62 1642.28 411.375H1676.85C1675.94 419.057 1672.88 427.651 1667.67 437.156C1662.59 446.531 1656.86 454.214 1650.48 460.203C1639.81 470.62 1626.59 477.651 1610.84 481.297C1602.37 483.38 1592.8 484.422 1582.12 484.422C1556.08 484.422 1534.01 474.982 1515.91 456.102C1497.82 437.091 1488.77 410.529 1488.77 376.414C1488.77 342.82 1497.88 315.542 1516.11 294.578C1534.34 273.615 1558.17 263.133 1587.59 263.133ZM1643.65 355.711C1642.22 340.477 1638.9 328.302 1633.69 319.188C1624.05 302.26 1607.97 293.797 1585.45 293.797C1569.3 293.797 1555.76 299.656 1544.82 311.375C1533.88 322.964 1528.09 337.742 1527.44 355.711H1643.65Z" fill="currentColor"/>
+                <path d="M1704.12 190.086H1739.27V477H1704.12V190.086Z" fill="currentColor"/>
+              </svg>
+            </a>
+            <nav className="flex items-center gap-3 sm:gap-4 flex-wrap flex-1 min-w-0">
+              {[
+                { id: "colors", label: "Colors" },
+                { id: "card-style", label: "Card Style" },
+                { id: "typography", label: "Typography" },
+                { id: "alerts", label: "Alerts" },
+                { id: "interactions", label: "Interactions" },
+              ].map((s) => (
+                <a
+                  key={s.id}
+                  href={`#${s.id}`}
+                  className="text-[13px] font-light uppercase tracking-wider hover:opacity-70 transition-opacity whitespace-nowrap"
+                  style={{ color: "hsl(var(--muted-foreground))" }}
                 >
-                  <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" /></svg>
-                  <span className="truncate">{mainSt.status === 'creating' ? 'Preparing...' : mainSt.status === 'error' ? 'Retry PR' : mainSt.status === 'rate-limited' ? 'Retry PR' : 'Open PR'}</span>
-                </button>
+                  {s.label}
+                </a>
+              ))}
+              <PremiumGate feature="pr-integration" variant="inline" upgradeUrl={upgradeUrl}>
+              {(() => {
+                const mainSt = sectionPrStatus["main"] || { status: 'idle' as const };
+                return (
+                <div className="flex items-center gap-2">
+                  {prEndpointUrl && mainSt.status === 'created' && (
+                    <div className="flex items-center gap-2 text-[13px] font-light text-green-600 dark:text-green-400">
+                      <span>PR Created!</span>
+                      {mainSt.url && (
+                        <a href={mainSt.url} target="_blank" rel="noopener noreferrer" className="underline hover:opacity-70 transition-opacity">View</a>
+                      )}
+                      <button
+                        onClick={() => setSectionPrStatus(prev => ({ ...prev, main: { status: 'idle' } }))}
+                        className="hover:opacity-70 transition-opacity"
+                        aria-label="Dismiss"
+                      >&#10005;</button>
+                    </div>
+                  )}
+                  {prEndpointUrl && mainSt.status === 'rate-limited' && mainSt.error && (
+                    <span className="text-[13px] font-light text-yellow-700 dark:text-yellow-300">
+                      {mainSt.error}
+                    </span>
+                  )}
+                  <button
+                    disabled={mainSt.status === 'creating'}
+                    onClick={() => {
+                      if (mainSt.status === 'creating') return;
+                      if (!prEndpointUrl) { setShowPrSetupModal(true); return; }
+                      setPrSections(new Set()); setShowPrModal(true);
+                    }}
+                    className={`text-[13px] font-light uppercase tracking-wider transition-colors hover:opacity-70 flex items-center gap-1 whitespace-nowrap ${
+                      mainSt.status === 'error' || mainSt.status === 'rate-limited'
+                        ? 'text-red-600 dark:text-red-400'
+                        : ''
+                    }`}
+                    style={{ color: mainSt.status === 'error' || mainSt.status === 'rate-limited' ? undefined : "hsl(var(--brand))" }}
+                  >
+                    <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" /></svg>
+                    <span>{mainSt.status === 'creating' ? 'Preparing...' : mainSt.status === 'error' ? 'Retry PR' : mainSt.status === 'rate-limited' ? 'Retry PR' : 'Open PR'}</span>
+                  </button>
+                </div>
+                );
+              })()}
+              </PremiumGate>
+            </nav>
+            {(showNavLinks || headerRight) && (
+              <div className="ml-auto flex items-center gap-4 flex-shrink-0">
+                {showNavLinks && (
+                  <>
+                    <a
+                      href="/how-it-works"
+                      className="text-[13px] font-light uppercase tracking-wider hover:opacity-70 transition-opacity whitespace-nowrap"
+                      style={{ color: "hsl(var(--muted-foreground))" }}
+                    >
+                      How It Works &rarr;
+                    </a>
+                    <a
+                      href="/readme"
+                      className="text-[13px] font-light uppercase tracking-wider hover:opacity-70 transition-opacity whitespace-nowrap"
+                      style={{ color: "hsl(var(--muted-foreground))" }}
+                    >
+                      README &rarr;
+                    </a>
+                    <a
+                      href="/pricing"
+                      className="text-[13px] font-light uppercase tracking-wider hover:opacity-70 transition-opacity whitespace-nowrap"
+                      style={{ color: "hsl(var(--muted-foreground))" }}
+                    >
+                      Pricing &rarr;
+                    </a>
+                  </>
+                )}
+                {headerRight}
               </div>
-              );
-            })()}
-            </PremiumGate>
+            )}
           </div>
 
           {/* Alerts */}
@@ -1152,25 +1177,6 @@ function DesignSystemEditorInner({
             </div>
           )}
 
-          {/* Jump nav */}
-          <nav className="flex items-center gap-1 sm:gap-2 py-2 mb-2 overflow-x-auto sticky top-0 z-20" data-axe-exclude style={{ backgroundColor: "hsl(var(--background))" }}>
-            {[
-              { id: "colors", label: "Colors" },
-              { id: "card-style", label: "Card Style" },
-              { id: "typography", label: "Typography" },
-              { id: "alerts", label: "Alerts" },
-              { id: "interactions", label: "Interactions" },
-            ].map((s) => (
-              <a
-                key={s.id}
-                href={`#${s.id}`}
-                className="px-3 py-1.5 text-[13px] font-light uppercase tracking-wider rounded-md transition-colors hover:opacity-70 whitespace-nowrap"
-                style={{ color: "hsl(var(--foreground))", backgroundColor: "hsl(var(--muted-foreground) / 0.08)" }}
-              >
-                {s.label}
-              </a>
-            ))}
-          </nav>
 
           {/* Colors section */}
           <div id="colors" className="min-w-0 p-2 md:p-4 space-y-3 scroll-mt-16">
@@ -1294,7 +1300,6 @@ function DesignSystemEditorInner({
                       className="absolute inset-0 opacity-0 cursor-pointer"
                       style={{ width: "calc(100% - 32px)", height: "100%" }}
                     />
-                    <PremiumGate feature="color-locks" variant="inline" upgradeUrl={upgradeUrl}>
                     <button
                       className="w-8 flex items-center justify-center transition-all cursor-pointer"
                       style={{
@@ -1303,6 +1308,7 @@ function DesignSystemEditorInner({
                         opacity: canLock ? 1 : 0.3,
                       }}
                       onClick={() => {
+                        if (!isPremium) return;
                         if (!canLock) return;
                         setLockedKeys(prev => {
                           const next = new Set(prev);
@@ -1311,7 +1317,7 @@ function DesignSystemEditorInner({
                           return next;
                         });
                       }}
-                      title={isLocked ? `Unlock ${label}` : lockedKeys.size >= 4 ? "Max 4 locks" : `Lock ${label}`}
+                      title={!isPremium ? "Pro feature" : isLocked ? `Unlock ${label}` : lockedKeys.size >= 4 ? "Max 4 locks" : `Lock ${label}`}
                       aria-label={isLocked ? `Unlock ${label} color` : `Lock ${label} color`}
                     >
                       {isLocked ? (
@@ -1326,7 +1332,6 @@ function DesignSystemEditorInner({
                         </svg>
                       )}
                     </button>
-                    </PremiumGate>
                   </div>
                 );
               })}

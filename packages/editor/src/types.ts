@@ -1,3 +1,5 @@
+import type React from "react";
+
 export interface DesignSystemEditorProps {
   /** URL for the PR creation endpoint. Hides PR button if omitted. */
   prEndpointUrl?: string;
@@ -15,6 +17,8 @@ export interface DesignSystemEditorProps {
   licenseKey?: string;
   /** Custom URL for the "Upgrade" link shown on gated features */
   upgradeUrl?: string;
+  /** Content rendered at the far right of the header row (e.g. auth buttons) */
+  headerRight?: React.ReactNode;
 }
 
 export interface TokenDefinition {

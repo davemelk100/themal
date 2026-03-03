@@ -4,7 +4,6 @@ import { SignIn, SignUp } from "@clerk/clerk-react";
 
 import { ThemeProvider } from "./context/ThemeContext";
 import { applyStoredThemeColors } from "@design-alive/editor";
-import UserNav from "./components/UserNav";
 
 const PortfolioLanding = lazy(
   () => import("./pages/portfolio/PortfolioLanding"),
@@ -28,7 +27,6 @@ export default function App() {
           >
             Skip to content
           </a>
-          <UserNav />
           <main id="main-content" className="flex-1 relative z-10">
             <Suspense fallback={<div className="min-h-[80vh]" />}>
               <Routes>
