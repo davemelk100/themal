@@ -1,5 +1,5 @@
 {
-  "name": "@design-alive/editor",
+  "name": "@theemel/editor",
   "version": "0.1.0",
   "type": "module",
   "description": "Interactive design system editor — pick colors, enforce WCAG AA contrast, export CSS custom properties",
