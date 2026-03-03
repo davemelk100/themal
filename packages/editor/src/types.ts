@@ -11,6 +11,10 @@ export interface DesignSystemEditorProps {
   className?: string;
   /** Show "How It Works" and "README" nav links. Default: true */
   showNavLinks?: boolean;
+  /** License key to unlock premium features */
+  licenseKey?: string;
+  /** Custom URL for the "Upgrade" link shown on gated features */
+  upgradeUrl?: string;
 }
 
 export interface TokenDefinition {

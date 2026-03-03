@@ -16,3 +16,10 @@ export {
   applyStoredAlertStyle,
 } from "./utils/themeUtils";
 export type { HarmonyScheme, CardStyleState, TypographyState, AlertStyleState } from "./utils/themeUtils";
+
+export { validateLicenseKey, generateLicenseKey } from "./utils/license";
+export type { PremiumFeature, LicenseValidation } from "./utils/license";
+export { LicenseProvider, useLicense } from "./hooks/useLicense";
+export type { LicenseProviderProps } from "./hooks/useLicense";
+export { PremiumGate } from "./components/PremiumGate";
+export type { PremiumGateProps } from "./components/PremiumGate";

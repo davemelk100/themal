@@ -2,6 +2,8 @@ import React, { Suspense, useState, useRef, useEffect, useCallback } from "react
 import type { AxeResults } from "axe-core";
 import type { DesignSystemEditorProps } from "./types";
 import { useColorState } from "./hooks/useColorState";
+import { LicenseProvider, useLicense } from "./hooks/useLicense";
+import { PremiumGate } from "./components/PremiumGate";
 import storage from "./utils/storage";
 import {
   EDITABLE_VARS,
@@ -186,14 +188,16 @@ const COLOR_SWATCHES = [
 ];
 
 
-export function DesignSystemEditor({
+function DesignSystemEditorInner({
   prEndpointUrl,
   accessibilityAudit = true,
   onChange,
   onExport,
   className,
   showNavLinks = true,
+  upgradeUrl,
 }: DesignSystemEditorProps) {
+  const { isPremium } = useLicense();
   const {
     colors,
     setColors,
@@ -369,7 +373,7 @@ export function DesignSystemEditor({
   }, [colors, cardStyle, typographyState, alertStyle]);
 
   const submitPr = useCallback(async (sections: Iterable<string>, statusKey: string) => {
-    if (!prEndpointUrl) return;
+    if (!isPremium || !prEndpointUrl) return;
     setSectionPrStatus(prev => ({ ...prev, [statusKey]: { status: 'creating' } }));
     const popup = window.open('about:blank', '_blank');
     try {
@@ -399,7 +403,7 @@ export function DesignSystemEditor({
       setSectionPrStatus(prev => ({ ...prev, [statusKey]: { status: 'error' } }));
       popup?.close();
     }
-  }, [prEndpointUrl, buildSectionCss]);
+  }, [isPremium, prEndpointUrl, buildSectionCss]);
 
   const handleColorChange = (key: string, hex: string) => {
     const lower = hex.toLowerCase();
@@ -511,6 +515,7 @@ export function DesignSystemEditor({
   };
 
   const handleRegenerate = (schemeIdx: number) => {
+    if (!isPremium) return;
     const scheme = HARMONY_SCHEMES[schemeIdx];
     const brandHsl = colors['--brand'];
     if (!brandHsl) return;
@@ -562,7 +567,7 @@ export function DesignSystemEditor({
   };
 
   const handleUndo = () => {
-    if (!prevColors) return;
+    if (!isPremium || !prevColors) return;
     const pending = storage.get<Record<string, string>>(PENDING_COLORS_KEY) || {};
     for (const [key, val] of Object.entries(prevColors)) {
       document.documentElement.style.setProperty(key, val);
@@ -680,6 +685,7 @@ export function DesignSystemEditor({
   };
 
   const fixContrastIssues = async () => {
+    if (!isPremium) return;
     setAuditStatus('running');
     try {
       const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -880,6 +886,9 @@ export function DesignSystemEditor({
                   <circle cx="16" cy="16" r="5" fill="white"/>
                 </svg>
                 Theemal
+                {!isPremium && (
+                  <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.05em", padding: "1px 5px", borderRadius: 4, backgroundColor: "hsl(var(--brand))", color: "hsl(var(--brand-foreground, 0 0% 100%))", verticalAlign: "super", lineHeight: 1 }}>PRO</span>
+                )}
               </h1>
               {showNavLinks && (
                 <div className="flex items-center gap-4 pb-2 sm:pb-0">
@@ -900,6 +909,7 @@ export function DesignSystemEditor({
                 </div>
               )}
             </div>
+            <PremiumGate feature="pr-integration" variant="inline" upgradeUrl={upgradeUrl}>
             {(() => {
               const mainSt = sectionPrStatus["main"] || { status: 'idle' as const };
               return (
@@ -942,9 +952,11 @@ export function DesignSystemEditor({
               </div>
               );
             })()}
+            </PremiumGate>
           </div>
 
           {/* Alerts */}
+          <PremiumGate feature="accessibility-audit" upgradeUrl={upgradeUrl}>
           <div className="mb-0">
             <div className="w-full sm:w-auto order-first sm:order-last flex-shrink-0 min-h-[36px] pointer-events-none [&>*]:pointer-events-auto" data-axe-exclude>
                 {accessibilityAudit && auditStatus === 'failed' && (
@@ -980,6 +992,7 @@ export function DesignSystemEditor({
                 )}
             </div>
           </div>
+          </PremiumGate>
 
           {/* Reset Confirmation Modal */}
           {showResetModal && (
@@ -1095,6 +1108,7 @@ export function DesignSystemEditor({
             <div className="flex items-center flex-wrap gap-2 sm:gap-4" data-axe-exclude>
               <h2 className="text-[20px] font-normal uppercase tracking-wider flex items-center gap-2" style={{ color: "hsl(var(--foreground))" }}>Colors <a href="#top" className="opacity-30 hover:opacity-70 transition-opacity" aria-label="Back to top"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 19V5m0 0l-7 7m7-7l7 7" /></svg></a></h2>
               <div className="ml-auto flex flex-wrap items-center gap-1 sm:gap-2">
+              <PremiumGate feature="harmony-schemes" variant="inline" upgradeUrl={upgradeUrl}>
               <div className="relative">
                 <button
                   onClick={() => setShuffleOpen(!shuffleOpen)}
@@ -1132,6 +1146,7 @@ export function DesignSystemEditor({
                   </>
                 )}
               </div>
+              </PremiumGate>
               <div className="flex items-center">
                 <button
                   onClick={handleGenerate}
@@ -1142,6 +1157,7 @@ export function DesignSystemEditor({
                   Refresh
                 </button>
                 {prevColors && (
+                  <PremiumGate feature="undo" variant="inline" upgradeUrl={upgradeUrl}>
                   <button
                     onClick={handleUndo}
                     aria-label="Undo last color change"
@@ -1150,6 +1166,7 @@ export function DesignSystemEditor({
                   >
                     <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 10h10a5 5 0 010 10H9m-6-10l4-4m-4 4l4 4" /></svg>
                   </button>
+                  </PremiumGate>
                 )}
               </div>
                 <button
@@ -1208,6 +1225,7 @@ export function DesignSystemEditor({
                       className="absolute inset-0 opacity-0 cursor-pointer"
                       style={{ width: "calc(100% - 32px)", height: "100%" }}
                     />
+                    <PremiumGate feature="color-locks" variant="inline" upgradeUrl={upgradeUrl}>
                     <button
                       className="w-8 flex items-center justify-center transition-all cursor-pointer"
                       style={{
@@ -1239,6 +1257,7 @@ export function DesignSystemEditor({
                         </svg>
                       )}
                     </button>
+                    </PremiumGate>
                   </div>
                 );
               })}
@@ -2144,5 +2163,13 @@ export function DesignSystemEditor({
         </div>
       )}
     </div>
+  );
+}
+
+export function DesignSystemEditor({ licenseKey, ...props }: DesignSystemEditorProps) {
+  return (
+    <LicenseProvider licenseKey={licenseKey}>
+      <DesignSystemEditorInner {...props} />
+    </LicenseProvider>
   );
 }
