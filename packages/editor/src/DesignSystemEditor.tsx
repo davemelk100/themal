@@ -1557,7 +1557,7 @@ export function DesignSystemEditor({
                         style={{
                           minHeight: "240px",
                           borderRadius: `${cardStyle.borderRadius}px`,
-                          background: `linear-gradient(135deg, hsl(${brandHsl}), hsl(${secondaryHsl}), hsl(${accentHsl}), hsl(${brandHsl}))`,
+                          backgroundImage: `linear-gradient(135deg, hsl(${brandHsl}), hsl(${secondaryHsl}), hsl(${accentHsl}), hsl(${brandHsl}))`,
                           backgroundSize: "300% 300%",
                           animation: "ds-glass-gradient 8s ease infinite",
                           padding: "10px",
