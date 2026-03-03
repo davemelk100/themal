@@ -829,7 +829,7 @@ export function applyStoredCardStyle(themeColors: Record<string, string>): CardS
 export const TYPOGRAPHY_KEY = "ds-typography";
 
 export interface TypographyState {
-  preset: "modern" | "classic" | "compact" | "editorial" | "custom";
+  preset: "system" | "modern" | "classic" | "compact" | "editorial" | "custom";
   headingFamily: string;
   bodyFamily: string;
   baseFontSize: number;
@@ -841,9 +841,9 @@ export interface TypographyState {
 }
 
 export const DEFAULT_TYPOGRAPHY: TypographyState = {
-  preset: "modern",
-  headingFamily: "Roboto, sans-serif",
-  bodyFamily: "Roboto, sans-serif",
+  preset: "system",
+  headingFamily: "system-ui, -apple-system, sans-serif",
+  bodyFamily: "system-ui, -apple-system, sans-serif",
   baseFontSize: 17,
   headingWeight: 300,
   bodyWeight: 300,
@@ -853,7 +853,18 @@ export const DEFAULT_TYPOGRAPHY: TypographyState = {
 };
 
 export const TYPOGRAPHY_PRESETS: Record<string, TypographyState> = {
-  modern: { ...DEFAULT_TYPOGRAPHY },
+  system: { ...DEFAULT_TYPOGRAPHY },
+  modern: {
+    preset: "modern",
+    headingFamily: "Roboto, sans-serif",
+    bodyFamily: "Roboto, sans-serif",
+    baseFontSize: 17,
+    headingWeight: 300,
+    bodyWeight: 300,
+    lineHeight: 1.5,
+    letterSpacing: 0,
+    headingLetterSpacing: 0,
+  },
   classic: {
     preset: "classic",
     headingFamily: "Georgia, serif",
@@ -890,20 +901,27 @@ export const TYPOGRAPHY_PRESETS: Record<string, TypographyState> = {
 };
 
 export const FONT_FAMILY_OPTIONS = [
+  { label: "System Default", value: "system-ui, -apple-system, sans-serif" },
   { label: "Roboto", value: "Roboto, sans-serif" },
   { label: "Inter", value: "Inter, sans-serif" },
+  { label: "Lato", value: "Lato, sans-serif" },
+  { label: "DM Sans", value: '"DM Sans", sans-serif' },
+  { label: "Merriweather", value: "Merriweather, serif" },
   { label: "Georgia", value: "Georgia, serif" },
-  { label: "System UI", value: "system-ui, sans-serif" },
-  { label: "Courier New", value: '"Courier New", monospace' },
   { label: "Playfair Display", value: '"Playfair Display", serif' },
-  { label: "Segoe UI", value: '"Segoe UI", sans-serif' },
   { label: "Space Grotesk", value: '"Space Grotesk", sans-serif' },
+  { label: "Courier New", value: '"Courier New", monospace' },
+  { label: "Segoe UI", value: '"Segoe UI", sans-serif' },
 ];
 
 const GOOGLE_FONTS_TO_LOAD: Record<string, string> = {
+  "Roboto, sans-serif": "Roboto:wght@300;400;500;700",
+  "Inter, sans-serif": "Inter:wght@100;200;300;400;500;600;700;800;900",
+  "Lato, sans-serif": "Lato:wght@100;300;400;700;900",
+  '"DM Sans", sans-serif': "DM+Sans:wght@300;400;500;600;700",
+  "Merriweather, serif": "Merriweather:wght@300;400;700;900",
   '"Playfair Display", serif': "Playfair+Display:wght@400;700",
   '"Space Grotesk", sans-serif': "Space+Grotesk:wght@300;400;500;600;700",
-  "Inter, sans-serif": "Inter:wght@100;200;300;400;500;600;700;800;900",
 };
 
 export function loadGoogleFont(family: string) {
