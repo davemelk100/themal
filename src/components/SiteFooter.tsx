@@ -4,7 +4,7 @@ import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-reac
 export default function SiteFooter() {
   return (
     <footer
-      className="sticky bottom-0 z-40 mt-auto border-t"
+      className="hidden md:block sticky bottom-0 z-40 mt-auto border-t"
       style={{
         borderColor: "hsl(var(--border))",
         backgroundColor: "hsl(var(--background))",

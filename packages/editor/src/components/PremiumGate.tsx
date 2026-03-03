@@ -89,9 +89,12 @@ export function PremiumGate({
     if (leaveTimer.current) { clearTimeout(leaveTimer.current); leaveTimer.current = null; }
     notifyOthers(closeMe);
     setHovered(true);
+    // Auto-close after 2s regardless of hover state
+    leaveTimer.current = setTimeout(() => setHovered(false), 2000);
   };
   const handleLeave = () => {
-    leaveTimer.current = setTimeout(() => setHovered(false), 2000);
+    if (leaveTimer.current) { clearTimeout(leaveTimer.current); leaveTimer.current = null; }
+    leaveTimer.current = setTimeout(() => setHovered(false), 300);
   };
 
   if (isPremium) return <>{children}</>;

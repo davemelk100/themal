@@ -1374,8 +1374,7 @@ function DesignSystemEditorInner({
                     key={key}
                     className="relative group flex items-stretch rounded-lg overflow-visible"
                     style={{ boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
-                    onMouseEnter={() => { if (!isPremium) { if (lockLeaveTimer.current) { clearTimeout(lockLeaveTimer.current); lockLeaveTimer.current = null; } setHoveredLockKey(key); } }}
-                    onMouseLeave={() => { lockLeaveTimer.current = setTimeout(() => setHoveredLockKey(null), 4000); }}
+                    onClick={() => { if (!isPremium) { if (lockLeaveTimer.current) { clearTimeout(lockLeaveTimer.current); lockLeaveTimer.current = null; } setHoveredLockKey(prev => prev === key ? null : key); lockLeaveTimer.current = setTimeout(() => setHoveredLockKey(null), 2000); } }}
                   >
                     <button
                       className="w-full h-14 sm:h-20 text-[12px] sm:text-[14px] font-light transition-colors hover:opacity-80 flex flex-col items-center justify-center gap-0.5 cursor-pointer rounded-l-lg"

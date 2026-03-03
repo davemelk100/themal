@@ -20,7 +20,7 @@ export default function PortfolioLanding() {
       {import.meta.env.DEV && (
         <button
           onClick={toggleDevPro}
-          className="fixed top-4 right-4 z-50 px-3 py-1.5 rounded-lg text-[12px] font-mono transition-colors"
+          className="fixed bottom-4 left-4 z-50 px-3 py-1.5 rounded-lg text-[12px] font-mono transition-colors"
           style={{
             backgroundColor: isDevPro ? "hsl(142 71% 30%)" : "hsl(var(--foreground))",
             color: isDevPro ? "#fff" : "hsl(var(--background))",
