@@ -14,11 +14,14 @@
     "preview:build": "npm run build && npm run preview"
   },
   "dependencies": {
+    "@clerk/clerk-react": "^5.61.3",
+    "@clerk/clerk-sdk-node": "^4.13.23",
     "axe-core": "^4.11.1",
     "lucide-react": "^0.294.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^7.13.1"
+    "react-router-dom": "^7.13.1",
+    "stripe": "^20.4.0"
   },
   "devDependencies": {
     "@types/node": "^20",

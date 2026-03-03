@@ -4,13 +4,13 @@ An interactive design system that lets you pick a brand color and watch every to
 
 ## How It Works
 
-All palette colors are HSL custom properties on `:root`. From one brand color, the system derives a full token set (secondary, accent, muted, destructive) using your choice of color harmony scheme: complementary, triadic, analogous, split-complementary, or tetradic.
+All palette colors are HSL custom properties on `:root`. From one brand color, the system derives a full token set (secondary, accent, muted, destructive) using your choice of color harmony scheme: complementary, triadic, analogous, split-complementary, or tetradic.  
 
 Every foreground/background pair is audited against WCAG AA (4.5:1) via axe-core. Failing pairs are auto-corrected by adjusting foreground lightness. Your theme persists in localStorage across reloads.
 
 ## npm Package
 
-The editor is published to npm as [`@design-alive/editor`](https://www.npmjs.com/package/@design-alive/editor) and can be installed in any React app:
+The editor is published to npm as [`@design-alive/editor`](https://www.npmjs.com/package/@design-alive/editor) and can be installed in any React app:x
 
 ```bash
 npm install @design-alive/editor

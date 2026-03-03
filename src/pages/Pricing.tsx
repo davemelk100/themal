@@ -1,4 +1,7 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth, SignInButton } from "@clerk/clerk-react";
+import { useSubscription } from "../hooks/useSubscription";
 
 const check = (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0 mt-[2px]">
@@ -22,7 +25,106 @@ const proFeatures = [
   "GitHub PR integration",
   "WCAG AA accessibility audit with auto-fix",
   "Undo support",
+  "Hover & active state customization",
 ];
+
+function UpgradeButton() {
+  const { isSignedIn, getToken } = useAuth();
+  const { isPro } = useSubscription();
+  const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">("monthly");
+  const [loading, setLoading] = useState(false);
+
+  if (!isSignedIn) {
+    return (
+      <SignInButton mode="modal">
+        <button
+          className="mt-6 w-full inline-flex items-center justify-center rounded-lg px-5 py-2.5 text-[14px] font-medium transition-opacity hover:opacity-80"
+          style={{
+            backgroundColor: "hsl(var(--primary))",
+            color: "hsl(var(--primary-foreground))",
+          }}
+        >
+          Sign in to upgrade
+        </button>
+      </SignInButton>
+    );
+  }
+
+  if (isPro) {
+    return (
+      <div
+        className="mt-6 w-full inline-flex items-center justify-center rounded-lg px-5 py-2.5 text-[14px] font-medium"
+        style={{
+          backgroundColor: "hsl(var(--muted))",
+          color: "hsl(var(--muted-foreground))",
+        }}
+      >
+        Current plan
+      </div>
+    );
+  }
+
+  async function handleUpgrade() {
+    setLoading(true);
+    try {
+      const token = await getToken();
+      const res = await fetch("/.netlify/functions/create-checkout-session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ billingCycle }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    } catch (err) {
+      console.error("Checkout error:", err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div className="mt-6 space-y-3">
+      <div className="flex rounded-lg overflow-hidden" style={{ border: "1px solid hsl(var(--border))" }}>
+        <button
+          onClick={() => setBillingCycle("monthly")}
+          className="flex-1 px-3 py-2 text-[13px] font-medium transition-colors"
+          style={{
+            backgroundColor: billingCycle === "monthly" ? "hsl(var(--primary))" : "transparent",
+            color: billingCycle === "monthly" ? "hsl(var(--primary-foreground))" : "hsl(var(--muted-foreground))",
+          }}
+        >
+          $9/month
+        </button>
+        <button
+          onClick={() => setBillingCycle("yearly")}
+          className="flex-1 px-3 py-2 text-[13px] font-medium transition-colors"
+          style={{
+            backgroundColor: billingCycle === "yearly" ? "hsl(var(--primary))" : "transparent",
+            color: billingCycle === "yearly" ? "hsl(var(--primary-foreground))" : "hsl(var(--muted-foreground))",
+          }}
+        >
+          $49/year
+        </button>
+      </div>
+      <button
+        onClick={handleUpgrade}
+        disabled={loading}
+        className="w-full inline-flex items-center justify-center rounded-lg px-5 py-2.5 text-[14px] font-medium transition-opacity hover:opacity-80 disabled:opacity-50"
+        style={{
+          backgroundColor: "hsl(var(--primary))",
+          color: "hsl(var(--primary-foreground))",
+        }}
+      >
+        {loading ? "Redirecting..." : "Upgrade to Pro"}
+      </button>
+    </div>
+  );
+}
 
 export default function Pricing() {
   return (
@@ -55,6 +157,10 @@ export default function Pricing() {
             <h2 className="text-xl font-semibold mb-1" style={{ color: "hsl(var(--foreground))" }}>
               Free
             </h2>
+            <div className="mb-6">
+              <span className="text-2xl font-semibold" style={{ color: "hsl(var(--foreground))" }}>$0</span>
+              <span className="text-[14px] ml-1" style={{ color: "hsl(var(--muted-foreground))" }}>forever</span>
+            </div>
             <p className="text-[14px] mb-6" style={{ color: "hsl(var(--muted-foreground))" }}>
               Everything you need to get started.
             </p>
@@ -90,8 +196,12 @@ export default function Pricing() {
                 Recommended
               </span>
             </div>
+            <div className="mb-2">
+              <span className="text-2xl font-semibold" style={{ color: "hsl(var(--foreground))" }}>$9</span>
+              <span className="text-[14px] ml-1" style={{ color: "hsl(var(--muted-foreground))" }}>/month</span>
+            </div>
             <p className="text-[14px] mb-6" style={{ color: "hsl(var(--muted-foreground))" }}>
-              Full power for professionals.
+              or $49/year (save 55%)
             </p>
             <ul className="space-y-3 flex-1">
               {proFeatures.map((f) => (
@@ -101,18 +211,7 @@ export default function Pricing() {
                 </li>
               ))}
             </ul>
-            <a
-              href="https://theemel.com/pricing"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-6 inline-flex items-center justify-center rounded-lg px-5 py-2.5 text-[14px] font-medium transition-opacity hover:opacity-80"
-              style={{
-                backgroundColor: "hsl(var(--primary))",
-                color: "hsl(var(--primary-foreground))",
-              }}
-            >
-              Upgrade to Pro
-            </a>
+            <UpgradeButton />
           </div>
         </div>
       </div>

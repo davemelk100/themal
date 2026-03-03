@@ -9,7 +9,7 @@ export interface DesignSystemEditorProps {
   onExport?: (css: string) => void;
   /** Additional CSS class for the wrapper element */
   className?: string;
-  /** Show "How It Works" and "README" nav links. Default: true */
+  /** Show "How It Works", "README", and "Pricing" nav links. Default: true */
   showNavLinks?: boolean;
   /** License key to unlock premium features */
   licenseKey?: string;

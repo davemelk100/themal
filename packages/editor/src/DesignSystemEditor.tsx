@@ -40,8 +40,14 @@ import {
   applyAlertStyle,
   applyStoredAlertStyle,
   removeAlertStyleProperties,
+  INTERACTION_STYLE_KEY,
+  DEFAULT_INTERACTION_STYLE,
+  INTERACTION_PRESETS,
+  applyInteractionStyle,
+  applyStoredInteractionStyle,
+  removeInteractionStyleProperties,
 } from "./utils/themeUtils";
-import type { CardStyleState, TypographyState, AlertStyleState } from "./utils/themeUtils";
+import type { CardStyleState, TypographyState, AlertStyleState, InteractionStyleState } from "./utils/themeUtils";
 import "./styles/editor.css";
 
 const LazyHome = React.lazy(() =>
@@ -213,7 +219,7 @@ function DesignSystemEditorInner({
   const [showTypoResetModal, setShowTypoResetModal] = useState(false);
   const [generatedCode, setGeneratedCode] = useState<string | null>(null);
   const [codeCopied, setCodeCopied] = useState(false);
-  const [prSections, setPrSections] = useState<Set<string>>(new Set(["colors", "card", "typography", "alerts"]));
+  const [prSections, setPrSections] = useState<Set<string>>(new Set(["colors", "card", "typography", "alerts", "interactions"]));
   const [showPrModal, setShowPrModal] = useState(false);
   const [showPrSetupModal, setShowPrSetupModal] = useState(false);
   const [sectionPrStatus, setSectionPrStatus] = useState<Record<string, { status: 'idle' | 'creating' | 'created' | 'error' | 'rate-limited'; url?: string; error?: string }>>({});
@@ -242,6 +248,13 @@ function DesignSystemEditorInner({
   const [alertCssVisible, setAlertCssVisible] = useState(false);
   const [alertCssCopied, setAlertCssCopied] = useState(false);
   const [showAlertResetModal, setShowAlertResetModal] = useState(false);
+  const [interactionStyle, setInteractionStyle] = useState<InteractionStyleState>(() => {
+    const saved = storage.get<InteractionStyleState>(INTERACTION_STYLE_KEY);
+    return saved || { ...DEFAULT_INTERACTION_STYLE };
+  });
+  const [interactionCssVisible, setInteractionCssVisible] = useState(false);
+  const [interactionCssCopied, setInteractionCssCopied] = useState(false);
+  const [showInteractionResetModal, setShowInteractionResetModal] = useState(false);
 
   const fireOnChange = (newColors: Record<string, string>) => {
     onChange?.(newColors);
@@ -331,6 +344,38 @@ function DesignSystemEditorInner({
     setAlertStyle({ ...DEFAULT_ALERT_STYLE });
   };
 
+  useEffect(() => {
+    applyInteractionStyle(interactionStyle);
+  }, [interactionStyle]);
+
+  useEffect(() => {
+    applyStoredInteractionStyle();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const updateInteractionStyle = useCallback((patch: Partial<InteractionStyleState>) => {
+    setInteractionStyle(prev => {
+      const next = { ...prev, ...patch };
+      if (patch.preset === undefined && prev.preset !== "custom") {
+        next.preset = "custom";
+      }
+      return next;
+    });
+  }, []);
+
+  const selectInteractionPreset = useCallback((presetKey: string) => {
+    const preset = INTERACTION_PRESETS[presetKey];
+    if (preset) {
+      setInteractionStyle({ ...preset });
+    }
+  }, []);
+
+  const handleResetInteractionStyle = () => {
+    storage.remove(INTERACTION_STYLE_KEY);
+    removeInteractionStyleProperties();
+    setInteractionStyle({ ...DEFAULT_INTERACTION_STYLE });
+  };
+
   const buildSectionCss = useCallback((sections: Iterable<string>) => {
     let vars = "";
     for (const section of sections) {
@@ -367,10 +412,18 @@ function DesignSystemEditorInner({
           vars += `  --alert-border-width: ${alertStyle.borderWidth}px;\n`;
           vars += `  --alert-padding: ${alertStyle.padding}px;\n`;
           break;
+        case "interactions":
+          vars += `  --hover-opacity: ${interactionStyle.hoverOpacity};\n`;
+          vars += `  --hover-scale: ${interactionStyle.hoverScale};\n`;
+          vars += `  --active-scale: ${interactionStyle.activeScale};\n`;
+          vars += `  --transition-duration: ${interactionStyle.transitionDuration}ms;\n`;
+          vars += `  --focus-ring-width: ${interactionStyle.focusRingWidth}px;\n`;
+          vars += `  --focus-ring-color: hsl(var(--ring));\n`;
+          break;
       }
     }
     return `:root {\n${vars}}`;
-  }, [colors, cardStyle, typographyState, alertStyle]);
+  }, [colors, cardStyle, typographyState, alertStyle, interactionStyle]);
 
   const submitPr = useCallback(async (sections: Iterable<string>, statusKey: string) => {
     if (!isPremium || !prEndpointUrl) return;
@@ -490,6 +543,13 @@ function DesignSystemEditorInner({
     css += `  --alert-radius: ${alertStyle.borderRadius}px;\n`;
     css += `  --alert-border-width: ${alertStyle.borderWidth}px;\n`;
     css += `  --alert-padding: ${alertStyle.padding}px;\n`;
+    css += "\n  /* Interactions */\n";
+    css += `  --hover-opacity: ${interactionStyle.hoverOpacity};\n`;
+    css += `  --hover-scale: ${interactionStyle.hoverScale};\n`;
+    css += `  --active-scale: ${interactionStyle.activeScale};\n`;
+    css += `  --transition-duration: ${interactionStyle.transitionDuration}ms;\n`;
+    css += `  --focus-ring-width: ${interactionStyle.focusRingWidth}px;\n`;
+    css += `  --focus-ring-color: hsl(var(--ring));\n`;
     css += "}\n";
 
     let tw = "\n// tailwind.config.ts → theme.extend.colors\ncolors: {\n";
@@ -597,6 +657,9 @@ function DesignSystemEditorInner({
     storage.remove(ALERT_STYLE_KEY);
     removeAlertStyleProperties();
     setAlertStyle({ ...DEFAULT_ALERT_STYLE });
+    storage.remove(INTERACTION_STYLE_KEY);
+    removeInteractionStyleProperties();
+    setInteractionStyle({ ...DEFAULT_INTERACTION_STYLE });
     readCurrentColors();
     setGeneratedCode(null);
     setSectionPrStatus({});
@@ -873,17 +936,15 @@ function DesignSystemEditorInner({
           <div className="w-full mb-4 flex items-center gap-x-4">
             <div className="flex-1 min-w-0">
               <h1 className="font-light pt-4 pb-1 sm:pb-3 title-font flex items-center gap-3" style={{ color: "hsl(var(--foreground))" }}>
-                <svg className="w-8 h-8 flex-shrink-0" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                  <defs><clipPath id="cw"><circle cx="16" cy="16" r="15"/></clipPath></defs>
-                  <g clipPath="url(#cw)">
-                    <path d="M16 16L16 0A16 16 0 0 1 29.86 24Z" fill="#ff0000"/>
-                    <path d="M16 16L29.86 24A16 16 0 0 1 16 32Z" fill="#ff8800"/>
-                    <path d="M16 16L16 32A16 16 0 0 1 2.14 24Z" fill="#ffdd00"/>
-                    <path d="M16 16L2.14 24A16 16 0 0 1 2.14 8Z" fill="#00cc44"/>
-                    <path d="M16 16L2.14 8A16 16 0 0 1 16 0Z" fill="#0088ff"/>
-                    <path d="M16 16L16 0A16 16 0 0 0 2.14 8Z" fill="#8833ff"/>
-                  </g>
-                  <circle cx="16" cy="16" r="5" fill="white"/>
+                <svg className="w-8 h-8 flex-shrink-0" viewBox="0 0 203 236" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M0 9.966C0 4.462 4.462 0 9.966 0H59.793v71.752H9.966C4.462 71.752 0 67.29 0 61.786V9.966Z" fill="#FC0000"/>
+                  <path d="M202.5 9.966C202.5 4.462 198.038 0 192.534 0H142.707v71.752h49.827c5.504 0 9.966-4.462 9.966-9.966V9.966Z" fill="#0095FE"/>
+                  <rect x="59.793" y="71.752" width="41.457" height="82.116" fill="#FF8100"/>
+                  <rect x="59.793" width="41.457" height="71.752" fill="#FF4900"/>
+                  <path d="M59.793 153.868h41.457v82.116H69.759c-5.504 0-9.966-4.461-9.966-9.965v-72.151Z" fill="#FFB601"/>
+                  <rect x="101.25" y="71.752" width="41.457" height="82.116" fill="#15C58E"/>
+                  <rect x="101.25" width="41.457" height="71.752" fill="#3CBB0E"/>
+                  <path d="M101.25 153.868h41.457v72.151c0 5.504-4.462 9.965-9.966 9.965H101.25v-82.116Z" fill="#8831F9"/>
                 </svg>
                 Theemal
                 {!isPremium && (
@@ -905,6 +966,13 @@ function DesignSystemEditorInner({
                     style={{ color: "hsl(var(--muted-foreground))" }}
                   >
                     README &rarr;
+                  </a>
+                  <a
+                    href="/pricing"
+                    className="text-[14px] font-light hover:opacity-70 transition-opacity"
+                    style={{ color: "hsl(var(--muted-foreground))" }}
+                  >
+                    Pricing &rarr;
                   </a>
                 </div>
               )}
@@ -1091,6 +1159,7 @@ function DesignSystemEditorInner({
               { id: "card-style", label: "Card Style" },
               { id: "typography", label: "Typography" },
               { id: "alerts", label: "Alerts" },
+              { id: "interactions", label: "Interactions" },
             ].map((s) => (
               <a
                 key={s.id}
@@ -2080,6 +2149,210 @@ function DesignSystemEditorInner({
               </div>
             </div>
           )}
+
+          {/* Interactions section */}
+          <PremiumGate feature="interaction-states" upgradeUrl={upgradeUrl}>
+          <div id="interactions" className="min-w-0 p-2 md:p-4 space-y-3 mt-8 md:mt-12 scroll-mt-16">
+            <div className="flex items-center flex-wrap gap-2 sm:gap-4" data-axe-exclude>
+              <h2 className="text-[20px] font-normal uppercase tracking-wider flex items-center gap-2" style={{ color: "hsl(var(--foreground))" }}>Interactions <a href="#top" className="opacity-30 hover:opacity-70 transition-opacity" aria-label="Back to top"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 19V5m0 0l-7 7m7-7l7 7" /></svg></a></h2>
+              <div className="ml-auto flex flex-wrap items-center gap-1 sm:gap-2">
+                <button
+                  onClick={() => setInteractionCssVisible(!interactionCssVisible)}
+                  className="h-10 px-2 sm:px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                  style={{ color: "hsl(var(--muted-foreground))" }}
+                >
+                  <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+                  <span className="truncate"><span className="sm:hidden">{interactionCssVisible ? "Hide" : "CSS"}</span><span className="hidden sm:inline">{interactionCssVisible ? "Hide CSS" : "Show CSS"}</span></span>
+                </button>
+                <button
+                  onClick={() => setShowInteractionResetModal(true)}
+                  className="h-10 px-2 sm:px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                  style={{ color: "hsl(var(--muted-foreground))" }}
+                >
+                  <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" /></svg>
+                  <span className="truncate">Reset</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Preset buttons */}
+            <div className="flex flex-wrap gap-2 sm:gap-4 rounded-lg p-3" style={{ backgroundColor: "rgba(0,0,0,0.04)" }}>
+              {(["subtle", "elevated", "bold"] as const).map((key) => {
+                const labels: Record<string, string> = { subtle: "Subtle", elevated: "Elevated", bold: "Bold" };
+                const active = interactionStyle.preset === key;
+                return (
+                  <button
+                    key={key}
+                    onClick={() => selectInteractionPreset(key)}
+                    className="h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+                    style={active
+                      ? { backgroundColor: "hsl(var(--brand))", color: colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "#fff", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }
+                      : { backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }
+                    }
+                  >
+                    {labels[key]}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Interaction CSS output */}
+            {interactionCssVisible && (() => {
+              const intCss = `:root {\n  --hover-opacity: ${interactionStyle.hoverOpacity};\n  --hover-scale: ${interactionStyle.hoverScale};\n  --active-scale: ${interactionStyle.activeScale};\n  --transition-duration: ${interactionStyle.transitionDuration}ms;\n  --focus-ring-width: ${interactionStyle.focusRingWidth}px;\n  --focus-ring-color: hsl(var(--ring));\n}`;
+              return (
+                <div className="rounded-lg border" style={{ borderColor: "hsl(var(--border))" }}>
+                  <div className="flex items-center justify-between px-3 py-1.5 border-b" style={{ borderColor: "hsl(var(--border))" }}>
+                    <span className="text-[14px] font-light uppercase tracking-wider" style={{ color: "hsl(var(--card-foreground))" }}>Interaction Style CSS</span>
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(intCss);
+                          setInteractionCssCopied(true);
+                          setTimeout(() => setInteractionCssCopied(false), 2000);
+                        }}
+                        className="px-2 py-0.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
+                        style={{ backgroundColor: "hsl(var(--muted))", color: colors["--muted"] ? `hsl(${fgForBg(colors["--muted"])})` : "hsl(var(--muted-foreground))" }}
+                      >
+                        {interactionCssCopied ? "Copied!" : "Copy"}
+                      </button>
+                      <button
+                        onClick={() => setInteractionCssVisible(false)}
+                        className="px-2 py-0.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
+                        style={{ backgroundColor: "hsl(var(--muted))", color: colors["--muted"] ? `hsl(${fgForBg(colors["--muted"])})` : "hsl(var(--muted-foreground))" }}
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                  <pre className="p-3 overflow-x-auto max-h-64 text-xs leading-relaxed font-mono" style={{ color: "hsl(var(--card-foreground))" }}>
+                    <code>{intCss}</code>
+                  </pre>
+                </div>
+              );
+            })()}
+
+            {/* Controls + Preview */}
+            <div className="flex flex-col md:flex-row gap-4 md:gap-6">
+              {/* Slider controls */}
+              <div className="flex-1 min-w-0 space-y-3">
+                <div className="space-y-1.5">
+                  <p className="text-[14px] font-light uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>Hover</p>
+                  <label className="flex items-center justify-between gap-2 text-[14px] font-light" style={{ color: "hsl(var(--foreground))" }}>
+                    <span>Opacity: {interactionStyle.hoverOpacity}</span>
+                    <input type="range" min={0.6} max={1} step={0.01} value={interactionStyle.hoverOpacity} onChange={e => updateInteractionStyle({ hoverOpacity: Number(e.target.value) })} className="w-32 accent-[hsl(var(--brand))]" />
+                  </label>
+                  <label className="flex items-center justify-between gap-2 text-[14px] font-light" style={{ color: "hsl(var(--foreground))" }}>
+                    <span>Scale: {interactionStyle.hoverScale}</span>
+                    <input type="range" min={1} max={1.1} step={0.005} value={interactionStyle.hoverScale} onChange={e => updateInteractionStyle({ hoverScale: Number(e.target.value) })} className="w-32 accent-[hsl(var(--brand))]" />
+                  </label>
+                </div>
+                <div className="space-y-1.5">
+                  <p className="text-[14px] font-light uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>Active</p>
+                  <label className="flex items-center justify-between gap-2 text-[14px] font-light" style={{ color: "hsl(var(--foreground))" }}>
+                    <span>Scale: {interactionStyle.activeScale}</span>
+                    <input type="range" min={0.9} max={1.05} step={0.005} value={interactionStyle.activeScale} onChange={e => updateInteractionStyle({ activeScale: Number(e.target.value) })} className="w-32 accent-[hsl(var(--brand))]" />
+                  </label>
+                </div>
+                <div className="space-y-1.5">
+                  <p className="text-[14px] font-light uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>Timing & Focus</p>
+                  <label className="flex items-center justify-between gap-2 text-[14px] font-light" style={{ color: "hsl(var(--foreground))" }}>
+                    <span>Duration: {interactionStyle.transitionDuration}ms</span>
+                    <input type="range" min={0} max={500} step={10} value={interactionStyle.transitionDuration} onChange={e => updateInteractionStyle({ transitionDuration: Number(e.target.value) })} className="w-32 accent-[hsl(var(--brand))]" />
+                  </label>
+                  <label className="flex items-center justify-between gap-2 text-[14px] font-light" style={{ color: "hsl(var(--foreground))" }}>
+                    <span>Focus Ring: {interactionStyle.focusRingWidth}px</span>
+                    <input type="range" min={0} max={4} step={0.5} value={interactionStyle.focusRingWidth} onChange={e => updateInteractionStyle({ focusRingWidth: Number(e.target.value) })} className="w-32 accent-[hsl(var(--brand))]" />
+                  </label>
+                </div>
+              </div>
+
+              {/* Live preview */}
+              <div className="flex-1 min-w-0 flex items-start justify-center pt-2">
+                <div className="w-full md:max-w-[400px] space-y-3" data-axe-exclude>
+                  <p className="text-[14px] font-light uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>Preview</p>
+                  <div className="flex flex-wrap gap-3">
+                    <button
+                      className="px-4 py-2 text-[14px] font-light rounded-lg"
+                      style={{
+                        backgroundColor: "hsl(var(--primary))",
+                        color: "hsl(var(--primary-foreground))",
+                        transition: `opacity ${interactionStyle.transitionDuration}ms ease, transform ${interactionStyle.transitionDuration}ms ease`,
+                      }}
+                      onMouseEnter={e => { (e.target as HTMLElement).style.opacity = String(interactionStyle.hoverOpacity); (e.target as HTMLElement).style.transform = `scale(${interactionStyle.hoverScale})`; }}
+                      onMouseLeave={e => { (e.target as HTMLElement).style.opacity = "1"; (e.target as HTMLElement).style.transform = "scale(1)"; }}
+                      onMouseDown={e => { (e.target as HTMLElement).style.transform = `scale(${interactionStyle.activeScale})`; }}
+                      onMouseUp={e => { (e.target as HTMLElement).style.transform = `scale(${interactionStyle.hoverScale})`; }}
+                    >
+                      Primary Button
+                    </button>
+                    <button
+                      className="px-4 py-2 text-[14px] font-light rounded-lg"
+                      style={{
+                        backgroundColor: "hsl(var(--secondary))",
+                        color: "hsl(var(--secondary-foreground))",
+                        transition: `opacity ${interactionStyle.transitionDuration}ms ease, transform ${interactionStyle.transitionDuration}ms ease`,
+                      }}
+                      onMouseEnter={e => { (e.target as HTMLElement).style.opacity = String(interactionStyle.hoverOpacity); (e.target as HTMLElement).style.transform = `scale(${interactionStyle.hoverScale})`; }}
+                      onMouseLeave={e => { (e.target as HTMLElement).style.opacity = "1"; (e.target as HTMLElement).style.transform = "scale(1)"; }}
+                      onMouseDown={e => { (e.target as HTMLElement).style.transform = `scale(${interactionStyle.activeScale})`; }}
+                      onMouseUp={e => { (e.target as HTMLElement).style.transform = `scale(${interactionStyle.hoverScale})`; }}
+                    >
+                      Secondary
+                    </button>
+                    <button
+                      className="px-4 py-2 text-[14px] font-light rounded-lg border"
+                      style={{
+                        backgroundColor: "transparent",
+                        color: "hsl(var(--foreground))",
+                        borderColor: "hsl(var(--border))",
+                        transition: `opacity ${interactionStyle.transitionDuration}ms ease, transform ${interactionStyle.transitionDuration}ms ease`,
+                      }}
+                      onMouseEnter={e => { (e.target as HTMLElement).style.opacity = String(interactionStyle.hoverOpacity); (e.target as HTMLElement).style.transform = `scale(${interactionStyle.hoverScale})`; }}
+                      onMouseLeave={e => { (e.target as HTMLElement).style.opacity = "1"; (e.target as HTMLElement).style.transform = "scale(1)"; }}
+                      onMouseDown={e => { (e.target as HTMLElement).style.transform = `scale(${interactionStyle.activeScale})`; }}
+                      onMouseUp={e => { (e.target as HTMLElement).style.transform = `scale(${interactionStyle.hoverScale})`; }}
+                    >
+                      Outline
+                    </button>
+                  </div>
+                  <p className="text-[12px] font-light" style={{ color: "hsl(var(--muted-foreground))" }}>
+                    Hover and click the buttons above to preview interaction states.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          </PremiumGate>
+
+          {/* Interaction Reset Confirmation Modal */}
+          {showInteractionResetModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" role="dialog" aria-modal="true" aria-labelledby="interaction-reset-modal-title">
+              <div className="rounded-lg shadow-xl p-6 w-full max-w-sm mx-4" style={{ backgroundColor: "hsl(var(--card))", color: "hsl(var(--card-foreground))" }}>
+                <h4 id="interaction-reset-modal-title" className="text-2xl font-light mb-2">
+                  Reset Interaction Style?
+                </h4>
+                <p className="text-[14px] mb-4" style={{ color: "hsl(var(--card-foreground))" }}>
+                  This will revert all interaction style settings to their defaults. Any customizations will be lost.
+                </p>
+                <div className="flex justify-end gap-2">
+                  <button
+                    onClick={() => setShowInteractionResetModal(false)}
+                    className="px-3 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
+                    style={{ backgroundColor: "transparent", color: "hsl(var(--card-foreground))" }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={() => { handleResetInteractionStyle(); setShowInteractionResetModal(false); }}
+                    className="px-3 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
+                    style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}
+                  >
+                    Reset
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </section>
       {/* PR Section Picker Modal */}
@@ -2117,8 +2390,8 @@ function DesignSystemEditorInner({
             <h3 className="text-[18px] font-light mb-4">Open Pull Request</h3>
             <p className="text-[14px] font-light mb-4" style={{ color: "hsl(var(--muted-foreground))" }}>Select sections to include:</p>
             <div className="flex flex-col gap-3 mb-6">
-              {(["colors", "card", "typography", "alerts"] as const).map(section => {
-                const labels: Record<string, string> = { colors: "Colors", card: "Card Style", typography: "Typography", alerts: "Alerts" };
+              {(["colors", "card", "typography", "alerts", "interactions"] as const).map(section => {
+                const labels: Record<string, string> = { colors: "Colors", card: "Card Style", typography: "Typography", alerts: "Alerts", interactions: "Interactions" };
                 return (
                   <label key={section} className="flex items-center gap-3 cursor-pointer text-[14px] font-light">
                     <input

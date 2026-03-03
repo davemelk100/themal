@@ -14,8 +14,10 @@ export {
   applyStoredTypography,
   ALERT_STYLE_KEY,
   applyStoredAlertStyle,
+  INTERACTION_STYLE_KEY,
+  applyStoredInteractionStyle,
 } from "./utils/themeUtils";
-export type { HarmonyScheme, CardStyleState, TypographyState, AlertStyleState } from "./utils/themeUtils";
+export type { HarmonyScheme, CardStyleState, TypographyState, AlertStyleState, InteractionStyleState } from "./utils/themeUtils";
 
 export { validateLicenseKey, generateLicenseKey } from "./utils/license";
 export type { PremiumFeature, LicenseValidation } from "./utils/license";

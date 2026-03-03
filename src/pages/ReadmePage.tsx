@@ -98,7 +98,7 @@ function App() {
                   <td className="px-4 py-2 font-mono text-xs">showNavLinks</td>
                   <td className="px-4 py-2 font-mono text-xs">boolean</td>
                   <td className="px-4 py-2 font-mono text-xs">true</td>
-                  <td className="px-4 py-2">Show "How It Works" and "README" nav links.</td>
+                  <td className="px-4 py-2">Show "How It Works", "README", and "Pricing" nav links.</td>
                 </tr>
                 <tr className="border-t" style={{ borderColor: "hsl(var(--border))" }}>
                   <td className="px-4 py-2 font-mono text-xs">licenseKey</td>

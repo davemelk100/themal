@@ -826,7 +826,7 @@ export function applyStoredCardStyle(themeColors: Record<string, string>): CardS
   return null;
 }
 
-export const TYPOGRAPHY_KEY = "ds-typography";
+export const TYPOGRAPHY_KEY = "ds-typography-v2";
 
 export interface TypographyState {
   preset: "system" | "modern" | "classic" | "compact" | "editorial" | "custom";
@@ -962,19 +962,29 @@ export function applyTypography(state: TypographyState) {
     document.head.appendChild(styleEl);
   }
   styleEl.textContent = `
-    body {
+    body, .ds-editor {
       font-family: ${state.bodyFamily} !important;
       font-size: ${state.baseFontSize}px !important;
       font-weight: ${state.bodyWeight} !important;
       line-height: ${state.lineHeight} !important;
       letter-spacing: ${state.letterSpacing}em !important;
     }
-    h1, h2, h3, h4, h5, h6 {
+    h1, h2, h3, h4, h5, h6,
+    .ds-editor h1, .ds-editor h2, .ds-editor h3,
+    .ds-editor h4, .ds-editor h5, .ds-editor h6 {
       font-family: ${state.headingFamily} !important;
       font-weight: ${state.headingWeight} !important;
       letter-spacing: ${state.headingLetterSpacing}em !important;
     }
-    p, ul, ol, li, a, button, input, select, textarea, label, span {
+    p, ul, ol, li,
+    a:not(.ds-premium-tooltip a),
+    button, input, select, textarea, label,
+    span:not(.ds-premium-tooltip span),
+    .ds-editor p, .ds-editor ul, .ds-editor ol, .ds-editor li,
+    .ds-editor a:not(.ds-premium-tooltip a),
+    .ds-editor button, .ds-editor input, .ds-editor select,
+    .ds-editor textarea, .ds-editor label,
+    .ds-editor span:not(.ds-premium-tooltip span) {
       font-family: ${state.bodyFamily} !important;
       font-weight: ${state.bodyWeight} !important;
       line-height: ${state.lineHeight} !important;
@@ -1071,6 +1081,108 @@ export function applyStoredAlertStyle(): AlertStyleState | null {
   const saved = storage.get<AlertStyleState>(ALERT_STYLE_KEY);
   if (saved) {
     applyAlertStyle(saved);
+    return saved;
+  }
+  return null;
+}
+
+export const INTERACTION_STYLE_KEY = "ds-interaction-style";
+
+export interface InteractionStyleState {
+  preset: "subtle" | "elevated" | "bold" | "custom";
+  hoverOpacity: number;
+  hoverScale: number;
+  activeScale: number;
+  transitionDuration: number;
+  focusRingWidth: number;
+}
+
+export const DEFAULT_INTERACTION_STYLE: InteractionStyleState = {
+  preset: "subtle",
+  hoverOpacity: 0.85,
+  hoverScale: 1,
+  activeScale: 0.97,
+  transitionDuration: 150,
+  focusRingWidth: 2,
+};
+
+export const INTERACTION_PRESETS: Record<string, InteractionStyleState> = {
+  subtle: { ...DEFAULT_INTERACTION_STYLE },
+  elevated: {
+    preset: "elevated",
+    hoverOpacity: 0.9,
+    hoverScale: 1.02,
+    activeScale: 0.97,
+    transitionDuration: 200,
+    focusRingWidth: 2,
+  },
+  bold: {
+    preset: "bold",
+    hoverOpacity: 1,
+    hoverScale: 1.05,
+    activeScale: 0.95,
+    transitionDuration: 100,
+    focusRingWidth: 3,
+  },
+};
+
+const THEEMEL_INTERACTION_STYLE_ID = "theemel-interaction";
+
+export function applyInteractionStyle(state: InteractionStyleState) {
+  const root = document.documentElement;
+  root.style.setProperty("--hover-opacity", String(state.hoverOpacity));
+  root.style.setProperty("--hover-scale", String(state.hoverScale));
+  root.style.setProperty("--active-scale", String(state.activeScale));
+  root.style.setProperty("--transition-duration", `${state.transitionDuration}ms`);
+  root.style.setProperty("--focus-ring-width", `${state.focusRingWidth}px`);
+  root.style.setProperty("--focus-ring-color", "hsl(var(--ring))");
+
+  let styleEl = document.getElementById(THEEMEL_INTERACTION_STYLE_ID) as HTMLStyleElement | null;
+  if (!styleEl) {
+    styleEl = document.createElement("style");
+    styleEl.id = THEEMEL_INTERACTION_STYLE_ID;
+    document.head.appendChild(styleEl);
+  }
+  styleEl.textContent = `
+    html button, html a, html [role="button"],
+    html .ds-editor button, html .ds-editor a, html .ds-editor [role="button"] {
+      transition: opacity var(--transition-duration) ease, transform var(--transition-duration) ease;
+    }
+    html button:hover, html a:hover, html [role="button"]:hover,
+    html .ds-editor button:hover, html .ds-editor a:hover, html .ds-editor [role="button"]:hover {
+      opacity: var(--hover-opacity);
+      transform: scale(var(--hover-scale));
+    }
+    html button:active, html a:active, html [role="button"]:active,
+    html .ds-editor button:active, html .ds-editor a:active, html .ds-editor [role="button"]:active {
+      transform: scale(var(--active-scale));
+    }
+    html button:focus-visible, html a:focus-visible, html [role="button"]:focus-visible,
+    html .ds-editor button:focus-visible, html .ds-editor a:focus-visible, html .ds-editor [role="button"]:focus-visible {
+      outline: var(--focus-ring-width) solid var(--focus-ring-color);
+      outline-offset: 2px;
+    }
+  `;
+
+  storage.set(INTERACTION_STYLE_KEY, state);
+}
+
+export function removeInteractionStyleProperties() {
+  const root = document.documentElement;
+  for (const prop of [
+    "--hover-opacity", "--hover-scale", "--active-scale",
+    "--transition-duration", "--focus-ring-width", "--focus-ring-color",
+  ]) {
+    root.style.removeProperty(prop);
+  }
+  const styleEl = document.getElementById(THEEMEL_INTERACTION_STYLE_ID);
+  if (styleEl) styleEl.remove();
+}
+
+export function applyStoredInteractionStyle(): InteractionStyleState | null {
+  const saved = storage.get<InteractionStyleState>(INTERACTION_STYLE_KEY);
+  if (saved) {
+    applyInteractionStyle(saved);
     return saved;
   }
   return null;
