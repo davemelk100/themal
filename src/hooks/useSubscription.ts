@@ -1,4 +1,6 @@
+import { useState, useEffect, useCallback } from "react";
 import { useUser } from "@clerk/clerk-react";
+import { generateLicenseKey } from "@design-alive/editor";
 
 const ALPHABET = "2345679ABCDEFGHJKMNPQRSTUVWXYZ";
 
@@ -18,7 +20,6 @@ function checksumSegment(seg1: string, seg2: string): string {
 
 /** Derive a deterministic THEEMEL license key from a stable user ID. */
 function deriveKey(userId: string): string {
-  // Hash the userId into two 4-char segments
   let h = 0;
   for (let i = 0; i < userId.length; i++) {
     h = (h * 31 + userId.charCodeAt(i)) >>> 0;
@@ -30,7 +31,6 @@ function deriveKey(userId: string): string {
     h = Math.floor(h / ALPHABET.length);
   }
 
-  // Second pass with different seed
   h = 0;
   for (let i = 0; i < userId.length; i++) {
     h = (h * 37 + userId.charCodeAt(i) * (i + 3)) >>> 0;
@@ -46,27 +46,51 @@ function deriveKey(userId: string): string {
   return `THEEMEL-${seg1}-${seg2}-${seg3}`;
 }
 
+const DEV_PRO_KEY = "theemel_dev_pro";
+
 interface SubscriptionState {
   isPro: boolean;
   licenseKey: string | undefined;
   isLoaded: boolean;
   user: ReturnType<typeof useUser>["user"];
+  /** Dev-only: toggle pro mode for testing */
+  toggleDevPro: () => void;
+  /** Whether dev pro override is active */
+  isDevPro: boolean;
 }
 
 export function useSubscription(): SubscriptionState {
   const { user, isLoaded } = useUser();
+  const [devPro, setDevPro] = useState(() => localStorage.getItem(DEV_PRO_KEY) === "true");
+
+  const toggleDevPro = useCallback(() => {
+    setDevPro(prev => {
+      const next = !prev;
+      if (next) {
+        localStorage.setItem(DEV_PRO_KEY, "true");
+      } else {
+        localStorage.removeItem(DEV_PRO_KEY);
+      }
+      return next;
+    });
+  }, []);
+
+  // Expose toggle on window for console access in dev
+  useEffect(() => {
+    if (import.meta.env.DEV) {
+      (window as any).__togglePro = toggleDevPro;
+    }
+  }, [toggleDevPro]);
 
   if (!isLoaded) {
-    return { isPro: false, licenseKey: undefined, isLoaded: false, user: null };
+    return { isPro: false, licenseKey: undefined, isLoaded: false, user: null, toggleDevPro, isDevPro: devPro };
   }
 
-  if (!user) {
-    return { isPro: false, licenseKey: undefined, isLoaded: true, user: null };
-  }
+  const plan = user ? (user.publicMetadata as { plan?: string }).plan : undefined;
+  const isPro = devPro || plan === "pro";
+  const licenseKey = isPro
+    ? (user ? deriveKey(user.id) : generateLicenseKey())
+    : undefined;
 
-  const plan = (user.publicMetadata as { plan?: string }).plan;
-  const isPro = plan === "pro";
-  const licenseKey = isPro ? deriveKey(user.id) : undefined;
-
-  return { isPro, licenseKey, isLoaded, user };
+  return { isPro, licenseKey, isLoaded, user: user ?? null, toggleDevPro, isDevPro: devPro };
 }

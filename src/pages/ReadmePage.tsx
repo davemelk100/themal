@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import SiteFooter from "../components/SiteFooter";
 
 export default function ReadmePage() {
   return (
@@ -12,9 +13,12 @@ export default function ReadmePage() {
           &larr; Back to Editor
         </Link>
 
-        <h1 className="text-3xl sm:text-4xl font-light mb-8 title-font" style={{ color: "hsl(var(--foreground))" }}>
-          @theemel/editor
-        </h1>
+        <div className="flex items-center gap-3 mb-8">
+          <img src="/theemel-logo.png" alt="Theemel" className="h-10 sm:h-12" width="40" height="40" />
+          <h1 className="text-3xl sm:text-4xl font-light title-font" style={{ color: "hsl(var(--foreground))" }}>
+            @theemel/editor
+          </h1>
+        </div>
 
         <p className="text-[14px] leading-relaxed mb-8" style={{ color: "hsl(var(--foreground))" }}>
           Interactive design system editor for React apps. Pick colors, generate harmony palettes, enforce WCAG AA contrast, and export CSS custom properties — all in real time.
@@ -107,10 +111,22 @@ function App() {
                   <td className="px-4 py-2">License key to unlock premium features.</td>
                 </tr>
                 <tr className="border-t" style={{ borderColor: "hsl(var(--border))" }}>
+                  <td className="px-4 py-2 font-mono text-xs">showHeader</td>
+                  <td className="px-4 py-2 font-mono text-xs">boolean</td>
+                  <td className="px-4 py-2 font-mono text-xs">true</td>
+                  <td className="px-4 py-2">Show the sticky header bar. Set false for embedded/plugin usage.</td>
+                </tr>
+                <tr className="border-t" style={{ borderColor: "hsl(var(--border))" }}>
                   <td className="px-4 py-2 font-mono text-xs">upgradeUrl</td>
                   <td className="px-4 py-2 font-mono text-xs">string</td>
                   <td className="px-4 py-2">—</td>
                   <td className="px-4 py-2">Custom URL for the "Upgrade" link shown on gated features.</td>
+                </tr>
+                <tr className="border-t" style={{ borderColor: "hsl(var(--border))" }}>
+                  <td className="px-4 py-2 font-mono text-xs">headerRight</td>
+                  <td className="px-4 py-2 font-mono text-xs">ReactNode</td>
+                  <td className="px-4 py-2">—</td>
+                  <td className="px-4 py-2">Content rendered at the far right of the header (e.g. auth buttons).</td>
                 </tr>
               </tbody>
             </table>
@@ -166,6 +182,74 @@ function App() {
           </pre>
         </section>
 
+        {/* Embedded / Headless */}
+        <section className="mb-8">
+          <h2 className="text-xl font-medium mb-3" style={{ color: "hsl(var(--foreground))" }}>Embedded Usage</h2>
+          <pre className="rounded-lg p-4 text-[14px] overflow-x-auto mb-4" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
+            <code>{`<DesignSystemEditor
+  showHeader={false}
+  showNavLinks={false}
+/>`}</code>
+          </pre>
+          <p className="text-[14px] mt-2" style={{ color: "hsl(var(--muted-foreground))" }}>
+            Hides the sticky header and nav links for embedding inside another app or plugin.
+          </p>
+        </section>
+
+        {/* Web Component */}
+        <section className="mb-8">
+          <h2 className="text-xl font-medium mb-3" style={{ color: "hsl(var(--foreground))" }}>Web Component</h2>
+          <p className="text-[14px] leading-relaxed mb-3" style={{ color: "hsl(var(--foreground))" }}>
+            For WordPress, static sites, or any non-React platform, use the <code className="font-mono text-[14px]">&lt;theemel-editor&gt;</code> web component. A single script tag bundles everything — no build step required.
+          </p>
+          <pre className="rounded-lg p-4 text-[14px] overflow-x-auto mb-4" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
+            <code>{`<script src="https://cdn.example.com/theemel-editor.js"></script>
+<theemel-editor license-key="THEEMEL-XXXX-XXXX-XXXX"></theemel-editor>`}</code>
+          </pre>
+          <p className="text-[14px] leading-relaxed mb-3" style={{ color: "hsl(var(--foreground))" }}>
+            Supported attributes:
+          </p>
+          <div className="overflow-x-auto rounded-lg border" style={{ borderColor: "hsl(var(--border))" }}>
+            <table className="w-full text-[14px]">
+              <thead>
+                <tr style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
+                  <th className="text-left px-4 py-2 font-medium">Attribute</th>
+                  <th className="text-left px-4 py-2 font-medium">Maps to prop</th>
+                </tr>
+              </thead>
+              <tbody style={{ color: "hsl(var(--foreground))" }}>
+                <tr className="border-t" style={{ borderColor: "hsl(var(--border))" }}>
+                  <td className="px-4 py-2 font-mono text-xs">license-key</td>
+                  <td className="px-4 py-2 font-mono text-xs">licenseKey</td>
+                </tr>
+                <tr className="border-t" style={{ borderColor: "hsl(var(--border))" }}>
+                  <td className="px-4 py-2 font-mono text-xs">pr-endpoint-url</td>
+                  <td className="px-4 py-2 font-mono text-xs">prEndpointUrl</td>
+                </tr>
+                <tr className="border-t" style={{ borderColor: "hsl(var(--border))" }}>
+                  <td className="px-4 py-2 font-mono text-xs">accessibility-audit</td>
+                  <td className="px-4 py-2 font-mono text-xs">accessibilityAudit</td>
+                </tr>
+                <tr className="border-t" style={{ borderColor: "hsl(var(--border))" }}>
+                  <td className="px-4 py-2 font-mono text-xs">show-nav-links</td>
+                  <td className="px-4 py-2 font-mono text-xs">showNavLinks</td>
+                </tr>
+                <tr className="border-t" style={{ borderColor: "hsl(var(--border))" }}>
+                  <td className="px-4 py-2 font-mono text-xs">show-header</td>
+                  <td className="px-4 py-2 font-mono text-xs">showHeader</td>
+                </tr>
+                <tr className="border-t" style={{ borderColor: "hsl(var(--border))" }}>
+                  <td className="px-4 py-2 font-mono text-xs">upgrade-url</td>
+                  <td className="px-4 py-2 font-mono text-xs">upgradeUrl</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p className="text-[14px] mt-3" style={{ color: "hsl(var(--muted-foreground))" }}>
+            The web component uses Shadow DOM for style isolation. React, ReactDOM, and all editor styles are bundled into the single JS file.
+          </p>
+        </section>
+
         {/* Tailwind Scoping */}
         <section className="mb-8">
           <h2 className="text-xl font-medium mb-3" style={{ color: "hsl(var(--foreground))" }}>Tailwind Scoping</h2>
@@ -174,6 +258,7 @@ function App() {
           </p>
         </section>
       </div>
+      <SiteFooter />
     </div>
   );
 }

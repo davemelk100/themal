@@ -6,13 +6,10 @@ export default function UserNav() {
       <SignedOut>
         <SignInButton mode="modal">
           <button
-            className="rounded-lg px-4 py-2 text-[13px] font-medium transition-opacity hover:opacity-80 whitespace-nowrap"
-            style={{
-              backgroundColor: "hsl(var(--primary))",
-              color: "hsl(var(--primary-foreground))",
-            }}
+            className="text-[13px] font-light uppercase tracking-wider hover:opacity-70 transition-opacity whitespace-nowrap"
+            style={{ color: "hsl(var(--muted-foreground))", lineHeight: 1 }}
           >
-            Sign in
+            Sign In &rarr;
           </button>
         </SignInButton>
       </SignedOut>

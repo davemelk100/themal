@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth, SignInButton } from "@clerk/clerk-react";
 import { useSubscription } from "../hooks/useSubscription";
+import SiteFooter from "../components/SiteFooter";
 
 const check = (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0 mt-[2px]">
@@ -138,9 +139,12 @@ export default function Pricing() {
           &larr; Back to Editor
         </Link>
 
-        <h1 className="text-3xl sm:text-4xl font-light mb-3 title-font" style={{ color: "hsl(var(--foreground))" }}>
-          Pricing
-        </h1>
+        <div className="flex items-center gap-3 mb-3">
+          <img src="/theemel-logo.png" alt="Theemel" className="h-10 sm:h-12" width="40" height="40" />
+          <h1 className="text-3xl sm:text-4xl font-light title-font" style={{ color: "hsl(var(--foreground))" }}>
+            Pricing
+          </h1>
+        </div>
         <p className="text-[14px] leading-relaxed mb-8" style={{ color: "hsl(var(--muted-foreground))" }}>
           Start for free, upgrade when you need more.
         </p>
@@ -215,6 +219,7 @@ export default function Pricing() {
           </div>
         </div>
       </div>
+      <SiteFooter />
     </div>
   );
 }

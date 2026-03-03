@@ -4,6 +4,9 @@ import path from "path";
 
 export default defineConfig({
   plugins: [react()],
+  server: {
+    port: 5174,
+  },
   base: "/",
   resolve: {
     alias: [
@@ -54,6 +57,7 @@ export default defineConfig({
             if (id.includes("react-dom")) return "react-dom";
             if (id.includes("react-router")) return "react-router";
             if (id.includes("axe-core")) return "axe";
+            if (id.includes("@clerk")) return "clerk";
           }
         },
       },

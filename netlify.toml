@@ -5,11 +5,17 @@
 
 [dev]
   command = "npm run dev"
-  targetPort = 5173
+  targetPort = 5174
   framework = "#custom"
 
 [context.branch-deploy]
   command = "npm run build"
+
+[[redirects]]
+  from = "/clerk/*"
+  to = "https://frontend-api.clerk.dev/*"
+  status = 200
+  force = true
 
 [[redirects]]
   from = "/*"

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import SiteFooter from "../components/SiteFooter";
 
 export default function HowItWorks() {
   return (
@@ -12,9 +13,12 @@ export default function HowItWorks() {
           &larr; Back to Editor
         </Link>
 
-        <h1 className="text-3xl sm:text-4xl font-light mb-8 title-font" style={{ color: "hsl(var(--foreground))" }}>
-          How It Works
-        </h1>
+        <div className="flex items-center gap-3 mb-8">
+          <img src="/theemel-logo.png" alt="Theemel" className="h-10 sm:h-12" width="40" height="40" />
+          <h1 className="text-3xl sm:text-4xl font-light title-font" style={{ color: "hsl(var(--foreground))" }}>
+            How It Works
+          </h1>
+        </div>
 
         <div className="space-y-8">
           <section>
@@ -171,14 +175,66 @@ export default function HowItWorks() {
 
           <section>
             <h2 className="text-[14px] font-medium uppercase tracking-wider mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>
+              Interaction States
+            </h2>
+            <p className="text-[14px] leading-relaxed mb-3" style={{ color: "hsl(var(--foreground))" }}>
+              Four interaction style presets control hover, focus, and active states across the design system:
+            </p>
+            <ul className="text-[14px] leading-relaxed list-disc pl-5 space-y-1" style={{ color: "hsl(var(--foreground))" }}>
+              <li><span className="font-medium">Subtle</span> — Gentle opacity and slight scale changes on hover.</li>
+              <li><span className="font-medium">Elevated</span> — Shadow lift and upward translation on hover, ring on focus.</li>
+              <li><span className="font-medium">Bold</span> — Background color shifts and stronger scale transforms.</li>
+              <li><span className="font-medium">Minimal</span> — Underline and color change only, no motion.</li>
+            </ul>
+            <p className="text-[14px] leading-relaxed mt-3" style={{ color: "hsl(var(--foreground))" }}>
+              Properties include hover opacity, scale, shadow, translate, transition duration, and focus ring width/offset. All are adjustable via sliders and persisted as CSS custom properties.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-[14px] font-medium uppercase tracking-wider mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>
               Persistence & Export
             </h2>
             <p className="text-[14px] leading-relaxed" style={{ color: "hsl(var(--foreground))" }}>
-              All customizations persist in localStorage across reloads — colors, card style, typography, alert style, and the contrast knowledge base. The Show CSS button generates a <code className="font-mono">{`:root { ... }`}</code> block with all current values. The Open PR button lets you select which sections to include (Colors, Card Style, Typography, Alerts) and submits them as a GitHub pull request to the repo.
+              All customizations persist in localStorage across reloads — colors, card style, typography, alert style, interaction states, and the contrast knowledge base. The Show CSS button generates a <code className="font-mono">{`:root { ... }`}</code> block with all current values. The Open PR button lets you select which sections to include (Colors, Card Style, Typography, Alerts, Interactions) and submits them as a GitHub pull request to the repo.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-[14px] font-medium uppercase tracking-wider mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>
+              Web Component
+            </h2>
+            <p className="text-[14px] leading-relaxed mb-3" style={{ color: "hsl(var(--foreground))" }}>
+              The editor is also available as a <code className="font-mono">&lt;theemel-editor&gt;</code> web component for use on WordPress, static sites, or any platform — no React knowledge required. A single script tag bundles React, the editor, and all styles into one self-contained file.
+            </p>
+            <pre className="rounded-lg p-4 text-[14px] overflow-x-auto mb-3" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
+              <code>{`<script src="https://cdn.example.com/theemel-editor.js"></script>
+<theemel-editor license-key="THEEMEL-XXXX-XXXX-XXXX"></theemel-editor>`}</code>
+            </pre>
+            <p className="text-[14px] leading-relaxed mb-3" style={{ color: "hsl(var(--foreground))" }}>
+              The custom element uses Shadow DOM for style isolation and maps HTML attributes to React props:
+            </p>
+            <ul className="text-[14px] leading-relaxed list-disc pl-5 space-y-1" style={{ color: "hsl(var(--foreground))" }}>
+              <li><code className="font-mono">license-key</code> — License key to unlock premium features</li>
+              <li><code className="font-mono">pr-endpoint-url</code> — URL for the PR creation endpoint</li>
+              <li><code className="font-mono">accessibility-audit</code> — Enable/disable axe-core auditing (<code className="font-mono">"true"</code>/<code className="font-mono">"false"</code>)</li>
+              <li><code className="font-mono">show-nav-links</code> — Show/hide documentation nav links</li>
+              <li><code className="font-mono">show-header</code> — Show/hide the header bar</li>
+              <li><code className="font-mono">upgrade-url</code> — Custom URL for the upgrade link</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-[14px] font-medium uppercase tracking-wider mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>
+              Responsive Behavior
+            </h2>
+            <p className="text-[14px] leading-relaxed" style={{ color: "hsl(var(--foreground))" }}>
+              The editor uses a mobile-first layout. On screens below 1024px (tablets and phones), the desktop navigation collapses into a hamburger menu with a bottom tray. Section content layouts switch from side-by-side to stacked at the 768px breakpoint.
             </p>
           </section>
         </div>
       </div>
+      <SiteFooter />
     </div>
   );
 }

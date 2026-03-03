@@ -14,12 +14,40 @@
 
 .ds-premium-gated-section {
   position: relative;
+  cursor: not-allowed;
+}
+
+.ds-premium-gated-section * {
+  cursor: not-allowed;
 }
 
 .ds-premium-gated-inline {
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  position: relative;
+  cursor: not-allowed;
+}
+
+.ds-premium-gated-inline * {
+  cursor: not-allowed;
+}
+
+.ds-premium-gated-inline .ds-premium-popover {
+  top: auto;
+  left: auto;
+  bottom: calc(100% + 8px);
+  right: 0;
+  transform: none;
+}
+
+.ds-premium-locked-content {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.ds-premium-locked-content * {
+  cursor: not-allowed;
 }
 
 .ds-premium-lock {
@@ -27,8 +55,10 @@
   align-items: center;
   color: hsl(var(--muted-foreground));
   opacity: 0.5;
-  transition: opacity 0.15s;
+  transition: opacity 0.15s, color 0.15s;
   flex-shrink: 0;
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 .ds-premium-lock:hover {
@@ -36,30 +66,60 @@
   color: hsl(var(--brand));
 }
 
-.ds-premium-lock-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+/* Lock badge positioned in top-right corner of gated sections */
+.ds-premium-section-lock {
   position: absolute;
   top: 8px;
   right: 8px;
-  padding: 2px 8px 2px 6px;
-  border-radius: 6px;
-  background-color: hsl(var(--muted-foreground) / 0.1);
-  color: hsl(var(--muted-foreground));
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  text-decoration: none;
-  opacity: 0.6;
+  z-index: 10;
+}
+
+.ds-premium-section-lock .ds-premium-popover {
+  top: auto;
+  left: auto;
+  bottom: calc(100% + 8px);
+  right: 0;
+  transform: none;
+}
+
+/* Popover that appears on hover over gated sections */
+.ds-premium-popover {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background-color: hsl(var(--foreground));
+  color: hsl(var(--background));
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  pointer-events: none;
+  opacity: 0;
   transition: opacity 0.15s;
 }
 
-.ds-premium-lock-badge:hover {
-  opacity: 1;
-  color: hsl(var(--brand));
+.ds-premium-popover a {
+  color: hsl(var(--background));
+  text-decoration: underline;
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0.8;
+  pointer-events: auto;
+  cursor: pointer;
 }
+
+.ds-premium-popover a:hover {
+  opacity: 1;
+}
+
+
 
 @keyframes ds-glass-gradient {
   0%, 100% { background-position: 0% 50%; }

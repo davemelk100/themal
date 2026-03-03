@@ -48,6 +48,7 @@ import {
   removeInteractionStyleProperties,
 } from "./utils/themeUtils";
 import type { CardStyleState, TypographyState, AlertStyleState, InteractionStyleState } from "./utils/themeUtils";
+import { extractPaletteFromImage } from "./utils/extractPalette";
 import "./styles/editor.css";
 
 const LazyHome = React.lazy(() =>
@@ -201,10 +202,13 @@ function DesignSystemEditorInner({
   onExport,
   className,
   showNavLinks = true,
+  showHeader = true,
   upgradeUrl,
+  signInUrl,
   headerRight,
 }: DesignSystemEditorProps) {
   const { isPremium } = useLicense();
+  const [hoveredLockKey, setHoveredLockKey] = useState<string | null>(null);
   const {
     colors,
     setColors,
@@ -226,6 +230,7 @@ function DesignSystemEditorInner({
   const [sectionPrStatus, setSectionPrStatus] = useState<Record<string, { status: 'idle' | 'creating' | 'created' | 'error' | 'rate-limited'; url?: string; error?: string }>>({});
   const [auditStatus, setAuditStatus] = useState<'idle' | 'running' | 'failed' | 'passed'>('idle');
   const auditTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [auditViolations, setAuditViolations] = useState<{ selector: string; text: string }[]>([]);
   const [violationIndex, setViolationIndex] = useState(0);
   const [harmonySchemeIndex, setHarmonySchemeIndex] = useState(-1);
@@ -256,6 +261,7 @@ function DesignSystemEditorInner({
   const [interactionCssVisible, setInteractionCssVisible] = useState(false);
   const [interactionCssCopied, setInteractionCssCopied] = useState(false);
   const [showInteractionResetModal, setShowInteractionResetModal] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const fireOnChange = (newColors: Record<string, string>) => {
     onChange?.(newColors);
@@ -642,6 +648,53 @@ function DesignSystemEditorInner({
     if (accessibilityAudit) runAccessibilityAudit();
   };
 
+  const handleImagePalette = async (file: File) => {
+    try {
+      const palette = await extractPaletteFromImage(file);
+      setPrevColors({ ...colors });
+
+      // Start from brand and derive the full palette, then layer other primaries
+      let newColors = { ...colors };
+      const brandDerived = derivePaletteFromChange("--brand", palette["--brand"], newColors, lockedKeys);
+      newColors = { ...newColors, ...brandDerived, "--brand": palette["--brand"] };
+
+      // Layer on the other 4 primaries
+      for (const key of ["--secondary", "--accent", "--background", "--foreground"] as const) {
+        if (lockedKeys.has(key)) continue;
+        const derived = derivePaletteFromChange(key, palette[key], newColors, lockedKeys);
+        newColors = { ...newColors, ...derived, [key]: palette[key] };
+      }
+
+      // Contrast enforcement
+      const contrastFixes = autoAdjustContrast(newColors, lockedKeys);
+      newColors = { ...newColors, ...contrastFixes };
+
+      // Apply to DOM + state (same pattern as handleGenerate)
+      const history = storage.get<{ key: string; previousValue: string }[]>(COLOR_HISTORY_KEY) || [];
+      const pending = storage.get<Record<string, string>>(PENDING_COLORS_KEY) || {};
+      const finalColors = { ...colors };
+
+      for (const [key, val] of Object.entries(newColors)) {
+        if (val !== colors[key]) {
+          history.push({ key, previousValue: finalColors[key] || '' });
+          document.documentElement.style.setProperty(key, val);
+          finalColors[key] = val;
+          pending[key] = val;
+        }
+      }
+
+      storage.set(COLOR_HISTORY_KEY, history);
+      setColors(finalColors);
+      storage.set(PENDING_COLORS_KEY, pending);
+      window.dispatchEvent(new Event('theme-pending-update'));
+      setHarmonySchemeIndex(-1);
+      fireOnChange(finalColors);
+      if (accessibilityAudit) runAccessibilityAudit();
+    } catch (err) {
+      console.error("Image palette extraction failed:", err);
+    }
+  };
+
   const handleReset = () => {
     EDITABLE_VARS.forEach(({ key }) => {
       document.documentElement.style.removeProperty(key);
@@ -931,12 +984,12 @@ function DesignSystemEditorInner({
 
   return (
     <div id="top" className={`ds-editor${className ? ` ${className}` : ''}`}>
-      <section className="pt-4 sm:pt-6 lg:pt-8 pb-2 sm:pb-3 lg:pb-4 xl:pb-6 relative">
+      {showHeader && <div className="sticky top-0 z-40 pt-4 sm:pt-6 lg:pt-8 pb-2 sm:pb-3" style={{ backgroundColor: "hsl(var(--background))" }}>
         <div className="w-full px-4 sm:px-6 lg:px-8">
           {/* Title + nav links — single header row */}
-          <div className="w-full mb-4 flex items-center gap-x-4 pt-4 flex-wrap">
-            <a href="#top" className="flex-shrink-0" style={{ color: "hsl(var(--foreground))" }}>
-              <svg className="h-8" viewBox="0 0 1740 485" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Theemel">
+          <div className="w-full mb-4 flex items-end gap-x-4 pt-4">
+            <a href="#top" className="flex-shrink-0 leading-none" style={{ color: "hsl(var(--foreground))" }}>
+              <svg className="h-8 block" viewBox="0 0 1740 477" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Theemel">
                 <path d="M0 20.1279C0 9.01158 9.01159 0 20.128 0H120.768V144.921H20.1279C9.01157 144.921 0 135.91 0 124.793V20.1279Z" fill="#FC0000"/>
                 <path d="M409 20.1279C409 9.01158 399.988 0 388.872 0H288.232V144.921H388.872C399.988 144.921 409 135.91 409 124.793V20.1279Z" fill="#0095FE"/>
                 <path d="M120.768 144.921H204.5V310.776H120.768V144.921Z" fill="#FF8100"/>
@@ -954,7 +1007,9 @@ function DesignSystemEditorInner({
                 <path d="M1704.12 190.086H1739.27V477H1704.12V190.086Z" fill="currentColor"/>
               </svg>
             </a>
-            <nav className="flex items-center gap-3 sm:gap-4 flex-wrap flex-1 min-w-0">
+
+            {/* Desktop nav */}
+            <nav className="hidden lg:flex items-end gap-3 lg:gap-4 flex-1 min-w-0 ml-6">
               {[
                 { id: "colors", label: "Colors" },
                 { id: "card-style", label: "Card Style" },
@@ -966,12 +1021,12 @@ function DesignSystemEditorInner({
                   key={s.id}
                   href={`#${s.id}`}
                   className="text-[13px] font-light uppercase tracking-wider hover:opacity-70 transition-opacity whitespace-nowrap"
-                  style={{ color: "hsl(var(--muted-foreground))" }}
+                  style={{ color: "hsl(var(--muted-foreground))", lineHeight: 1 }}
                 >
                   {s.label}
                 </a>
               ))}
-              <PremiumGate feature="pr-integration" variant="inline" upgradeUrl={upgradeUrl}>
+              <PremiumGate feature="pr-integration" variant="inline" upgradeUrl={upgradeUrl} signInUrl={signInUrl}>
               {(() => {
                 const mainSt = sectionPrStatus["main"] || { status: 'idle' as const };
                 return (
@@ -1006,7 +1061,7 @@ function DesignSystemEditorInner({
                         ? 'text-red-600 dark:text-red-400'
                         : ''
                     }`}
-                    style={{ color: mainSt.status === 'error' || mainSt.status === 'rate-limited' ? undefined : "hsl(var(--brand))" }}
+                    style={{ color: mainSt.status === 'error' || mainSt.status === 'rate-limited' ? undefined : "hsl(var(--brand))", lineHeight: 1 }}
                   >
                     <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" /></svg>
                     <span>{mainSt.status === 'creating' ? 'Preparing...' : mainSt.status === 'error' ? 'Retry PR' : mainSt.status === 'rate-limited' ? 'Retry PR' : 'Open PR'}</span>
@@ -1017,39 +1072,70 @@ function DesignSystemEditorInner({
               </PremiumGate>
             </nav>
             {(showNavLinks || headerRight) && (
-              <div className="ml-auto flex items-center gap-4 flex-shrink-0">
+              <div className="hidden lg:flex ml-auto items-end gap-4 flex-shrink-0">
                 {showNavLinks && (
                   <>
                     <a
                       href="/how-it-works"
                       className="text-[13px] font-light uppercase tracking-wider hover:opacity-70 transition-opacity whitespace-nowrap"
-                      style={{ color: "hsl(var(--muted-foreground))" }}
+                      style={{ color: "hsl(var(--muted-foreground))", lineHeight: 1 }}
                     >
                       How It Works &rarr;
                     </a>
                     <a
                       href="/readme"
                       className="text-[13px] font-light uppercase tracking-wider hover:opacity-70 transition-opacity whitespace-nowrap"
-                      style={{ color: "hsl(var(--muted-foreground))" }}
+                      style={{ color: "hsl(var(--muted-foreground))", lineHeight: 1 }}
                     >
                       README &rarr;
                     </a>
                     <a
                       href="/pricing"
                       className="text-[13px] font-light uppercase tracking-wider hover:opacity-70 transition-opacity whitespace-nowrap"
-                      style={{ color: "hsl(var(--muted-foreground))" }}
+                      style={{ color: "hsl(var(--muted-foreground))", lineHeight: 1 }}
                     >
                       Pricing &rarr;
+                    </a>
+                    <a
+                      href="/features"
+                      className="text-[13px] font-light uppercase tracking-wider hover:opacity-70 transition-opacity whitespace-nowrap"
+                      style={{ color: "hsl(var(--muted-foreground))", lineHeight: 1 }}
+                    >
+                      Features &rarr;
                     </a>
                   </>
                 )}
                 {headerRight}
               </div>
             )}
+
+            {/* Mobile hamburger */}
+            <div className="ml-auto flex items-center gap-3 lg:hidden">
+              {headerRight}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="p-2 rounded-lg transition-opacity hover:opacity-70"
+                style={{ color: "hsl(var(--foreground))" }}
+                aria-label="Toggle menu"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                  {mobileMenuOpen ? (
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  ) : (
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                  )}
+                </svg>
+              </button>
+            </div>
           </div>
+        </div>
+      </div>}
+
+      <section className="pb-2 sm:pb-3 lg:pb-4 xl:pb-6 relative">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
 
           {/* Alerts */}
-          <PremiumGate feature="accessibility-audit" upgradeUrl={upgradeUrl}>
+          <PremiumGate feature="accessibility-audit" upgradeUrl={upgradeUrl} signInUrl={signInUrl}>
           <div className="mb-0">
             <div className="w-full sm:w-auto order-first sm:order-last flex-shrink-0 min-h-[36px] pointer-events-none [&>*]:pointer-events-auto" data-axe-exclude>
                 {accessibilityAudit && auditStatus === 'failed' && (
@@ -1179,11 +1265,11 @@ function DesignSystemEditorInner({
 
 
           {/* Colors section */}
-          <div id="colors" className="min-w-0 p-2 md:p-4 space-y-3 scroll-mt-16">
+          <div id="colors" className="min-w-0 p-2 md:p-4 space-y-3 scroll-mt-28">
             <div className="flex items-center flex-wrap gap-2 sm:gap-4" data-axe-exclude>
               <h2 className="text-[20px] font-normal uppercase tracking-wider flex items-center gap-2" style={{ color: "hsl(var(--foreground))" }}>Colors <a href="#top" className="opacity-30 hover:opacity-70 transition-opacity" aria-label="Back to top"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 19V5m0 0l-7 7m7-7l7 7" /></svg></a></h2>
               <div className="ml-auto flex flex-wrap items-center gap-1 sm:gap-2">
-              <PremiumGate feature="harmony-schemes" variant="inline" upgradeUrl={upgradeUrl}>
+              <PremiumGate feature="harmony-schemes" variant="inline" upgradeUrl={upgradeUrl} signInUrl={signInUrl}>
               <div className="relative">
                 <button
                   onClick={() => setShuffleOpen(!shuffleOpen)}
@@ -1232,7 +1318,7 @@ function DesignSystemEditorInner({
                   <span className="truncate">Refresh</span>
                 </button>
                 {prevColors && (
-                  <PremiumGate feature="undo" variant="inline" upgradeUrl={upgradeUrl}>
+                  <PremiumGate feature="undo" variant="inline" upgradeUrl={upgradeUrl} signInUrl={signInUrl}>
                   <button
                     onClick={handleUndo}
                     aria-label="Undo last color change"
@@ -1244,6 +1330,27 @@ function DesignSystemEditorInner({
                   </PremiumGate>
                 )}
               </div>
+                <PremiumGate feature="image-palette" variant="inline" upgradeUrl={upgradeUrl} signInUrl={signInUrl}>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".png,.jpg,.jpeg"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) handleImagePalette(file);
+                    e.target.value = '';
+                  }}
+                />
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="h-10 px-2 sm:px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                  style={{ color: "hsl(var(--muted-foreground))" }}
+                >
+                  <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path strokeLinecap="round" strokeLinejoin="round" d="M21 15l-5-5L5 21" /></svg>
+                  <span className="truncate">Image</span>
+                </button>
+                </PremiumGate>
                 <button
                   onClick={() => generatedCode ? setGeneratedCode(null) : generateCode()}
                   className="h-10 px-2 sm:px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1"
@@ -1276,9 +1383,15 @@ function DesignSystemEditorInner({
                 const isLocked = lockedKeys.has(key);
                 const canLock = isLocked || lockedKeys.size < 4;
                 return (
-                  <div key={key} className="relative group flex items-stretch rounded-lg overflow-hidden" style={{ boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}>
+                  <div
+                    key={key}
+                    className="relative group flex items-stretch rounded-lg"
+                    style={{ boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
+                    onMouseEnter={() => { if (!isPremium) setHoveredLockKey(key); }}
+                    onMouseLeave={() => setHoveredLockKey(null)}
+                  >
                     <button
-                      className="w-full h-14 sm:h-20 text-[12px] sm:text-[14px] font-light transition-colors hover:opacity-80 flex flex-col items-center justify-center gap-0.5 cursor-pointer"
+                      className="w-full h-14 sm:h-20 text-[12px] sm:text-[14px] font-light transition-colors hover:opacity-80 flex flex-col items-center justify-center gap-0.5 cursor-pointer rounded-l-lg"
                       style={{ backgroundColor: hsl ? `hsl(${hsl})` : "#e5e7eb", color: btnTextColor }}
                       onClick={() => {
                         const input = document.getElementById(inputId) as HTMLInputElement | null;
@@ -1301,7 +1414,7 @@ function DesignSystemEditorInner({
                       style={{ width: "calc(100% - 32px)", height: "100%" }}
                     />
                     <button
-                      className="w-8 flex items-center justify-center transition-all cursor-pointer"
+                      className={`w-8 flex items-center justify-center transition-all rounded-r-lg ${isPremium ? 'cursor-pointer' : 'cursor-not-allowed'}`}
                       style={{
                         backgroundColor: isLocked ? `hsl(${bgHsl})` : "rgba(0,0,0,0.08)",
                         color: isLocked ? btnTextColor : "hsl(var(--muted-foreground))",
@@ -1332,6 +1445,20 @@ function DesignSystemEditorInner({
                         </svg>
                       )}
                     </button>
+                    {!isPremium && hoveredLockKey === key && (
+                      <div
+                        className="ds-premium-popover"
+                        style={{ opacity: 1, pointerEvents: "auto", top: "auto", bottom: "calc(100% + 8px)", left: "50%", transform: "translateX(-50%)" }}
+                      >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                        </svg>
+                        <span>Pro feature</span>
+                        {signInUrl && <a href={signInUrl}>Sign in &rarr;</a>}
+                        <a href={upgradeUrl || "/pricing"}>View pricing &rarr;</a>
+                      </div>
+                    )}
                   </div>
                 );
               })}
@@ -1460,7 +1587,7 @@ function DesignSystemEditorInner({
           </div>
 
           {/* Card Style section */}
-          <div id="card-style" className="min-w-0 p-2 md:p-4 space-y-3 mt-8 md:mt-12 scroll-mt-16">
+          <div id="card-style" className="min-w-0 p-2 md:p-4 space-y-3 mt-8 md:mt-12 scroll-mt-28">
             <div className="flex items-center flex-wrap gap-2 sm:gap-4" data-axe-exclude>
               <h2 className="text-[20px] font-normal uppercase tracking-wider flex items-center gap-2" style={{ color: "hsl(var(--foreground))" }}>Card Style <a href="#top" className="opacity-30 hover:opacity-70 transition-opacity" aria-label="Back to top"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 19V5m0 0l-7 7m7-7l7 7" /></svg></a></h2>
               <div className="ml-auto flex flex-wrap items-center gap-1 sm:gap-2">
@@ -1727,7 +1854,7 @@ function DesignSystemEditorInner({
             </div>
           </div>
         {/* Typography section */}
-          <div id="typography" className="min-w-0 p-2 md:p-4 space-y-3 mt-8 md:mt-12 scroll-mt-16">
+          <div id="typography" className="min-w-0 p-2 md:p-4 space-y-3 mt-8 md:mt-12 scroll-mt-28">
             <div className="flex items-center flex-wrap gap-2 sm:gap-4" data-axe-exclude>
               <h2 className="text-[20px] font-normal uppercase tracking-wider flex items-center gap-2" style={{ color: "hsl(var(--foreground))" }}>Typography <a href="#top" className="opacity-30 hover:opacity-70 transition-opacity" aria-label="Back to top"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 19V5m0 0l-7 7m7-7l7 7" /></svg></a></h2>
               <div className="ml-auto flex flex-wrap items-center gap-1 sm:gap-2">
@@ -1944,7 +2071,7 @@ function DesignSystemEditorInner({
           </div>
 
           {/* Alerts section */}
-          <div id="alerts" className="min-w-0 p-2 md:p-4 space-y-3 mt-8 md:mt-12 scroll-mt-16">
+          <div id="alerts" className="min-w-0 p-2 md:p-4 space-y-3 mt-8 md:mt-12 scroll-mt-28">
             <div className="flex items-center flex-wrap gap-2 sm:gap-4" data-axe-exclude>
               <h2 className="text-[20px] font-normal uppercase tracking-wider flex items-center gap-2" style={{ color: "hsl(var(--foreground))" }}>Alerts <a href="#top" className="opacity-30 hover:opacity-70 transition-opacity" aria-label="Back to top"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 19V5m0 0l-7 7m7-7l7 7" /></svg></a></h2>
               <div className="ml-auto flex flex-wrap items-center gap-1 sm:gap-2">
@@ -2156,8 +2283,8 @@ function DesignSystemEditorInner({
           )}
 
           {/* Interactions section */}
-          <PremiumGate feature="interaction-states" upgradeUrl={upgradeUrl}>
-          <div id="interactions" className="min-w-0 p-2 md:p-4 space-y-3 mt-8 md:mt-12 scroll-mt-16">
+          <PremiumGate feature="interaction-states" upgradeUrl={upgradeUrl} signInUrl={signInUrl}>
+          <div id="interactions" className="min-w-0 p-2 md:p-4 space-y-3 mt-8 md:mt-12 scroll-mt-28">
             <div className="flex items-center flex-wrap gap-2 sm:gap-4" data-axe-exclude>
               <h2 className="text-[20px] font-normal uppercase tracking-wider flex items-center gap-2" style={{ color: "hsl(var(--foreground))" }}>Interactions <a href="#top" className="opacity-30 hover:opacity-70 transition-opacity" aria-label="Back to top"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 19V5m0 0l-7 7m7-7l7 7" /></svg></a></h2>
               <div className="ml-auto flex flex-wrap items-center gap-1 sm:gap-2">
@@ -2437,6 +2564,68 @@ function DesignSystemEditorInner({
                 {sectionPrStatus["main"]?.status === 'creating' ? 'Preparing...' : `Submit PR (${prSections.size})`}
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile bottom tray */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden fixed inset-0 z-40" onClick={() => setMobileMenuOpen(false)}>
+          <div className="absolute inset-0 bg-black/30" />
+          <div
+            className="absolute bottom-0 left-0 right-0 rounded-t-2xl px-6 py-6 pb-8 space-y-5"
+            style={{ backgroundColor: "hsl(var(--card))", borderTop: "1px solid hsl(var(--border))" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-10 h-1 rounded-full mx-auto mb-2" style={{ backgroundColor: "hsl(var(--muted-foreground) / 0.3)" }} />
+
+            <div className="space-y-1">
+              <p className="text-[11px] font-semibold uppercase tracking-wider mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>Sections</p>
+              {[
+                { id: "colors", label: "Colors" },
+                { id: "card-style", label: "Card Style" },
+                { id: "typography", label: "Typography" },
+                { id: "alerts", label: "Alerts" },
+                { id: "interactions", label: "Interactions" },
+              ].map((s) => (
+                <a
+                  key={s.id}
+                  href={`#${s.id}`}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block py-2 text-[15px] font-light transition-opacity hover:opacity-70"
+                  style={{ color: "hsl(var(--foreground))" }}
+                >
+                  {s.label}
+                </a>
+              ))}
+            </div>
+
+            {showNavLinks && (
+              <div className="space-y-1" style={{ borderTop: "1px solid hsl(var(--border))", paddingTop: "16px" }}>
+                <p className="text-[11px] font-semibold uppercase tracking-wider mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>Pages</p>
+                <a href="/how-it-works" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-[15px] font-light transition-opacity hover:opacity-70" style={{ color: "hsl(var(--foreground))" }}>How It Works</a>
+                <a href="/readme" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-[15px] font-light transition-opacity hover:opacity-70" style={{ color: "hsl(var(--foreground))" }}>README</a>
+                <a href="/pricing" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-[15px] font-light transition-opacity hover:opacity-70" style={{ color: "hsl(var(--foreground))" }}>Pricing</a>
+                <a href="/features" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-[15px] font-light transition-opacity hover:opacity-70" style={{ color: "hsl(var(--foreground))" }}>Features</a>
+              </div>
+            )}
+
+            <PremiumGate feature="pr-integration" variant="inline" upgradeUrl={upgradeUrl} signInUrl={signInUrl}>
+              <div className="space-y-1" style={{ borderTop: "1px solid hsl(var(--border))", paddingTop: "16px" }}>
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    if (!prEndpointUrl) { setShowPrSetupModal(true); return; }
+                    setPrSections(new Set()); setShowPrModal(true);
+                  }}
+                  className="block py-2 text-[15px] font-light transition-opacity hover:opacity-70 flex items-center gap-2"
+                  style={{ color: "hsl(var(--foreground))" }}
+                >
+                  <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" /></svg>
+                  Open PR
+                </button>
+              </div>
+            </PremiumGate>
           </div>
         </div>
       )}

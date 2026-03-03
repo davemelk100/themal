@@ -13,10 +13,14 @@ export interface DesignSystemEditorProps {
   className?: string;
   /** Show "How It Works", "README", and "Pricing" nav links. Default: true */
   showNavLinks?: boolean;
+  /** Show the sticky header bar (logo, nav, PR button). Default: true. Set false for embedded/plugin usage. */
+  showHeader?: boolean;
   /** License key to unlock premium features */
   licenseKey?: string;
   /** Custom URL for the "Upgrade" link shown on gated features */
   upgradeUrl?: string;
+  /** Custom URL for the "Sign in" link shown on gated features */
+  signInUrl?: string;
   /** Content rendered at the far right of the header row (e.g. auth buttons) */
   headerRight?: React.ReactNode;
 }
