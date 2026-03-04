@@ -1337,7 +1337,10 @@ function DesignSystemEditorInner({
         </div>
       </div>}
 
-      <ul className="w-full px-4 sm:px-6 lg:px-8 pt-1.5 hidden sm:block columns-1 sm:columns-2 gap-x-8 text-[13px] font-light list-disc pl-9 sm:pl-11" style={{ color: "hsl(var(--muted-foreground))", marginLeft: "15px" }}>
+      <p className="w-full px-4 sm:px-6 lg:px-8 pt-2 text-[14px] font-light leading-relaxed" style={{ color: "hsl(var(--muted-foreground))" }}>
+        Pick a brand color and watch every token update in real time. Customize typography, buttons, cards, and alerts. Every foreground/background pair is checked against WCAG AA contrast. Export CSS custom properties or open a PR to propose design system changes.
+      </p>
+      <ul className="w-full px-4 sm:px-6 lg:px-8 pt-3 hidden sm:block columns-1 sm:columns-2 gap-x-8 text-[13px] font-light list-disc pl-9 sm:pl-11" style={{ color: "hsl(var(--muted-foreground))", marginLeft: "15px" }}>
         <li>Real-time color picking with live preview</li>
         <li>Random palette generation with smart derivation</li>
         <li>Color harmony schemes (Complementary, Analogous, Triadic, Split-Complementary)</li>

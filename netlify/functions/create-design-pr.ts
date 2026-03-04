@@ -1,5 +1,5 @@
 const ALLOWED_ORIGINS = [
-  "https://themal.netlify.app",
+  "https://themalive.com",
   "http://localhost:5173",
   "http://localhost:5174",
 ];

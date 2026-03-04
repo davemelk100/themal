@@ -2,7 +2,7 @@ import Stripe from "stripe";
 import { createClerkClient } from "@clerk/clerk-sdk-node";
 
 const ALLOWED_ORIGINS = [
-  "https://themal.netlify.app",
+  "https://themalive.com",
   "http://localhost:5173",
   "http://localhost:5174",
 ];
@@ -84,8 +84,8 @@ export const handler = async (event: any) => {
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       line_items: [{ price: priceId, quantity: 1 }],
-      success_url: `${event.headers.origin || "https://themal.netlify.app"}/?checkout=success`,
-      cancel_url: `${event.headers.origin || "https://themal.netlify.app"}/pricing`,
+      success_url: `${event.headers.origin || "https://themalive.com"}/?checkout=success`,
+      cancel_url: `${event.headers.origin || "https://themalive.com"}/pricing`,
       metadata: { clerkUserId: userId },
       subscription_data: { metadata: { clerkUserId: userId } },
     });
