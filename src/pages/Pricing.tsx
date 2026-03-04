@@ -140,7 +140,7 @@ export default function Pricing() {
         </Link>
 
         <div className="flex items-center gap-3 mb-3">
-          <img src="/theemel-logo.png" alt="Theemel" className="h-10 sm:h-12" width="40" height="40" />
+          <img src="/theemal-logo-wide.svg" alt="Theemal" className="h-10 sm:h-12" />
           <h1 className="text-3xl sm:text-4xl font-light title-font" style={{ color: "hsl(var(--foreground))" }}>
             Pricing
           </h1>

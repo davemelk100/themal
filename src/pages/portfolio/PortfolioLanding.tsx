@@ -17,8 +17,7 @@ export default function PortfolioLanding() {
         headerRight={<UserNav />}
       />
       <SiteFooter />
-      {import.meta.env.DEV && (
-        <button
+      <button
           onClick={toggleDevPro}
           className="fixed bottom-4 left-4 z-50 px-3 py-1.5 rounded-lg text-[12px] font-mono transition-colors"
           style={{
@@ -28,8 +27,7 @@ export default function PortfolioLanding() {
           }}
         >
           {isDevPro ? "PRO ON" : "PRO OFF"}
-        </button>
-      )}
+      </button>
     </>
   );
 }

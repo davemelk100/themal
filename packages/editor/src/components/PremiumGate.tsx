@@ -5,7 +5,9 @@ import { useLicense } from "../hooks/useLicense";
 type CloseListener = () => void;
 const closeListeners = new Set<CloseListener>();
 function notifyOthers(except: CloseListener) {
-  closeListeners.forEach((fn) => { if (fn !== except) fn(); });
+  closeListeners.forEach((fn) => {
+    if (fn !== except) fn();
+  });
 }
 
 export interface PremiumGateProps {
@@ -48,15 +50,14 @@ function UpgradePopover({
     ? {
         opacity: 1,
         pointerEvents: "auto" as const,
-        transform: centered ? "translate(-50%, -50%) scale(1) translateY(0)" : "scale(1) translateY(0)",
+        transform: centered
+          ? "translate(-50%, -50%) scale(1) translateY(0)"
+          : "scale(1) translateY(0)",
         filter: "blur(0)",
       }
     : undefined;
   return (
-    <div
-      className="ds-premium-popover"
-      style={visibleStyle}
-    >
+    <div className="ds-premium-popover" style={visibleStyle}>
       <span>{lockIcon}</span>
       <span>Pro feature</span>
       {signInUrl && <a href={signInUrl}>Sign in &rarr;</a>}
@@ -76,24 +77,35 @@ export function PremiumGate({
   const leaveTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const closeMe = useCallback(() => {
-    if (leaveTimer.current) { clearTimeout(leaveTimer.current); leaveTimer.current = null; }
+    if (leaveTimer.current) {
+      clearTimeout(leaveTimer.current);
+      leaveTimer.current = null;
+    }
     setHovered(false);
   }, []);
 
   useEffect(() => {
     closeListeners.add(closeMe);
-    return () => { closeListeners.delete(closeMe); };
+    return () => {
+      closeListeners.delete(closeMe);
+    };
   }, [closeMe]);
 
   const handleEnter = () => {
-    if (leaveTimer.current) { clearTimeout(leaveTimer.current); leaveTimer.current = null; }
+    if (leaveTimer.current) {
+      clearTimeout(leaveTimer.current);
+      leaveTimer.current = null;
+    }
     notifyOthers(closeMe);
     setHovered(true);
     // Auto-close after 2s regardless of hover state
     leaveTimer.current = setTimeout(() => setHovered(false), 2000);
   };
   const handleLeave = () => {
-    if (leaveTimer.current) { clearTimeout(leaveTimer.current); leaveTimer.current = null; }
+    if (leaveTimer.current) {
+      clearTimeout(leaveTimer.current);
+      leaveTimer.current = null;
+    }
     leaveTimer.current = setTimeout(() => setHovered(false), 300);
   };
 
@@ -115,25 +127,29 @@ export function PremiumGate({
         >
           {lockIcon}
         </span>
-        <UpgradePopover upgradeUrl={pricingHref} signInUrl={signInUrl} visible={hovered} />
+        <UpgradePopover
+          upgradeUrl={pricingHref}
+          signInUrl={signInUrl}
+          visible={hovered}
+        />
       </span>
     );
   }
 
-  return (
-    <div className="ds-premium-gated-section">
-      {children}
-      <span
-        className="ds-premium-lock ds-premium-section-lock"
-        onMouseEnter={handleEnter}
-        onMouseLeave={handleLeave}
-        style={
-          hovered ? { opacity: 1, color: "hsl(var(--brand))" } : undefined
-        }
-      >
-        {lockIcon}
-        <UpgradePopover upgradeUrl={pricingHref} signInUrl={signInUrl} visible={hovered} />
-      </span>
-    </div>
-  );
+  // return (
+  //   <div className="ds-premium-gated-section">
+  //     {children}
+  //     <span
+  //       className="ds-premium-lock ds-premium-section-lock"
+  //       onMouseEnter={handleEnter}
+  //       onMouseLeave={handleLeave}
+  //       style={
+  //         hovered ? { opacity: 1, color: "hsl(var(--brand))" } : undefined
+  //       }
+  //     >
+  //       {lockIcon}
+  //       <UpgradePopover upgradeUrl={pricingHref} signInUrl={signInUrl} visible={hovered} />
+  //     </span>
+  //   </div>
+  // );
 }
