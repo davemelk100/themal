@@ -1244,8 +1244,55 @@ function DesignSystemEditorInner({
         <li>GitHub PR integration</li>
       </ul>
 
+      {/* Mobile-only Open PR */}
+      <div className="sm:hidden w-full px-4 pt-4">
+        <PremiumGate feature="pr-integration" variant="inline" upgradeUrl={upgradeUrl} signInUrl={signInUrl}>
+        {(() => {
+          const mainSt = sectionPrStatus["main"] || { status: 'idle' as const };
+          return (
+          <div className="flex items-center gap-2">
+            {prEndpointUrl && mainSt.status === 'created' && (
+              <div className="flex items-center gap-2 text-[13px] font-light text-green-600 dark:text-green-400">
+                <span>PR Created!</span>
+                {mainSt.url && (
+                  <a href={mainSt.url} target="_blank" rel="noopener noreferrer" className="underline hover:opacity-70 transition-opacity">View</a>
+                )}
+                <button
+                  onClick={() => setSectionPrStatus(prev => ({ ...prev, main: { status: 'idle' } }))}
+                  className="hover:opacity-70 transition-opacity"
+                  aria-label="Dismiss"
+                >&#10005;</button>
+              </div>
+            )}
+            {prEndpointUrl && mainSt.status === 'rate-limited' && mainSt.error && (
+              <span className="text-[13px] font-light text-yellow-700 dark:text-yellow-300">
+                {mainSt.error}
+              </span>
+            )}
+            <button
+              disabled={mainSt.status === 'creating'}
+              onClick={() => {
+                if (mainSt.status === 'creating') return;
+                setShowPrSetupModal(true);
+              }}
+              className={`text-[16px] font-light uppercase tracking-wider transition-colors hover:opacity-70 flex items-center gap-2 whitespace-nowrap ${
+                mainSt.status === 'error' || mainSt.status === 'rate-limited'
+                  ? 'text-red-600 dark:text-red-400'
+                  : ''
+              }`}
+              style={{ color: mainSt.status === 'error' || mainSt.status === 'rate-limited' ? undefined : "hsl(var(--brand))", lineHeight: 1 }}
+            >
+              <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" /></svg>
+              <span>{mainSt.status === 'creating' ? 'Preparing...' : mainSt.status === 'error' ? 'Retry PR' : mainSt.status === 'rate-limited' ? 'Retry PR' : 'Open PR'}</span>
+            </button>
+          </div>
+          );
+        })()}
+        </PremiumGate>
+      </div>
+
       {/* Section nav */}
-      <nav className="sticky top-0 z-40 w-full px-4 sm:px-6 lg:px-8 pt-10 pb-1 flex items-center gap-3 lg:gap-4 flex-wrap" style={{ backgroundColor: "hsl(var(--background))" }}>
+      <nav className="sticky top-0 z-40 w-full px-4 sm:px-6 lg:px-8 pt-10 pb-1 hidden sm:flex items-center gap-3 lg:gap-4 flex-wrap" style={{ backgroundColor: "hsl(var(--background))" }}>
         {[
           { id: "colors", label: "Colors", icon: <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402M6.75 21A3.75 3.75 0 013 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 003.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072M10.5 8.197l2.88-2.88c.438-.439 1.15-.439 1.59 0l3.712 3.713c.44.44.44 1.152 0 1.59l-2.879 2.88M6.75 17.25h.008v.008H6.75v-.008z" /></svg> },
           { id: "card", label: "Cards", icon: <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" /></svg> },
@@ -1272,7 +1319,7 @@ function DesignSystemEditorInner({
         {(() => {
           const mainSt = sectionPrStatus["main"] || { status: 'idle' as const };
           return (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 ml-auto">
             {prEndpointUrl && mainSt.status === 'created' && (
               <div className="flex items-center gap-2 text-[13px] font-light text-green-600 dark:text-green-400">
                 <span>PR Created!</span>
@@ -1649,6 +1696,7 @@ function DesignSystemEditorInner({
                       className="w-full h-20 text-[12px] sm:text-[14px] font-light transition-colors hover:opacity-80 flex flex-col items-center justify-center gap-0.5 cursor-pointer rounded-t-lg sm:rounded-t-none sm:rounded-l-lg"
                       style={{ backgroundColor: hsl ? `hsl(${hsl})` : "#e5e7eb", color: btnTextColor }}
                       onClick={() => {
+                        document.getElementById("colors")?.scrollIntoView({ behavior: "smooth", block: "start" });
                         const input = document.getElementById(inputId) as HTMLInputElement | null;
                         input?.click();
                       }}
