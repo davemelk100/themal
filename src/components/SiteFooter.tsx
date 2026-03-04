@@ -217,41 +217,43 @@ export default function SiteFooter() {
           <img src="/themal-just-t.svg" alt="Themal" className="h-8" width="28" height="32" />
         </Link>
         <nav className="hidden sm:flex items-center gap-4 sm:gap-6">
-          <Link
-            to="/"
-            className="text-[13px] font-light uppercase tracking-wider hover:opacity-70 transition-opacity whitespace-nowrap"
-            style={{ color: "hsl(var(--foreground))" }}
-          >
-            Home
-          </Link>
-          <Link
-            to="/how-it-works"
-            className="text-[13px] font-light uppercase tracking-wider hover:opacity-70 transition-opacity whitespace-nowrap"
-            style={{ color: "hsl(var(--foreground))" }}
-          >
-            How It Works
-          </Link>
-          <Link
-            to="/readme"
-            className="text-[13px] font-light uppercase tracking-wider hover:opacity-70 transition-opacity whitespace-nowrap"
-            style={{ color: "hsl(var(--foreground))" }}
-          >
-            README
-          </Link>
-          <Link
-            to="/pricing"
-            className="text-[13px] font-light uppercase tracking-wider hover:opacity-70 transition-opacity whitespace-nowrap"
-            style={{ color: "hsl(var(--foreground))" }}
-          >
-            Pricing
-          </Link>
-          <Link
-            to="/features"
-            className="text-[13px] font-light uppercase tracking-wider hover:opacity-70 transition-opacity whitespace-nowrap"
-            style={{ color: "hsl(var(--foreground))" }}
-          >
-            Features
-          </Link>
+          <div className="hidden xl:contents">
+            <Link
+              to="/"
+              className="text-[13px] font-light uppercase tracking-wider hover:opacity-70 transition-opacity whitespace-nowrap"
+              style={{ color: "hsl(var(--foreground))" }}
+            >
+              Home
+            </Link>
+            <Link
+              to="/how-it-works"
+              className="text-[13px] font-light uppercase tracking-wider hover:opacity-70 transition-opacity whitespace-nowrap"
+              style={{ color: "hsl(var(--foreground))" }}
+            >
+              How It Works
+            </Link>
+            <Link
+              to="/readme"
+              className="text-[13px] font-light uppercase tracking-wider hover:opacity-70 transition-opacity whitespace-nowrap"
+              style={{ color: "hsl(var(--foreground))" }}
+            >
+              README
+            </Link>
+            <Link
+              to="/pricing"
+              className="text-[13px] font-light uppercase tracking-wider hover:opacity-70 transition-opacity whitespace-nowrap"
+              style={{ color: "hsl(var(--foreground))" }}
+            >
+              Pricing
+            </Link>
+            <Link
+              to="/features"
+              className="text-[13px] font-light uppercase tracking-wider hover:opacity-70 transition-opacity whitespace-nowrap"
+              style={{ color: "hsl(var(--foreground))" }}
+            >
+              Features
+            </Link>
+          </div>
           <span className="w-px h-4" style={{ backgroundColor: "hsl(var(--border))" }} />
           {/* Desktop: show all links inline */}
           <div className="hidden xl:contents">
