@@ -1392,18 +1392,44 @@ function DesignSystemEditorInner({
       )}
 
 
-      {/* Palette action buttons — above sticky nav */}
-      <div className="w-full px-4 sm:px-6 lg:px-8 pt-6 hidden sm:flex flex-wrap items-center gap-1 sm:gap-2">
-              <h2 className="text-[20px] font-normal uppercase tracking-wider mr-2" style={{ color: "hsl(var(--foreground))" }}>Global Actions</h2>
+      {/* Global Actions title */}
+      <div className="w-full px-4 sm:px-6 lg:px-8 pt-12">
+        <h2 className="text-[20px] font-normal uppercase tracking-wider" style={{ color: "hsl(var(--foreground))" }}>Global Actions</h2>
+      </div>
+      {/* Palette action buttons — mobile: dropdown, desktop: buttons */}
+      <div className="w-full px-4 sm:px-6 lg:px-8 pt-2 pb-12 flex flex-wrap items-center gap-2 sm:gap-4">
+              {/* Mobile dropdown */}
+              <select
+                className="sm:hidden h-10 px-2 text-[13px] font-light rounded-lg border"
+                style={{ backgroundColor: "#e5e7eb", color: "#111", borderColor: "hsl(var(--border))" }}
+                value=""
+                onChange={e => {
+                  const v = e.target.value;
+                  if (v === "default") { setHarmonySchemeIndex(-1); handleGenerate(); }
+                  else if (v === "refresh") handleGenerate();
+                  else if (v === "upload") setShowImagePaletteModal(true);
+                  else if (v === "export") setShowPaletteExport(true);
+                  e.target.value = "";
+                }}
+              >
+                <option value="" disabled>Global Actions…</option>
+                <option value="default">Default Scheme</option>
+                <option value="refresh">Refresh</option>
+                <option value="upload">Upload Image</option>
+                <option value="export">Export Palette</option>
+              </select>
+              {/* Desktop buttons */}
+              <div className="hidden sm:contents">
               <PremiumGate feature="harmony-schemes" variant="inline" upgradeUrl={upgradeUrl} signInUrl={signInUrl}>
               <div className="relative">
                 <button
                   onClick={() => setShuffleOpen(!shuffleOpen)}
-                  className="h-10 px-2 sm:px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1"
-                  style={{ color: "hsl(var(--muted-foreground))" }}
+                  className="h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+                  style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
                 >
+                  {!isPremium && <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>}
                   <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>
-                  <span className="whitespace-nowrap">{harmonySchemeIndex >= 0 ? HARMONY_SCHEMES[harmonySchemeIndex] : "Default"}</span>
+                  <span className="whitespace-nowrap">{harmonySchemeIndex >= 0 ? HARMONY_SCHEMES[harmonySchemeIndex] : "Palette Options"}</span>
                   <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}><path d="M6 9l6 6 6-6" /></svg>
                 </button>
                 {shuffleOpen && (
@@ -1437,8 +1463,8 @@ function DesignSystemEditorInner({
               <div className="flex items-center">
                 <button
                   onClick={handleGenerate}
-                  className="h-10 px-2 sm:px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1"
-                  style={{ color: "hsl(var(--muted-foreground))" }}
+                  className="h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+                  style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
                 >
                   <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
                   <span className="truncate">Refresh</span>
@@ -1459,8 +1485,8 @@ function DesignSystemEditorInner({
                 <PremiumGate feature="image-palette" variant="inline" upgradeUrl={upgradeUrl} signInUrl={signInUrl}>
                 <button
                   onClick={() => setShowImagePaletteModal(true)}
-                  className="h-10 px-2 sm:px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1"
-                  style={{ color: "hsl(var(--muted-foreground))" }}
+                  className="h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+                  style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
                   title="Extract a color palette from an image"
                 >
                   {imagePaletteStatus === 'extracting' ? (
@@ -1473,18 +1499,21 @@ function DesignSystemEditorInner({
                     <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path strokeLinecap="round" strokeLinejoin="round" d="M21 15l-5-5L5 21" /></svg>
                   )}
                   <span className="truncate">{imagePaletteStatus === 'extracting' ? 'Extracting...' : imagePaletteStatus === 'done' ? 'Palette applied' : imagePaletteStatus === 'error' ? 'Failed' : 'Image'}</span>
+                  {!isPremium && <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>}
                 </button>
                 </PremiumGate>
                 <PremiumGate feature="palette-export" variant="inline" upgradeUrl={upgradeUrl} signInUrl={signInUrl}>
                   <button
                     onClick={() => setShowPaletteExport(true)}
-                    className="h-10 px-2 sm:px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1"
-                    style={{ color: "hsl(var(--muted-foreground))" }}
+                    className="h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+                    style={{ backgroundColor: "#e5e7eb", color: "#111", boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)" }}
                   >
                     <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
                     <span className="truncate"><span className="sm:hidden">Export</span><span className="hidden sm:inline">Export Palette</span></span>
+                    {!isPremium && <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>}
                   </button>
                 </PremiumGate>
+              </div>{/* end desktop buttons wrapper */}
       </div>
 
       {/* Section nav */}
@@ -1652,28 +1681,20 @@ function DesignSystemEditorInner({
             <div className="flex items-center flex-wrap gap-2 sm:gap-4" data-axe-exclude>
               <h2 className="text-[20px] font-normal uppercase tracking-wider flex items-center gap-2" style={{ color: "hsl(var(--foreground))" }}>Colors <a href="#top" className="opacity-30 hover:opacity-100 transition-all hover:scale-125" aria-label="Back to top"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 19V5m0 0l-7 7m7-7l7 7" /></svg></a></h2>
               <div className="ml-auto flex items-center">
-              {/* Mobile: dropdown */}
+              {/* Mobile: dropdown (Colors section actions only) */}
               <select
                 className="sm:hidden h-8 px-2 text-[13px] font-light rounded-md border"
                 style={{ backgroundColor: "hsl(var(--background))", color: "hsl(var(--foreground))", borderColor: "hsl(var(--border))" }}
                 value=""
                 onChange={e => {
                   const v = e.target.value;
-                  if (v === "default") { setHarmonySchemeIndex(-1); handleGenerate(); }
-                  else if (v === "refresh") handleGenerate();
-                  else if (v === "upload") setShowImagePaletteModal(true);
-                  else if (v === "export") setShowPaletteExport(true);
-                  else if (v === "css") { setExportFormat("css"); generateCode(); }
+                  if (v === "css") { setExportFormat("css"); generateCode(); }
                   else if (v === "tokens") { setExportFormat("tokens"); generateCode(); }
                   else if (v === "reset") setShowResetModal(true);
                   e.target.value = "";
                 }}
               >
                 <option value="" disabled>Actions…</option>
-                <option value="default">Default Scheme</option>
-                <option value="refresh">Refresh</option>
-                <option value="upload">Upload Image</option>
-                <option value="export">Export Palette</option>
                 <option value="css">CSS</option>
                 <option value="tokens">Tokens</option>
                 <option value="reset">Reset</option>
@@ -2799,6 +2820,76 @@ function DesignSystemEditorInner({
                 </div>
               </div>
             </div>
+
+            {/* Toast Messages (Pro) */}
+            <PremiumGate feature="toast-messages" variant="section" upgradeUrl={upgradeUrl} signInUrl={signInUrl}>
+              <div className="space-y-3">
+                <h3 className="text-[16px] font-normal uppercase tracking-wider" style={{ color: "hsl(var(--foreground))" }}>Toast Messages</h3>
+                <div className="w-full space-y-3" data-axe-exclude>
+                  {(() => {
+                    const toasts = [
+                      { key: "success", label: "Changes saved", colorVar: "--success", fgVar: "--success-foreground", iconPath: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" },
+                      { key: "error", label: "Failed to save", colorVar: "--destructive", fgVar: "--destructive-foreground", iconPath: "M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" },
+                      { key: "info", label: "3 items updated", colorVar: "--brand", fgVar: null, iconPath: "M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" },
+                      { key: "warning", label: "Connection unstable", colorVar: "--warning", fgVar: "--warning-foreground", iconPath: "M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" },
+                    ];
+
+                    return toasts.map(({ key, label, colorVar, fgVar, iconPath }) => {
+                      const colorHsl = colors[colorVar] || "220 70% 50%";
+                      const colorRef = `var(${colorVar})`;
+                      const fgRef = fgVar ? `var(${fgVar})` : null;
+                      const preset = alertStyle.preset;
+
+                      let bgStyle: string;
+                      let textColor: string;
+                      let borderStyle: string;
+
+                      if (preset === "filled") {
+                        bgStyle = `hsl(${colorRef})`;
+                        textColor = fgRef ? `hsl(${fgRef})` : (colors[colorVar] ? `hsl(${fgForBg(colors[colorVar])})` : "#fff");
+                        borderStyle = "none";
+                      } else if (preset === "soft") {
+                        const parts = colorHsl.trim().split(/\s+/);
+                        bgStyle = parts.length >= 3 ? `hsla(${parts[0]}, ${parts[1]}, ${parts[2]}, 0.12)` : `hsl(${colorRef})`;
+                        textColor = `hsl(${colorRef})`;
+                        borderStyle = "none";
+                      } else if (preset === "outline") {
+                        bgStyle = "hsl(var(--card))";
+                        textColor = `hsl(${colorRef})`;
+                        borderStyle = `${alertStyle.borderWidth}px solid hsl(${colorRef})`;
+                      } else {
+                        bgStyle = "hsl(var(--card))";
+                        textColor = `hsl(${colorRef})`;
+                        borderStyle = `1px solid hsl(var(--border))`;
+                      }
+
+                      return (
+                        <div
+                          key={key}
+                          className="flex items-center gap-3 shadow-lg"
+                          style={{
+                            backgroundColor: bgStyle,
+                            color: textColor,
+                            borderRadius: `${alertStyle.borderRadius}px`,
+                            border: borderStyle,
+                            padding: `${Math.max(alertStyle.padding - 4, 8)}px ${alertStyle.padding}px`,
+                            maxWidth: "360px",
+                          }}
+                        >
+                          <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d={iconPath} />
+                          </svg>
+                          <p className="text-[14px] font-medium flex-1 min-w-0">{label}</p>
+                          <button className="flex-shrink-0 opacity-60 hover:opacity-100 transition-opacity" style={{ color: textColor }}>
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                          </button>
+                        </div>
+                      );
+                    });
+                  })()}
+                </div>
+              </div>
+            </PremiumGate>
           </div>{/* end Alerts border wrapper */}
 
             {/* Alert Reset Confirmation Modal */}

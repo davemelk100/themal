@@ -1,6 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
 import { useUser } from "@clerk/clerk-react";
-import { generateLicenseKey } from "@design-alive/editor";
 
 const ALPHABET = "2345679ABCDEFGHJKMNPQRSTUVWXYZ";
 
@@ -46,60 +44,23 @@ function deriveKey(userId: string): string {
   return `THEEMEL-${seg1}-${seg2}-${seg3}`;
 }
 
-const DEV_PRO_KEY = "theemel_dev_pro";
-
 interface SubscriptionState {
   isPro: boolean;
   licenseKey: string | undefined;
   isLoaded: boolean;
   user: ReturnType<typeof useUser>["user"];
-  /** Dev-only: toggle pro mode for testing */
-  toggleDevPro: () => void;
-  /** Whether dev pro override is active */
-  isDevPro: boolean;
 }
 
 export function useSubscription(): SubscriptionState {
   const { user, isLoaded } = useUser();
-  const [devPro, setDevPro] = useState(() => localStorage.getItem(DEV_PRO_KEY) === "true");
-  // Stable fallback key for when devPro is active but user hasn't loaded yet
-  const fallbackKey = useMemo(() => generateLicenseKey(), []);
-
-  const toggleDevPro = useCallback(() => {
-    setDevPro(prev => {
-      const next = !prev;
-      if (next) {
-        localStorage.setItem(DEV_PRO_KEY, "true");
-      } else {
-        localStorage.removeItem(DEV_PRO_KEY);
-      }
-      return next;
-    });
-  }, []);
-
-  // Expose toggle on window for console access in dev
-  useEffect(() => {
-    if (import.meta.env.DEV) {
-      (window as any).__togglePro = toggleDevPro;
-    }
-  }, [toggleDevPro]);
 
   if (!isLoaded) {
-    return {
-      isPro: devPro,
-      licenseKey: devPro ? fallbackKey : undefined,
-      isLoaded: false,
-      user: null,
-      toggleDevPro,
-      isDevPro: devPro,
-    };
+    return { isPro: false, licenseKey: undefined, isLoaded: false, user: null };
   }
 
   const plan = user ? (user.publicMetadata as { plan?: string }).plan : undefined;
-  const isPro = devPro || plan === "pro";
-  const licenseKey = isPro
-    ? (user ? deriveKey(user.id) : fallbackKey)
-    : undefined;
+  const isPro = plan === "pro";
+  const licenseKey = isPro && user ? deriveKey(user.id) : undefined;
 
-  return { isPro, licenseKey, isLoaded, user: user ?? null, toggleDevPro, isDevPro: devPro };
+  return { isPro, licenseKey, isLoaded, user: user ?? null };
 }
