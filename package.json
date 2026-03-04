@@ -6,7 +6,7 @@
   "workspaces": [
     "packages/*"
   ],
-  "description": "Theemal",
+  "description": "Themal",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

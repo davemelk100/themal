@@ -12,7 +12,7 @@ export default function SiteFooter() {
     >
       <div className="w-full px-4 sm:px-6 lg:px-8 py-5 flex items-center justify-between">
         <Link to="/" className="flex-shrink-0 leading-none">
-          <img src="/theemel-logo.svg" alt="Theemel" className="h-8" width="28" height="32" />
+          <img src="/themal-just-t.svg" alt="Themal" className="h-8" width="28" height="32" />
         </Link>
         <nav className="hidden sm:flex items-center gap-4 sm:gap-6">
           <Link

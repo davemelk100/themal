@@ -78,14 +78,14 @@ export default function Features() {
         </Link>
 
         <div className="flex items-center gap-3 mb-8">
-          <img src="/theemal-logo-wide.svg" alt="Theemal" className="h-10 sm:h-12" />
+          <img src="/theemal-logo-wide.svg" alt="Themal" className="h-10 sm:h-12" />
           <h1 className="text-3xl sm:text-4xl font-light title-font" style={{ color: "hsl(var(--foreground))" }}>
             Features
           </h1>
         </div>
 
         <p className="text-[14px] leading-relaxed mb-10" style={{ color: "hsl(var(--foreground))" }}>
-          A running log of everything shipped in the Theemel design system editor.
+          A running log of everything shipped in the Themal design system editor.
         </p>
 
         <div className="space-y-10">

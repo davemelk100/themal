@@ -1,4 +1,4 @@
-# Theemal
+# Themal
 
 An interactive design system that lets you pick a brand color and watch every token update in real time. Export a CSS snapshot or open a PR to propose changes.
 
@@ -10,15 +10,15 @@ Every foreground/background pair is audited against WCAG AA (4.5:1) via axe-core
 
 ## npm Package
 
-The editor is published to npm as [`@design-alive/editor`](https://www.npmjs.com/package/@design-alive/editor) and can be installed in any React app:x
+The editor is published to npm as [`@theemel/editor`](https://www.npmjs.com/package/@theemel/editor) and can be installed in any React app:
 
 ```bash
-npm install @design-alive/editor
+npm install @theemel/editor
 ```
 
 ```tsx
-import { DesignSystemEditor } from "@design-alive/editor";
-import "@design-alive/editor/style.css";
+import { DesignSystemEditor } from "@theemel/editor";
+import "@theemel/editor/style.css";
 
 function App() {
   return <DesignSystemEditor />;

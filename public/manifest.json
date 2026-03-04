@@ -1,6 +1,6 @@
 {
-  "name": "Theemel — Real-Time Theming",
-  "short_name": "Theemel",
+  "name": "Themal — Real-Time Theming",
+  "short_name": "Themal",
   "description": "Interactive design system editor — pick colors, enforce WCAG AA contrast, and export CSS custom properties in real time.",
   "start_url": "/",
   "display": "standalone",

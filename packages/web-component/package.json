@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "private": true,
   "type": "module",
-  "description": "Web component wrapper for Theemel editor — use via a single <script> tag on any platform",
+  "description": "Web component wrapper for Themal editor — use via a single <script> tag on any platform",
   "main": "./dist/theemel-editor.js",
   "files": [
     "dist"

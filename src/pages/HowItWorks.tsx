@@ -14,7 +14,7 @@ export default function HowItWorks() {
         </Link>
 
         <div className="flex items-center gap-3 mb-8">
-          <img src="/theemal-logo-wide.svg" alt="Theemal" className="h-10 sm:h-12" />
+          <img src="/theemal-logo-wide.svg" alt="Themal" className="h-10 sm:h-12" />
           <h1 className="text-3xl sm:text-4xl font-light title-font" style={{ color: "hsl(var(--foreground))" }}>
             How It Works
           </h1>
