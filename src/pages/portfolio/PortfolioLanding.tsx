@@ -16,6 +16,7 @@ export default function PortfolioLanding() {
         signInUrl="/sign-in"
         headerRight={<UserNav />}
         featuresUrl="/readme"
+        aboutUrl="/about"
       />
       <SiteFooterBranding />
       <SiteFooter />

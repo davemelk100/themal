@@ -225,6 +225,7 @@ function DesignSystemEditorInner({
   signInUrl,
   headerRight,
   featuresUrl,
+  aboutUrl,
 }: DesignSystemEditorProps) {
   const { isPremium } = useLicense();
   const [hoveredLockKey, setHoveredLockKey] = useState<string | null>(null);
@@ -319,6 +320,7 @@ function DesignSystemEditorInner({
   }, [activeSection]);
 
   const [showResetModal, setShowResetModal] = useState(false);
+  const [showGlobalResetModal, setShowGlobalResetModal] = useState(false);
 
   const [showCardResetModal, setShowCardResetModal] = useState(false);
   const [showTypoResetModal, setShowTypoResetModal] = useState(false);
@@ -1246,10 +1248,10 @@ function DesignSystemEditorInner({
 
   return (
     <div id="top" className={`ds-editor${className ? ` ${className}` : ''}`}>
-      {showHeader && <div className="pt-2 sm:pt-3 lg:pt-8 pb-1 sm:pb-2 lg:pb-3" style={{ backgroundColor: "hsl(var(--background))" }}>
+      {showHeader && <div className="pt-2 sm:pt-3 lg:pt-8 pb-4 sm:pb-2 lg:pb-3" style={{ backgroundColor: "hsl(var(--background))" }}>
         <div className="w-full px-4 sm:px-6 lg:px-8">
           {/* Title + nav links — single header row */}
-          <div className="w-full mb-2 sm:mb-3 lg:mb-4 flex items-end gap-x-4 pt-2 sm:pt-3 lg:pt-4">
+          <div className="w-full mb-2 sm:mb-3 lg:mb-4 flex items-end gap-x-4 pt-2 sm:pt-3 lg:pt-4 relative">
             <a href="#top" className="flex-shrink-0 leading-none" style={{ color: "hsl(var(--foreground))" }}>
               <svg className="h-10 block" viewBox="0 0 1654 514" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Themal">
                 <path d="M0 21.3583C0 9.56245 9.56242 0 21.3583 0H128.15V153.78H21.3583C9.56242 153.78 0 144.217 0 132.421V21.3583Z" fill="#FC0000"/>
@@ -1269,44 +1271,17 @@ function DesignSystemEditorInner({
               </svg>
             </a>
 
-            {/* Desktop header actions */}
-            <div className="hidden lg:flex ml-auto items-center gap-4 flex-shrink-0">
-              <button
-                onClick={() => {
-                  const hash = serializeThemeState(colors, cardStyle, typographyState, alertStyle, interactionStyle, typoInteractionStyle);
-                  window.location.hash = hash;
-                  navigator.clipboard.writeText(window.location.href).then(() => {
-                    setShareCopied(true);
-                    setTimeout(() => setShareCopied(false), 2000);
-                  });
-                }}
-                className="text-[13px] font-light uppercase tracking-wider transition-colors hover:opacity-70 flex items-center gap-1 whitespace-nowrap"
-                style={{ color: "hsl(var(--muted-foreground))", lineHeight: 1 }}
-              >
-                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-                <span>{shareCopied ? "Link copied!" : "Share"}</span>
-              </button>
-              <button
-                onClick={() => setShowPrSetupModal(true)}
-                className="text-[13px] font-light uppercase tracking-wider transition-colors hover:opacity-70 flex items-center gap-1 whitespace-nowrap"
-                style={{ color: "hsl(var(--muted-foreground))", lineHeight: 1 }}
-              >
-                <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" /></svg>
-                <span>Open PR</span>
-              </button>
-              {headerRight}
-            </div>
+            {/* Center link — absolutely positioned for true centering */}
+            {aboutUrl && <a
+              href={aboutUrl}
+              className="absolute left-1/2 text-[13px] font-light uppercase tracking-wider transition-opacity hover:opacity-70 whitespace-nowrap"
+              style={{ color: "hsl(var(--muted-foreground))", transform: "translateX(-50%)", transition: "opacity 0.15s" }}
+            >
+              About
+            </a>}
 
-            {/* Mobile/tablet header actions */}
-            <div className="ml-auto flex items-center gap-3 lg:hidden">
-              <button
-                onClick={() => setShowPrSetupModal(true)}
-                className="text-[13px] font-light uppercase tracking-wider transition-colors hover:opacity-70 flex items-center gap-1 whitespace-nowrap"
-                style={{ color: "hsl(var(--muted-foreground))", lineHeight: 1 }}
-              >
-                <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" /></svg>
-                <span>Open PR</span>
-              </button>
+            {/* Header actions (right side) */}
+            <div className="ml-auto flex items-center gap-3">
               {headerRight}
               {featuresUrl && <a
                 href={featuresUrl}
@@ -1338,15 +1313,8 @@ function DesignSystemEditorInner({
         </div>
       </div>}
 
-      <p className="w-full px-4 sm:px-6 lg:px-8 pt-2 pb-4 md:pb-0 text-[14px] font-light leading-relaxed" style={{ color: "hsl(var(--muted-foreground))" }}>
-        Pick a brand color and watch every token update in real time. Customize typography, buttons, cards, and alerts. Every foreground/background pair is checked against WCAG AA contrast. Export CSS custom properties or open a PR to propose design system changes.{" "}
-        {featuresUrl ? <a href={featuresUrl} className="text-[14px] underline hover:opacity-70 transition-opacity" style={{ color: "hsl(var(--muted-foreground))" }}>Learn more about features.</a> : null}
-      </p>
-
-
-
       {/* Global Actions title */}
-      <div className="w-full px-4 sm:px-6 lg:px-8 md:pt-12 flex items-center gap-2">
+      <div className="w-full px-4 sm:px-6 lg:px-8 pt-4 md:pt-12 flex items-center gap-2">
         <h2 className="text-[20px] font-bold tracking-wider mb-[5px]" style={{ color: "hsl(var(--foreground))" }}>Global Actions</h2>
         {/* Mobile dropdown — right-aligned */}
         <div className="ml-auto sm:hidden">
@@ -1356,18 +1324,28 @@ function DesignSystemEditorInner({
             value=""
             onChange={e => {
               const v = e.target.value;
-              if (v === "default") { setHarmonySchemeIndex(-1); handleGenerate(); }
+              if (v === "reset-all") setShowGlobalResetModal(true);
+              else if (v === "default") { setHarmonySchemeIndex(-1); handleGenerate(); }
               else if (v === "refresh") handleGenerate();
               else if (v === "upload") setShowImagePaletteModal(true);
               else if (v === "export") setShowPaletteExport(true);
+              else if (v === "share") {
+                const hash = serializeThemeState(colors, cardStyle, typographyState, alertStyle, interactionStyle, typoInteractionStyle);
+                window.location.hash = hash;
+                navigator.clipboard.writeText(window.location.href).then(() => { setShareCopied(true); setTimeout(() => setShareCopied(false), 2000); });
+              }
+              else if (v === "pr") setShowPrSetupModal(true);
               e.target.value = "";
             }}
           >
             <option value="" disabled>Actions…</option>
+            <option value="reset-all">Reset All</option>
             <option value="refresh">Refresh Theme</option>
             <option value="default">Default Scheme</option>
             <option value="upload">Upload Image</option>
             <option value="export">Export Palette</option>
+            <option value="share">Share</option>
+            <option value="pr">Open PR</option>
           </select>
         </div>
       </div>
@@ -1375,6 +1353,14 @@ function DesignSystemEditorInner({
       <div className="w-full px-4 sm:px-6 lg:px-8 pt-2 pb-2 md:pb-6 flex flex-wrap items-center gap-2 sm:gap-4">
               {/* Desktop buttons */}
               <div className="hidden sm:contents">
+              <button
+                onClick={() => setShowGlobalResetModal(true)}
+                className="ds-global-btn h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+                title="Reset all sections to defaults"
+              >
+                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" /></svg>
+                <span className="truncate">Reset All</span>
+              </button>
               <div className="flex items-center">
                 <button
                   onClick={handleGenerate}
@@ -1448,7 +1434,7 @@ function DesignSystemEditorInner({
                   ) : (
                     <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path strokeLinecap="round" strokeLinejoin="round" d="M21 15l-5-5L5 21" /></svg>
                   )}
-                  <span className="truncate">{imagePaletteStatus === 'extracting' ? 'Extracting...' : imagePaletteStatus === 'done' ? 'Palette applied' : imagePaletteStatus === 'error' ? 'Failed' : 'Image'}</span>
+                  <span className="truncate">{imagePaletteStatus === 'extracting' ? 'Extracting...' : imagePaletteStatus === 'done' ? 'Palette applied' : imagePaletteStatus === 'error' ? 'Failed' : 'Upload Image'}</span>
                   {!isPremium && <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>}
                 </button>
                 </PremiumGate>
@@ -1462,12 +1448,36 @@ function DesignSystemEditorInner({
                     {!isPremium && <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>}
                   </button>
                 </PremiumGate>
+              <button
+                onClick={() => {
+                  const hash = serializeThemeState(colors, cardStyle, typographyState, alertStyle, interactionStyle, typoInteractionStyle);
+                  window.location.hash = hash;
+                  navigator.clipboard.writeText(window.location.href).then(() => {
+                    setShareCopied(true);
+                    setTimeout(() => setShareCopied(false), 2000);
+                  });
+                }}
+                className="ds-global-btn h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+              >
+                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                <span className="truncate">{shareCopied ? "Link copied!" : "Share"}</span>
+              </button>
+              <PremiumGate feature="pr-integration" variant="inline" hideLock upgradeUrl={upgradeUrl} signInUrl={signInUrl}>
+              <button
+                onClick={() => setShowPrSetupModal(true)}
+                className="ds-global-btn h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+              >
+                <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" /></svg>
+                <span className="truncate">Open PR</span>
+                {!isPremium && <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>}
+              </button>
+              </PremiumGate>
               </div>{/* end desktop buttons wrapper */}
       </div>
 
       {/* Design Elements divider + title */}
-      <div className="w-full px-4 sm:px-6 lg:px-8 pt-1 md:pt-12">
-        <h2 className="text-[20px] font-bold tracking-wider mb-[5px]" style={{ color: "hsl(var(--foreground))" }}>Design Elements</h2>
+      <div className="w-full px-4 sm:px-6 lg:px-8 md:pt-12">
+        <h2 className="text-[20px] font-bold tracking-wider mb-0 md:mb-[5px]" style={{ color: "hsl(var(--foreground))" }}>Design Elements</h2>
       </div>
       {/* Section nav */}
       <nav ref={navContainerRef} className="sticky top-0 z-40 w-full px-4 sm:px-6 lg:px-8 pt-2 pb-1 hidden sm:flex items-center gap-3 lg:gap-4" style={{ backgroundColor: "hsl(var(--background))" }}>
@@ -1503,7 +1513,7 @@ function DesignSystemEditorInner({
 
           {/* Alerts */}
           <div className="mb-0">
-            <div className="w-full sm:w-auto order-first sm:order-last flex-shrink-0 min-h-[36px] pointer-events-none [&>*]:pointer-events-auto" data-axe-exclude>
+            <div className="w-full sm:w-auto order-first sm:order-last flex-shrink-0 sm:min-h-[36px] pointer-events-none [&>*]:pointer-events-auto" data-axe-exclude>
                 {accessibilityAudit && auditStatus === 'failed' && (
                   <span aria-live="assertive" className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-center gap-1.5 border-t-2 border-red-400 dark:border-red-600 bg-red-100 dark:bg-red-950 px-4 h-12 text-[14px] font-light text-red-800 dark:text-red-200 shadow-2xl">
                     <span>&#10007; {auditViolations.length} issue{auditViolations.length !== 1 ? 's' : ''}</span>
@@ -1562,6 +1572,36 @@ function DesignSystemEditorInner({
                     style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}
                   >
                     Reset
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Global Reset All Confirmation Modal */}
+          {showGlobalResetModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" role="dialog" aria-modal="true" aria-labelledby="global-reset-modal-title">
+              <div className="rounded-lg shadow-xl p-6 w-full max-w-sm mx-4" style={{ backgroundColor: "hsl(var(--card))", color: "hsl(var(--card-foreground))" }}>
+                <h4 id="global-reset-modal-title" className="text-2xl font-light mb-2">
+                  Reset Everything?
+                </h4>
+                <p className="text-[14px] mb-4" style={{ color: "hsl(var(--card-foreground))" }}>
+                  This will reset all sections — colors, buttons, cards, alerts, and typography — to their defaults. All customizations will be lost.
+                </p>
+                <div className="flex justify-end gap-2">
+                  <button
+                    onClick={() => setShowGlobalResetModal(false)}
+                    className="px-3 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
+                    style={{ backgroundColor: "transparent", color: "hsl(var(--card-foreground))" }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={() => { handleReset(); setShowGlobalResetModal(false); }}
+                    className="px-3 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
+                    style={{ backgroundColor: "hsl(var(--destructive))", color: "hsl(var(--destructive-foreground))" }}
+                  >
+                    Reset All
                   </button>
                 </div>
               </div>
@@ -1630,7 +1670,7 @@ function DesignSystemEditorInner({
 
 
           {/* Colors section */}
-          <div id="colors" className="min-w-0 space-y-3 mt-6 mb-6 md:mt-16 md:mb-16 scroll-mt-4 sm:scroll-mt-[52px]">
+          <div id="colors" className="min-w-0 space-y-3 mb-6 md:mt-16 md:mb-16 scroll-mt-4 sm:scroll-mt-[52px]">
             <div className="flex items-center flex-wrap gap-2 sm:gap-4" data-axe-exclude>
               <h2 className="text-[20px] font-bold tracking-wider mb-[5px] flex items-center gap-2" style={{ color: "hsl(var(--foreground))" }}>Colors <a href="#top" className="opacity-30 hover:opacity-100 transition-all hover:scale-125" aria-label="Back to top"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 19V5m0 0l-7 7m7-7l7 7" /></svg></a></h2>
               <div className="ml-auto flex items-center">

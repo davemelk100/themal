@@ -13,6 +13,7 @@ const HowItWorks = lazy(() => import("./pages/HowItWorks"));
 const ReadmePage = lazy(() => import("./pages/ReadmePage"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const Features = lazy(() => import("./pages/Features"));
+const About = lazy(() => import("./pages/About"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const CookiesPolicy = lazy(() => import("./pages/CookiesPolicy"));
 const Terms = lazy(() => import("./pages/Terms"));
@@ -70,6 +71,7 @@ export default function App() {
                 <Route path="/readme" element={<ReadmePage />} />
                 <Route path="/pricing" element={<Pricing />} />
                 <Route path="/features" element={<Features />} />
+                <Route path="/about" element={<About />} />
                 <Route path="/privacy" element={<PrivacyPolicy />} />
                 <Route path="/cookies" element={<CookiesPolicy />} />
                 <Route path="/terms" element={<Terms />} />
