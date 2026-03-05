@@ -154,6 +154,7 @@ export default function Features() {
               { title: "GitHub PR Integration", desc: "Open design system PRs directly from the editor." },
               { title: "Color Locks", desc: "Pin individual color tokens during palette generation." },
               { title: "Responsive Layout", desc: "Mobile-first design with adaptive controls across all viewports." },
+              { title: "Web Component", desc: "Drop into Vue, Angular, Svelte, Astro, WordPress, Shopify, or any platform via a single script tag." },
             ].map(({ title, desc }) => (
               <div key={title} className="flex items-start gap-2">
                 <span className="mt-0.5" style={{ color: "hsl(var(--brand))" }}>{check}</span>
@@ -175,12 +176,8 @@ export default function Features() {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
             {[
-              { title: "WordPress Plugin", desc: "Install Themal as a WordPress plugin to manage your theme's design tokens from the admin dashboard." },
-              { title: "Shopify App", desc: "Embed the editor in your Shopify store admin to customize storefront colors, typography, and components." },
               { title: "Figma Plugin", desc: "Sync design tokens between Themal and Figma for seamless designer-developer handoff." },
               { title: "VS Code Extension", desc: "Edit and preview design tokens directly inside your code editor." },
-              { title: "Webflow App", desc: "Apply Themal design systems to Webflow sites without writing code." },
-              { title: "Drupal Module", desc: "Integrate design token management into Drupal's admin interface." },
               { title: "AI-Assisted Design", desc: "Describe your brand or mood and let AI generate a complete design system with colors, typography, and component styles." },
               { title: "Mobile App", desc: "Edit and preview your design system on the go with a native iOS and Android app." },
             ].map(({ title, desc }) => (

@@ -320,6 +320,201 @@ function App() {
           </p>
         </section>
 
+        {/* Framework Compatibility */}
+        <section className="mb-8">
+          <h2 className="text-xl font-medium mb-3" style={{ color: "hsl(var(--foreground))" }}>Framework Compatibility</h2>
+          <p className="text-[14px] leading-relaxed mb-3" style={{ color: "hsl(var(--foreground))" }}>
+            The <code className="font-mono text-[14px]">@theemel/editor</code> npm package is for React apps. For all other frameworks, use the <code className="font-mono text-[14px]">&lt;theemel-editor&gt;</code> web component — it bundles React internally and works anywhere you can load a script tag.
+          </p>
+
+          <h3 className="text-[14px] font-medium mb-2 mt-4" style={{ color: "hsl(var(--muted-foreground))" }}>Vue 3</h3>
+          <p className="text-[14px] mb-2" style={{ color: "hsl(var(--foreground))" }}>
+            1. Load the script in your <code className="font-mono text-[14px]">index.html</code> or import it in a component:
+          </p>
+          <pre className="rounded-lg p-4 text-[14px] overflow-x-auto mb-2" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
+            <code>{`<!-- index.html -->
+<script src="https://themalive.com/theemel-editor.js"></script>`}</code>
+          </pre>
+          <p className="text-[14px] mb-2" style={{ color: "hsl(var(--foreground))" }}>
+            2. Use the custom element in any component:
+          </p>
+          <pre className="rounded-lg p-4 text-[14px] overflow-x-auto mb-2" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
+            <code>{`<template>
+  <theemel-editor></theemel-editor>
+</template>`}</code>
+          </pre>
+          <p className="text-[14px] mb-2" style={{ color: "hsl(var(--foreground))" }}>
+            3. Tell Vue to treat it as a custom element in <code className="font-mono text-[14px]">vite.config.js</code>:
+          </p>
+          <pre className="rounded-lg p-4 text-[14px] overflow-x-auto mb-4" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
+            <code>{`// vite.config.js
+import vue from '@vitejs/plugin-vue'
+
+export default {
+  plugins: [
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => tag === 'theemel-editor'
+        }
+      }
+    })
+  ]
+}`}</code>
+          </pre>
+
+          <h3 className="text-[14px] font-medium mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>Angular</h3>
+          <p className="text-[14px] mb-2" style={{ color: "hsl(var(--foreground))" }}>
+            1. Add the script to <code className="font-mono text-[14px]">angular.json</code>:
+          </p>
+          <pre className="rounded-lg p-4 text-[14px] overflow-x-auto mb-2" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
+            <code>{`// angular.json
+"scripts": [
+  "https://themalive.com/theemel-editor.js"
+]`}</code>
+          </pre>
+          <p className="text-[14px] mb-2" style={{ color: "hsl(var(--foreground))" }}>
+            2. Add <code className="font-mono text-[14px]">CUSTOM_ELEMENTS_SCHEMA</code> to your module or standalone component:
+          </p>
+          <pre className="rounded-lg p-4 text-[14px] overflow-x-auto mb-2" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
+            <code>{`// app.component.ts
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  template: \`<theemel-editor></theemel-editor>\`
+})
+export class AppComponent {}`}</code>
+          </pre>
+          <p className="text-[14px] mb-4" style={{ color: "hsl(var(--muted-foreground))" }}>
+            Or add <code className="font-mono text-[14px]">CUSTOM_ELEMENTS_SCHEMA</code> to your <code className="font-mono text-[14px]">NgModule</code> schemas array for module-based apps.
+          </p>
+
+          <h3 className="text-[14px] font-medium mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>Svelte / SvelteKit</h3>
+          <p className="text-[14px] mb-2" style={{ color: "hsl(var(--foreground))" }}>
+            1. Add the script to your <code className="font-mono text-[14px]">app.html</code> or load it in a component:
+          </p>
+          <pre className="rounded-lg p-4 text-[14px] overflow-x-auto mb-2" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
+            <code>{`<!-- app.html -->
+<script src="https://themalive.com/theemel-editor.js"></script>`}</code>
+          </pre>
+          <p className="text-[14px] mb-2" style={{ color: "hsl(var(--foreground))" }}>
+            2. Use in any Svelte component:
+          </p>
+          <pre className="rounded-lg p-4 text-[14px] overflow-x-auto mb-4" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
+            <code>{`<theemel-editor></theemel-editor>`}</code>
+          </pre>
+          <p className="text-[14px] mb-4" style={{ color: "hsl(var(--muted-foreground))" }}>
+            Svelte supports custom elements natively — no extra configuration needed.
+          </p>
+
+          <h3 className="text-[14px] font-medium mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>Astro</h3>
+          <pre className="rounded-lg p-4 text-[14px] overflow-x-auto mb-4" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
+            <code>{`---
+// src/pages/design.astro
+---
+<html>
+  <head>
+    <script src="https://themalive.com/theemel-editor.js"></script>
+  </head>
+  <body>
+    <theemel-editor></theemel-editor>
+  </body>
+</html>`}</code>
+          </pre>
+
+          <h3 className="text-[14px] font-medium mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>Next.js</h3>
+          <p className="text-[14px] mb-2" style={{ color: "hsl(var(--foreground))" }}>
+            The web component must render client-side only. Use <code className="font-mono text-[14px]">next/script</code> and a client component:
+          </p>
+          <pre className="rounded-lg p-4 text-[14px] overflow-x-auto mb-4" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
+            <code>{`'use client'
+import Script from 'next/script'
+
+export default function DesignEditor() {
+  return (
+    <>
+      <Script
+        src="https://themalive.com/theemel-editor.js"
+        strategy="lazyOnload"
+      />
+      <theemel-editor></theemel-editor>
+    </>
+  )
+}`}</code>
+          </pre>
+
+          <h3 className="text-[14px] font-medium mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>Nuxt</h3>
+          <p className="text-[14px] mb-2" style={{ color: "hsl(var(--foreground))" }}>
+            Wrap in <code className="font-mono text-[14px]">&lt;ClientOnly&gt;</code> to prevent SSR:
+          </p>
+          <pre className="rounded-lg p-4 text-[14px] overflow-x-auto mb-2" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
+            <code>{`<template>
+  <ClientOnly>
+    <theemel-editor></theemel-editor>
+  </ClientOnly>
+</template>
+
+<script setup>
+useHead({
+  script: [{ src: 'https://themalive.com/theemel-editor.js' }]
+})
+</script>`}</code>
+          </pre>
+          <p className="text-[14px] mb-4" style={{ color: "hsl(var(--muted-foreground))" }}>
+            Add the custom element config to <code className="font-mono text-[14px]">nuxt.config.ts</code>:
+          </p>
+          <pre className="rounded-lg p-4 text-[14px] overflow-x-auto mb-4" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
+            <code>{`// nuxt.config.ts
+export default defineNuxtConfig({
+  vue: {
+    compilerOptions: {
+      isCustomElement: (tag) => tag === 'theemel-editor'
+    }
+  }
+})`}</code>
+          </pre>
+
+          <h3 className="text-[14px] font-medium mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>WordPress</h3>
+          <p className="text-[14px] mb-2" style={{ color: "hsl(var(--foreground))" }}>
+            Add a Custom HTML block to any page or post:
+          </p>
+          <pre className="rounded-lg p-4 text-[14px] overflow-x-auto mb-2" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
+            <code>{`<script src="https://themalive.com/theemel-editor.js"></script>
+<theemel-editor></theemel-editor>`}</code>
+          </pre>
+          <p className="text-[14px] mb-4" style={{ color: "hsl(var(--muted-foreground))" }}>
+            Or enqueue via <code className="font-mono text-[14px]">functions.php</code> or create a shortcode plugin. See the <a href="https://github.com/user/themal" target="_blank" rel="noopener noreferrer" className="underline hover:opacity-70 transition-opacity" style={{ color: "hsl(var(--brand))" }}>web component README</a> for detailed WordPress setup options.
+          </p>
+
+          <h3 className="text-[14px] font-medium mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>Shopify</h3>
+          <p className="text-[14px] mb-2" style={{ color: "hsl(var(--foreground))" }}>
+            Add to any Liquid template or custom page:
+          </p>
+          <pre className="rounded-lg p-4 text-[14px] overflow-x-auto mb-4" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
+            <code>{`<script src="https://themalive.com/theemel-editor.js"></script>
+<theemel-editor show-header="false"></theemel-editor>`}</code>
+          </pre>
+
+          <h3 className="text-[14px] font-medium mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>Static Sites (Hugo, Jekyll, Eleventy)</h3>
+          <p className="text-[14px] mb-2" style={{ color: "hsl(var(--foreground))" }}>
+            Add to any HTML template or page:
+          </p>
+          <pre className="rounded-lg p-4 text-[14px] overflow-x-auto mb-4" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
+            <code>{`<script src="https://themalive.com/theemel-editor.js"></script>
+<theemel-editor></theemel-editor>`}</code>
+          </pre>
+
+          <h3 className="text-[14px] font-medium mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>PHP (Laravel, Symfony, Drupal)</h3>
+          <pre className="rounded-lg p-4 text-[14px] overflow-x-auto mb-4" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
+            <code>{`<!-- In any Blade/Twig/PHP template -->
+<script src="https://themalive.com/theemel-editor.js"></script>
+<theemel-editor></theemel-editor>`}</code>
+          </pre>
+        </section>
+
         {/* Tailwind Scoping */}
         <section className="mb-8">
           <h2 className="text-xl font-medium mb-3" style={{ color: "hsl(var(--foreground))" }}>Tailwind Scoping</h2>
