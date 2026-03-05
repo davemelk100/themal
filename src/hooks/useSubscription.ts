@@ -54,13 +54,8 @@ interface SubscriptionState {
 export function useSubscription(): SubscriptionState {
   const { user, isLoaded } = useUser();
 
-  if (!isLoaded) {
-    return { isPro: false, licenseKey: undefined, isLoaded: false, user: null };
-  }
+  // Everyone gets pro tier for now
+  const licenseKey = user ? deriveKey(user.id) : deriveKey("anonymous");
 
-  const plan = user ? (user.publicMetadata as { plan?: string }).plan : undefined;
-  const isPro = plan === "pro";
-  const licenseKey = isPro && user ? deriveKey(user.id) : undefined;
-
-  return { isPro, licenseKey, isLoaded, user: user ?? null };
+  return { isPro: true, licenseKey, isLoaded: isLoaded || true, user: user ?? null };
 }

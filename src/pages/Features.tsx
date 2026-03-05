@@ -170,6 +170,7 @@ export default function Features() {
               { title: "VS Code Extension", desc: "Edit and preview design tokens directly inside your code editor." },
               { title: "Webflow App", desc: "Apply Themal design systems to Webflow sites without writing code." },
               { title: "Drupal Module", desc: "Integrate design token management into Drupal's admin interface." },
+              { title: "Mobile App", desc: "Edit and preview your design system on the go with a native iOS and Android app." },
             ].map(({ title, desc }) => (
               <div key={title} className="flex items-start gap-2">
                 <svg className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: "hsl(var(--muted-foreground))" }} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
