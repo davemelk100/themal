@@ -3,6 +3,74 @@ import { Link } from "react-router-dom";
 import ThemalLogo from "../components/ThemalLogo";
 import SiteFooter, { SiteFooterBranding } from "../components/SiteFooter";
 
+function CodeBlock({ label, code }: { label: string; code: string }) {
+  const [copied, setCopied] = useState(false);
+  return (
+    <div>
+      <p
+        className="text-[11px] font-medium uppercase tracking-wider mb-1"
+        style={{ color: "hsl(var(--muted-foreground))" }}
+      >
+        {label}
+      </p>
+      <div
+        className="relative rounded-lg p-4 overflow-x-auto"
+        style={{
+          backgroundColor: "hsl(var(--foreground) / 0.05)",
+          border: "1px solid hsl(var(--border))",
+        }}
+      >
+        <pre
+          className="text-[13px] font-mono leading-relaxed m-0 pr-10"
+          style={{ color: "hsl(var(--foreground))" }}
+        >
+          {code}
+        </pre>
+        <button
+          className="absolute top-3 right-3 p-1.5 rounded-md transition-opacity hover:opacity-70 cursor-pointer"
+          style={{
+            backgroundColor: "hsl(var(--foreground) / 0.08)",
+            color: "hsl(var(--muted-foreground))",
+            border: "none",
+          }}
+          onClick={() => {
+            navigator.clipboard.writeText(code).then(() => {
+              setCopied(true);
+              setTimeout(() => setCopied(false), 2000);
+            });
+          }}
+          aria-label={`Copy ${label}`}
+        >
+          {copied ? (
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          ) : (
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+              <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+            </svg>
+          )}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+const CODE_SNIPPET = `npm install @theemel/editor`;
+
+const USAGE_SNIPPET = `import { DesignSystemEditor } from "@theemel/editor";
+
+function App() {
+  return (
+    <DesignSystemEditor
+      prEndpointUrl="/api/create-design-pr"
+      accessibilityAudit={true}
+      licenseKey="your-license-key"
+    />
+  );
+}`;
+
 export default function LandingPage() {
   const [zoomDone, setZoomDone] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -171,6 +239,12 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
+
+          {/* Code snippet */}
+          <div className="max-w-xl mx-auto w-full flex flex-col gap-3 text-left">
+            <CodeBlock label="Install" code={CODE_SNIPPET} />
+            <CodeBlock label="Usage" code={USAGE_SNIPPET} />
+          </div>
         </div>
 
         {/* Scroll indicator */}
@@ -219,7 +293,9 @@ export default function LandingPage() {
             a dev cycle. Leadership can review and approve visual changes on the
             spot. Vendors and agencies can collaborate on shared design systems
             without exchanging static mockups. Themal puts the creative process
-            in the hands of the people making the decisions.
+            in the hands of the people making the decisions. Save countless
+            hours lost to design reviews, feedback rounds, and rework between
+            development, design, and business teams.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 text-center">
             {[
@@ -245,14 +321,34 @@ export default function LandingPage() {
             ))}
           </div>
         </div>
+
+        {/* Scroll to top */}
+        <button
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 animate-bounce cursor-pointer bg-transparent border-none p-2"
+          onClick={() => {
+            scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          aria-label="Scroll to top"
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            style={{ color: "hsl(var(--muted-foreground))" }}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+          </svg>
+        </button>
       </section>
 
       {/* Footer */}
       <div
-        className="relative z-10 flex-shrink-0 [&>*]:border-t-0"
+        className="relative z-10 flex-shrink-0 [&>*]:border-t-0 [&_footer]:!bg-transparent"
         style={{
           scrollSnapAlign: "start",
-          backgroundColor: "hsl(var(--background))",
+          backgroundColor: "transparent",
         }}
       >
         <SiteFooterBranding />
