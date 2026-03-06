@@ -16,7 +16,7 @@ if ("serviceWorker" in navigator) {
 }
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/" {...(import.meta.env.PROD ? { proxyUrl: "/clerk" } : {})}>
+  <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/" {...(import.meta.env.PROD ? { proxyUrl: "https://clerk.themalive.com" } : {})}>
     <App />
   </ClerkProvider>,
 );
