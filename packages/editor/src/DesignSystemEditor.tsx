@@ -512,6 +512,7 @@ function DesignSystemEditorInner({
     imageUrl: string;
     palette: Record<string, string>;
   } | null>(null);
+  const [appliedImageUrl, setAppliedImageUrl] = useState<string | null>(null);
 
   const fireOnChange = (newColors: Record<string, string>) => {
     onChange?.(newColors);
@@ -8021,7 +8022,7 @@ function DesignSystemEditorInner({
               Extract Palette from Image
             </h3>
 
-            {/* Upload file */}
+            {/* Upload file / drag-and-drop */}
             <div className="mb-4">
               <p
                 className="text-[13px] font-light mb-2"
@@ -8029,21 +8030,40 @@ function DesignSystemEditorInner({
               >
                 Upload an image file
               </p>
-              <button
+              <div
                 onClick={() => fileInputRef.current?.click()}
-                disabled={imagePaletteStatus === "extracting"}
-                className="w-full h-10 text-[14px] font-light rounded-lg border flex items-center justify-center gap-2 transition-colors hover:opacity-80"
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  e.currentTarget.setAttribute("data-dragging", "true");
+                }}
+                onDragLeave={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  e.currentTarget.removeAttribute("data-dragging");
+                }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  e.currentTarget.removeAttribute("data-dragging");
+                  const file = e.dataTransfer.files?.[0];
+                  if (file && file.type.startsWith("image/")) {
+                    handleImagePalette(file);
+                    setShowImagePaletteModal(false);
+                  }
+                }}
+                className="w-full py-6 text-[14px] font-light rounded-lg border-2 border-dashed flex flex-col items-center justify-center gap-2 transition-colors hover:opacity-80 cursor-pointer [&[data-dragging=true]]:border-solid [&[data-dragging=true]]:bg-[hsl(var(--accent)/0.1)]"
                 style={{
                   borderColor: "hsl(var(--border))",
-                  color: "hsl(var(--foreground))",
+                  color: "hsl(var(--muted-foreground))",
                 }}
               >
                 <svg
-                  className="w-4 h-4 flex-shrink-0"
+                  className="w-8 h-8 flex-shrink-0"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
-                  strokeWidth={2}
+                  strokeWidth={1.5}
                 >
                   <path
                     strokeLinecap="round"
@@ -8051,8 +8071,9 @@ function DesignSystemEditorInner({
                     d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
                   />
                 </svg>
-                <span>Choose File</span>
-              </button>
+                <span>Drag and drop an image here</span>
+                <span className="text-[12px]">or click to choose a file</span>
+              </div>
             </div>
 
             {/* Divider */}
@@ -8255,8 +8276,15 @@ function DesignSystemEditorInner({
               <button
                 onClick={() => {
                   applyImagePalette(pendingImagePalette.palette);
-                  URL.revokeObjectURL(pendingImagePalette.imageUrl);
+                  const imgUrl = pendingImagePalette.imageUrl;
                   setPendingImagePalette(null);
+                  setAppliedImageUrl(imgUrl);
+                  setTimeout(() => {
+                    setAppliedImageUrl((cur) => {
+                      if (cur === imgUrl) URL.revokeObjectURL(imgUrl);
+                      return cur === imgUrl ? null : cur;
+                    });
+                  }, 3000);
                 }}
                 className="px-4 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
                 style={{
@@ -8273,6 +8301,29 @@ function DesignSystemEditorInner({
         </div>
       )}
 
+      {/* Applied image showcase (3s) */}
+      {appliedImageUrl && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+          onClick={() => {
+            URL.revokeObjectURL(appliedImageUrl);
+            setAppliedImageUrl(null);
+          }}
+        >
+          <div
+            className="rounded-xl overflow-hidden shadow-xl"
+            style={{ maxWidth: 400, maxHeight: "80vh" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={appliedImageUrl}
+              alt="Applied palette source"
+              className="w-full h-full object-contain"
+            />
+          </div>
+        </div>
+      )}
       {showPaletteExport && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center"

@@ -57,6 +57,47 @@ function CodeBlock({ label, code }: { label: string; code: string }) {
   );
 }
 
+/* Default theme values so editor changes don't bleed into the landing page */
+const DEFAULT_THEME: Record<string, string> = {
+  "--brand": "199.2 18.8% 26.1%",
+  "--background": "0 0% 87.1%",
+  "--foreground": "0 0% 0%",
+  "--card": "0 0% 87.1%",
+  "--card-foreground": "0 0% 0%",
+  "--popover": "0 0% 87.1%",
+  "--popover-foreground": "0 0% 0%",
+  "--primary": "199.2 83.2% 48.0%",
+  "--primary-foreground": "199.2 40% 16%",
+  "--secondary": "199.2 16.1% 27.3%",
+  "--secondary-foreground": "0 0% 100%",
+  "--muted": "199.2 17.9% 95.3%",
+  "--muted-foreground": "0 0% 38%",
+  "--accent": "199.2 63.8% 49.5%",
+  "--accent-foreground": "0 0% 0%",
+  "--destructive": "0 20.7% 35.0%",
+  "--destructive-foreground": "0 0% 100%",
+  "--success": "142 16.9% 35.0%",
+  "--success-foreground": "0 0% 100%",
+  "--warning": "45 19.7% 40.0%",
+  "--warning-foreground": "0 0% 99%",
+  "--border": "0 0.0% 78.1%",
+  "--input": "214.3 31.8% 91.4%",
+  "--ring": "199.2 83.2% 53.3%",
+  "--radius": "0.5rem",
+  "--font-heading": "Roboto, sans-serif",
+  "--font-body": "Roboto, sans-serif",
+  "--font-size-base": "17px",
+  "--font-weight-heading": "300",
+  "--font-weight-body": "300",
+  "--line-height": "1.5",
+  "--letter-spacing": "0em",
+  "--letter-spacing-heading": "0em",
+  "--card-radius": "16px",
+  "--card-shadow": "0px 4px 16px 0px rgba(0,0,0,0.08)",
+  "--card-border": "none",
+  "--card-backdrop": "blur(16px)",
+};
+
 const CODE_SNIPPET = `npm install @theemel/editor`;
 
 const USAGE_SNIPPET = `import { DesignSystemEditor } from "@theemel/editor";
@@ -99,11 +140,12 @@ export default function LandingPage() {
       ref={scrollRef}
       className="flex flex-col overflow-x-hidden"
       style={{
+        ...DEFAULT_THEME,
         backgroundColor: "hsl(var(--background))",
         height: "100dvh",
         overflowY: "auto",
         scrollSnapType: "y mandatory",
-      }}
+      } as React.CSSProperties}
     >
       {/* Background image - fixed, grows with scroll */}
       <div
@@ -138,7 +180,7 @@ export default function LandingPage() {
       </div>
 
       {/* Hero */}
-      <section className="relative flex-shrink-0 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-24 sm:py-32" style={{ minHeight: "100dvh", scrollSnapAlign: "start" }}>
+      <section className="relative flex-shrink-0 flex flex-col items-center justify-start px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-16" style={{ minHeight: "100dvh", scrollSnapAlign: "start" }}>
         <div className="relative z-10 max-w-3xl mx-auto text-center flex flex-col items-center gap-6">
           <ThemalLogo className="w-48 sm:w-64 lg:w-80" />
 
@@ -155,16 +197,19 @@ export default function LandingPage() {
           >
             Plug Themal into your app. Design your elements on screen. Open a pull request right from the editor.
           </p>
-          <Link
-            to="/editor"
-            className="inline-flex items-center justify-center px-8 py-3 rounded-full text-sm font-medium transition-opacity hover:opacity-90"
-            style={{
-              backgroundColor: "hsl(var(--brand))",
-              color: "hsl(var(--brand-foreground, var(--background)))",
-            }}
-          >
-            Open the Editor
-          </Link>
+
+          {/* Demo video */}
+          <div className="w-full max-w-2xl rounded-xl overflow-hidden shadow-2xl" style={{ border: "1px solid hsl(var(--border))" }}>
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-auto block"
+              src="/themal-demo.mp4"
+            />
+          </div>
+
         </div>
 
         {/* Scroll indicator */}
@@ -354,6 +399,18 @@ export default function LandingPage() {
         <SiteFooterBranding />
         <SiteFooter sticky={false} />
       </div>
+
+      {/* Fixed bottom CTA */}
+      <Link
+        to="/editor"
+        className="fixed bottom-6 left-1/2 -translate-x-1/2 z-20 inline-flex items-center justify-center px-8 py-3 rounded-full text-sm font-medium transition-opacity hover:opacity-90 shadow-lg"
+        style={{
+          backgroundColor: "hsl(var(--brand))",
+          color: "hsl(var(--brand-foreground, var(--background)))",
+        }}
+      >
+        Open the Editor
+      </Link>
     </div>
   );
 }
