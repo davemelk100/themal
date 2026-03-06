@@ -14,14 +14,14 @@ function CodeBlock({ label, code }: { label: string; code: string }) {
         {label}
       </p>
       <div
-        className="relative rounded-lg p-4 overflow-x-auto"
+        className="relative rounded-lg p-4"
         style={{
           backgroundColor: "hsl(var(--foreground) / 0.05)",
           border: "1px solid hsl(var(--border))",
         }}
       >
         <pre
-          className="text-[13px] font-mono leading-relaxed m-0 pr-10"
+          className="text-[13px] font-mono leading-relaxed m-0 pr-10 whitespace-pre-wrap break-words"
           style={{ color: "hsl(var(--foreground))" }}
         >
           {code}
@@ -138,7 +138,7 @@ export default function LandingPage() {
   return (
     <div
       ref={scrollRef}
-      className="flex flex-col overflow-x-hidden"
+      className="flex flex-col"
       style={{
         ...DEFAULT_THEME,
         backgroundColor: "hsl(var(--background))",
@@ -153,10 +153,10 @@ export default function LandingPage() {
         onAnimationEnd={() => setZoomDone(true)}
         style={{
           position: "fixed",
-          top: 0,
+          top: "4rem",
           left: 0,
           width: "100%",
-          height: "100dvh",
+          height: "calc(100dvh - 4rem)",
           zIndex: 0,
           animation: zoomDone
             ? "heroPulse 6s ease-in-out infinite"
@@ -180,7 +180,7 @@ export default function LandingPage() {
       </div>
 
       {/* Hero */}
-      <section className="relative flex-shrink-0 flex flex-col items-center justify-start px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-16" style={{ minHeight: "100dvh", scrollSnapAlign: "start" }}>
+      <section className="relative flex-shrink-0 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-16" style={{ minHeight: "100dvh", scrollSnapAlign: "start" }}>
         <div className="relative z-10 max-w-3xl mx-auto text-center flex flex-col items-center gap-6">
           <ThemalLogo className="w-48 sm:w-64 lg:w-80" />
 
@@ -198,7 +198,28 @@ export default function LandingPage() {
             Plug Themal into your app. Design your elements on screen. Open a pull request right from the editor.
           </p>
 
+          <div className="w-full max-w-md">
+            <CodeBlock label="Install" code={CODE_SNIPPET} />
+          </div>
 
+          <Link
+            to="/editor"
+            className="inline-flex items-center justify-center transition-opacity hover:opacity-90"
+            style={{
+              backgroundColor: "hsl(var(--brand))",
+              color: "hsl(var(--brand-foreground, var(--background)))",
+              padding: "var(--btn-py, 8px) var(--btn-px, 16px)",
+              fontSize: "var(--btn-font-size, 14px)",
+              fontWeight: "var(--btn-font-weight, 300)",
+              borderRadius: "var(--btn-radius, 12px)",
+              boxShadow: "var(--btn-shadow, 0px 1px 3px 0px rgba(0,0,0,0.1))",
+              borderWidth: "var(--btn-border-width, 0px)",
+              borderStyle: "solid",
+              borderColor: "hsl(var(--border))",
+            }}
+          >
+            Open the Editor
+          </Link>
         </div>
 
         {/* Scroll indicator */}
@@ -228,18 +249,18 @@ export default function LandingPage() {
 
       {/* Dev power */}
       <section
-        className="relative z-10 flex-shrink-0 flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-16 sm:py-24"
+        className="relative z-10 flex-shrink-0 flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-10 sm:py-24"
         style={{ backgroundColor: "transparent", minHeight: "100dvh", scrollSnapAlign: "start" }}
       >
-        <div className="max-w-4xl mx-auto text-center flex flex-col gap-10">
+        <div className="max-w-4xl mx-auto text-center flex flex-col gap-5 sm:gap-10">
           <h2
-            className="text-2xl sm:text-3xl font-light tracking-tight"
+            className="text-xl sm:text-3xl font-light tracking-tight"
             style={{ color: "hsl(var(--foreground))" }}
           >
             A developer's design system, alive.
           </h2>
           <p
-            className="text-base sm:text-lg max-w-2xl mx-auto font-light leading-relaxed"
+            className="text-sm sm:text-lg max-w-2xl mx-auto font-light leading-relaxed"
             style={{ color: "hsl(var(--muted-foreground))" }}
           >
             Themal is a visual editor that plugs directly into your codebase.
@@ -250,7 +271,7 @@ export default function LandingPage() {
             cumbersome Figma files into code. Design and ship from the same
             place.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 text-center">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 text-center">
             {[
               { title: "Live Preview", detail: "Every change renders instantly across your full component library." },
               { title: "Export Anything", detail: "CSS variables, SCSS, Tailwind configs, or W3C design tokens in one click." },
@@ -274,11 +295,24 @@ export default function LandingPage() {
             ))}
           </div>
 
-          {/* Code snippet */}
-          <div className="max-w-xl mx-auto w-full flex flex-col gap-3 text-left">
-            <CodeBlock label="Install" code={CODE_SNIPPET} />
-            <CodeBlock label="Usage" code={USAGE_SNIPPET} />
-          </div>
+          <Link
+            to="/editor"
+            className="self-center inline-flex items-center justify-center transition-opacity hover:opacity-90 mt-2"
+            style={{
+              backgroundColor: "hsl(var(--brand))",
+              color: "hsl(var(--brand-foreground, var(--background)))",
+              padding: "var(--btn-py, 8px) var(--btn-px, 16px)",
+              fontSize: "var(--btn-font-size, 14px)",
+              fontWeight: "var(--btn-font-weight, 300)",
+              borderRadius: "var(--btn-radius, 12px)",
+              boxShadow: "var(--btn-shadow, 0px 1px 3px 0px rgba(0,0,0,0.1))",
+              borderWidth: "var(--btn-border-width, 0px)",
+              borderStyle: "solid",
+              borderColor: "hsl(var(--border))",
+            }}
+          >
+            Open the Editor
+          </Link>
         </div>
 
         {/* Scroll indicator */}
@@ -308,18 +342,18 @@ export default function LandingPage() {
 
       {/* Promo */}
       <section
-        className="relative z-10 flex-shrink-0 flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-16 sm:py-24"
+        className="relative z-10 flex-shrink-0 flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-10 sm:py-24"
         style={{ backgroundColor: "transparent", minHeight: "100dvh", scrollSnapAlign: "start" }}
       >
-        <div className="max-w-4xl mx-auto text-center flex flex-col gap-10">
+        <div className="max-w-4xl mx-auto text-center flex flex-col gap-5 sm:gap-10">
           <h2
-            className="text-2xl sm:text-3xl font-light tracking-tight"
+            className="text-xl sm:text-3xl font-light tracking-tight"
             style={{ color: "hsl(var(--foreground))" }}
           >
             Not just for developers.
           </h2>
           <p
-            className="text-base sm:text-lg max-w-2xl mx-auto font-light leading-relaxed"
+            className="text-sm sm:text-lg max-w-2xl mx-auto font-light leading-relaxed"
             style={{ color: "hsl(var(--muted-foreground))" }}
           >
             Product owners can present design options to stakeholders in real
@@ -331,7 +365,7 @@ export default function LandingPage() {
             hours lost to design reviews, feedback rounds, and rework between
             development, design, and business teams.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 text-center">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 text-center">
             {[
               { role: "Product Owners", detail: "Present comps to stakeholders without filing a ticket." },
               { role: "Marketing Teams", detail: "Explore brand directions and campaign themes on the fly." },
@@ -354,6 +388,25 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
+
+          <Link
+            to="/editor"
+            className="self-center inline-flex items-center justify-center transition-opacity hover:opacity-90 mt-2"
+            style={{
+              backgroundColor: "hsl(var(--brand))",
+              color: "hsl(var(--brand-foreground, var(--background)))",
+              padding: "var(--btn-py, 8px) var(--btn-px, 16px)",
+              fontSize: "var(--btn-font-size, 14px)",
+              fontWeight: "var(--btn-font-weight, 300)",
+              borderRadius: "var(--btn-radius, 12px)",
+              boxShadow: "var(--btn-shadow, 0px 1px 3px 0px rgba(0,0,0,0.1))",
+              borderWidth: "var(--btn-border-width, 0px)",
+              borderStyle: "solid",
+              borderColor: "hsl(var(--border))",
+            }}
+          >
+            Open the Editor
+          </Link>
         </div>
 
         {/* Scroll to top */}
@@ -389,17 +442,6 @@ export default function LandingPage() {
         <SiteFooter sticky={false} />
       </div>
 
-      {/* Fixed bottom CTA */}
-      <Link
-        to="/editor"
-        className="fixed bottom-6 left-1/2 -translate-x-1/2 z-20 inline-flex items-center justify-center px-8 py-3 rounded-full text-sm font-medium transition-opacity hover:opacity-90 shadow-lg"
-        style={{
-          backgroundColor: "hsl(var(--brand))",
-          color: "hsl(var(--brand-foreground, var(--background)))",
-        }}
-      >
-        Open the Editor
-      </Link>
     </div>
   );
 }

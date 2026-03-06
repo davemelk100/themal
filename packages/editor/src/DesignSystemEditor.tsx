@@ -1536,8 +1536,68 @@ function DesignSystemEditorInner({
     }
   };
 
+  const editorRootRef = useRef<HTMLDivElement>(null);
+
+  // On mobile, scroll any focused editable element to the top of the viewport
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const isMobile = () => window.innerWidth < 640;
+
+    const findScrollTarget = (el: HTMLElement): HTMLElement => {
+      // Walk up to find a label parent or a div that contains a label sibling
+      let node: HTMLElement | null = el;
+      for (let i = 0; i < 5 && node; i++) {
+        if (node.tagName === "LABEL") return node;
+        const parent: HTMLElement | null = node.parentElement;
+        if (parent && parent.querySelector("label")) return parent;
+        node = parent;
+      }
+      return el.parentElement || el;
+    };
+
+    const scrollToTop = (target: HTMLElement) => {
+      const scrollEl = findScrollTarget(target);
+      setTimeout(() => {
+        const rect = scrollEl.getBoundingClientRect();
+        const scrollY = window.scrollY + rect.top - 8;
+        window.scrollTo({ top: scrollY, behavior: "smooth" });
+      }, 100);
+    };
+
+    const handleFocus = (e: Event) => {
+      if (!isMobile()) return;
+      const target = e.target as HTMLElement;
+      if (!target) return;
+      const tag = target.tagName;
+      const type = target.getAttribute("type");
+      if (tag === "INPUT" && type === "color") return;
+      if (target.closest("[data-mobile-picker]")) return;
+      if (tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA") {
+        scrollToTop(target);
+      }
+    };
+
+    const handleTouchStart = (e: Event) => {
+      if (!isMobile()) return;
+      const target = e.target as HTMLElement;
+      if (!target) return;
+      if (target.tagName === "INPUT" && target.getAttribute("type") === "range") {
+        scrollToTop(target);
+      }
+    };
+
+    const root = editorRootRef.current;
+    if (!root) return;
+    root.addEventListener("focusin", handleFocus, { passive: true });
+    root.addEventListener("touchstart", handleTouchStart, { passive: true });
+    return () => {
+      root.removeEventListener("focusin", handleFocus);
+      root.removeEventListener("touchstart", handleTouchStart);
+    };
+  }, []);
+
   return (
-    <div id="top" className={`ds-editor${className ? ` ${className}` : ""}`}>
+    <div id="top" ref={editorRootRef} className={`ds-editor${className ? ` ${className}` : ""}`}>
       {showHeader && (
         <div
           className="pt-2 sm:pt-3 pb-4 sm:pb-2 lg:pb-3"
@@ -1645,18 +1705,18 @@ function DesignSystemEditorInner({
                     Dev
                   </a>
                   <a
-                    href="/pricing"
-                    className="text-[13px] font-light uppercase tracking-wider transition-opacity hover:opacity-70 whitespace-nowrap"
-                    style={{ color: "hsl(var(--muted-foreground))" }}
-                  >
-                    Pricing
-                  </a>
-                  <a
                     href="/features"
                     className="text-[13px] font-light uppercase tracking-wider transition-opacity hover:opacity-70 whitespace-nowrap"
                     style={{ color: "hsl(var(--muted-foreground))" }}
                   >
                     Features
+                  </a>
+                  <a
+                    href="/pricing"
+                    className="text-[13px] font-light uppercase tracking-wider transition-opacity hover:opacity-70 whitespace-nowrap"
+                    style={{ color: "hsl(var(--muted-foreground))" }}
+                  >
+                    Pricing
                   </a>
                 </nav>
               )}
@@ -8305,17 +8365,11 @@ function DesignSystemEditorInner({
       {/* Applied image showcase (3s) */}
       {appliedImageUrl && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center"
-          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
-          onClick={() => {
-            URL.revokeObjectURL(appliedImageUrl);
-            setAppliedImageUrl(null);
-          }}
+          className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none"
         >
           <div
-            className="rounded-xl overflow-hidden shadow-xl"
+            className="rounded-xl overflow-hidden shadow-2xl pointer-events-auto"
             style={{ maxWidth: 400, maxHeight: "80vh" }}
-            onClick={(e) => e.stopPropagation()}
           >
             <img
               src={appliedImageUrl}
@@ -8878,20 +8932,20 @@ function DesignSystemEditorInner({
                   Dev
                 </a>
                 <a
-                  href="/pricing"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block py-2 text-[20px] font-bold tracking-wider mb-[5px] transition-opacity hover:opacity-70"
-                  style={{ color: "hsl(var(--foreground))" }}
-                >
-                  Pricing
-                </a>
-                <a
                   href="/features"
                   onClick={() => setMobileMenuOpen(false)}
                   className="block py-2 text-[20px] font-bold tracking-wider mb-[5px] transition-opacity hover:opacity-70"
                   style={{ color: "hsl(var(--foreground))" }}
                 >
                   Features
+                </a>
+                <a
+                  href="/pricing"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block py-2 text-[20px] font-bold tracking-wider mb-[5px] transition-opacity hover:opacity-70"
+                  style={{ color: "hsl(var(--foreground))" }}
+                >
+                  Pricing
                 </a>
               </div>
             )}
