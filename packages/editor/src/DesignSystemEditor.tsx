@@ -53,6 +53,11 @@ import {
   applyToastStyle,
   applyStoredToastStyle,
   removeToastStyleProperties,
+  BUTTON_STYLE_KEY,
+  DEFAULT_BUTTON_STYLE,
+  applyButtonStyle,
+  applyStoredButtonStyle,
+  removeButtonStyleProperties,
   INTERACTION_STYLE_KEY,
   DEFAULT_INTERACTION_STYLE,
   INTERACTION_PRESETS,
@@ -76,9 +81,11 @@ import {
   addCustomFont,
   removeCustomFont,
   initCustomFonts,
+  parseCssImport,
 } from "./utils/themeUtils";
 import type { CustomFontEntry } from "./utils/themeUtils";
 import type {
+  ButtonStyleState,
   CardStyleState,
   TypographyState,
   AlertStyleState,
@@ -453,11 +460,18 @@ function DesignSystemEditorInner({
     "css",
   );
   const [showAlertResetModal, setShowAlertResetModal] = useState(false);
+  const [buttonStyle, setButtonStyle] = useState<ButtonStyleState>(() => {
+    const saved = storage.get<ButtonStyleState>(BUTTON_STYLE_KEY);
+    return saved || { ...DEFAULT_BUTTON_STYLE };
+  });
   const [interactionStyle, setInteractionStyle] =
     useState<InteractionStyleState>(() => {
       const saved = storage.get<InteractionStyleState>(INTERACTION_STYLE_KEY);
       return saved || { ...DEFAULT_INTERACTION_STYLE };
     });
+  const [btnCssVisible, setBtnCssVisible] = useState(false);
+  const [btnCssCopied, setBtnCssCopied] = useState(false);
+  const [btnExportFormat, setBtnExportFormat] = useState<"css" | "tokens">("css");
   const [interactionCssVisible, setInteractionCssVisible] = useState(false);
   const [interactionCssCopied, setInteractionCssCopied] = useState(false);
   const [interactionExportFormat, setInteractionExportFormat] = useState<
@@ -490,6 +504,9 @@ function DesignSystemEditorInner({
   const [exportFormat, setExportFormat] = useState<"css" | "tokens">("css");
   const [shareCopied, setShareCopied] = useState(false);
   const [showPaletteExport, setShowPaletteExport] = useState(false);
+  const [showCssImportModal, setShowCssImportModal] = useState(false);
+  const [cssImportText, setCssImportText] = useState("");
+  const [cssImportPreview, setCssImportPreview] = useState<ReturnType<typeof parseCssImport> | null>(null);
   const [paletteExportCopied, setPaletteExportCopied] = useState(false);
   const [pendingImagePalette, setPendingImagePalette] = useState<{
     imageUrl: string;
@@ -531,6 +548,8 @@ function DesignSystemEditorInner({
     applyInteractionStyle(parsed.interactionStyle);
     setTypoInteractionStyle(parsed.typoInteractionStyle);
     applyTypoInteractionStyle(parsed.typoInteractionStyle);
+    setButtonStyle(parsed.buttonStyle);
+    applyButtonStyle(parsed.buttonStyle);
     // Clear hash so it doesn't re-hydrate on state changes
     window.history.replaceState(
       null,
@@ -684,8 +703,21 @@ function DesignSystemEditorInner({
   }, []);
 
   useEffect(() => {
+    applyButtonStyle(buttonStyle);
+  }, [buttonStyle]);
+
+  const updateButtonStyle = useCallback((patch: Partial<ButtonStyleState>) => {
+    setButtonStyle((prev) => ({ ...prev, ...patch }));
+  }, []);
+
+  useEffect(() => {
     applyInteractionStyle(interactionStyle);
   }, [interactionStyle]);
+
+  useEffect(() => {
+    applyStoredButtonStyle();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     applyStoredInteractionStyle();
@@ -1187,6 +1219,9 @@ function DesignSystemEditorInner({
     storage.remove(ALERT_STYLE_KEY);
     removeAlertStyleProperties();
     setAlertStyle({ ...DEFAULT_ALERT_STYLE });
+    storage.remove(BUTTON_STYLE_KEY);
+    removeButtonStyleProperties();
+    setButtonStyle({ ...DEFAULT_BUTTON_STYLE });
     storage.remove(INTERACTION_STYLE_KEY);
     removeInteractionStyleProperties();
     setInteractionStyle({ ...DEFAULT_INTERACTION_STYLE });
@@ -1675,6 +1710,7 @@ function DesignSystemEditorInner({
             onChange={(e) => {
               const v = e.target.value;
               if (v === "reset-all") setShowGlobalResetModal(true);
+              // else if (v === "import-css") setShowCssImportModal(true);
               else if (v === "default") {
                 setHarmonySchemeIndex(-1);
                 handleGenerate();
@@ -1689,6 +1725,7 @@ function DesignSystemEditorInner({
                   alertStyle,
                   interactionStyle,
                   typoInteractionStyle,
+                  buttonStyle,
                 );
                 window.location.hash = hash;
                 navigator.clipboard.writeText(window.location.href).then(() => {
@@ -1703,6 +1740,7 @@ function DesignSystemEditorInner({
               Actions…
             </option>
             <option value="reset-all">Reset theme to default</option>
+            {/* <option value="import-css">Import CSS</option> */}
             <option value="refresh">Refresh Theme</option>
             <option value="default">Default Scheme</option>
             <option value="upload">Upload Image</option>
@@ -1736,6 +1774,28 @@ function DesignSystemEditorInner({
             </svg>
             <span className="truncate">Reset theme to default</span>
           </button>
+          {/* Import CSS button - hidden for now
+          <button
+            onClick={() => setShowCssImportModal(true)}
+            className="ds-global-btn h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+            title="Import CSS or SCSS variables"
+          >
+            <svg
+              className="w-4 h-4 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+              />
+            </svg>
+            <span className="truncate">Import CSS</span>
+          </button>
+          */}
           <div className="flex items-center">
             <button
               onClick={handleGenerate}
@@ -2213,7 +2273,7 @@ function DesignSystemEditorInner({
               color:
                 activeSection === s.id
                   ? "hsl(var(--foreground))"
-                  : "hsl(var(--muted-foreground))",
+                  : "hsl(var(--foreground) / 0.6)",
               lineHeight: 1,
               borderBottom:
                 activeSection === s.id
@@ -2227,7 +2287,7 @@ function DesignSystemEditorInner({
           >
             <span style={{ fontSize: "20px", fontWeight: 700 }}>{s.label}</span>
             <svg
-              className="w-5 h-5 opacity-30"
+              className="w-5 h-5 opacity-60"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -3421,134 +3481,440 @@ function DesignSystemEditorInner({
                 className="w-full lg:w-1/2 flex flex-col rounded-lg p-4"
                 style={{ border: "1px solid hsl(var(--border))" }}
               >
-                <div className="flex items-center h-10 mb-3">
+                <div
+                  className="flex items-center flex-wrap gap-2 sm:gap-4"
+                  data-axe-exclude
+                >
                   <h3
                     className="text-[16px] font-normal uppercase tracking-wider"
                     style={{ color: "hsl(var(--foreground))" }}
                   >
                     Types
                   </h3>
-                </div>
-                <div
-                  className="flex-1 flex flex-wrap gap-2 content-start"
-                  data-axe-exclude
-                >
-                  {(
-                    [
-                      {
-                        bg: "--primary",
-                        fg: "--primary-foreground",
-                        label: "Primary",
-                      },
-                      {
-                        bg: "--secondary",
-                        fg: "--secondary-foreground",
-                        label: "Secondary",
-                      },
-                      {
-                        bg: "--destructive",
-                        fg: "--destructive-foreground",
-                        label: "Destructive",
-                      },
-                      {
-                        bg: "--muted",
-                        fg: "--muted-foreground",
-                        label: "Muted",
-                      },
-                      {
-                        bg: "--success",
-                        fg: "--success-foreground",
-                        label: "Success",
-                      },
-                      {
-                        bg: "--warning",
-                        fg: "--warning-foreground",
-                        label: "Warning",
-                      },
-                    ] as const
-                  ).map(({ bg, fg, label }) => {
-                    const bgHsl = colors[bg] || "0 0% 50%";
-                    const fgHsl = colors[fg] || fgForBg(bgHsl);
-                    return (
-                      <button
-                        key={bg}
-                        className="px-4 py-2 text-[14px] font-light"
-                        style={{
-                          backgroundColor: `hsl(${bgHsl})`,
-                          color: `hsl(${fgHsl})`,
-                          borderRadius: `${cardStyle.borderRadius}px`,
-                          transition: `opacity ${interactionStyle.transitionDuration}ms ease, transform ${interactionStyle.transitionDuration}ms ease`,
-                        }}
-                        onMouseEnter={(e) => {
-                          (e.target as HTMLElement).style.opacity = String(interactionStyle.hoverOpacity);
-                          (e.target as HTMLElement).style.transform = `scale(${interactionStyle.hoverScale})`;
-                        }}
-                        onMouseLeave={(e) => {
-                          (e.target as HTMLElement).style.opacity = "1";
-                          (e.target as HTMLElement).style.transform = "scale(1)";
-                        }}
-                        onMouseDown={(e) => {
-                          (e.target as HTMLElement).style.transform = `scale(${interactionStyle.activeScale})`;
-                        }}
-                        onMouseUp={(e) => {
-                          (e.target as HTMLElement).style.transform = `scale(${interactionStyle.hoverScale})`;
-                        }}
+                  <div className="ml-auto flex items-center">
+                    {/* Mobile: dropdown */}
+                    <select
+                      aria-label="Button types actions"
+                      className="sm:hidden h-8 w-[120px] px-2 text-[16px] font-light rounded-md border"
+                      style={{
+                        backgroundColor: "hsl(var(--background))",
+                        color: "hsl(var(--foreground))",
+                        borderColor: "hsl(var(--border))",
+                      }}
+                      value=""
+                      onChange={(e) => {
+                        const v = e.target.value;
+                        if (v === "css") { setBtnExportFormat("css"); setBtnCssVisible(true); }
+                        else if (v === "tokens") { setBtnExportFormat("tokens"); setBtnCssVisible(true); }
+                        else if (v === "reset") setButtonStyle({ ...DEFAULT_BUTTON_STYLE });
+                        e.target.value = "";
+                      }}
+                    >
+                      <option value="" disabled>Actions…</option>
+                      <option value="css">CSS</option>
+                      <option value="tokens">Tokens</option>
+                      <option value="reset">Reset</option>
+                    </select>
+                    {/* Desktop: buttons */}
+                    <div className="hidden sm:flex flex-wrap items-center gap-1 sm:gap-2">
+                      <div
+                        className="flex items-center rounded-lg overflow-hidden border"
+                        style={{ borderColor: "hsl(var(--border))" }}
                       >
-                        {label}
+                        <button
+                          onClick={() => {
+                            if (btnCssVisible && btnExportFormat === "css") { setBtnCssVisible(false); return; }
+                            setBtnExportFormat("css");
+                            setBtnCssVisible(true);
+                          }}
+                          className="h-10 px-2 sm:px-3 text-[14px] font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                          style={{
+                            backgroundColor: btnCssVisible && btnExportFormat === "css" ? "hsl(var(--brand))" : "transparent",
+                            color: btnCssVisible && btnExportFormat === "css"
+                              ? colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "#fff"
+                              : "hsl(var(--muted-foreground))",
+                          }}
+                        >
+                          <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                          </svg>
+                          <span className="truncate">CSS</span>
+                        </button>
+                        <span className="w-px h-5" style={{ backgroundColor: "hsl(var(--border))" }} />
+                        <button
+                          onClick={() => {
+                            if (btnCssVisible && btnExportFormat === "tokens") { setBtnCssVisible(false); return; }
+                            setBtnExportFormat("tokens");
+                            setBtnCssVisible(true);
+                          }}
+                          className="h-10 px-2 sm:px-3 text-[14px] font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                          style={{
+                            backgroundColor: btnCssVisible && btnExportFormat === "tokens" ? "hsl(var(--brand))" : "transparent",
+                            color: btnCssVisible && btnExportFormat === "tokens"
+                              ? colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "#fff"
+                              : "hsl(var(--muted-foreground))",
+                          }}
+                        >
+                          <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4-4 4M7 8L3 12l4 4M14 4l-4 16" />
+                          </svg>
+                          <span className="truncate">Tokens</span>
+                        </button>
+                      </div>
+                      <button
+                        onClick={() => setButtonStyle({ ...DEFAULT_BUTTON_STYLE })}
+                        className="h-10 px-2 sm:px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                        style={{ color: "hsl(var(--muted-foreground))" }}
+                      >
+                        <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" />
+                        </svg>
+                        <span className="truncate">Reset</span>
                       </button>
-                    );
-                  })}
-                  <button
-                    className="px-4 py-2 text-[14px] font-light border"
-                    style={{
-                      backgroundColor: "transparent",
-                      color: "hsl(var(--foreground))",
-                      borderColor: "hsl(var(--border))",
-                      borderRadius: `${cardStyle.borderRadius}px`,
-                      transition: `opacity ${interactionStyle.transitionDuration}ms ease, transform ${interactionStyle.transitionDuration}ms ease`,
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.target as HTMLElement).style.opacity = String(interactionStyle.hoverOpacity);
-                      (e.target as HTMLElement).style.transform = `scale(${interactionStyle.hoverScale})`;
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.target as HTMLElement).style.opacity = "1";
-                      (e.target as HTMLElement).style.transform = "scale(1)";
-                    }}
-                    onMouseDown={(e) => {
-                      (e.target as HTMLElement).style.transform = `scale(${interactionStyle.activeScale})`;
-                    }}
-                    onMouseUp={(e) => {
-                      (e.target as HTMLElement).style.transform = `scale(${interactionStyle.hoverScale})`;
-                    }}
-                  >
-                    Outline
-                  </button>
-                  <button
-                    className="px-4 py-2 text-[14px] font-light"
-                    style={{
-                      backgroundColor: "transparent",
-                      color: "hsl(var(--foreground))",
-                      borderRadius: `${cardStyle.borderRadius}px`,
-                      transition: `opacity ${interactionStyle.transitionDuration}ms ease, transform ${interactionStyle.transitionDuration}ms ease`,
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.target as HTMLElement).style.opacity = String(interactionStyle.hoverOpacity);
-                      (e.target as HTMLElement).style.transform = `scale(${interactionStyle.hoverScale})`;
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.target as HTMLElement).style.opacity = "1";
-                      (e.target as HTMLElement).style.transform = "scale(1)";
-                    }}
-                    onMouseDown={(e) => {
-                      (e.target as HTMLElement).style.transform = `scale(${interactionStyle.activeScale})`;
-                    }}
-                    onMouseUp={(e) => {
-                      (e.target as HTMLElement).style.transform = `scale(${interactionStyle.hoverScale})`;
-                    }}
-                  >
-                    Ghost
-                  </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Button CSS/Tokens output */}
+                {btnCssVisible && (() => {
+                  const btnShadow = buttonStyle.shadowBlur === 0 && buttonStyle.shadowOffsetX === 0 && buttonStyle.shadowOffsetY === 0 && buttonStyle.shadowSpread === 0
+                    ? "none"
+                    : `${buttonStyle.shadowOffsetX}px ${buttonStyle.shadowOffsetY}px ${buttonStyle.shadowBlur}px ${buttonStyle.shadowSpread}px ${buttonStyle.shadowColor}`;
+                  const btnCss = `:root {\n  --btn-px: ${buttonStyle.paddingX}px;\n  --btn-py: ${buttonStyle.paddingY}px;\n  --btn-font-size: ${buttonStyle.fontSize}px;\n  --btn-font-weight: ${buttonStyle.fontWeight};\n  --btn-radius: ${buttonStyle.borderRadius}px;\n  --btn-shadow: ${btnShadow};\n  --btn-border-width: ${buttonStyle.borderWidth}px;\n}`;
+                  const btnTokens = JSON.stringify(
+                    generateSectionDesignTokens(
+                      "buttons",
+                      cardStyle,
+                      typographyState,
+                      alertStyle,
+                      interactionStyle,
+                      typoInteractionStyle,
+                      buttonStyle,
+                    ),
+                    null,
+                    2,
+                  );
+                  const output = btnExportFormat === "tokens" ? btnTokens : btnCss;
+                  return (
+                    <div
+                      className="rounded-lg border"
+                      style={{ borderColor: "hsl(var(--border))" }}
+                    >
+                      <div
+                        className="flex items-center justify-between px-3 py-1.5 border-b"
+                        style={{ borderColor: "hsl(var(--border))" }}
+                      >
+                        <span
+                          className="text-[14px] font-light uppercase tracking-wider"
+                          style={{ color: "hsl(var(--card-foreground))" }}
+                        >
+                          {btnExportFormat === "tokens" ? "Button Tokens" : "Button CSS"}
+                        </span>
+                        <div className="flex items-center gap-1">
+                          <button
+                            onClick={() => {
+                              navigator.clipboard.writeText(output);
+                              setBtnCssCopied(true);
+                              setTimeout(() => setBtnCssCopied(false), 2000);
+                            }}
+                            className="px-2 py-0.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
+                            style={{
+                              backgroundColor: "hsl(var(--muted))",
+                              color: colors["--muted"]
+                                ? `hsl(${fgForBg(colors["--muted"])})`
+                                : "hsl(var(--muted-foreground))",
+                            }}
+                          >
+                            {btnCssCopied ? "Copied!" : "Copy"}
+                          </button>
+                          <button
+                            onClick={() => setBtnCssVisible(false)}
+                            className="px-2 py-0.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
+                            style={{
+                              backgroundColor: "hsl(var(--muted))",
+                              color: colors["--muted"]
+                                ? `hsl(${fgForBg(colors["--muted"])})`
+                                : "hsl(var(--muted-foreground))",
+                            }}
+                          >
+                            Close
+                          </button>
+                        </div>
+                      </div>
+                      <pre
+                        className="p-3 overflow-x-auto max-h-64 text-xs leading-relaxed font-mono"
+                        style={{ color: "hsl(var(--card-foreground))" }}
+                      >
+                        <code>{output}</code>
+                      </pre>
+                    </div>
+                  );
+                })()}
+
+                <div className="flex flex-col md:flex-row gap-4 md:gap-6 flex-1">
+                  {/* Controls */}
+                  <div className="flex-1 min-w-0 space-y-3 order-2 md:order-1">
+                    <div className="space-y-1.5">
+                      <p
+                        className="text-[14px] font-light uppercase tracking-wider"
+                        style={{ color: "hsl(var(--muted-foreground))" }}
+                      >
+                        Size
+                      </p>
+                      <label
+                        className="flex items-center justify-between gap-2 text-[14px] font-light"
+                        style={{ color: "hsl(var(--foreground))" }}
+                      >
+                        <span>Padding X: {buttonStyle.paddingX}px</span>
+                        <input
+                          type="range"
+                          min={4}
+                          max={40}
+                          value={buttonStyle.paddingX}
+                          onChange={(e) => updateButtonStyle({ paddingX: Number(e.target.value) })}
+                          className="w-32 accent-[hsl(var(--brand))]"
+                        />
+                      </label>
+                      <label
+                        className="flex items-center justify-between gap-2 text-[14px] font-light"
+                        style={{ color: "hsl(var(--foreground))" }}
+                      >
+                        <span>Padding Y: {buttonStyle.paddingY}px</span>
+                        <input
+                          type="range"
+                          min={2}
+                          max={20}
+                          value={buttonStyle.paddingY}
+                          onChange={(e) => updateButtonStyle({ paddingY: Number(e.target.value) })}
+                          className="w-32 accent-[hsl(var(--brand))]"
+                        />
+                      </label>
+                      <label
+                        className="flex items-center justify-between gap-2 text-[14px] font-light"
+                        style={{ color: "hsl(var(--foreground))" }}
+                      >
+                        <span>Radius: {buttonStyle.borderRadius}px</span>
+                        <input
+                          type="range"
+                          min={0}
+                          max={24}
+                          value={buttonStyle.borderRadius}
+                          onChange={(e) => updateButtonStyle({ borderRadius: Number(e.target.value) })}
+                          className="w-32 accent-[hsl(var(--brand))]"
+                        />
+                      </label>
+                    </div>
+                    <div className="space-y-1.5">
+                      <p
+                        className="text-[14px] font-light uppercase tracking-wider"
+                        style={{ color: "hsl(var(--muted-foreground))" }}
+                      >
+                        Text
+                      </p>
+                      <label
+                        className="flex items-center justify-between gap-2 text-[14px] font-light"
+                        style={{ color: "hsl(var(--foreground))" }}
+                      >
+                        <span>Font Size: {buttonStyle.fontSize}px</span>
+                        <input
+                          type="range"
+                          min={10}
+                          max={22}
+                          value={buttonStyle.fontSize}
+                          onChange={(e) => updateButtonStyle({ fontSize: Number(e.target.value) })}
+                          className="w-32 accent-[hsl(var(--brand))]"
+                        />
+                      </label>
+                      <label
+                        className="flex items-center justify-between gap-2 text-[14px] font-light"
+                        style={{ color: "hsl(var(--foreground))" }}
+                      >
+                        <span>Font Weight: {buttonStyle.fontWeight}</span>
+                        <input
+                          type="range"
+                          min={100}
+                          max={900}
+                          step={100}
+                          value={buttonStyle.fontWeight}
+                          onChange={(e) => updateButtonStyle({ fontWeight: Number(e.target.value) })}
+                          className="w-32 accent-[hsl(var(--brand))]"
+                        />
+                      </label>
+                    </div>
+                    <div className="space-y-1.5">
+                      <p
+                        className="text-[14px] font-light uppercase tracking-wider"
+                        style={{ color: "hsl(var(--muted-foreground))" }}
+                      >
+                        Shadow
+                      </p>
+                      <label
+                        className="flex items-center justify-between gap-2 text-[14px] font-light"
+                        style={{ color: "hsl(var(--foreground))" }}
+                      >
+                        <span>Offset X: {buttonStyle.shadowOffsetX}px</span>
+                        <input
+                          type="range" min={-10} max={10}
+                          value={buttonStyle.shadowOffsetX}
+                          onChange={(e) => updateButtonStyle({ shadowOffsetX: Number(e.target.value) })}
+                          className="w-32 accent-[hsl(var(--brand))]"
+                        />
+                      </label>
+                      <label
+                        className="flex items-center justify-between gap-2 text-[14px] font-light"
+                        style={{ color: "hsl(var(--foreground))" }}
+                      >
+                        <span>Offset Y: {buttonStyle.shadowOffsetY}px</span>
+                        <input
+                          type="range" min={-10} max={10}
+                          value={buttonStyle.shadowOffsetY}
+                          onChange={(e) => updateButtonStyle({ shadowOffsetY: Number(e.target.value) })}
+                          className="w-32 accent-[hsl(var(--brand))]"
+                        />
+                      </label>
+                      <label
+                        className="flex items-center justify-between gap-2 text-[14px] font-light"
+                        style={{ color: "hsl(var(--foreground))" }}
+                      >
+                        <span>Blur: {buttonStyle.shadowBlur}px</span>
+                        <input
+                          type="range" min={0} max={30}
+                          value={buttonStyle.shadowBlur}
+                          onChange={(e) => updateButtonStyle({ shadowBlur: Number(e.target.value) })}
+                          className="w-32 accent-[hsl(var(--brand))]"
+                        />
+                      </label>
+                      <label
+                        className="flex items-center justify-between gap-2 text-[14px] font-light"
+                        style={{ color: "hsl(var(--foreground))" }}
+                      >
+                        <span>Spread: {buttonStyle.shadowSpread}px</span>
+                        <input
+                          type="range" min={-5} max={10}
+                          value={buttonStyle.shadowSpread}
+                          onChange={(e) => updateButtonStyle({ shadowSpread: Number(e.target.value) })}
+                          className="w-32 accent-[hsl(var(--brand))]"
+                        />
+                      </label>
+                    </div>
+                    <div className="space-y-1.5">
+                      <p
+                        className="text-[14px] font-light uppercase tracking-wider"
+                        style={{ color: "hsl(var(--muted-foreground))" }}
+                      >
+                        Border
+                      </p>
+                      <label
+                        className="flex items-center justify-between gap-2 text-[14px] font-light"
+                        style={{ color: "hsl(var(--foreground))" }}
+                      >
+                        <span>Width: {buttonStyle.borderWidth}px</span>
+                        <input
+                          type="range" min={0} max={4}
+                          value={buttonStyle.borderWidth}
+                          onChange={(e) => updateButtonStyle({ borderWidth: Number(e.target.value) })}
+                          className="w-32 accent-[hsl(var(--brand))]"
+                        />
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Preview */}
+                  <div className="flex-1 min-w-0 flex items-start justify-center pt-2 order-1 md:order-2">
+                    <div className="w-full space-y-3" data-axe-exclude>
+                      <p
+                        className="text-[14px] font-light uppercase tracking-wider"
+                        style={{ color: "hsl(var(--muted-foreground))" }}
+                      >
+                        Preview
+                      </p>
+                      {(() => {
+                        const previewShadow = buttonStyle.shadowBlur === 0 && buttonStyle.shadowOffsetX === 0 && buttonStyle.shadowOffsetY === 0 && buttonStyle.shadowSpread === 0
+                          ? "none"
+                          : `${buttonStyle.shadowOffsetX}px ${buttonStyle.shadowOffsetY}px ${buttonStyle.shadowBlur}px ${buttonStyle.shadowSpread}px ${buttonStyle.shadowColor}`;
+                        const commonStyle = {
+                          borderRadius: `${buttonStyle.borderRadius}px`,
+                          padding: `${buttonStyle.paddingY}px ${buttonStyle.paddingX}px`,
+                          fontSize: `${buttonStyle.fontSize}px`,
+                          fontWeight: buttonStyle.fontWeight,
+                          boxShadow: previewShadow,
+                          border: buttonStyle.borderWidth > 0 ? `${buttonStyle.borderWidth}px solid hsl(var(--border))` : "none",
+                          transition: `opacity ${interactionStyle.transitionDuration}ms ease, transform ${interactionStyle.transitionDuration}ms ease`,
+                        };
+                        const hoverHandlers = {
+                          onMouseEnter: (e: React.MouseEvent) => {
+                            (e.target as HTMLElement).style.opacity = String(interactionStyle.hoverOpacity);
+                            (e.target as HTMLElement).style.transform = `scale(${interactionStyle.hoverScale})`;
+                          },
+                          onMouseLeave: (e: React.MouseEvent) => {
+                            (e.target as HTMLElement).style.opacity = "1";
+                            (e.target as HTMLElement).style.transform = "scale(1)";
+                          },
+                          onMouseDown: (e: React.MouseEvent) => {
+                            (e.target as HTMLElement).style.transform = `scale(${interactionStyle.activeScale})`;
+                          },
+                          onMouseUp: (e: React.MouseEvent) => {
+                            (e.target as HTMLElement).style.transform = `scale(${interactionStyle.hoverScale})`;
+                          },
+                        };
+                        return (
+                          <div
+                            className="flex flex-wrap gap-2 content-start rounded-lg p-4"
+                            style={{ backgroundColor: "hsl(var(--card))" }}
+                          >
+                            {(
+                              [
+                                { bg: "--primary", fg: "--primary-foreground", label: "Primary" },
+                                { bg: "--secondary", fg: "--secondary-foreground", label: "Secondary" },
+                                { bg: "--destructive", fg: "--destructive-foreground", label: "Destructive" },
+                                { bg: "--muted", fg: "--muted-foreground", label: "Muted" },
+                                { bg: "--success", fg: "--success-foreground", label: "Success" },
+                                { bg: "--warning", fg: "--warning-foreground", label: "Warning" },
+                              ] as const
+                            ).map(({ bg, fg, label }) => {
+                              const bgHsl = colors[bg] || "0 0% 50%";
+                              const fgHsl = colors[fg] || fgForBg(bgHsl);
+                              return (
+                                <button
+                                  key={bg}
+                                  style={{
+                                    ...commonStyle,
+                                    backgroundColor: `hsl(${bgHsl})`,
+                                    color: `hsl(${fgHsl})`,
+                                  }}
+                                  {...hoverHandlers}
+                                >
+                                  {label}
+                                </button>
+                              );
+                            })}
+                            <button
+                              style={{
+                                ...commonStyle,
+                                backgroundColor: "transparent",
+                                color: "hsl(var(--foreground))",
+                                border: `${Math.max(buttonStyle.borderWidth, 1)}px solid hsl(var(--border))`,
+                              }}
+                              {...hoverHandlers}
+                            >
+                              Outline
+                            </button>
+                            <button
+                              style={{
+                                ...commonStyle,
+                                backgroundColor: "transparent",
+                                color: "hsl(var(--foreground))",
+                                border: "none",
+                              }}
+                              {...hoverHandlers}
+                            >
+                              Ghost
+                            </button>
+                          </div>
+                        );
+                      })()}
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -3898,7 +4264,7 @@ function DesignSystemEditorInner({
                   {/* Controls + Preview */}
                   <div className="flex flex-col md:flex-row gap-4 md:gap-6">
                     {/* Slider controls */}
-                    <div className="flex-1 min-w-0 space-y-3">
+                    <div className="flex-1 min-w-0 space-y-3 order-2 md:order-1">
                       <div className="space-y-1.5">
                         <p
                           className="text-[14px] font-light uppercase tracking-wider"
@@ -4025,7 +4391,7 @@ function DesignSystemEditorInner({
                     </div>
 
                     {/* Live preview */}
-                    <div className="flex-1 min-w-0 flex items-start justify-center pt-2">
+                    <div className="flex-1 min-w-0 flex items-start justify-center pt-2 order-1 md:order-2">
                       <div
                         className="w-full md:max-w-[400px] space-y-3"
                         data-axe-exclude
@@ -4036,102 +4402,71 @@ function DesignSystemEditorInner({
                         >
                           Preview
                         </p>
-                        <div className="flex flex-wrap gap-3">
-                          <button
-                            className="px-4 py-2 text-[14px] font-light"
-                            style={{
-                              backgroundColor: "hsl(var(--primary))",
-                              color: "hsl(var(--primary-foreground))",
-                              borderRadius: `${cardStyle.borderRadius}px`,
-                              transition: `opacity ${interactionStyle.transitionDuration}ms ease, transform ${interactionStyle.transitionDuration}ms ease`,
-                            }}
-                            onMouseEnter={(e) => {
-                              (e.target as HTMLElement).style.opacity = String(
-                                interactionStyle.hoverOpacity,
-                              );
-                              (e.target as HTMLElement).style.transform =
-                                `scale(${interactionStyle.hoverScale})`;
-                            }}
-                            onMouseLeave={(e) => {
+                        {(() => {
+                          const ixShadow = buttonStyle.shadowBlur === 0 && buttonStyle.shadowOffsetX === 0 && buttonStyle.shadowOffsetY === 0 && buttonStyle.shadowSpread === 0
+                            ? "none"
+                            : `${buttonStyle.shadowOffsetX}px ${buttonStyle.shadowOffsetY}px ${buttonStyle.shadowBlur}px ${buttonStyle.shadowSpread}px ${buttonStyle.shadowColor}`;
+                          const ixCommon = {
+                            borderRadius: `${buttonStyle.borderRadius}px`,
+                            padding: `${buttonStyle.paddingY}px ${buttonStyle.paddingX}px`,
+                            fontSize: `${buttonStyle.fontSize}px`,
+                            fontWeight: buttonStyle.fontWeight,
+                            boxShadow: ixShadow,
+                            border: buttonStyle.borderWidth > 0 ? `${buttonStyle.borderWidth}px solid hsl(var(--border))` : "none",
+                            transition: `opacity ${interactionStyle.transitionDuration}ms ease, transform ${interactionStyle.transitionDuration}ms ease`,
+                          };
+                          const ixHover = {
+                            onMouseEnter: (e: React.MouseEvent) => {
+                              (e.target as HTMLElement).style.opacity = String(interactionStyle.hoverOpacity);
+                              (e.target as HTMLElement).style.transform = `scale(${interactionStyle.hoverScale})`;
+                            },
+                            onMouseLeave: (e: React.MouseEvent) => {
                               (e.target as HTMLElement).style.opacity = "1";
-                              (e.target as HTMLElement).style.transform =
-                                "scale(1)";
-                            }}
-                            onMouseDown={(e) => {
-                              (e.target as HTMLElement).style.transform =
-                                `scale(${interactionStyle.activeScale})`;
-                            }}
-                            onMouseUp={(e) => {
-                              (e.target as HTMLElement).style.transform =
-                                `scale(${interactionStyle.hoverScale})`;
-                            }}
-                          >
-                            Primary Button
-                          </button>
-                          <button
-                            className="px-4 py-2 text-[14px] font-light"
-                            style={{
-                              backgroundColor: "hsl(var(--secondary))",
-                              color: "hsl(var(--secondary-foreground))",
-                              borderRadius: `${cardStyle.borderRadius}px`,
-                              transition: `opacity ${interactionStyle.transitionDuration}ms ease, transform ${interactionStyle.transitionDuration}ms ease`,
-                            }}
-                            onMouseEnter={(e) => {
-                              (e.target as HTMLElement).style.opacity = String(
-                                interactionStyle.hoverOpacity,
-                              );
-                              (e.target as HTMLElement).style.transform =
-                                `scale(${interactionStyle.hoverScale})`;
-                            }}
-                            onMouseLeave={(e) => {
-                              (e.target as HTMLElement).style.opacity = "1";
-                              (e.target as HTMLElement).style.transform =
-                                "scale(1)";
-                            }}
-                            onMouseDown={(e) => {
-                              (e.target as HTMLElement).style.transform =
-                                `scale(${interactionStyle.activeScale})`;
-                            }}
-                            onMouseUp={(e) => {
-                              (e.target as HTMLElement).style.transform =
-                                `scale(${interactionStyle.hoverScale})`;
-                            }}
-                          >
-                            Secondary
-                          </button>
-                          <button
-                            className="px-4 py-2 text-[14px] font-light border"
-                            style={{
-                              backgroundColor: "transparent",
-                              color: "hsl(var(--foreground))",
-                              borderColor: "hsl(var(--border))",
-                              borderRadius: `${cardStyle.borderRadius}px`,
-                              transition: `opacity ${interactionStyle.transitionDuration}ms ease, transform ${interactionStyle.transitionDuration}ms ease`,
-                            }}
-                            onMouseEnter={(e) => {
-                              (e.target as HTMLElement).style.opacity = String(
-                                interactionStyle.hoverOpacity,
-                              );
-                              (e.target as HTMLElement).style.transform =
-                                `scale(${interactionStyle.hoverScale})`;
-                            }}
-                            onMouseLeave={(e) => {
-                              (e.target as HTMLElement).style.opacity = "1";
-                              (e.target as HTMLElement).style.transform =
-                                "scale(1)";
-                            }}
-                            onMouseDown={(e) => {
-                              (e.target as HTMLElement).style.transform =
-                                `scale(${interactionStyle.activeScale})`;
-                            }}
-                            onMouseUp={(e) => {
-                              (e.target as HTMLElement).style.transform =
-                                `scale(${interactionStyle.hoverScale})`;
-                            }}
-                          >
-                            Outline
-                          </button>
-                        </div>
+                              (e.target as HTMLElement).style.transform = "scale(1)";
+                            },
+                            onMouseDown: (e: React.MouseEvent) => {
+                              (e.target as HTMLElement).style.transform = `scale(${interactionStyle.activeScale})`;
+                            },
+                            onMouseUp: (e: React.MouseEvent) => {
+                              (e.target as HTMLElement).style.transform = `scale(${interactionStyle.hoverScale})`;
+                            },
+                          };
+                          return (
+                            <div className="flex flex-wrap gap-3">
+                              <button
+                                style={{
+                                  ...ixCommon,
+                                  backgroundColor: "hsl(var(--primary))",
+                                  color: "hsl(var(--primary-foreground))",
+                                }}
+                                {...ixHover}
+                              >
+                                Primary Button
+                              </button>
+                              <button
+                                style={{
+                                  ...ixCommon,
+                                  backgroundColor: "hsl(var(--secondary))",
+                                  color: "hsl(var(--secondary-foreground))",
+                                }}
+                                {...ixHover}
+                              >
+                                Secondary
+                              </button>
+                              <button
+                                style={{
+                                  ...ixCommon,
+                                  backgroundColor: "transparent",
+                                  color: "hsl(var(--foreground))",
+                                  border: `${Math.max(buttonStyle.borderWidth, 1)}px solid hsl(var(--border))`,
+                                }}
+                                {...ixHover}
+                              >
+                                Outline
+                              </button>
+                            </div>
+                          );
+                        })()}
                         <p
                           className="text-[12px] font-light"
                           style={{ color: "hsl(var(--muted-foreground))" }}
@@ -4586,7 +4921,7 @@ function DesignSystemEditorInner({
               {/* Controls + Preview */}
               <div className="flex flex-col md:flex-row gap-4 md:gap-6">
                 {/* Slider controls */}
-                <div className="flex-1 min-w-0 space-y-3">
+                <div className="flex-1 min-w-0 space-y-3 order-2 md:order-1">
                   {/* Shadow */}
                   <div className="space-y-1.5">
                     <p
@@ -4745,7 +5080,7 @@ function DesignSystemEditorInner({
                 </div>
 
                 {/* Live preview */}
-                <div className="flex-1 min-w-0 flex items-center justify-center">
+                <div className="flex-1 min-w-0 flex items-center justify-center order-1 md:order-2">
                   {(() => {
                     // Compute the effective text color based on what the card bg actually looks like
                     const brandHsl = colors["--brand"] || "220 70% 50%";
@@ -6260,7 +6595,7 @@ function DesignSystemEditorInner({
                 {/* Controls + Preview side-by-side */}
                 <div className="flex flex-col md:flex-row gap-4 md:gap-6">
                   {/* Slider controls */}
-                  <div className="flex-1 min-w-0 space-y-3">
+                  <div className="flex-1 min-w-0 space-y-3 order-2 md:order-1">
                     {/* Fonts */}
                     <div className="space-y-1.5">
                       <p
@@ -6472,7 +6807,7 @@ function DesignSystemEditorInner({
                   </div>
 
                   {/* Live preview */}
-                  <div className="flex-1 min-w-0 flex items-start justify-center pt-2">
+                  <div className="flex-1 min-w-0 flex items-start justify-center pt-2 order-1 md:order-2">
                     <div
                       className="w-full md:max-w-[400px] space-y-3"
                       data-axe-exclude
@@ -6986,7 +7321,7 @@ function DesignSystemEditorInner({
                   {/* Controls + Preview */}
                   <div className="flex flex-col md:flex-row gap-4 md:gap-6">
                     {/* Slider controls */}
-                    <div className="flex-1 min-w-0 space-y-3">
+                    <div className="flex-1 min-w-0 space-y-3 order-2 md:order-1">
                       <div className="space-y-1.5">
                         <p
                           className="text-[14px] font-light uppercase tracking-wider"
@@ -7202,7 +7537,7 @@ function DesignSystemEditorInner({
                     </div>
 
                     {/* Live preview */}
-                    <div className="flex-1 min-w-0 flex items-start justify-center pt-2">
+                    <div className="flex-1 min-w-0 flex items-start justify-center pt-2 order-1 md:order-2">
                       <div
                         className="w-full md:max-w-[400px] space-y-3"
                         data-axe-exclude
@@ -7405,6 +7740,257 @@ function DesignSystemEditorInner({
           </div>
         </div>
       </section>
+      {/* CSS Import Modal */}
+      {showCssImportModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          onClick={() => { setShowCssImportModal(false); setCssImportText(""); setCssImportPreview(null); }}
+        >
+          <div className="absolute inset-0 bg-black/50" />
+          <div
+            className="relative w-full max-w-2xl mx-4 rounded-xl shadow-2xl max-h-[90vh] overflow-y-auto"
+            style={{ backgroundColor: "hsl(var(--background))", color: "hsl(var(--foreground))" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold">Import CSS / SCSS</h3>
+                <button
+                  onClick={() => { setShowCssImportModal(false); setCssImportText(""); setCssImportPreview(null); }}
+                  className="p-1 rounded hover:opacity-70"
+                  style={{ color: "hsl(var(--muted-foreground))" }}
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <p className="text-sm font-light" style={{ color: "hsl(var(--muted-foreground))" }}>
+                Paste CSS or SCSS containing custom properties or variables. Themal will parse colors, typography, button, card, and interaction values.
+              </p>
+
+              <textarea
+                className="w-full h-48 p-3 rounded-lg border font-mono text-sm resize-y"
+                style={{
+                  backgroundColor: "hsl(var(--card))",
+                  color: "hsl(var(--card-foreground))",
+                  borderColor: "hsl(var(--border))",
+                }}
+                placeholder={`:root {\n  --brand: 220 70% 50%;\n  --primary: #3b82f6;\n  --background: #ffffff;\n  --font-heading: "Inter";\n  --border-radius: 12px;\n}\n\n/* or SCSS */\n$primary: #3b82f6;\n$background: #fff;`}
+                value={cssImportText}
+                onChange={(e) => {
+                  setCssImportText(e.target.value);
+                  if (e.target.value.trim()) {
+                    setCssImportPreview(parseCssImport(e.target.value));
+                  } else {
+                    setCssImportPreview(null);
+                  }
+                }}
+              />
+
+              {cssImportPreview && (
+                <div className="space-y-3">
+                  <p className="text-sm font-medium" style={{ color: "hsl(var(--foreground))" }}>
+                    Detected values:
+                  </p>
+
+                  {/* Colors */}
+                  {Object.keys(cssImportPreview.colors).length > 0 && (
+                    <div className="space-y-1">
+                      <p className="text-xs font-light uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>
+                        Colors ({Object.keys(cssImportPreview.colors).length})
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {Object.entries(cssImportPreview.colors).map(([key, hsl]) => (
+                          <div key={key} className="flex items-center gap-1.5 text-xs font-light">
+                            <span
+                              className="w-4 h-4 rounded border"
+                              style={{ backgroundColor: `hsl(${hsl})`, borderColor: "hsl(var(--border))" }}
+                            />
+                            <span style={{ color: "hsl(var(--foreground))" }}>{key}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Typography */}
+                  {Object.keys(cssImportPreview.typographyState).length > 0 && (
+                    <div className="space-y-1">
+                      <p className="text-xs font-light uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>
+                        Typography
+                      </p>
+                      <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-light" style={{ color: "hsl(var(--foreground))" }}>
+                        {Object.entries(cssImportPreview.typographyState).map(([k, v]) => (
+                          <span key={k}>{k}: {String(v)}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Button */}
+                  {Object.keys(cssImportPreview.buttonStyle).length > 0 && (
+                    <div className="space-y-1">
+                      <p className="text-xs font-light uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>
+                        Buttons
+                      </p>
+                      <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-light" style={{ color: "hsl(var(--foreground))" }}>
+                        {Object.entries(cssImportPreview.buttonStyle).map(([k, v]) => (
+                          <span key={k}>{k}: {String(v)}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Card */}
+                  {Object.keys(cssImportPreview.cardStyle).length > 0 && (
+                    <div className="space-y-1">
+                      <p className="text-xs font-light uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>
+                        Card Style
+                      </p>
+                      <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-light" style={{ color: "hsl(var(--foreground))" }}>
+                        {Object.entries(cssImportPreview.cardStyle).map(([k, v]) => (
+                          <span key={k}>{k}: {String(v)}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Interactions */}
+                  {Object.keys(cssImportPreview.interactionStyle).length > 0 && (
+                    <div className="space-y-1">
+                      <p className="text-xs font-light uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>
+                        Interactions
+                      </p>
+                      <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-light" style={{ color: "hsl(var(--foreground))" }}>
+                        {Object.entries(cssImportPreview.interactionStyle).map(([k, v]) => (
+                          <span key={k}>{k}: {String(v)}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Alerts */}
+                  {Object.keys(cssImportPreview.alertStyle).length > 0 && (
+                    <div className="space-y-1">
+                      <p className="text-xs font-light uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>
+                        Alerts
+                      </p>
+                      <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-light" style={{ color: "hsl(var(--foreground))" }}>
+                        {Object.entries(cssImportPreview.alertStyle).map(([k, v]) => (
+                          <span key={k}>{k}: {String(v)}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Nothing found */}
+                  {Object.keys(cssImportPreview.colors).length === 0 &&
+                    Object.keys(cssImportPreview.typographyState).length === 0 &&
+                    Object.keys(cssImportPreview.cardStyle).length === 0 &&
+                    Object.keys(cssImportPreview.buttonStyle).length === 0 &&
+                    Object.keys(cssImportPreview.interactionStyle).length === 0 &&
+                    Object.keys(cssImportPreview.alertStyle).length === 0 && (
+                    <p className="text-sm font-light" style={{ color: "hsl(var(--destructive))" }}>
+                      No recognized values found. Make sure your CSS uses custom properties (--var-name) or SCSS variables ($var-name).
+                    </p>
+                  )}
+                </div>
+              )}
+
+              <div className="flex items-center justify-end gap-2 pt-2">
+                <button
+                  onClick={() => { setShowCssImportModal(false); setCssImportText(""); setCssImportPreview(null); }}
+                  className="px-4 py-2 text-[14px] font-light rounded-lg"
+                  style={{ backgroundColor: "#e5e7eb", color: "#111" }}
+                >
+                  Cancel
+                </button>
+                <button
+                  disabled={!cssImportPreview || (
+                    Object.keys(cssImportPreview.colors).length === 0 &&
+                    Object.keys(cssImportPreview.typographyState).length === 0 &&
+                    Object.keys(cssImportPreview.cardStyle).length === 0 &&
+                    Object.keys(cssImportPreview.buttonStyle).length === 0 &&
+                    Object.keys(cssImportPreview.interactionStyle).length === 0 &&
+                    Object.keys(cssImportPreview.alertStyle).length === 0
+                  )}
+                  onClick={() => {
+                    if (!cssImportPreview) return;
+                    // Apply colors
+                    if (Object.keys(cssImportPreview.colors).length > 0) {
+                      const merged = { ...colors, ...cssImportPreview.colors };
+                      for (const [key, val] of Object.entries(cssImportPreview.colors)) {
+                        document.documentElement.style.setProperty(key, val);
+                      }
+                      setColors(merged);
+                    }
+                    // Apply card style
+                    if (Object.keys(cssImportPreview.cardStyle).length > 0) {
+                      setCardStyle((prev) => {
+                        const next = { ...prev, ...cssImportPreview.cardStyle, preset: "custom" as const };
+                        applyCardStyle(next, colors);
+                        return next;
+                      });
+                    }
+                    // Apply typography
+                    if (Object.keys(cssImportPreview.typographyState).length > 0) {
+                      setTypographyState((prev) => {
+                        const next = { ...prev, ...cssImportPreview.typographyState, preset: "custom" as const };
+                        applyTypography(next);
+                        return next;
+                      });
+                    }
+                    // Apply button style
+                    if (Object.keys(cssImportPreview.buttonStyle).length > 0) {
+                      setButtonStyle((prev) => {
+                        const next = { ...prev, ...cssImportPreview.buttonStyle };
+                        applyButtonStyle(next);
+                        return next;
+                      });
+                    }
+                    // Apply interaction style
+                    if (Object.keys(cssImportPreview.interactionStyle).length > 0) {
+                      setInteractionStyle((prev) => {
+                        const next = { ...prev, ...cssImportPreview.interactionStyle, preset: "custom" as const };
+                        applyInteractionStyle(next);
+                        return next;
+                      });
+                    }
+                    // Apply alert style
+                    if (Object.keys(cssImportPreview.alertStyle).length > 0) {
+                      setAlertStyle((prev) => {
+                        const next = { ...prev, ...cssImportPreview.alertStyle, preset: "custom" as const };
+                        applyAlertStyle(next);
+                        return next;
+                      });
+                    }
+                    setShowCssImportModal(false);
+                    setCssImportText("");
+                    setCssImportPreview(null);
+                  }}
+                  className="px-4 py-2 text-[14px] font-light rounded-lg transition-opacity"
+                  style={{
+                    backgroundColor: "hsl(var(--brand))",
+                    color: colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "#fff",
+                    opacity: !cssImportPreview || (
+                      Object.keys(cssImportPreview.colors).length === 0 &&
+                      Object.keys(cssImportPreview.typographyState).length === 0 &&
+                      Object.keys(cssImportPreview.cardStyle).length === 0 &&
+                      Object.keys(cssImportPreview.buttonStyle).length === 0 &&
+                      Object.keys(cssImportPreview.interactionStyle).length === 0 &&
+                      Object.keys(cssImportPreview.alertStyle).length === 0
+                    ) ? 0.5 : 1,
+                  }}
+                >
+                  Apply
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {/* Image Palette Modal */}
       {showImagePaletteModal && (
         <div

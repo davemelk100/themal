@@ -2,23 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-@keyframes heroFadeLeft {
-  0%        { opacity: 1; transform: scale(1); }
-  5%        { opacity: 0.6; transform: scale(1.03); }
-  10%       { opacity: 1; transform: scale(1); }
-  15%       { opacity: 0.6; transform: scale(1.03); }
-  20%       { opacity: 1; transform: scale(1); }
-  25%       { opacity: 0.6; transform: scale(1.03); }
-  30%       { opacity: 1; transform: scale(1); }
-  35%       { opacity: 0.6; transform: scale(1.03); }
-  40%       { opacity: 1; transform: scale(1); }
-  100%      { opacity: 1; transform: scale(1); }
-}
-@keyframes heroFadeRight {
-  0%        { opacity: 0.4; transform: translate(30%, -30%) scale(0.5); }
-  40%       { opacity: 1; transform: translate(0, 0) scale(1); }
-  50%       { opacity: 0; transform: translate(0, 0) scale(1); }
-  100%      { opacity: 0; transform: translate(0, 0) scale(1); }
+@keyframes heroPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.45; transform: scale(1.12); }
 }
 
 @layer utilities {

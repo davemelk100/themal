@@ -1305,6 +1305,70 @@ export function applyStoredInteractionStyle(): InteractionStyleState | null {
   return null;
 }
 
+// ── Button Style ──
+
+export const BUTTON_STYLE_KEY = "ds-button-style";
+
+export interface ButtonStyleState {
+  paddingX: number;
+  paddingY: number;
+  fontSize: number;
+  fontWeight: number;
+  borderRadius: number;
+  shadowOffsetX: number;
+  shadowOffsetY: number;
+  shadowBlur: number;
+  shadowSpread: number;
+  shadowColor: string;
+  borderWidth: number;
+}
+
+export const DEFAULT_BUTTON_STYLE: ButtonStyleState = {
+  paddingX: 16,
+  paddingY: 8,
+  fontSize: 14,
+  fontWeight: 300,
+  borderRadius: 12,
+  shadowOffsetX: 0,
+  shadowOffsetY: 1,
+  shadowBlur: 3,
+  shadowSpread: 0,
+  shadowColor: "rgba(0,0,0,0.1)",
+  borderWidth: 0,
+};
+
+export function applyButtonStyle(state: ButtonStyleState) {
+  const root = document.documentElement;
+  root.style.setProperty("--btn-px", `${state.paddingX}px`);
+  root.style.setProperty("--btn-py", `${state.paddingY}px`);
+  root.style.setProperty("--btn-font-size", `${state.fontSize}px`);
+  root.style.setProperty("--btn-font-weight", String(state.fontWeight));
+  root.style.setProperty("--btn-radius", `${state.borderRadius}px`);
+  const shadow =
+    state.shadowBlur === 0 && state.shadowOffsetX === 0 && state.shadowOffsetY === 0 && state.shadowSpread === 0
+      ? "none"
+      : `${state.shadowOffsetX}px ${state.shadowOffsetY}px ${state.shadowBlur}px ${state.shadowSpread}px ${state.shadowColor}`;
+  root.style.setProperty("--btn-shadow", shadow);
+  root.style.setProperty("--btn-border-width", `${state.borderWidth}px`);
+  storage.set(BUTTON_STYLE_KEY, state);
+}
+
+export function removeButtonStyleProperties() {
+  const root = document.documentElement;
+  for (const prop of ["--btn-px", "--btn-py", "--btn-font-size", "--btn-font-weight", "--btn-radius", "--btn-shadow", "--btn-border-width"]) {
+    root.style.removeProperty(prop);
+  }
+}
+
+export function applyStoredButtonStyle(): ButtonStyleState | null {
+  const saved = storage.get<ButtonStyleState>(BUTTON_STYLE_KEY);
+  if (saved) {
+    applyButtonStyle(saved);
+    return saved;
+  }
+  return null;
+}
+
 export function applyStoredThemeColors() {
   const saved = storage.get<Record<string, string>>(THEME_COLORS_KEY);
   if (saved) {
@@ -1562,14 +1626,35 @@ export async function exportPaletteAsPng(colors: Record<string, string>): Promis
 }
 
 export function generateSectionDesignTokens(
-  section: "card" | "typography" | "alerts" | "interactions" | "typo-interactions",
+  section: "card" | "typography" | "alerts" | "interactions" | "typo-interactions" | "buttons",
   cardStyle: CardStyleState,
   typographyState: TypographyState,
   alertStyle: AlertStyleState,
   interactionStyle: InteractionStyleState,
   typoInteractionStyle: TypoInteractionStyleState,
+  buttonStyle?: ButtonStyleState,
 ): Record<string, unknown> {
   switch (section) {
+    case "buttons": {
+      const bs = buttonStyle ?? DEFAULT_BUTTON_STYLE;
+      return {
+        button: {
+          paddingX: { $value: `${bs.paddingX}px`, $type: "dimension" },
+          paddingY: { $value: `${bs.paddingY}px`, $type: "dimension" },
+          fontSize: { $value: `${bs.fontSize}px`, $type: "dimension" },
+          fontWeight: { $value: bs.fontWeight, $type: "fontWeight" },
+          borderRadius: { $value: `${bs.borderRadius}px`, $type: "dimension" },
+          borderWidth: { $value: `${bs.borderWidth}px`, $type: "dimension" },
+          shadow: {
+            offsetX: { $value: `${bs.shadowOffsetX}px`, $type: "dimension" },
+            offsetY: { $value: `${bs.shadowOffsetY}px`, $type: "dimension" },
+            blur: { $value: `${bs.shadowBlur}px`, $type: "dimension" },
+            spread: { $value: `${bs.shadowSpread}px`, $type: "dimension" },
+            color: { $value: bs.shadowColor, $type: "color" },
+          },
+        },
+      };
+    }
     case "card":
       return {
         borderRadius: { card: { $value: `${cardStyle.borderRadius}px`, $type: "dimension" } },
@@ -1649,6 +1734,7 @@ interface SerializedTheme {
   a: AlertStyleState;
   i: InteractionStyleState;
   ti: TypoInteractionStyleState;
+  bs?: ButtonStyleState;
 }
 
 export function serializeThemeState(
@@ -1658,6 +1744,7 @@ export function serializeThemeState(
   alertStyle: AlertStyleState,
   interactionStyle: InteractionStyleState,
   typoInteractionStyle: TypoInteractionStyleState,
+  buttonStyle?: ButtonStyleState,
 ): string {
   const data: SerializedTheme = {
     c: colors,
@@ -1666,6 +1753,7 @@ export function serializeThemeState(
     a: alertStyle,
     i: interactionStyle,
     ti: typoInteractionStyle,
+    bs: buttonStyle,
   };
   return btoa(JSON.stringify(data));
 }
@@ -1677,6 +1765,7 @@ export function deserializeThemeState(hash: string): {
   alertStyle: AlertStyleState;
   interactionStyle: InteractionStyleState;
   typoInteractionStyle: TypoInteractionStyleState;
+  buttonStyle: ButtonStyleState;
 } | null {
   try {
     const json = atob(hash);
@@ -1689,6 +1778,7 @@ export function deserializeThemeState(hash: string): {
       alertStyle: data.a,
       interactionStyle: data.i,
       typoInteractionStyle: data.ti,
+      buttonStyle: data.bs || { ...DEFAULT_BUTTON_STYLE },
     };
   } catch {
     return null;
@@ -1768,4 +1858,295 @@ export function generateDesignTokens(
       focusRingWidth: { $value: `${interactionStyle.focusRingWidth}px`, $type: "dimension" },
     },
   };
+}
+
+// ── CSS / SCSS Import ──────────────────────────────────────────────
+
+export interface ParsedCssImport {
+  colors: Record<string, string>;
+  cardStyle: Partial<CardStyleState>;
+  typographyState: Partial<TypographyState>;
+  buttonStyle: Partial<ButtonStyleState>;
+  interactionStyle: Partial<InteractionStyleState>;
+  alertStyle: Partial<AlertStyleState>;
+  raw: Record<string, string>; // all extracted vars for display
+}
+
+/** Convert a CSS color value (hex, rgb, hsl, oklch, named) to HSL string "H S% L%" */
+function colorValueToHsl(value: string): string | null {
+  const v = value.trim().toLowerCase();
+
+  // hex
+  if (v.startsWith("#")) {
+    let hex = v;
+    if (hex.length === 4) hex = `#${hex[1]}${hex[1]}${hex[2]}${hex[2]}${hex[3]}${hex[3]}`;
+    if (/^#[0-9a-f]{6}$/.test(hex)) return hexToHslString(hex);
+    return null;
+  }
+
+  // hsl() / hsla() — already in our format
+  const hslMatch = v.match(/hsla?\(\s*([\d.]+)[\s,]+([\d.]+)%[\s,]+([\d.]+)%/);
+  if (hslMatch) return `${parseFloat(hslMatch[1])} ${parseFloat(hslMatch[2])}% ${parseFloat(hslMatch[3])}%`;
+
+  // bare hsl values like "220 70% 50%"
+  const bareHsl = v.match(/^([\d.]+)\s+([\d.]+)%\s+([\d.]+)%$/);
+  if (bareHsl) return `${parseFloat(bareHsl[1])} ${parseFloat(bareHsl[2])}% ${parseFloat(bareHsl[3])}%`;
+
+  // rgb() / rgba()
+  const rgbMatch = v.match(/rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)/);
+  if (rgbMatch) {
+    const hex = `#${[rgbMatch[1], rgbMatch[2], rgbMatch[3]].map(n => Math.round(parseFloat(n)).toString(16).padStart(2, "0")).join("")}`;
+    return hexToHslString(hex);
+  }
+
+  return null;
+}
+
+function parseNumericValue(value: string): number | null {
+  const match = value.match(/([\d.]+)/);
+  return match ? parseFloat(match[1]) : null;
+}
+
+/** Map of CSS property / variable names to our internal variable keys */
+const CSS_VAR_ALIASES: Record<string, string> = {
+  // direct matches
+  "--brand": "--brand",
+  "--primary": "--primary",
+  "--primary-foreground": "--primary-foreground",
+  "--secondary": "--secondary",
+  "--secondary-foreground": "--secondary-foreground",
+  "--background": "--background",
+  "--foreground": "--foreground",
+  "--card": "--card",
+  "--card-foreground": "--card-foreground",
+  "--popover": "--popover",
+  "--popover-foreground": "--popover-foreground",
+  "--muted": "--muted",
+  "--muted-foreground": "--muted-foreground",
+  "--accent": "--accent",
+  "--accent-foreground": "--accent-foreground",
+  "--destructive": "--destructive",
+  "--destructive-foreground": "--destructive-foreground",
+  "--success": "--success",
+  "--success-foreground": "--success-foreground",
+  "--warning": "--warning",
+  "--warning-foreground": "--warning-foreground",
+  "--border": "--border",
+  "--ring": "--ring",
+  // common shadcn/ui aliases
+  "--input": "--border",
+  "--primary-bg": "--primary",
+  "--primary-fg": "--primary-foreground",
+  "--secondary-bg": "--secondary",
+  "--secondary-fg": "--secondary-foreground",
+  // SCSS-style names (without --)
+  "$brand": "--brand",
+  "$primary": "--primary",
+  "$secondary": "--secondary",
+  "$background": "--background",
+  "$foreground": "--foreground",
+  "$border": "--border",
+  "$accent": "--accent",
+  "$muted": "--muted",
+  "$destructive": "--destructive",
+  "$success": "--success",
+  "$warning": "--warning",
+};
+
+const EDITABLE_KEYS: Set<string> = new Set(EDITABLE_VARS.map(v => v.key));
+
+export function parseCssImport(input: string): ParsedCssImport {
+  const result: ParsedCssImport = {
+    colors: {},
+    cardStyle: {},
+    typographyState: {},
+    buttonStyle: {},
+    interactionStyle: {},
+    alertStyle: {},
+    raw: {},
+  };
+
+  // Strip SCSS comments
+  let cleaned = input
+    .replace(/\/\/[^\n]*/g, "")     // single-line comments
+    .replace(/\/\*[\s\S]*?\*\//g, ""); // block comments
+
+  // Extract all variable declarations: CSS custom properties and SCSS variables
+  // CSS: --var-name: value;
+  // SCSS: $var-name: value;
+  const varPattern = /(-{2}[\w-]+|\$[\w-]+)\s*:\s*([^;{}]+);/g;
+  let match: RegExpExecArray | null;
+
+  while ((match = varPattern.exec(cleaned)) !== null) {
+    const rawName = match[1].trim();
+    const rawValue = match[2].trim();
+    result.raw[rawName] = rawValue;
+
+    // Resolve alias to internal key
+    const internalKey = CSS_VAR_ALIASES[rawName] || (rawName.startsWith("--") ? rawName : null);
+
+    // Try as color
+    if (internalKey && EDITABLE_KEYS.has(internalKey)) {
+      const hsl = colorValueToHsl(rawValue);
+      if (hsl) {
+        result.colors[internalKey] = hsl;
+        continue;
+      }
+    }
+
+    // Non-color properties
+    const name = rawName.startsWith("$") ? `--${rawName.slice(1)}` : rawName;
+    const num = parseNumericValue(rawValue);
+
+    switch (name) {
+      // Card style
+      case "--card-radius":
+      case "--radius":
+      case "--border-radius":
+        if (num != null) result.cardStyle.borderRadius = num;
+        break;
+      case "--card-shadow":
+      case "--shadow":
+        // skip complex shadows, just note it
+        break;
+      case "--border-width":
+        if (num != null) result.cardStyle.borderWidth = num;
+        break;
+      case "--backdrop-blur":
+        if (num != null) result.cardStyle.backdropBlur = num;
+        break;
+
+      // Typography
+      case "--font-heading":
+      case "--font-family-heading":
+      case "--heading-font":
+        result.typographyState.headingFamily = rawValue.replace(/['"]/g, "");
+        break;
+      case "--font-body":
+      case "--font-family-body":
+      case "--body-font":
+      case "--font-family":
+        result.typographyState.bodyFamily = rawValue.replace(/['"]/g, "");
+        break;
+      case "--font-size-base":
+      case "--font-size":
+      case "--base-font-size":
+        if (num != null) result.typographyState.baseFontSize = num;
+        break;
+      case "--font-weight-heading":
+      case "--heading-weight":
+        if (num != null) result.typographyState.headingWeight = num;
+        break;
+      case "--font-weight-body":
+      case "--body-weight":
+      case "--font-weight":
+        if (num != null) result.typographyState.bodyWeight = num;
+        break;
+      case "--line-height":
+        if (num != null) result.typographyState.lineHeight = num;
+        break;
+      case "--letter-spacing":
+        if (num != null) result.typographyState.letterSpacing = num;
+        break;
+      case "--letter-spacing-heading":
+        if (num != null) result.typographyState.headingLetterSpacing = num;
+        break;
+
+      // Button style
+      case "--btn-px":
+      case "--button-padding-x":
+        if (num != null) result.buttonStyle.paddingX = num;
+        break;
+      case "--btn-py":
+      case "--button-padding-y":
+        if (num != null) result.buttonStyle.paddingY = num;
+        break;
+      case "--btn-font-size":
+      case "--button-font-size":
+        if (num != null) result.buttonStyle.fontSize = num;
+        break;
+      case "--btn-font-weight":
+      case "--button-font-weight":
+        if (num != null) result.buttonStyle.fontWeight = num;
+        break;
+      case "--btn-radius":
+      case "--button-radius":
+        if (num != null) result.buttonStyle.borderRadius = num;
+        break;
+
+      // Interaction style
+      case "--hover-opacity":
+        if (num != null) result.interactionStyle.hoverOpacity = num;
+        break;
+      case "--hover-scale":
+        if (num != null) result.interactionStyle.hoverScale = num;
+        break;
+      case "--active-scale":
+        if (num != null) result.interactionStyle.activeScale = num;
+        break;
+      case "--transition-duration":
+        if (num != null) result.interactionStyle.transitionDuration = num;
+        break;
+      case "--focus-ring-width":
+        if (num != null) result.interactionStyle.focusRingWidth = num;
+        break;
+
+      // Alert style
+      case "--alert-radius":
+      case "--alert-border-radius":
+        if (num != null) result.alertStyle.borderRadius = num;
+        break;
+      case "--alert-border-width":
+        if (num != null) result.alertStyle.borderWidth = num;
+        break;
+      case "--alert-padding":
+        if (num != null) result.alertStyle.padding = num;
+        break;
+    }
+  }
+
+  // Also try to extract standard CSS properties from rule blocks
+  // e.g. font-family: "Inter", sans-serif; border-radius: 8px;
+  const propPattern = /(?:^|\s)(font-family|font-size|font-weight|line-height|letter-spacing|border-radius|color|background(?:-color)?)\s*:\s*([^;{}]+);/gi;
+  while ((match = propPattern.exec(cleaned)) !== null) {
+    const prop = match[1].toLowerCase();
+    const val = match[2].trim();
+    const num = parseNumericValue(val);
+
+    switch (prop) {
+      case "font-family":
+        if (!result.typographyState.bodyFamily) {
+          result.typographyState.bodyFamily = val.replace(/['"]/g, "").split(",")[0].trim();
+        }
+        break;
+      case "font-size":
+        if (num != null && !result.typographyState.baseFontSize) result.typographyState.baseFontSize = num;
+        break;
+      case "font-weight":
+        if (num != null && !result.typographyState.bodyWeight) result.typographyState.bodyWeight = num;
+        break;
+      case "line-height":
+        if (num != null && !result.typographyState.lineHeight) result.typographyState.lineHeight = num;
+        break;
+      case "letter-spacing":
+        if (num != null && !result.typographyState.letterSpacing) result.typographyState.letterSpacing = num;
+        break;
+      case "border-radius":
+        if (num != null && result.cardStyle.borderRadius == null) result.cardStyle.borderRadius = num;
+        break;
+      case "color": {
+        const hsl = colorValueToHsl(val);
+        if (hsl && !result.colors["--foreground"]) result.colors["--foreground"] = hsl;
+        break;
+      }
+      case "background":
+      case "background-color": {
+        const hsl = colorValueToHsl(val);
+        if (hsl && !result.colors["--background"]) result.colors["--background"] = hsl;
+        break;
+      }
+    }
+  }
+
+  return result;
 }
