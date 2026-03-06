@@ -1544,7 +1544,7 @@ function DesignSystemEditorInner({
             {/* Title + nav links - single header row */}
             <div className="w-full mb-2 sm:mb-3 lg:mb-4 flex items-end gap-x-4 pt-2 sm:pt-3 lg:pt-4 relative">
               <a
-                href="#top"
+                href="/"
                 className="flex-shrink-0 leading-none"
                 style={{ color: "hsl(var(--foreground))" }}
               >
@@ -1611,6 +1611,13 @@ function DesignSystemEditorInner({
               {/* Nav links - desktop (next to logo) */}
               {showNavLinks && (
                 <nav className="hidden md:flex items-center gap-4">
+                  <a
+                    href="/editor"
+                    className="text-[13px] font-light uppercase tracking-wider transition-opacity hover:opacity-70 whitespace-nowrap"
+                    style={{ color: "hsl(var(--muted-foreground))" }}
+                  >
+                    Editor
+                  </a>
                   {aboutUrl && (
                     <a
                       href={aboutUrl}
@@ -8603,6 +8610,14 @@ function DesignSystemEditorInner({
                 >
                   Pages
                 </p>
+                <a
+                  href="/editor"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block py-2 text-[20px] font-bold tracking-wider mb-[5px] transition-opacity hover:opacity-70"
+                  style={{ color: "hsl(var(--foreground))" }}
+                >
+                  Editor
+                </a>
                 {aboutUrl && (
                   <a
                     href={aboutUrl}

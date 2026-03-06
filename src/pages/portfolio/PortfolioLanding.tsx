@@ -19,7 +19,7 @@ export default function PortfolioLanding() {
         aboutUrl="/about"
       />
       <SiteFooterBranding />
-      <SiteFooter />
+      <SiteFooter sticky={false} />
     </div>
   );
 }
