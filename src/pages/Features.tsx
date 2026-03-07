@@ -4,6 +4,12 @@ import ThemalLogo from "../components/ThemalLogo";
 
 const features = [
   {
+    version: "0.18",
+    items: [
+      "Mobile color spectrum picker - 2D saturation/lightness canvas with hue slider replaces the 3 separate HSL sliders for a more intuitive touch experience",
+    ],
+  },
+  {
     version: "0.16",
     items: [
       "Early access mode - all Pro features unlocked for free, no account required",
@@ -153,7 +159,7 @@ export default function Features() {
               { title: "Accessibility Audit", desc: "Built-in axe-core audit with inline violation reporting." },
               { title: "GitHub PR Integration", desc: "Open design system PRs directly from the editor." },
               { title: "Color Locks", desc: "Pin individual color tokens during palette generation." },
-              { title: "Responsive Layout", desc: "Mobile-first design with adaptive controls across all viewports." },
+              { title: "Responsive Layout", desc: "Mobile-first design with a 2D color spectrum picker for touch, adaptive controls across all viewports." },
               { title: "Web Component", desc: "Drop into Vue, Svelte, Astro, WordPress, Shopify, or any platform via a single script tag." },
             ].map(({ title, desc }) => (
               <div key={title} className="flex items-start gap-2">

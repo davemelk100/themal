@@ -290,7 +290,7 @@ import type {
 9. **Shareable URLs** — Encode your full theme state in the URL hash and share it with anyone via a single link.
 10. **Palette export** *(Pro)* — Download your palette as SVG or PNG, or copy as a HEX/RGB/RGBA text list.
 11. **Custom fonts** *(Pro)* — Add any Google Font by name. The editor validates the font exists, loads all weights, adds it to heading/body dropdowns, and persists it across sessions.
-12. **Mobile friendly** — Fully responsive UI with mobile-optimized dropdowns, compact swatch labels, and stacked layouts for smaller screens.
+12. **Mobile friendly** — Fully responsive UI with a 2D color spectrum picker (saturation/lightness canvas + hue slider) for intuitive touch-based color selection, mobile-optimized dropdowns, compact swatch labels, and stacked layouts for smaller screens.
 
 ## Package Architecture
 
