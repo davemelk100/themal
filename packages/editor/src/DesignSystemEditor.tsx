@@ -1568,21 +1568,9 @@ function DesignSystemEditorInner({
       const target = e.target as HTMLElement;
       if (!target) return;
       if (target.closest("[data-mobile-picker]")) return;
-      // Scroll editable swatch buttons and clickable color elements to top
-      const swatch = target.closest("button[aria-label*='color swatch']") as HTMLElement | null;
-      if (swatch) {
-        // Scroll the Colors section heading into view, not the swatch itself
-        const colorsSection = document.getElementById("colors");
-        if (colorsSection) {
-          setTimeout(() => {
-            const rect = colorsSection.getBoundingClientRect();
-            const scrollY = window.scrollY + rect.top - 8;
-            window.scrollTo({ top: scrollY, behavior: "smooth" });
-          }, 100);
-        }
-        return;
-      }
-      // Also handle range inputs
+      // Swatch buttons handle their own scroll in onClick, skip them here
+      if (target.closest("button[aria-label*='color swatch']")) return;
+      // Handle range inputs
       if (target.tagName === "INPUT" && target.getAttribute("type") === "range") {
         scrollToTop(target);
       }
@@ -2982,15 +2970,27 @@ function DesignSystemEditorInner({
                           }}
                           onClick={() => {
                             const isMobile = window.innerWidth < 640;
+                            // Scroll the Colors section to top first
+                            const colorsSection = document.getElementById("colors");
+                            if (colorsSection) {
+                              const rect = colorsSection.getBoundingClientRect();
+                              const scrollY = window.scrollY + rect.top - 8;
+                              window.scrollTo({ top: scrollY, behavior: "smooth" });
+                            }
                             if (isMobile) {
-                              setMobilePickerKey(key);
-                              setMobilePickerHex(hsl ? hslStringToHex(hsl) : "#000000");
+                              setTimeout(() => {
+                                setMobilePickerKey(key);
+                                setMobilePickerHex(hsl ? hslStringToHex(hsl) : "#000000");
+                              }, 350);
                               return;
                             }
-                            const input = document.getElementById(
-                              inputId,
-                            ) as HTMLInputElement | null;
-                            input?.click();
+                            // Delay the native color picker so scroll completes first
+                            setTimeout(() => {
+                              const input = document.getElementById(
+                                inputId,
+                              ) as HTMLInputElement | null;
+                              input?.click();
+                            }, 350);
                           }}
                         >
                           <span className="hidden sm:inline whitespace-nowrap leading-tight">
