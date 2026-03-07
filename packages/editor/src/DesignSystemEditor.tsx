@@ -1541,7 +1541,6 @@ function DesignSystemEditorInner({
   // On mobile, scroll any focused editable element to the top of the viewport
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const isMobile = () => window.innerWidth < 640;
 
     const findScrollTarget = (el: HTMLElement): HTMLElement => {
       // Walk up to find a label parent or a div that contains a label sibling
@@ -1565,7 +1564,6 @@ function DesignSystemEditorInner({
     };
 
     const handleFocus = (e: Event) => {
-      if (!isMobile()) return;
       const target = e.target as HTMLElement;
       if (!target) return;
       const tag = target.tagName;
@@ -1577,10 +1575,17 @@ function DesignSystemEditorInner({
       }
     };
 
-    const handleTouchStart = (e: Event) => {
-      if (!isMobile()) return;
+    const handleClick = (e: Event) => {
       const target = e.target as HTMLElement;
       if (!target) return;
+      if (target.closest("[data-mobile-picker]")) return;
+      // Scroll editable swatch buttons and clickable color elements to top
+      const swatch = target.closest("button[aria-label*='color swatch']") as HTMLElement | null;
+      if (swatch) {
+        scrollToTop(swatch);
+        return;
+      }
+      // Also handle range inputs
       if (target.tagName === "INPUT" && target.getAttribute("type") === "range") {
         scrollToTop(target);
       }
@@ -1589,10 +1594,10 @@ function DesignSystemEditorInner({
     const root = editorRootRef.current;
     if (!root) return;
     root.addEventListener("focusin", handleFocus, { passive: true });
-    root.addEventListener("touchstart", handleTouchStart, { passive: true });
+    root.addEventListener("click", handleClick, { passive: true });
     return () => {
       root.removeEventListener("focusin", handleFocus);
-      root.removeEventListener("touchstart", handleTouchStart);
+      root.removeEventListener("click", handleClick);
     };
   }, []);
 
