@@ -92,7 +92,7 @@ export const handler = async (event: any) => {
       const session = await stripe.checkout.sessions.create({
         mode: "payment",
         line_items: [{ price: testPriceId, quantity: 1 }],
-        success_url: `${origin}/?checkout=success`,
+        success_url: `${origin}/editor?checkout=success`,
         cancel_url: `${origin}/pricing`,
         metadata: { clerkUserId: userId },
       });
@@ -119,7 +119,7 @@ export const handler = async (event: any) => {
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       line_items: [{ price: priceId, quantity: 1 }],
-      success_url: `${origin}/?checkout=success`,
+      success_url: `${origin}/editor?checkout=success`,
       cancel_url: `${origin}/pricing`,
       metadata: { clerkUserId: userId },
       subscription_data: { metadata: { clerkUserId: userId } },
