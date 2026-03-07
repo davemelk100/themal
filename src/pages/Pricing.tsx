@@ -117,7 +117,8 @@ export default function Pricing() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-8">
           {/* Test */}
           <div
-            className="rounded-xl p-6 flex flex-col"
+            onClick={() => handleCheckout("test")}
+            className="rounded-xl p-6 flex flex-col cursor-pointer transition-opacity hover:opacity-80"
             style={{
               backgroundColor: "hsl(var(--card))",
               border: "1px solid hsl(var(--border))",
@@ -126,30 +127,28 @@ export default function Pricing() {
             <h2 className="text-xl font-semibold mb-1" style={{ color: "hsl(var(--foreground))" }}>
               Test 50 Cent
             </h2>
-            <div className="mb-4">
+            <div className="mb-3">
               <span className="text-3xl font-semibold" style={{ color: "hsl(var(--foreground))" }}>$0.50</span>
               <span className="text-[14px] ml-1" style={{ color: "hsl(var(--muted-foreground))" }}>one-time</span>
             </div>
-            <p className="text-[14px] mb-6 flex-1" style={{ color: "hsl(var(--muted-foreground))" }}>
-              Verify the checkout flow with a minimal charge.
-            </p>
-            <button
-              onClick={() => handleCheckout("test")}
-              disabled={loading === "test"}
-              className="w-full h-10 rounded-lg text-[14px] font-medium flex items-center justify-center transition-opacity hover:opacity-80 disabled:opacity-50 cursor-pointer disabled:cursor-wait"
+            <div
+              className="w-full h-10 rounded-lg text-[14px] font-medium flex items-center justify-center mb-4"
               style={{
                 border: "1px solid hsl(var(--border))",
                 color: "hsl(var(--foreground))",
-                backgroundColor: "transparent",
               }}
             >
               {loading === "test" ? "Redirecting..." : "Test Checkout"}
-            </button>
+            </div>
+            <p className="text-[13px]" style={{ color: "hsl(var(--muted-foreground))" }}>
+              Verify the checkout flow with a minimal charge.
+            </p>
           </div>
 
           {/* Free */}
-          <div
-            className="rounded-xl p-6 flex flex-col"
+          <Link
+            to="/editor"
+            className="rounded-xl p-6 flex flex-col no-underline cursor-pointer transition-opacity hover:opacity-80"
             style={{
               backgroundColor: "hsl(var(--card))",
               border: "1px solid hsl(var(--border))",
@@ -158,36 +157,39 @@ export default function Pricing() {
             <h2 className="text-xl font-semibold mb-1" style={{ color: "hsl(var(--foreground))" }}>
               Free
             </h2>
-            <div className="mb-4">
+            <div className="mb-3">
               <span className="text-3xl font-semibold" style={{ color: "hsl(var(--foreground))" }}>$0</span>
               <span className="text-[14px] ml-1" style={{ color: "hsl(var(--muted-foreground))" }}>forever</span>
             </div>
-            <p className="text-[14px] mb-6" style={{ color: "hsl(var(--muted-foreground))" }}>
-              Core design system editing for personal projects.
-            </p>
-            <ul className="space-y-2.5 flex-1 mb-6">
-              {freeFeatures.map((f) => (
-                <li key={f} className="flex items-start gap-2 text-[14px]" style={{ color: "hsl(var(--foreground))" }}>
-                  {check}
-                  <span>{f}</span>
-                </li>
-              ))}
-            </ul>
-            <Link
-              to="/editor"
-              className="w-full h-10 rounded-lg text-[14px] font-medium flex items-center justify-center transition-opacity hover:opacity-80"
+            <div
+              className="w-full h-10 rounded-lg text-[14px] font-medium flex items-center justify-center mb-4"
               style={{
                 border: "1px solid hsl(var(--border))",
                 color: "hsl(var(--foreground))",
               }}
             >
               Get Started
-            </Link>
-          </div>
+            </div>
+            <p className="text-[13px] mb-4" style={{ color: "hsl(var(--muted-foreground))" }}>
+              Core design system editing for personal projects.
+            </p>
+            <ul className="space-y-2 flex-1">
+              {freeFeatures.map((f) => (
+                <li key={f} className="flex items-start gap-2 text-[13px]" style={{ color: "hsl(var(--foreground))" }}>
+                  {check}
+                  <span>{f}</span>
+                </li>
+              ))}
+            </ul>
+          </Link>
 
           {/* Pro */}
           <div
-            className="rounded-xl p-6 flex flex-col relative"
+            onClick={(e) => {
+              if ((e.target as HTMLElement).closest("[data-no-card-click]")) return;
+              handleCheckout(billingCycle);
+            }}
+            className="rounded-xl p-6 flex flex-col relative cursor-pointer transition-opacity hover:opacity-80"
             style={{
               backgroundColor: "hsl(var(--card))",
               border: "2px solid hsl(var(--primary))",
@@ -205,7 +207,7 @@ export default function Pricing() {
             <h2 className="text-xl font-semibold mb-1" style={{ color: "hsl(var(--foreground))" }}>
               Pro
             </h2>
-            <div className="mb-4">
+            <div className="mb-3">
               <span className="text-3xl font-semibold" style={{ color: "hsl(var(--foreground))" }}>
                 {billingCycle === "monthly" ? "$9" : "$50"}
               </span>
@@ -216,7 +218,8 @@ export default function Pricing() {
 
             {/* Billing toggle */}
             <div
-              className="rounded-lg p-3 mb-6 text-[13px]"
+              data-no-card-click
+              className="rounded-lg p-3 mb-3 text-[13px]"
               style={{
                 backgroundColor: "hsl(var(--foreground) / 0.04)",
                 border: "1px solid hsl(var(--border))",
@@ -251,29 +254,27 @@ export default function Pricing() {
               </div>
             </div>
 
-            <p className="text-[14px] mb-6" style={{ color: "hsl(var(--muted-foreground))" }}>
+            <div
+              className="w-full h-10 rounded-lg text-[14px] font-medium flex items-center justify-center mb-4"
+              style={{
+                backgroundColor: "hsl(var(--primary))",
+                color: "hsl(var(--primary-foreground))",
+              }}
+            >
+              {loading ? "Redirecting..." : `Subscribe ${billingCycle === "monthly" ? "Monthly" : "Yearly"}`}
+            </div>
+
+            <p className="text-[13px] mb-4" style={{ color: "hsl(var(--muted-foreground))" }}>
               Full power for teams and professional workflows.
             </p>
-            <ul className="space-y-2.5 flex-1 mb-6">
+            <ul className="space-y-2 flex-1">
               {proFeatures.map((f) => (
-                <li key={f} className="flex items-start gap-2 text-[14px]" style={{ color: "hsl(var(--foreground))" }}>
+                <li key={f} className="flex items-start gap-2 text-[13px]" style={{ color: "hsl(var(--foreground))" }}>
                   {check}
                   <span>{f}</span>
                 </li>
               ))}
             </ul>
-            <button
-              onClick={() => handleCheckout(billingCycle)}
-              disabled={!!loading}
-              className="w-full h-10 rounded-lg text-[14px] font-medium flex items-center justify-center transition-opacity hover:opacity-80 disabled:opacity-50 cursor-pointer disabled:cursor-wait"
-              style={{
-                backgroundColor: "hsl(var(--primary))",
-                color: "hsl(var(--primary-foreground))",
-                border: "none",
-              }}
-            >
-              {loading ? "Redirecting..." : `Subscribe ${billingCycle === "monthly" ? "Monthly" : "Yearly"}`}
-            </button>
           </div>
         </div>
 
