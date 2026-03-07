@@ -426,6 +426,7 @@ function DesignSystemEditorInner({
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const navItemRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const navContainerRef = useRef<HTMLDivElement | null>(null);
+  const spectrumRef = useRef<HTMLDivElement | null>(null);
   const [navOffsets, setNavOffsets] = useState<Record<string, number>>({});
   const [iconsHidden, setIconsHidden] = useState(false);
   const [auditViolations, setAuditViolations] = useState<
@@ -8571,12 +8572,76 @@ function DesignSystemEditorInner({
               <span className="text-lg font-mono font-medium">{mobilePickerHex.toUpperCase()}</span>
             </div>
 
-            {/* HSL Sliders */}
-            <div className="flex-1 px-4 pt-4 space-y-5 overflow-y-auto">
+            {/* Color Spectrum Picker */}
+            <div className="flex-1 px-4 pt-4 space-y-4 overflow-y-auto">
+              {/* 2D Saturation/Lightness area */}
+              <div
+                ref={spectrumRef}
+                className="relative w-full rounded-xl overflow-hidden"
+                style={{
+                  aspectRatio: "1",
+                  background: `linear-gradient(to bottom, transparent, #000), linear-gradient(to right, #fff, hsl(${hslVals.h}, 100%, 50%))`,
+                  touchAction: "none",
+                  cursor: "crosshair",
+                }}
+                onPointerDown={(e) => {
+                  if (!spectrumRef.current) return;
+                  spectrumRef.current.setPointerCapture(e.pointerId);
+                  const rect = spectrumRef.current.getBoundingClientRect();
+                  const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+                  const y = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height));
+                  // Convert position to HSL via HSV: x = saturation(V), y inverted = value
+                  const v = 1 - y;
+                  const sl = v * x;
+                  const lightness = v - sl / 2;
+                  const saturation = lightness === 0 || lightness === 1 ? 0 : sl / Math.min(lightness, 1 - lightness);
+                  const hex = hslToHex(hslVals.h, Math.round(saturation * 100), Math.round(lightness * 100));
+                  setMobilePickerHex(hex);
+                  handleColorChange(mobilePickerKey!, hex);
+                }}
+                onPointerMove={(e) => {
+                  if (!spectrumRef.current || !spectrumRef.current.hasPointerCapture(e.pointerId)) return;
+                  const rect = spectrumRef.current.getBoundingClientRect();
+                  const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+                  const y = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height));
+                  const v = 1 - y;
+                  const sl = v * x;
+                  const lightness = v - sl / 2;
+                  const saturation = lightness === 0 || lightness === 1 ? 0 : sl / Math.min(lightness, 1 - lightness);
+                  const hex = hslToHex(hslVals.h, Math.round(saturation * 100), Math.round(lightness * 100));
+                  setMobilePickerHex(hex);
+                  handleColorChange(mobilePickerKey!, hex);
+                }}
+              >
+                {/* Position indicator */}
+                {(() => {
+                  // Convert HSL back to x,y position (reverse of HSV conversion)
+                  const s = hslVals.s / 100;
+                  const l = hslVals.l / 100;
+                  const v = l + s * Math.min(l, 1 - l);
+                  const sv = v === 0 ? 0 : 2 * (1 - l / v);
+                  const posX = sv;
+                  const posY = 1 - v;
+                  return (
+                    <div
+                      className="absolute pointer-events-none"
+                      style={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: "50%",
+                        border: "3px solid white",
+                        boxShadow: "0 0 0 1px rgba(0,0,0,0.3), 0 2px 4px rgba(0,0,0,0.3)",
+                        left: `calc(${posX * 100}% - 10px)`,
+                        top: `calc(${posY * 100}% - 10px)`,
+                        backgroundColor: mobilePickerHex,
+                      }}
+                    />
+                  );
+                })()}
+              </div>
+
+              {/* Hue slider */}
               <div>
-                <label className="text-[13px] font-medium mb-1.5 block" style={{ color: "hsl(var(--foreground))" }}>
-                  Hue ({hslVals.h})
-                </label>
                 <input
                   type="range" min="0" max="360" value={hslVals.h}
                   onChange={(e) => {
@@ -8584,43 +8649,9 @@ function DesignSystemEditorInner({
                     setMobilePickerHex(hex);
                     handleColorChange(mobilePickerKey!, hex);
                   }}
-                  className="w-full h-8 rounded-lg appearance-none cursor-pointer"
+                  className="w-full h-10 rounded-lg appearance-none cursor-pointer"
                   style={{
-                    background: `linear-gradient(to right, ${Array.from({length: 13}, (_, i) => hslToHex(i * 30, hslVals.s || 70, hslVals.l || 50)).join(", ")})`,
-                  }}
-                />
-              </div>
-              <div>
-                <label className="text-[13px] font-medium mb-1.5 block" style={{ color: "hsl(var(--foreground))" }}>
-                  Saturation ({hslVals.s}%)
-                </label>
-                <input
-                  type="range" min="0" max="100" value={hslVals.s}
-                  onChange={(e) => {
-                    const hex = hslToHex(hslVals.h, Number(e.target.value), hslVals.l);
-                    setMobilePickerHex(hex);
-                    handleColorChange(mobilePickerKey!, hex);
-                  }}
-                  className="w-full h-8 rounded-lg appearance-none cursor-pointer"
-                  style={{
-                    background: `linear-gradient(to right, ${hslToHex(hslVals.h, 0, hslVals.l)}, ${hslToHex(hslVals.h, 100, hslVals.l)})`,
-                  }}
-                />
-              </div>
-              <div>
-                <label className="text-[13px] font-medium mb-1.5 block" style={{ color: "hsl(var(--foreground))" }}>
-                  Lightness ({hslVals.l}%)
-                </label>
-                <input
-                  type="range" min="0" max="100" value={hslVals.l}
-                  onChange={(e) => {
-                    const hex = hslToHex(hslVals.h, hslVals.s, Number(e.target.value));
-                    setMobilePickerHex(hex);
-                    handleColorChange(mobilePickerKey!, hex);
-                  }}
-                  className="w-full h-8 rounded-lg appearance-none cursor-pointer"
-                  style={{
-                    background: `linear-gradient(to right, #000000, ${hslToHex(hslVals.h, hslVals.s, 50)}, #ffffff)`,
+                    background: `linear-gradient(to right, ${Array.from({length: 13}, (_, i) => hslToHex(i * 30, 100, 50)).join(", ")})`,
                   }}
                 />
               </div>
