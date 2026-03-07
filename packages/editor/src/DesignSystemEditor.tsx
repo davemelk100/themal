@@ -179,12 +179,31 @@ const LazyClock = React.lazy(() =>
 const LazyDownload = React.lazy(() =>
   import("lucide-react").then((mod) => ({ default: mod.Download })),
 );
-const LazyCopy = React.lazy(() =>
-  import("lucide-react").then((mod) => ({ default: mod.ClipboardCopy })),
-);
-const LazyX = React.lazy(() =>
-  import("lucide-react").then((mod) => ({ default: mod.XIcon })),
-);
+function CopyIcon({ size = 14 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+    </svg>
+  );
+}
+
+function XIcon({ size = 14 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18" />
+      <line x1="6" y1="6" x2="18" y2="18" />
+    </svg>
+  );
+}
+
+function CheckIcon({ size = 14 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+  );
+}
 
 const GitHubLogoIcon = React.forwardRef<
   SVGSVGElement,
@@ -3207,7 +3226,7 @@ function DesignSystemEditorInner({
                             : "hsl(var(--muted-foreground))",
                         }}
                       >
-                        <React.Suspense fallback={null}>{codeCopied ? <LazyCheck size={14} /> : <LazyCopy size={14} />}</React.Suspense>
+                        {codeCopied ? <CheckIcon /> : <CopyIcon />}
                       </button>
                       <button
                         onClick={() => setGeneratedCode(null)}
@@ -3220,7 +3239,7 @@ function DesignSystemEditorInner({
                             : "hsl(var(--muted-foreground))",
                         }}
                       >
-                        <React.Suspense fallback={null}><LazyX size={14} /></React.Suspense>
+                        <XIcon />
                       </button>
                     </div>
                   </div>
@@ -3706,7 +3725,7 @@ function DesignSystemEditorInner({
                                 : "hsl(var(--muted-foreground))",
                             }}
                           >
-                            <React.Suspense fallback={null}>{btnCssCopied ? <LazyCheck size={14} /> : <LazyCopy size={14} />}</React.Suspense>
+                            {btnCssCopied ? <CheckIcon /> : <CopyIcon />}
                           </button>
                           <button
                             onClick={() => setBtnCssVisible(false)}
@@ -3719,7 +3738,7 @@ function DesignSystemEditorInner({
                                 : "hsl(var(--muted-foreground))",
                             }}
                           >
-                            <React.Suspense fallback={null}><LazyX size={14} /></React.Suspense>
+                            <XIcon />
                           </button>
                         </div>
                       </div>
@@ -4317,7 +4336,7 @@ function DesignSystemEditorInner({
                                     : "hsl(var(--muted-foreground))",
                                 }}
                               >
-                                <React.Suspense fallback={null}>{interactionCssCopied ? <LazyCheck size={14} /> : <LazyCopy size={14} />}</React.Suspense>
+                                {interactionCssCopied ? <CheckIcon /> : <CopyIcon />}
                               </button>
                               <button
                                 onClick={() => setInteractionCssVisible(false)}
@@ -4330,7 +4349,7 @@ function DesignSystemEditorInner({
                                     : "hsl(var(--muted-foreground))",
                                 }}
                               >
-                                <React.Suspense fallback={null}><LazyX size={14} /></React.Suspense>
+                                <XIcon />
                               </button>
                             </div>
                           </div>
@@ -5032,7 +5051,7 @@ function DesignSystemEditorInner({
                                 : "hsl(var(--muted-foreground))",
                             }}
                           >
-                            <React.Suspense fallback={null}>{cardCssCopied ? <LazyCheck size={14} /> : <LazyCopy size={14} />}</React.Suspense>
+                            {cardCssCopied ? <CheckIcon /> : <CopyIcon />}
                           </button>
                           <button
                             onClick={() => setCardCssVisible(false)}
@@ -5045,7 +5064,7 @@ function DesignSystemEditorInner({
                                 : "hsl(var(--muted-foreground))",
                             }}
                           >
-                            <React.Suspense fallback={null}><LazyX size={14} /></React.Suspense>
+                            <XIcon />
                           </button>
                         </div>
                       </div>
@@ -5858,7 +5877,7 @@ function DesignSystemEditorInner({
                                     : "hsl(var(--muted-foreground))",
                                 }}
                               >
-                                <React.Suspense fallback={null}>{alertCssCopied ? <LazyCheck size={14} /> : <LazyCopy size={14} />}</React.Suspense>
+                                {alertCssCopied ? <CheckIcon /> : <CopyIcon />}
                               </button>
                               <button
                                 onClick={() => setAlertCssVisible(false)}
@@ -5871,7 +5890,7 @@ function DesignSystemEditorInner({
                                     : "hsl(var(--muted-foreground))",
                                 }}
                               >
-                                <React.Suspense fallback={null}><LazyX size={14} /></React.Suspense>
+                                <XIcon />
                               </button>
                             </div>
                           </div>
@@ -6248,7 +6267,7 @@ function DesignSystemEditorInner({
                                       : "hsl(var(--muted-foreground))",
                                   }}
                                 >
-                                  <React.Suspense fallback={null}>{toastCssCopied ? <LazyCheck size={14} /> : <LazyCopy size={14} />}</React.Suspense>
+                                  {toastCssCopied ? <CheckIcon /> : <CopyIcon />}
                                 </button>
                                 <button
                                   onClick={() => setToastCssVisible(false)}
@@ -6261,7 +6280,7 @@ function DesignSystemEditorInner({
                                       : "hsl(var(--muted-foreground))",
                                   }}
                                 >
-                                  <React.Suspense fallback={null}><LazyX size={14} /></React.Suspense>
+                                  <XIcon />
                                 </button>
                               </div>
                             </div>
@@ -6709,7 +6728,7 @@ function DesignSystemEditorInner({
                                   : "hsl(var(--muted-foreground))",
                               }}
                             >
-                              <React.Suspense fallback={null}>{typoCssCopied ? <LazyCheck size={14} /> : <LazyCopy size={14} />}</React.Suspense>
+                              {typoCssCopied ? <CheckIcon /> : <CopyIcon />}
                             </button>
                             <button
                               onClick={() => setTypoCssVisible(false)}
@@ -6722,7 +6741,7 @@ function DesignSystemEditorInner({
                                   : "hsl(var(--muted-foreground))",
                               }}
                             >
-                              <React.Suspense fallback={null}><LazyX size={14} /></React.Suspense>
+                              <XIcon />
                             </button>
                           </div>
                         </div>
@@ -7434,7 +7453,7 @@ function DesignSystemEditorInner({
                                     : "hsl(var(--muted-foreground))",
                                 }}
                               >
-                                <React.Suspense fallback={null}>{typoInteractionCssCopied ? <LazyCheck size={14} /> : <LazyCopy size={14} />}</React.Suspense>
+                                {typoInteractionCssCopied ? <CheckIcon /> : <CopyIcon />}
                               </button>
                               <button
                                 onClick={() =>
@@ -7449,7 +7468,7 @@ function DesignSystemEditorInner({
                                     : "hsl(var(--muted-foreground))",
                                 }}
                               >
-                                <React.Suspense fallback={null}><LazyX size={14} /></React.Suspense>
+                                <XIcon />
                               </button>
                             </div>
                           </div>
