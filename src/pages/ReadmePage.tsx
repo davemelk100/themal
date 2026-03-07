@@ -457,7 +457,7 @@ export default defineNuxtConfig({
 <themal-editor></themal-editor>`}</code>
           </pre>
           <p className="text-[14px] mb-4" style={{ color: "hsl(var(--muted-foreground))" }}>
-            Or enqueue via <code className="font-mono text-[14px]">functions.php</code> or create a shortcode plugin. See the <a href="https://github.com/user/themal" target="_blank" rel="noopener noreferrer" className="underline hover:opacity-70 transition-opacity" style={{ color: "hsl(var(--brand))" }}>web component README</a> for detailed WordPress setup options.
+            Or enqueue via <code className="font-mono text-[14px]">functions.php</code> or create a shortcode plugin. See the <a href="https://github.com/user/themal" target="_blank" rel="noopener noreferrer" className="text-[14px] underline hover:opacity-70 transition-opacity" style={{ color: "hsl(var(--brand))" }}>web component README</a> for detailed WordPress setup options.
           </p>
 
           <h3 className="text-[14px] font-medium mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>Shopify</h3>

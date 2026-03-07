@@ -179,6 +179,12 @@ const LazyClock = React.lazy(() =>
 const LazyDownload = React.lazy(() =>
   import("lucide-react").then((mod) => ({ default: mod.Download })),
 );
+const LazyCopy = React.lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.ClipboardCopy })),
+);
+const LazyX = React.lazy(() =>
+  import("lucide-react").then((mod) => ({ default: mod.XIcon })),
+);
 
 const GitHubLogoIcon = React.forwardRef<
   SVGSVGElement,
@@ -3193,7 +3199,7 @@ function DesignSystemEditorInner({
                           setCodeCopied(true);
                           setTimeout(() => setCodeCopied(false), 2000);
                         }}
-                        className="px-2 py-0.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
+                        aria-label="Copy" className="p-1 rounded-lg transition-colors hover:opacity-80"
                         style={{
                           backgroundColor: "hsl(var(--muted))",
                           color: colors["--muted"]
@@ -3201,11 +3207,12 @@ function DesignSystemEditorInner({
                             : "hsl(var(--muted-foreground))",
                         }}
                       >
-                        {codeCopied ? "Copied!" : "Copy"}
+                        <React.Suspense fallback={null}>{codeCopied ? <LazyCheck size={14} /> : <LazyCopy size={14} />}</React.Suspense>
                       </button>
                       <button
                         onClick={() => setGeneratedCode(null)}
-                        className="px-2 py-0.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
+                        aria-label="Close"
+                        className="p-1 rounded-lg transition-colors hover:opacity-80"
                         style={{
                           backgroundColor: "hsl(var(--muted))",
                           color: colors["--muted"]
@@ -3213,7 +3220,7 @@ function DesignSystemEditorInner({
                             : "hsl(var(--muted-foreground))",
                         }}
                       >
-                        Close
+                        <React.Suspense fallback={null}><LazyX size={14} /></React.Suspense>
                       </button>
                     </div>
                   </div>
@@ -3691,7 +3698,7 @@ function DesignSystemEditorInner({
                               setBtnCssCopied(true);
                               setTimeout(() => setBtnCssCopied(false), 2000);
                             }}
-                            className="px-2 py-0.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
+                            aria-label="Copy" className="p-1 rounded-lg transition-colors hover:opacity-80"
                             style={{
                               backgroundColor: "hsl(var(--muted))",
                               color: colors["--muted"]
@@ -3699,11 +3706,12 @@ function DesignSystemEditorInner({
                                 : "hsl(var(--muted-foreground))",
                             }}
                           >
-                            {btnCssCopied ? "Copied!" : "Copy"}
+                            <React.Suspense fallback={null}>{btnCssCopied ? <LazyCheck size={14} /> : <LazyCopy size={14} />}</React.Suspense>
                           </button>
                           <button
                             onClick={() => setBtnCssVisible(false)}
-                            className="px-2 py-0.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
+                            aria-label="Close"
+                            className="p-1 rounded-lg transition-colors hover:opacity-80"
                             style={{
                               backgroundColor: "hsl(var(--muted))",
                               color: colors["--muted"]
@@ -3711,7 +3719,7 @@ function DesignSystemEditorInner({
                                 : "hsl(var(--muted-foreground))",
                             }}
                           >
-                            Close
+                            <React.Suspense fallback={null}><LazyX size={14} /></React.Suspense>
                           </button>
                         </div>
                       </div>
@@ -4301,7 +4309,7 @@ function DesignSystemEditorInner({
                                     2000,
                                   );
                                 }}
-                                className="px-2 py-0.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
+                                aria-label="Copy" className="p-1 rounded-lg transition-colors hover:opacity-80"
                                 style={{
                                   backgroundColor: "hsl(var(--muted))",
                                   color: colors["--muted"]
@@ -4309,11 +4317,12 @@ function DesignSystemEditorInner({
                                     : "hsl(var(--muted-foreground))",
                                 }}
                               >
-                                {interactionCssCopied ? "Copied!" : "Copy"}
+                                <React.Suspense fallback={null}>{interactionCssCopied ? <LazyCheck size={14} /> : <LazyCopy size={14} />}</React.Suspense>
                               </button>
                               <button
                                 onClick={() => setInteractionCssVisible(false)}
-                                className="px-2 py-0.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
+                                aria-label="Close"
+                                className="p-1 rounded-lg transition-colors hover:opacity-80"
                                 style={{
                                   backgroundColor: "hsl(var(--muted))",
                                   color: colors["--muted"]
@@ -4321,7 +4330,7 @@ function DesignSystemEditorInner({
                                     : "hsl(var(--muted-foreground))",
                                 }}
                               >
-                                Close
+                                <React.Suspense fallback={null}><LazyX size={14} /></React.Suspense>
                               </button>
                             </div>
                           </div>
@@ -5015,7 +5024,7 @@ function DesignSystemEditorInner({
                               setCardCssCopied(true);
                               setTimeout(() => setCardCssCopied(false), 2000);
                             }}
-                            className="px-2 py-0.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
+                            aria-label="Copy" className="p-1 rounded-lg transition-colors hover:opacity-80"
                             style={{
                               backgroundColor: "hsl(var(--muted))",
                               color: colors["--muted"]
@@ -5023,11 +5032,12 @@ function DesignSystemEditorInner({
                                 : "hsl(var(--muted-foreground))",
                             }}
                           >
-                            {cardCssCopied ? "Copied!" : "Copy"}
+                            <React.Suspense fallback={null}>{cardCssCopied ? <LazyCheck size={14} /> : <LazyCopy size={14} />}</React.Suspense>
                           </button>
                           <button
                             onClick={() => setCardCssVisible(false)}
-                            className="px-2 py-0.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
+                            aria-label="Close"
+                            className="p-1 rounded-lg transition-colors hover:opacity-80"
                             style={{
                               backgroundColor: "hsl(var(--muted))",
                               color: colors["--muted"]
@@ -5035,7 +5045,7 @@ function DesignSystemEditorInner({
                                 : "hsl(var(--muted-foreground))",
                             }}
                           >
-                            Close
+                            <React.Suspense fallback={null}><LazyX size={14} /></React.Suspense>
                           </button>
                         </div>
                       </div>
@@ -5840,7 +5850,7 @@ function DesignSystemEditorInner({
                                   setAlertCssCopied(true);
                                   setTimeout(() => setAlertCssCopied(false), 2000);
                                 }}
-                                className="px-2 py-0.5 text-[13px] font-light rounded-lg transition-colors hover:opacity-80"
+                                aria-label="Copy" className="p-1 rounded-lg transition-colors hover:opacity-80"
                                 style={{
                                   backgroundColor: "hsl(var(--muted))",
                                   color: colors["--muted"]
@@ -5848,11 +5858,12 @@ function DesignSystemEditorInner({
                                     : "hsl(var(--muted-foreground))",
                                 }}
                               >
-                                {alertCssCopied ? "Copied!" : "Copy"}
+                                <React.Suspense fallback={null}>{alertCssCopied ? <LazyCheck size={14} /> : <LazyCopy size={14} />}</React.Suspense>
                               </button>
                               <button
                                 onClick={() => setAlertCssVisible(false)}
-                                className="px-2 py-0.5 text-[13px] font-light rounded-lg transition-colors hover:opacity-80"
+                                aria-label="Close"
+                                className="p-1 rounded-lg transition-colors hover:opacity-80"
                                 style={{
                                   backgroundColor: "hsl(var(--muted))",
                                   color: colors["--muted"]
@@ -5860,7 +5871,7 @@ function DesignSystemEditorInner({
                                     : "hsl(var(--muted-foreground))",
                                 }}
                               >
-                                Close
+                                <React.Suspense fallback={null}><LazyX size={14} /></React.Suspense>
                               </button>
                             </div>
                           </div>
@@ -6229,7 +6240,7 @@ function DesignSystemEditorInner({
                                     setToastCssCopied(true);
                                     setTimeout(() => setToastCssCopied(false), 2000);
                                   }}
-                                  className="px-2 py-0.5 text-[13px] font-light rounded-lg transition-colors hover:opacity-80"
+                                  aria-label="Copy" className="p-1 rounded-lg transition-colors hover:opacity-80"
                                   style={{
                                     backgroundColor: "hsl(var(--muted))",
                                     color: colors["--muted"]
@@ -6237,11 +6248,12 @@ function DesignSystemEditorInner({
                                       : "hsl(var(--muted-foreground))",
                                   }}
                                 >
-                                  {toastCssCopied ? "Copied!" : "Copy"}
+                                  <React.Suspense fallback={null}>{toastCssCopied ? <LazyCheck size={14} /> : <LazyCopy size={14} />}</React.Suspense>
                                 </button>
                                 <button
                                   onClick={() => setToastCssVisible(false)}
-                                  className="px-2 py-0.5 text-[13px] font-light rounded-lg transition-colors hover:opacity-80"
+                                  aria-label="Close"
+                                  className="p-1 rounded-lg transition-colors hover:opacity-80"
                                   style={{
                                     backgroundColor: "hsl(var(--muted))",
                                     color: colors["--muted"]
@@ -6249,7 +6261,7 @@ function DesignSystemEditorInner({
                                       : "hsl(var(--muted-foreground))",
                                   }}
                                 >
-                                  Close
+                                  <React.Suspense fallback={null}><LazyX size={14} /></React.Suspense>
                                 </button>
                               </div>
                             </div>
@@ -6689,7 +6701,7 @@ function DesignSystemEditorInner({
                                 setTypoCssCopied(true);
                                 setTimeout(() => setTypoCssCopied(false), 2000);
                               }}
-                              className="px-2 py-0.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
+                              aria-label="Copy" className="p-1 rounded-lg transition-colors hover:opacity-80"
                               style={{
                                 backgroundColor: "hsl(var(--muted))",
                                 color: colors["--muted"]
@@ -6697,11 +6709,12 @@ function DesignSystemEditorInner({
                                   : "hsl(var(--muted-foreground))",
                               }}
                             >
-                              {typoCssCopied ? "Copied!" : "Copy"}
+                              <React.Suspense fallback={null}>{typoCssCopied ? <LazyCheck size={14} /> : <LazyCopy size={14} />}</React.Suspense>
                             </button>
                             <button
                               onClick={() => setTypoCssVisible(false)}
-                              className="px-2 py-0.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
+                              aria-label="Close"
+                              className="p-1 rounded-lg transition-colors hover:opacity-80"
                               style={{
                                 backgroundColor: "hsl(var(--muted))",
                                 color: colors["--muted"]
@@ -6709,7 +6722,7 @@ function DesignSystemEditorInner({
                                   : "hsl(var(--muted-foreground))",
                               }}
                             >
-                              Close
+                              <React.Suspense fallback={null}><LazyX size={14} /></React.Suspense>
                             </button>
                           </div>
                         </div>
@@ -7413,7 +7426,7 @@ function DesignSystemEditorInner({
                                     2000,
                                   );
                                 }}
-                                className="px-2 py-0.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
+                                aria-label="Copy" className="p-1 rounded-lg transition-colors hover:opacity-80"
                                 style={{
                                   backgroundColor: "hsl(var(--muted))",
                                   color: colors["--muted"]
@@ -7421,13 +7434,14 @@ function DesignSystemEditorInner({
                                     : "hsl(var(--muted-foreground))",
                                 }}
                               >
-                                {typoInteractionCssCopied ? "Copied!" : "Copy"}
+                                <React.Suspense fallback={null}>{typoInteractionCssCopied ? <LazyCheck size={14} /> : <LazyCopy size={14} />}</React.Suspense>
                               </button>
                               <button
                                 onClick={() =>
                                   setTypoInteractionCssVisible(false)
                                 }
-                                className="px-2 py-0.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
+                                aria-label="Close"
+                                className="p-1 rounded-lg transition-colors hover:opacity-80"
                                 style={{
                                   backgroundColor: "hsl(var(--muted))",
                                   color: colors["--muted"]
@@ -7435,7 +7449,7 @@ function DesignSystemEditorInner({
                                     : "hsl(var(--muted-foreground))",
                                 }}
                               >
-                                Close
+                                <React.Suspense fallback={null}><LazyX size={14} /></React.Suspense>
                               </button>
                             </div>
                           </div>

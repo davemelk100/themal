@@ -8,10 +8,17 @@ if (!PUBLISHABLE_KEY) {
   throw new Error("Missing VITE_CLERK_PUBLISHABLE_KEY");
 }
 
-// Register service worker (deferred to avoid blocking critical path)
-if ("serviceWorker" in navigator) {
+// Register service worker in production only
+if (import.meta.env.PROD && "serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("/sw.js").catch(() => {});
+  });
+} else if (import.meta.env.DEV && "serviceWorker" in navigator) {
+  // Unregister any stale service workers in dev
+  navigator.serviceWorker.getRegistrations().then((registrations) => {
+    for (const registration of registrations) {
+      registration.unregister();
+    }
   });
 }
 
