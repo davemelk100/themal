@@ -299,6 +299,7 @@ function DesignSystemEditorInner({
   iconMode = "append",
   showLogo = true,
   defaultColors,
+  defaultTypography,
 }: DesignSystemEditorProps) {
   const { isPremium } = useLicense();
   const [hoveredLockKey, setHoveredLockKey] = useState<string | null>(null);
@@ -1270,7 +1271,11 @@ function DesignSystemEditorInner({
     setCardStyle({ ...DEFAULT_CARD_STYLE });
     storage.remove(TYPOGRAPHY_KEY);
     removeTypographyProperties();
-    setTypographyState({ ...DEFAULT_TYPOGRAPHY });
+    const resetTypo = defaultTypography
+      ? { ...DEFAULT_TYPOGRAPHY, ...defaultTypography, preset: "custom" as const }
+      : { ...DEFAULT_TYPOGRAPHY };
+    setTypographyState(resetTypo);
+    if (defaultTypography) applyTypography(resetTypo);
     storage.remove(ALERT_STYLE_KEY);
     removeAlertStyleProperties();
     setAlertStyle({ ...DEFAULT_ALERT_STYLE });
@@ -1298,7 +1303,11 @@ function DesignSystemEditorInner({
   const handleResetTypography = () => {
     storage.remove(TYPOGRAPHY_KEY);
     removeTypographyProperties();
-    setTypographyState({ ...DEFAULT_TYPOGRAPHY });
+    const resetTypo = defaultTypography
+      ? { ...DEFAULT_TYPOGRAPHY, ...defaultTypography, preset: "custom" as const }
+      : { ...DEFAULT_TYPOGRAPHY };
+    setTypographyState(resetTypo);
+    if (defaultTypography) applyTypography(resetTypo);
   };
 
 
@@ -2468,8 +2477,8 @@ function DesignSystemEditorInner({
                             onClick={() => setAuditStatus("idle")}
                             className="px-4 py-2 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
                             style={{
-                              backgroundColor: "hsl(var(--muted))",
-                              color: "hsl(var(--muted-foreground))",
+                              backgroundColor: "#e5e7eb",
+                              color: "#374151",
                             }}
                           >
                             Ignore

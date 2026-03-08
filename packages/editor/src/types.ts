@@ -42,6 +42,8 @@ export interface DesignSystemEditorProps {
   showLogo?: boolean;
   /** Default color values to restore on reset, keyed by CSS variable name (e.g. {"--brand": "210 50% 40%"}). When provided, "Reset theme to default" restores these instead of the Themal defaults. */
   defaultColors?: Record<string, string>;
+  /** Default typography state to restore on reset. When provided, "Reset theme to default" restores these font settings instead of the Themal defaults. Partial values are merged with the built-in defaults. */
+  defaultTypography?: Partial<import("./utils/themeUtils").TypographyState>;
 }
 
 export interface TokenDefinition {
