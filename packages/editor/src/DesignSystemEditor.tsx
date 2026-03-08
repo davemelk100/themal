@@ -11,6 +11,7 @@ import type { DesignSystemEditorProps } from "./types";
 import { useColorState } from "./hooks/useColorState";
 import { LicenseProvider, useLicense } from "./hooks/useLicense";
 import { PremiumGate } from "./components/PremiumGate";
+import { ResetConfirmModal } from "./components/ResetConfirmModal";
 import storage from "./utils/storage";
 import {
   EDITABLE_VARS,
@@ -1684,11 +1685,10 @@ function DesignSystemEditorInner({
   }, []);
 
   return (
-    <div id="top" ref={editorRootRef} className={`ds-editor${className ? ` ${className}` : ""}`}>
+    <div id="top" ref={editorRootRef} className={`ds-editor${className ? ` ${className}` : ""}`} style={{ background: "transparent" }}>
       {showHeader && (
         <div
           className="pt-2 sm:pt-3 pb-4 sm:pb-2 lg:pb-3"
-          style={{ backgroundColor: "hsl(var(--background))" }}
         >
           <div className="w-full px-4 sm:px-6 lg:px-8">
             {/* Title + nav links - single header row */}
@@ -2231,8 +2231,8 @@ function DesignSystemEditorInner({
       {/* Section nav */}
       <nav
         ref={navContainerRef}
-        className="sticky top-0 z-40 w-full px-4 sm:px-6 lg:px-8 pt-2 pb-1 hidden sm:flex items-center gap-3 lg:gap-4"
-        style={{ backgroundColor: "#f9fafb" }}
+        className="sticky top-0 z-40 w-full px-4 sm:px-6 lg:px-8 pt-3 pb-2 hidden sm:flex items-center gap-3 lg:gap-4"
+        style={{ backgroundColor: "hsl(var(--background))" }}
       >
         {[
           {
@@ -2526,233 +2526,45 @@ function DesignSystemEditorInner({
           </div>
 
           {/* Reset Confirmation Modal */}
-          {showResetModal && (
-            <div
-              className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="home-reset-modal-title"
-            >
-              <div
-                className="rounded-lg shadow-xl p-6 w-full max-w-sm mx-4"
-                style={{
-                  backgroundColor: "hsl(var(--card))",
-                  color: "hsl(var(--card-foreground))",
-                }}
-              >
-                <h4
-                  id="home-reset-modal-title"
-                  className="text-2xl font-light mb-2"
-                >
-                  Reset to Defaults?
-                </h4>
-                <p
-                  className="text-[14px] mb-4"
-                  style={{ color: "hsl(var(--card-foreground))" }}
-                >
-                  This will revert all theme colors to their original values.
-                  Any saved customizations will be lost.
-                </p>
-                <div className="flex justify-end gap-2">
-                  <button
-                    onClick={() => setShowResetModal(false)}
-                    className="px-3 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
-                    style={{
-                      backgroundColor: "transparent",
-                      color: "hsl(var(--card-foreground))",
-                    }}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={() => {
-                      handleReset();
-                      setShowResetModal(false);
-                    }}
-                    className="px-3 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
-                    style={{
-                      backgroundColor: "hsl(var(--destructive))",
-                      color: "hsl(var(--destructive-foreground))",
-                    }}
-                  >
-                    Reset
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
+          <ResetConfirmModal
+            open={showResetModal}
+            onClose={() => setShowResetModal(false)}
+            onConfirm={handleReset}
+            title="Reset to Defaults?"
+            message="This will revert all theme colors to their original values. Any saved customizations will be lost."
+            id="home-reset-modal-title"
+          />
 
           {/* Global Reset theme to default Confirmation Modal */}
-          {showGlobalResetModal && (
-            <div
-              className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="global-reset-modal-title"
-            >
-              <div
-                className="rounded-lg shadow-xl p-6 w-full max-w-sm mx-4"
-                style={{
-                  backgroundColor: "hsl(var(--card))",
-                  color: "hsl(var(--card-foreground))",
-                }}
-              >
-                <h4
-                  id="global-reset-modal-title"
-                  className="text-2xl font-light mb-2"
-                >
-                  Reset Everything?
-                </h4>
-                <p
-                  className="text-[14px] mb-4"
-                  style={{ color: "hsl(var(--card-foreground))" }}
-                >
-                  This will reset all sections - colors, buttons, cards, alerts,
-                  and typography - to their defaults. All customizations will be
-                  lost.
-                </p>
-                <div className="flex justify-end gap-2">
-                  <button
-                    onClick={() => setShowGlobalResetModal(false)}
-                    className="px-3 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
-                    style={{
-                      backgroundColor: "transparent",
-                      color: "hsl(var(--card-foreground))",
-                    }}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={() => {
-                      handleReset();
-                      setShowGlobalResetModal(false);
-                    }}
-                    className="px-3 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
-                    style={{
-                      backgroundColor: "hsl(var(--destructive))",
-                      color: "hsl(var(--destructive-foreground))",
-                    }}
-                  >
-                    Reset theme to default
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
+          <ResetConfirmModal
+            open={showGlobalResetModal}
+            onClose={() => setShowGlobalResetModal(false)}
+            onConfirm={handleReset}
+            title="Reset Everything?"
+            message="This will reset all sections - colors, buttons, cards, alerts, and typography - to their defaults. All customizations will be lost."
+            confirmText="Reset theme to default"
+            id="global-reset-modal-title"
+          />
 
           {/* Card Style Reset Confirmation Modal */}
-          {showCardResetModal && (
-            <div
-              className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="card-reset-modal-title"
-            >
-              <div
-                className="rounded-lg shadow-xl p-6 w-full max-w-sm mx-4"
-                style={{
-                  backgroundColor: "hsl(var(--card))",
-                  color: "hsl(var(--card-foreground))",
-                }}
-              >
-                <h4
-                  id="card-reset-modal-title"
-                  className="text-2xl font-light mb-2"
-                >
-                  Reset Card Style?
-                </h4>
-                <p
-                  className="text-[14px] mb-4"
-                  style={{ color: "hsl(var(--card-foreground))" }}
-                >
-                  This will revert all card style settings to their defaults.
-                  Any customizations will be lost.
-                </p>
-                <div className="flex justify-end gap-2">
-                  <button
-                    onClick={() => setShowCardResetModal(false)}
-                    className="px-3 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
-                    style={{
-                      backgroundColor: "transparent",
-                      color: "hsl(var(--card-foreground))",
-                    }}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={() => {
-                      handleResetCardStyle();
-                      setShowCardResetModal(false);
-                    }}
-                    className="px-3 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
-                    style={{
-                      backgroundColor: "hsl(var(--destructive))",
-                      color: "hsl(var(--destructive-foreground))",
-                    }}
-                  >
-                    Reset
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
+          <ResetConfirmModal
+            open={showCardResetModal}
+            onClose={() => setShowCardResetModal(false)}
+            onConfirm={handleResetCardStyle}
+            title="Reset Card Style?"
+            message="This will revert all card style settings to their defaults. Any customizations will be lost."
+            id="card-reset-modal-title"
+          />
 
           {/* Typography Reset Confirmation Modal */}
-          {showTypoResetModal && (
-            <div
-              className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="typo-reset-modal-title"
-            >
-              <div
-                className="rounded-lg shadow-xl p-6 w-full max-w-sm mx-4"
-                style={{
-                  backgroundColor: "hsl(var(--card))",
-                  color: "hsl(var(--card-foreground))",
-                }}
-              >
-                <h4
-                  id="typo-reset-modal-title"
-                  className="text-2xl font-light mb-2"
-                >
-                  Reset Typography?
-                </h4>
-                <p
-                  className="text-[14px] mb-4"
-                  style={{ color: "hsl(var(--card-foreground))" }}
-                >
-                  This will revert all typography settings to their defaults.
-                  Any customizations will be lost.
-                </p>
-                <div className="flex justify-end gap-2">
-                  <button
-                    onClick={() => setShowTypoResetModal(false)}
-                    className="px-3 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
-                    style={{
-                      backgroundColor: "transparent",
-                      color: "hsl(var(--card-foreground))",
-                    }}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={() => {
-                      handleResetTypography();
-                      setShowTypoResetModal(false);
-                    }}
-                    className="px-3 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
-                    style={{
-                      backgroundColor: "hsl(var(--destructive))",
-                      color: "hsl(var(--destructive-foreground))",
-                    }}
-                  >
-                    Reset
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
+          <ResetConfirmModal
+            open={showTypoResetModal}
+            onClose={() => setShowTypoResetModal(false)}
+            onConfirm={handleResetTypography}
+            title="Reset Typography?"
+            message="This will revert all typography settings to their defaults. Any customizations will be lost."
+            id="typo-reset-modal-title"
+          />
 
           {/* Colors section */}
           <div
@@ -4666,118 +4478,24 @@ function DesignSystemEditorInner({
           </div>
 
           {/* Interaction Reset Confirmation Modal */}
-          {showInteractionResetModal && (
-            <div
-              className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="interaction-reset-modal-title"
-            >
-              <div
-                className="rounded-lg shadow-xl p-6 w-full max-w-sm mx-4"
-                style={{
-                  backgroundColor: "hsl(var(--card))",
-                  color: "hsl(var(--card-foreground))",
-                }}
-              >
-                <h4
-                  id="interaction-reset-modal-title"
-                  className="text-2xl font-light mb-2"
-                >
-                  Reset Interaction Style?
-                </h4>
-                <p
-                  className="text-[14px] mb-4"
-                  style={{ color: "hsl(var(--card-foreground))" }}
-                >
-                  This will revert all interaction style settings to their
-                  defaults. Any customizations will be lost.
-                </p>
-                <div className="flex justify-end gap-2">
-                  <button
-                    onClick={() => setShowInteractionResetModal(false)}
-                    className="px-3 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
-                    style={{
-                      backgroundColor: "transparent",
-                      color: "hsl(var(--card-foreground))",
-                    }}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={() => {
-                      handleResetInteractionStyle();
-                      setShowInteractionResetModal(false);
-                    }}
-                    className="px-3 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
-                    style={{
-                      backgroundColor: "hsl(var(--destructive))",
-                      color: "hsl(var(--destructive-foreground))",
-                    }}
-                  >
-                    Reset
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
+          <ResetConfirmModal
+            open={showInteractionResetModal}
+            onClose={() => setShowInteractionResetModal(false)}
+            onConfirm={handleResetInteractionStyle}
+            title="Reset Interaction Style?"
+            message="This will revert all interaction style settings to their defaults. Any customizations will be lost."
+            id="interaction-reset-modal-title"
+          />
 
           {/* Button Reset Confirmation Modal */}
-          {showBtnResetModal && (
-            <div
-              className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="btn-reset-modal-title"
-            >
-              <div
-                className="rounded-lg shadow-xl p-6 w-full max-w-sm mx-4"
-                style={{
-                  backgroundColor: "hsl(var(--card))",
-                  color: "hsl(var(--card-foreground))",
-                }}
-              >
-                <h4
-                  id="btn-reset-modal-title"
-                  className="text-2xl font-light mb-2"
-                >
-                  Reset Button Style?
-                </h4>
-                <p
-                  className="text-[14px] mb-4"
-                  style={{ color: "hsl(var(--card-foreground))" }}
-                >
-                  This will revert all button style settings to their defaults.
-                  Any customizations will be lost.
-                </p>
-                <div className="flex justify-end gap-2">
-                  <button
-                    onClick={() => setShowBtnResetModal(false)}
-                    className="px-3 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
-                    style={{
-                      backgroundColor: "transparent",
-                      color: "hsl(var(--card-foreground))",
-                    }}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={() => {
-                      setButtonStyle({ ...DEFAULT_BUTTON_STYLE });
-                      setShowBtnResetModal(false);
-                    }}
-                    className="px-3 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
-                    style={{
-                      backgroundColor: "hsl(var(--destructive))",
-                      color: "hsl(var(--destructive-foreground))",
-                    }}
-                  >
-                    Reset
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
+          <ResetConfirmModal
+            open={showBtnResetModal}
+            onClose={() => setShowBtnResetModal(false)}
+            onConfirm={() => setButtonStyle({ ...DEFAULT_BUTTON_STYLE })}
+            title="Reset Button Style?"
+            message="This will revert all button style settings to their defaults. Any customizations will be lost."
+            id="btn-reset-modal-title"
+          />
 
           {/* Card Style section */}
           <div
@@ -5606,12 +5324,95 @@ function DesignSystemEditorInner({
                   className="space-y-3 rounded-lg p-4"
                   style={{ border: "1px solid hsl(var(--border))" }}
                 >
-                  <h3
-                    className="text-[16px] font-normal uppercase tracking-wider"
-                    style={{ color: "hsl(var(--foreground))" }}
-                  >
-                    Dialog Boxes
-                  </h3>
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <h3
+                      className="text-[16px] font-normal uppercase tracking-wider"
+                      style={{ color: "hsl(var(--foreground))" }}
+                    >
+                      Dialog Boxes
+                    </h3>
+                    <div className="flex items-center gap-1">
+                      <div
+                        className="flex items-center rounded-lg overflow-hidden border"
+                        style={{ borderColor: "hsl(var(--border))" }}
+                      >
+                        <button
+                          onClick={() => {
+                            if (alertCssVisible && alertExportFormat === "css") {
+                              setAlertCssVisible(false);
+                              return;
+                            }
+                            setAlertExportFormat("css");
+                            setAlertCssVisible(true);
+                          }}
+                          className="h-10 px-2 sm:px-3 text-[14px] font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                          style={{
+                            backgroundColor:
+                              alertCssVisible && alertExportFormat === "css"
+                                ? "hsl(var(--brand))"
+                                : "transparent",
+                            color:
+                              alertCssVisible && alertExportFormat === "css"
+                                ? colors["--brand"]
+                                  ? `hsl(${fgForBg(colors["--brand"])})`
+                                  : "#fff"
+                                : "hsl(var(--muted-foreground))",
+                          }}
+                        >
+                          <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                          </svg>
+                          CSS
+                        </button>
+                        <span
+                          className="w-px h-5"
+                          style={{ backgroundColor: "hsl(var(--border))" }}
+                        />
+                        <button
+                          onClick={() => {
+                            if (alertCssVisible && alertExportFormat === "tokens") {
+                              setAlertCssVisible(false);
+                              return;
+                            }
+                            setAlertExportFormat("tokens");
+                            setAlertCssVisible(true);
+                          }}
+                          className="h-10 px-2 sm:px-3 text-[14px] font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                          style={{
+                            backgroundColor:
+                              alertCssVisible && alertExportFormat === "tokens"
+                                ? "hsl(var(--brand))"
+                                : "transparent",
+                            color:
+                              alertCssVisible && alertExportFormat === "tokens"
+                                ? colors["--brand"]
+                                  ? `hsl(${fgForBg(colors["--brand"])})`
+                                  : "#fff"
+                                : "hsl(var(--muted-foreground))",
+                          }}
+                        >
+                          <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4-4 4M7 8L3 12l4 4M14 4l-4 16" />
+                          </svg>
+                          Tokens
+                        </button>
+                      </div>
+                      <button
+                        onClick={() => {
+                          storage.remove(ALERT_STYLE_KEY);
+                          removeAlertStyleProperties();
+                          setAlertStyle({ ...DEFAULT_ALERT_STYLE });
+                        }}
+                        className="h-10 px-2 sm:px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                        style={{ color: "hsl(var(--muted-foreground))" }}
+                      >
+                        <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" />
+                        </svg>
+                        Reset
+                      </button>
+                    </div>
+                  </div>
                   {/* Dialog Preset Buttons */}
                   <div className="grid grid-cols-4 gap-2">
                     {Object.keys(ALERT_PRESETS).map((key) => {
@@ -5843,79 +5644,6 @@ function DesignSystemEditorInner({
                       );
                     })()}
                   </div>
-                  {/* Dialog action buttons */}
-                  <div className="flex flex-wrap items-center gap-1 pt-2">
-                    <div
-                      className="flex items-center rounded-lg overflow-hidden border"
-                      style={{ borderColor: "hsl(var(--border))" }}
-                    >
-                      <button
-                        onClick={() => {
-                          if (alertCssVisible && alertExportFormat === "css") {
-                            setAlertCssVisible(false);
-                            return;
-                          }
-                          setAlertExportFormat("css");
-                          setAlertCssVisible(true);
-                        }}
-                        className="h-8 px-2 text-[13px] font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
-                        style={{
-                          backgroundColor:
-                            alertCssVisible && alertExportFormat === "css"
-                              ? "hsl(var(--brand))"
-                              : "transparent",
-                          color:
-                            alertCssVisible && alertExportFormat === "css"
-                              ? colors["--brand"]
-                                ? `hsl(${fgForBg(colors["--brand"])})`
-                                : "#fff"
-                              : "hsl(var(--muted-foreground))",
-                        }}
-                      >
-                        CSS
-                      </button>
-                      <span
-                        className="w-px h-4"
-                        style={{ backgroundColor: "hsl(var(--border))" }}
-                      />
-                      <button
-                        onClick={() => {
-                          if (alertCssVisible && alertExportFormat === "tokens") {
-                            setAlertCssVisible(false);
-                            return;
-                          }
-                          setAlertExportFormat("tokens");
-                          setAlertCssVisible(true);
-                        }}
-                        className="h-8 px-2 text-[13px] font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
-                        style={{
-                          backgroundColor:
-                            alertCssVisible && alertExportFormat === "tokens"
-                              ? "hsl(var(--brand))"
-                              : "transparent",
-                          color:
-                            alertCssVisible && alertExportFormat === "tokens"
-                              ? colors["--brand"]
-                                ? `hsl(${fgForBg(colors["--brand"])})`
-                                : "#fff"
-                              : "hsl(var(--muted-foreground))",
-                        }}
-                      >
-                        Tokens
-                      </button>
-                    </div>
-                    <button
-                      onClick={() => {
-                        storage.remove(ALERT_STYLE_KEY);
-                        removeAlertStyleProperties();
-                        setAlertStyle({ ...DEFAULT_ALERT_STYLE });
-                      }}
-                      className="h-8 px-2 text-[13px] font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1"
-                      style={{ color: "hsl(var(--muted-foreground))" }}
-                    >
-                      Reset
-                    </button>
-                  </div>
                   {/* Dialog CSS/Tokens output */}
                   {alertCssVisible &&
                     (() => {
@@ -5996,12 +5724,95 @@ function DesignSystemEditorInner({
                     className="space-y-3 rounded-lg p-4"
                     style={{ border: "1px solid hsl(var(--border))" }}
                   >
-                    <h3
-                      className="text-[16px] font-normal uppercase tracking-wider"
-                      style={{ color: "hsl(var(--foreground))" }}
-                    >
-                      Toast Messages
-                    </h3>
+                    <div className="flex items-center justify-between gap-2 flex-wrap">
+                      <h3
+                        className="text-[16px] font-normal uppercase tracking-wider"
+                        style={{ color: "hsl(var(--foreground))" }}
+                      >
+                        Toast Messages
+                      </h3>
+                      <div className="flex items-center gap-1">
+                        <div
+                          className="flex items-center rounded-lg overflow-hidden border"
+                          style={{ borderColor: "hsl(var(--border))" }}
+                        >
+                          <button
+                            onClick={() => {
+                              if (toastCssVisible && toastExportFormat === "css") {
+                                setToastCssVisible(false);
+                                return;
+                              }
+                              setToastExportFormat("css");
+                              setToastCssVisible(true);
+                            }}
+                            className="h-10 px-2 sm:px-3 text-[14px] font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                            style={{
+                              backgroundColor:
+                                toastCssVisible && toastExportFormat === "css"
+                                  ? "hsl(var(--brand))"
+                                  : "transparent",
+                              color:
+                                toastCssVisible && toastExportFormat === "css"
+                                  ? colors["--brand"]
+                                    ? `hsl(${fgForBg(colors["--brand"])})`
+                                    : "#fff"
+                                  : "hsl(var(--muted-foreground))",
+                            }}
+                          >
+                            <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                            </svg>
+                            CSS
+                          </button>
+                          <span
+                            className="w-px h-5"
+                            style={{ backgroundColor: "hsl(var(--border))" }}
+                          />
+                          <button
+                            onClick={() => {
+                              if (toastCssVisible && toastExportFormat === "tokens") {
+                                setToastCssVisible(false);
+                                return;
+                              }
+                              setToastExportFormat("tokens");
+                              setToastCssVisible(true);
+                            }}
+                            className="h-10 px-2 sm:px-3 text-[14px] font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                            style={{
+                              backgroundColor:
+                                toastCssVisible && toastExportFormat === "tokens"
+                                  ? "hsl(var(--brand))"
+                                  : "transparent",
+                              color:
+                                toastCssVisible && toastExportFormat === "tokens"
+                                  ? colors["--brand"]
+                                    ? `hsl(${fgForBg(colors["--brand"])})`
+                                    : "#fff"
+                                  : "hsl(var(--muted-foreground))",
+                            }}
+                          >
+                            <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4-4 4M7 8L3 12l4 4M14 4l-4 16" />
+                            </svg>
+                            Tokens
+                          </button>
+                        </div>
+                        <button
+                          onClick={() => {
+                            storage.remove(TOAST_STYLE_KEY);
+                            removeToastStyleProperties();
+                            setToastStyle({ ...DEFAULT_TOAST_STYLE });
+                          }}
+                          className="h-10 px-2 sm:px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                          style={{ color: "hsl(var(--muted-foreground))" }}
+                        >
+                          <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" />
+                          </svg>
+                          Reset
+                        </button>
+                      </div>
+                    </div>
                     {/* Toast Preset Buttons */}
                     <div className="grid grid-cols-4 gap-2">
                       {Object.keys(TOAST_PRESETS).map((key) => {
@@ -6233,79 +6044,6 @@ function DesignSystemEditorInner({
                         );
                       })()}
                     </div>
-                    {/* Toast action buttons */}
-                    <div className="flex flex-wrap items-center gap-1 pt-2">
-                      <div
-                        className="flex items-center rounded-lg overflow-hidden border"
-                        style={{ borderColor: "hsl(var(--border))" }}
-                      >
-                        <button
-                          onClick={() => {
-                            if (toastCssVisible && toastExportFormat === "css") {
-                              setToastCssVisible(false);
-                              return;
-                            }
-                            setToastExportFormat("css");
-                            setToastCssVisible(true);
-                          }}
-                          className="h-8 px-2 text-[13px] font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
-                          style={{
-                            backgroundColor:
-                              toastCssVisible && toastExportFormat === "css"
-                                ? "hsl(var(--brand))"
-                                : "transparent",
-                            color:
-                              toastCssVisible && toastExportFormat === "css"
-                                ? colors["--brand"]
-                                  ? `hsl(${fgForBg(colors["--brand"])})`
-                                  : "#fff"
-                                : "hsl(var(--muted-foreground))",
-                          }}
-                        >
-                          CSS
-                        </button>
-                        <span
-                          className="w-px h-4"
-                          style={{ backgroundColor: "hsl(var(--border))" }}
-                        />
-                        <button
-                          onClick={() => {
-                            if (toastCssVisible && toastExportFormat === "tokens") {
-                              setToastCssVisible(false);
-                              return;
-                            }
-                            setToastExportFormat("tokens");
-                            setToastCssVisible(true);
-                          }}
-                          className="h-8 px-2 text-[13px] font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
-                          style={{
-                            backgroundColor:
-                              toastCssVisible && toastExportFormat === "tokens"
-                                ? "hsl(var(--brand))"
-                                : "transparent",
-                            color:
-                              toastCssVisible && toastExportFormat === "tokens"
-                                ? colors["--brand"]
-                                  ? `hsl(${fgForBg(colors["--brand"])})`
-                                  : "#fff"
-                                : "hsl(var(--muted-foreground))",
-                          }}
-                        >
-                          Tokens
-                        </button>
-                      </div>
-                      <button
-                        onClick={() => {
-                          storage.remove(TOAST_STYLE_KEY);
-                          removeToastStyleProperties();
-                          setToastStyle({ ...DEFAULT_TOAST_STYLE });
-                        }}
-                        className="h-8 px-2 text-[13px] font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1"
-                        style={{ color: "hsl(var(--muted-foreground))" }}
-                      >
-                        Reset
-                      </button>
-                    </div>
                     {/* Toast CSS/Tokens output */}
                     {toastCssVisible &&
                       (() => {
@@ -6379,61 +6117,14 @@ function DesignSystemEditorInner({
               {/* end two-column grid */}
 
             {/* Alert Reset Confirmation Modal */}
-            {showAlertResetModal && (
-              <div
-                className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="alert-reset-modal-title"
-              >
-                <div
-                  className="rounded-lg shadow-xl p-6 w-full max-w-sm mx-4"
-                  style={{
-                    backgroundColor: "hsl(var(--card))",
-                    color: "hsl(var(--card-foreground))",
-                  }}
-                >
-                  <h4
-                    id="alert-reset-modal-title"
-                    className="text-2xl font-light mb-2"
-                  >
-                    Reset Alert Style?
-                  </h4>
-                  <p
-                    className="text-[14px] mb-4"
-                    style={{ color: "hsl(var(--card-foreground))" }}
-                  >
-                    This will revert all alert style settings to their defaults.
-                    Any customizations will be lost.
-                  </p>
-                  <div className="flex justify-end gap-2">
-                    <button
-                      onClick={() => setShowAlertResetModal(false)}
-                      className="px-3 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
-                      style={{
-                        backgroundColor: "transparent",
-                        color: "hsl(var(--card-foreground))",
-                      }}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      onClick={() => {
-                        handleResetAlertStyle();
-                        setShowAlertResetModal(false);
-                      }}
-                      className="px-3 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
-                      style={{
-                        backgroundColor: "hsl(var(--destructive))",
-                        color: "hsl(var(--destructive-foreground))",
-                      }}
-                    >
-                      Reset
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
+            <ResetConfirmModal
+              open={showAlertResetModal}
+              onClose={() => setShowAlertResetModal(false)}
+              onConfirm={handleResetAlertStyle}
+              title="Reset Alert Style?"
+              message="This will revert all alert style settings to their defaults. Any customizations will be lost."
+              id="alert-reset-modal-title"
+            />
           </div>
           {/* end Alerts section */}
 
@@ -7939,48 +7630,14 @@ function DesignSystemEditorInner({
             {/* end side-by-side row */}
 
             {/* Typography Interaction Reset Modal */}
-            {showTypoInteractionResetModal && (
-              <div
-                className="fixed inset-0 z-50 flex items-center justify-center"
-                style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
-                onClick={() => setShowTypoInteractionResetModal(false)}
-              >
-                <div
-                  className="rounded-xl p-6 w-[340px] shadow-xl"
-                  style={{ backgroundColor: "#fff", color: "#111" }}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <h3 className="text-[18px] font-light mb-3">
-                    Reset Interactions?
-                  </h3>
-                  <p
-                    className="text-[14px] font-light mb-4"
-                    style={{ color: "#555" }}
-                  >
-                    This will restore the default typography interaction styles.
-                  </p>
-                  <div className="flex gap-2 justify-end">
-                    <button
-                      onClick={() => setShowTypoInteractionResetModal(false)}
-                      className="px-4 py-2 text-[14px] font-light rounded-lg"
-                      style={{ backgroundColor: "#e5e7eb", color: "#111" }}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      onClick={() => {
-                        handleResetTypoInteractionStyle();
-                        setShowTypoInteractionResetModal(false);
-                      }}
-                      className="px-4 py-2 text-[14px] font-light rounded-lg"
-                      style={{ backgroundColor: "#ef4444", color: "#fff" }}
-                    >
-                      Reset
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
+            <ResetConfirmModal
+              open={showTypoInteractionResetModal}
+              onClose={() => setShowTypoInteractionResetModal(false)}
+              onConfirm={handleResetTypoInteractionStyle}
+              title="Reset Interactions?"
+              message="This will restore the default typography interaction styles."
+              id="typo-interaction-reset-modal-title"
+            />
           </div>
         </div>
       </section>

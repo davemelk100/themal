@@ -5,6 +5,24 @@ export const PENDING_COLORS_KEY = "ds-pending-colors";
 export const COLOR_HISTORY_KEY = "ds-color-history";
 export const CONTRAST_KNOWLEDGE_KEY = "ds-contrast-knowledge";
 
+/** WCAG AA minimum contrast ratio */
+const WCAG_AA_RATIO = 4.6;
+
+/** Maximum lightness adjustment iterations for contrast correction */
+const LIGHTNESS_ITERATIONS = 34;
+
+/** Lightness adjustment step size per iteration */
+const LIGHTNESS_STEP = 3;
+
+/** Maximum stored contrast corrections in localStorage */
+const MAX_STORED_CORRECTIONS = 100;
+
+/** Hue margin for contrast correction knowledge base */
+const CONTRAST_HUE_MARGIN = 15;
+
+/** Lightness margin for contrast correction knowledge base */
+const CONTRAST_LIGHT_MARGIN = 10;
+
 export interface ContrastCorrection {
   bgHueRange: [number, number];
   bgLightRange: [number, number];
@@ -17,8 +35,8 @@ export function saveContrastCorrection(bgHsl: string, fgKey: string, correctedVa
   if (parts.length < 3) return;
   const bgHue = parseFloat(parts[0]);
   const bgLight = parseFloat(parts[2]);
-  const hueMargin = 15;
-  const lightMargin = 10;
+  const hueMargin = CONTRAST_HUE_MARGIN;
+  const lightMargin = CONTRAST_LIGHT_MARGIN;
 
   const corrections = storage.get<ContrastCorrection[]>(CONTRAST_KNOWLEDGE_KEY) || [];
 
@@ -44,7 +62,7 @@ export function saveContrastCorrection(bgHsl: string, fgKey: string, correctedVa
     });
   }
 
-  if (corrections.length > 100) corrections.splice(0, corrections.length - 100);
+  if (corrections.length > MAX_STORED_CORRECTIONS) corrections.splice(0, corrections.length - MAX_STORED_CORRECTIONS);
   storage.set(CONTRAST_KNOWLEDGE_KEY, corrections);
 }
 
@@ -339,7 +357,7 @@ export const autoAdjustContrast = (
 
     let brandVal = working["--brand"];
     const bgVal = working["--background"];
-    if (brandVal && bgVal && contrastRatio(brandVal, bgVal) < 4.6) {
+    if (brandVal && bgVal && contrastRatio(brandVal, bgVal) < WCAG_AA_RATIO) {
       const brandLocked = locked.has("--brand");
       const bgLocked = locked.has("--background");
       if (brandLocked && bgLocked) {
@@ -349,38 +367,38 @@ export const autoAdjustContrast = (
         const brand = parseHsl(brandVal);
         if (bg && brand) {
           if (!brandLocked) {
-            const brandDir = bg.l > 50 ? -3 : 3;
+            const brandDir = bg.l > 50 ? -LIGHTNESS_STEP : LIGHTNESS_STEP;
             let bl = brand.l;
             let adjBrand = toHsl(brand.h, brand.s, bl);
-            for (let i = 0; i < 34; i++) {
+            for (let i = 0; i < LIGHTNESS_ITERATIONS; i++) {
               bl = Math.max(0, Math.min(100, bl + brandDir));
               adjBrand = toHsl(brand.h, brand.s, bl);
-              if (contrastRatio(adjBrand, bgVal) >= 4.6) break;
+              if (contrastRatio(adjBrand, bgVal) >= WCAG_AA_RATIO) break;
             }
-            if (contrastRatio(adjBrand, bgVal) >= 4.6) {
+            if (contrastRatio(adjBrand, bgVal) >= WCAG_AA_RATIO) {
               adjustments["--brand"] = adjBrand;
               working["--brand"] = adjBrand;
               brandVal = adjBrand;
             } else if (!bgLocked) {
-              const bgDir = brand.l > 50 ? -3 : 3;
+              const bgDir = brand.l > 50 ? -LIGHTNESS_STEP : LIGHTNESS_STEP;
               let bgL = bg.l;
               let adjBg = toHsl(bg.h, bg.s, bgL);
-              for (let i = 0; i < 34; i++) {
+              for (let i = 0; i < LIGHTNESS_ITERATIONS; i++) {
                 bgL = Math.max(0, Math.min(100, bgL + bgDir));
                 adjBg = toHsl(bg.h, bg.s, bgL);
-                if (contrastRatio(brandVal, adjBg) >= 4.6) break;
+                if (contrastRatio(brandVal, adjBg) >= WCAG_AA_RATIO) break;
               }
               adjustments["--background"] = adjBg;
               working["--background"] = adjBg;
             }
           } else if (!bgLocked) {
-            const bgDir = brand.l > 50 ? -3 : 3;
+            const bgDir = brand.l > 50 ? -LIGHTNESS_STEP : LIGHTNESS_STEP;
             let bgL = bg.l;
             let adjBg = toHsl(bg.h, bg.s, bgL);
-            for (let i = 0; i < 34; i++) {
+            for (let i = 0; i < LIGHTNESS_ITERATIONS; i++) {
               bgL = Math.max(0, Math.min(100, bgL + bgDir));
               adjBg = toHsl(bg.h, bg.s, bgL);
-              if (contrastRatio(brandVal, adjBg) >= 4.6) break;
+              if (contrastRatio(brandVal, adjBg) >= WCAG_AA_RATIO) break;
             }
             adjustments["--background"] = adjBg;
             working["--background"] = adjBg;
@@ -393,7 +411,7 @@ export const autoAdjustContrast = (
       const fgVal = working[fgKey];
       const bgv = working[bgKey];
       if (!fgVal || !bgv) continue;
-      if (contrastRatio(fgVal, bgv) >= 4.6) continue;
+      if (contrastRatio(fgVal, bgv) >= WCAG_AA_RATIO) continue;
 
       const fgLocked = locked.has(fgKey);
       const bgKeyLocked = locked.has(bgKey);
@@ -407,37 +425,37 @@ export const autoAdjustContrast = (
       let adjustedBg = bgv;
 
       if (!fgLocked) {
-        const direction = bg.l > 50 ? -3 : 3;
+        const direction = bg.l > 50 ? -LIGHTNESS_STEP : LIGHTNESS_STEP;
         let l = fg.l;
         adjusted = toHsl(fg.h, fg.s, l);
-        for (let i = 0; i < 34; i++) {
+        for (let i = 0; i < LIGHTNESS_ITERATIONS; i++) {
           l = Math.max(0, Math.min(100, l + direction));
           adjusted = toHsl(fg.h, fg.s, l);
-          if (contrastRatio(adjusted, adjustedBg) >= 4.6) break;
+          if (contrastRatio(adjusted, adjustedBg) >= WCAG_AA_RATIO) break;
         }
 
-        if (contrastRatio(adjusted, adjustedBg) < 4.6) {
+        if (contrastRatio(adjusted, adjustedBg) < WCAG_AA_RATIO) {
           l = fg.l;
           const oppDir = -direction;
-          for (let i = 0; i < 34; i++) {
+          for (let i = 0; i < LIGHTNESS_ITERATIONS; i++) {
             l = Math.max(0, Math.min(100, l + oppDir));
             adjusted = toHsl(fg.h, fg.s, l);
-            if (contrastRatio(adjusted, adjustedBg) >= 4.6) break;
+            if (contrastRatio(adjusted, adjustedBg) >= WCAG_AA_RATIO) break;
           }
         }
       }
 
-      if (contrastRatio(adjusted, adjustedBg) < 4.6 && !bgKeyLocked) {
+      if (contrastRatio(adjusted, adjustedBg) < WCAG_AA_RATIO && !bgKeyLocked) {
         const refL = fgLocked ? fg.l : parseFloat(adjusted.split(/\s+/)[2]);
-        const bgDir = refL > 50 ? -3 : 3;
+        const bgDir = refL > 50 ? -LIGHTNESS_STEP : LIGHTNESS_STEP;
         let bgL = bg.l;
         let adjBg = toHsl(bg.h, bg.s, bgL);
-        for (let i = 0; i < 34; i++) {
+        for (let i = 0; i < LIGHTNESS_ITERATIONS; i++) {
           bgL = Math.max(0, Math.min(100, bgL + bgDir));
           adjBg = toHsl(bg.h, bg.s, bgL);
-          if (contrastRatio(adjusted, adjBg) >= 4.6) break;
+          if (contrastRatio(adjusted, adjBg) >= WCAG_AA_RATIO) break;
         }
-        if (contrastRatio(adjusted, adjBg) >= 4.6) {
+        if (contrastRatio(adjusted, adjBg) >= WCAG_AA_RATIO) {
           adjustments[bgKey] = adjBg;
           working[bgKey] = adjBg;
           adjustedBg = adjBg;
@@ -466,11 +484,11 @@ export const autoAdjustContrast = (
     }
     if (finalBg && !locked.has("--muted-foreground")) {
       const mutedFg = working["--muted-foreground"];
-      if (mutedFg && contrastRatio(mutedFg, finalBg) < 4.6) {
+      if (mutedFg && contrastRatio(mutedFg, finalBg) < WCAG_AA_RATIO) {
         const bgL = parseFloat(finalBg.trim().split(/\s+/)[2]);
         const mutedL = bgL > 50 ? Math.max(0, bgL - 50) : Math.min(100, bgL + 50);
         const fixedMuted = `0 0% ${mutedL}%`;
-        if (contrastRatio(fixedMuted, finalBg) >= 4.6) {
+        if (contrastRatio(fixedMuted, finalBg) >= WCAG_AA_RATIO) {
           adjustments["--muted-foreground"] = fixedMuted;
           working["--muted-foreground"] = fixedMuted;
         } else {

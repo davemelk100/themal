@@ -25,7 +25,7 @@ const features = [
     ],
   },
   {
-    version: "0.16",
+    version: "0.17",
     items: [
       "Early access mode - all Pro features unlocked for free, no account required",
       "Independent dialog and toast styling - each section has its own preset buttons, shape controls, CSS/Tokens export, and reset",
@@ -36,7 +36,7 @@ const features = [
     ],
   },
   {
-    version: "0.7",
+    version: "0.16",
     items: [
       "Shareable URLs - encode full theme state in URL hash, copy link to clipboard with one click",
       "Per-section CSS and Design Token export - every section header (colors, card, alerts, typography, interactions) has a split-button toggle for CSS + Tailwind or W3C Design Token JSON",
@@ -48,7 +48,7 @@ const features = [
     ],
   },
   {
-    version: "0.6",
+    version: "0.15",
     items: [
       "Buttons section - renamed from Interactions, split into Types (color swatches) and Interactions (premium controls) side-by-side",
       "Button color swatches - read-only swatches for Primary, Secondary, Destructive, Muted, Success, Warning, and Brand",
@@ -63,7 +63,7 @@ const features = [
     ],
   },
   {
-    version: "0.5",
+    version: "0.14",
     items: [
       "Image-based palette extraction - upload a PNG/JPG and derive a full color palette via k-means clustering",
       "Subscription management and upgrade flow with Stripe checkout",
@@ -72,7 +72,7 @@ const features = [
     ],
   },
   {
-    version: "0.4",
+    version: "0.13",
     items: [
       "Premium feature gating with license key support",
       "Color harmony schemes - Complementary, Analogous, Triadic, Split-Complementary",
@@ -82,7 +82,7 @@ const features = [
     ],
   },
   {
-    version: "0.3",
+    version: "0.12",
     items: [
       "Typography system with 4 presets - Modern, Classic, Compact, Editorial",
       "Alert style system with 4 presets - Filled, Soft, Outline, Minimal",
@@ -93,7 +93,7 @@ const features = [
     ],
   },
   {
-    version: "0.2",
+    version: "0.11",
     items: [
       "Card style system with 4 presets - Liquid Glass, Solid Color, Gradient, Border Only",
       "Typography presets with system font option",
@@ -103,7 +103,7 @@ const features = [
     ],
   },
   {
-    version: "0.1",
+    version: "0.10",
     items: [
       "23 HSL CSS custom properties for full design system coverage",
       "Real-time color picking with live preview",
