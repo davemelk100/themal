@@ -40,6 +40,8 @@ export interface DesignSystemEditorProps {
   iconMode?: "append" | "replace";
   /** Show the Themal logo in the header. Default: true */
   showLogo?: boolean;
+  /** Default color values to restore on reset, keyed by CSS variable name (e.g. {"--brand": "210 50% 40%"}). When provided, "Reset theme to default" restores these instead of the Themal defaults. */
+  defaultColors?: Record<string, string>;
 }
 
 export interface TokenDefinition {

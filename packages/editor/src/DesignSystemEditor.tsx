@@ -298,6 +298,7 @@ function DesignSystemEditorInner({
   customIcons,
   iconMode = "append",
   showLogo = true,
+  defaultColors,
 }: DesignSystemEditorProps) {
   const { isPremium } = useLicense();
   const [hoveredLockKey, setHoveredLockKey] = useState<string | null>(null);
@@ -1255,6 +1256,12 @@ function DesignSystemEditorInner({
     EDITABLE_VARS.forEach(({ key }) => {
       document.documentElement.style.removeProperty(key);
     });
+    // If the consumer provided default colors, restore them instead of bare defaults
+    if (defaultColors) {
+      Object.entries(defaultColors).forEach(([key, value]) => {
+        document.documentElement.style.setProperty(key, value);
+      });
+    }
     storage.remove(THEME_COLORS_KEY);
     storage.remove(PENDING_COLORS_KEY);
     storage.remove(COLOR_HISTORY_KEY);
