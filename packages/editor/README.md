@@ -56,6 +56,7 @@ The editor writes CSS custom properties (HSL values) to `:root`, so it works wit
 | `aboutUrl` | `string` | — | URL for the About page link in the header navigation. |
 | `customIcons` | `CustomIcon[]` | — | Custom icons to display in the Icons preview section. Each entry needs `name` and `icon` (a React component). |
 | `iconMode` | `"append" \| "replace"` | `"append"` | `"append"` adds custom icons after the built-in lucide icons. `"replace"` hides built-ins and shows only custom icons. |
+| `showLogo` | `boolean` | `true` | Show the Themal logo in the header. Set `false` for white-label or plugin usage. |
 
 ## Premium Features
 
@@ -66,7 +67,7 @@ The following features require a valid license key:
 | Harmony schemes | Generate palettes using complementary, analogous, triadic, or split-complementary color relationships. |
 | Color locks | Lock up to 4 colors to preserve them during palette regeneration. |
 | PR integration | Create design system pull requests directly from the editor. |
-| Undo/redo | History management for color changes. |
+| Undo/redo | Up to 10 levels of undo for theme refreshes and image palette applications. |
 | Image palette extraction | Extract color palettes from uploaded images with preview confirmation. |
 | Palette export | Download palette as SVG/PNG, or copy as HEX/RGB/RGBA text. |
 | Interaction states | Style hover, focus, and active states for buttons and components. |
@@ -281,7 +282,7 @@ import type {
 
 1. **Color picking** — Click any swatch to scroll the Colors section into view, then open the native color picker. Changing a key color (brand, secondary, accent, background) automatically derives related tokens.
 2. **Harmony schemes** *(Pro)* — Generate palettes using complementary, analogous, triadic, or split-complementary color relationships.
-3. **Contrast enforcement** — Every foreground/background pair is checked against WCAG AA (4.5:1). Failing pairs are auto-corrected by adjusting lightness. The accessibility audit shows a centered modal with results. On failure, choose "Ignore" to dismiss or "Suggest Alternative" to auto-fix contrast issues.
+3. **Contrast enforcement** — Every foreground/background pair is checked against WCAG AA (4.5:1). Failing pairs are auto-corrected by adjusting lightness. The accessibility audit shows a centered modal with results. On failure, choose "Ignore" to dismiss or "Suggest Alternative" to auto-fix contrast issues. A WCAG On/Off toggle lets you disable auto-correction for marketing or other contexts that don't require WCAG compliance. Locks are still honored when enforcement is off.
 4. **Typography** — Choose heading and body fonts (including custom Google Fonts), adjust sizes, weights, line height, and letter spacing with live preview. Five built-in presets (System, Modern, Classic, Compact, Editorial).
 5. **Button interactions** *(Pro)* — Fine-tune hover opacity, hover/active scale, transition duration, and focus ring width with presets (Subtle, Elevated, Bold).
 6. **Typography interactions** *(Pro)* — Customize link hover/active behavior (opacity, scale, underline) and heading hover effects with live preview.
@@ -339,6 +340,7 @@ All props that accept strings or booleans can be set as HTML attributes using ke
   show-header="false"
   show-nav-links="false"
   icon-mode="replace"
+  show-logo="true"
   accessibility-audit="true"
   upgrade-url="/pricing"
   sign-in-url="/sign-in"
@@ -346,6 +348,8 @@ All props that accept strings or booleans can be set as HTML attributes using ke
   pr-endpoint-url="/api/create-design-pr"
 ></themal-editor>
 ```
+
+Note: The Themal logo is hidden by default in the web component. Set `show-logo="true"` to display it.
 
 ### Custom icons via JavaScript
 
