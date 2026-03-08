@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { DesignSystemEditor } from "@themal/editor";
-import type { DesignSystemEditorProps } from "@themal/editor";
+import type { DesignSystemEditorProps, CustomIcon } from "@themal/editor";
 
 // Attribute name → React prop name mapping
 const ATTR_TO_PROP: Record<string, keyof DesignSystemEditorProps> = {
@@ -13,11 +13,13 @@ const ATTR_TO_PROP: Record<string, keyof DesignSystemEditorProps> = {
   "upgrade-url": "upgradeUrl",
   "sign-in-url": "signInUrl",
   "about-url": "aboutUrl",
+  "icon-mode": "iconMode",
+  "show-logo": "showLogo",
 };
 
 const OBSERVED_ATTRS = Object.keys(ATTR_TO_PROP);
 
-const BOOLEAN_PROPS = new Set<string>(["accessibilityAudit", "showNavLinks", "showHeader"]);
+const BOOLEAN_PROPS = new Set<string>(["accessibilityAudit", "showNavLinks", "showHeader", "showLogo"]);
 
 function parseAttrValue(propName: string, value: string | null): string | boolean | undefined {
   if (value === null) return undefined;
@@ -27,12 +29,55 @@ function parseAttrValue(propName: string, value: string | null): string | boolea
   return value;
 }
 
+/** Create a React icon component from an SVG string */
+function svgToComponent(svgString: string): React.FC<{ className?: string }> {
+  return ({ className }) => {
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = svgString.trim();
+    const svg = wrapper.querySelector("svg");
+    if (!svg) return null;
+    const attrs: Record<string, string> = {};
+    for (const attr of Array.from(svg.attributes)) {
+      const name = attr.name === "class" ? "className" : attr.name;
+      attrs[name] = attr.value;
+    }
+    if (className) attrs.className = className;
+    return React.createElement("svg", {
+      ...attrs,
+      dangerouslySetInnerHTML: { __html: svg.innerHTML },
+    });
+  };
+}
+
 class ThemalEditorElement extends HTMLElement {
   private _root: ReactDOM.Root | null = null;
   private _mountPoint: HTMLDivElement | null = null;
+  private _customIcons: CustomIcon[] = [];
 
   static get observedAttributes() {
     return OBSERVED_ATTRS;
+  }
+
+  /**
+   * Set custom icons programmatically.
+   *
+   * Each entry needs a `name` and either:
+   * - `svg`: an SVG string (e.g. '<svg viewBox="0 0 24 24">...</svg>')
+   * - `icon`: a React component that accepts className
+   *
+   * @example
+   * const editor = document.querySelector('themal-editor');
+   * editor.setIcons([
+   *   { name: "Heart", svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>' },
+   *   { name: "Star", svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>' },
+   * ]);
+   */
+  setIcons(icons: Array<{ name: string; svg?: string; icon?: React.FC<{ className?: string }> }>) {
+    this._customIcons = icons.map((entry) => ({
+      name: entry.name,
+      icon: entry.icon || (entry.svg ? svgToComponent(entry.svg) : () => null),
+    }));
+    this._render();
   }
 
   connectedCallback() {
@@ -84,6 +129,15 @@ class ThemalEditorElement extends HTMLElement {
       if (value !== undefined) {
         props[propName] = value;
       }
+    }
+
+    if (this._customIcons.length > 0) {
+      props.customIcons = this._customIcons;
+    }
+
+    // Default showLogo to false for web component usage
+    if (props.showLogo === undefined) {
+      props.showLogo = false;
     }
 
     this._root.render(

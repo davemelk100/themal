@@ -5,10 +5,10 @@ import {
 } from "../utils/themeUtils";
 import { useContrastEnforcement } from "./useContrastEnforcement";
 
-export function useColorState() {
+export function useColorState(wcagEnforcement: boolean = true) {
   const [colors, setColors] = useState<Record<string, string>>({});
   const [lockedKeys, setLockedKeys] = useState<Set<string>>(new Set());
-  const [prevColors, setPrevColors] = useState<Record<string, string> | null>(null);
+  const [colorUndoStack, setColorUndoStack] = useState<Record<string, string>[]>([]);
 
   const readCurrentColors = useCallback(() => {
     const style = getComputedStyle(document.documentElement);
@@ -32,7 +32,7 @@ export function useColorState() {
     }
   }, []);
 
-  useContrastEnforcement(colors, setColors, lockedKeys);
+  useContrastEnforcement(colors, setColors, lockedKeys, wcagEnforcement);
 
   useEffect(() => {
     applyStoredThemeColors();
@@ -50,8 +50,8 @@ export function useColorState() {
     setColors,
     lockedKeys,
     setLockedKeys,
-    prevColors,
-    setPrevColors,
+    colorUndoStack,
+    setColorUndoStack,
     readCurrentColors,
   };
 }

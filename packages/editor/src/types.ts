@@ -38,6 +38,8 @@ export interface DesignSystemEditorProps {
   customIcons?: CustomIcon[];
   /** How custom icons interact with built-in icons. "append" adds them after built-ins, "replace" hides built-ins entirely. Default: "append" */
   iconMode?: "append" | "replace";
+  /** Show the Themal logo in the header. Default: true */
+  showLogo?: boolean;
 }
 
 export interface TokenDefinition {

@@ -297,18 +297,24 @@ function DesignSystemEditorInner({
   aboutUrl,
   customIcons,
   iconMode = "append",
+  showLogo = true,
 }: DesignSystemEditorProps) {
   const { isPremium } = useLicense();
   const [hoveredLockKey, setHoveredLockKey] = useState<string | null>(null);
+  const [wcagEnforcement, setWcagEnforcement] = useState(() => {
+    const saved = storage.get<boolean>("themal-wcag-enforcement");
+    return saved !== false;
+  });
+
   const {
     colors,
     setColors,
     lockedKeys,
     setLockedKeys,
-    prevColors,
-    setPrevColors,
+    colorUndoStack,
+    setColorUndoStack,
     readCurrentColors,
-  } = useColorState();
+  } = useColorState(wcagEnforcement);
 
   const [activeSection, setActiveSection] = useState<string>("colors");
 
@@ -972,20 +978,24 @@ function DesignSystemEditorInner({
       }
     }
 
-    const contrastLocks = new Set(lockedKeys);
-    if (key !== "--brand") contrastLocks.add(key);
-    const adjustments = autoAdjustContrast(newColors, contrastLocks);
-    for (const [adjKey, adjVal] of Object.entries(adjustments)) {
-      history.push({ key: adjKey, previousValue: newColors[adjKey] || "" });
-      document.documentElement.style.setProperty(adjKey, adjVal);
-      newColors[adjKey] = adjVal;
-      pending[adjKey] = adjVal;
+    const adjustments: Record<string, string> = {};
+    if (wcagEnforcement) {
+      const contrastLocks = new Set(lockedKeys);
+      if (key !== "--brand") contrastLocks.add(key);
+      const fixes = autoAdjustContrast(newColors, contrastLocks);
+      for (const [adjKey, adjVal] of Object.entries(fixes)) {
+        history.push({ key: adjKey, previousValue: newColors[adjKey] || "" });
+        document.documentElement.style.setProperty(adjKey, adjVal);
+        newColors[adjKey] = adjVal;
+        pending[adjKey] = adjVal;
+        adjustments[adjKey] = adjVal;
+      }
     }
 
     storage.set(COLOR_HISTORY_KEY, history);
     setColors(newColors);
     storage.set(PENDING_COLORS_KEY, pending);
-    persistContrastFixes(adjustments);
+    if (wcagEnforcement) persistContrastFixes(adjustments);
     window.dispatchEvent(new Event("theme-pending-update"));
     fireOnChange(newColors);
 
@@ -1089,8 +1099,10 @@ function DesignSystemEditorInner({
     if (accessibilityAudit) runAccessibilityAudit();
   };
 
+  const MAX_UNDO = 10;
+
   const handleGenerate = () => {
-    setPrevColors({ ...colors });
+    setColorUndoStack((s) => [...s.slice(-(MAX_UNDO - 1)), { ...colors }]);
     const isDark = document.documentElement.classList.contains("dark");
     const result = generateRandomPalette(colors, lockedKeys, isDark);
     const history =
@@ -1118,18 +1130,19 @@ function DesignSystemEditorInner({
   };
 
   const handleUndo = () => {
-    if (!prevColors) return;
+    if (colorUndoStack.length === 0) return;
+    const restored = colorUndoStack[colorUndoStack.length - 1];
+    setColorUndoStack((s) => s.slice(0, -1));
     const pending =
       storage.get<Record<string, string>>(PENDING_COLORS_KEY) || {};
-    for (const [key, val] of Object.entries(prevColors)) {
+    for (const [key, val] of Object.entries(restored)) {
       document.documentElement.style.setProperty(key, val);
       pending[key] = val;
     }
-    setColors(prevColors);
+    setColors(restored);
     storage.set(PENDING_COLORS_KEY, pending);
     window.dispatchEvent(new Event("theme-pending-update"));
-    setPrevColors(null);
-    fireOnChange(prevColors);
+    fireOnChange(restored);
     if (accessibilityAudit) runAccessibilityAudit();
   };
 
@@ -1174,7 +1187,7 @@ function DesignSystemEditorInner({
   };
 
   const applyImagePalette = (palette: Record<string, string>) => {
-    setPrevColors({ ...colors });
+    setColorUndoStack((s) => [...s.slice(-(MAX_UNDO - 1)), { ...colors }]);
 
     let newColors = { ...colors };
     const brandDerived = derivePaletteFromChange(
@@ -1205,8 +1218,10 @@ function DesignSystemEditorInner({
       newColors = { ...newColors, ...derived, [key]: palette[key] };
     }
 
-    const contrastFixes = autoAdjustContrast(newColors, lockedKeys);
-    newColors = { ...newColors, ...contrastFixes };
+    if (wcagEnforcement) {
+      const contrastFixes = autoAdjustContrast(newColors, lockedKeys);
+      newColors = { ...newColors, ...contrastFixes };
+    }
 
     const history =
       storage.get<{ key: string; previousValue: string }[]>(
@@ -1308,20 +1323,21 @@ function DesignSystemEditorInner({
         EDITABLE_VARS.forEach(({ key }) => {
           liveColors[key] = style.getPropertyValue(key).trim();
         });
-        const fixes = autoAdjustContrast(liveColors, lockedKeys);
-        if (Object.keys(fixes).length > 0) {
-          const updatedColors = { ...liveColors };
-          const bg = liveColors["--background"];
-          for (const [fixKey, fixVal] of Object.entries(fixes)) {
-            document.documentElement.style.setProperty(fixKey, fixVal);
-            updatedColors[fixKey] = fixVal;
-            // Save each fix to the knowledge base so the algorithm avoids this failure in the future
-            if (bg) saveContrastCorrection(bg, fixKey, fixVal);
-            console.log(`[Themal]   Fixed ${fixKey}: ${liveColors[fixKey]} -> ${fixVal}`);
+        if (wcagEnforcement) {
+          const fixes = autoAdjustContrast(liveColors, lockedKeys);
+          if (Object.keys(fixes).length > 0) {
+            const updatedColors = { ...liveColors };
+            const bg = liveColors["--background"];
+            for (const [fixKey, fixVal] of Object.entries(fixes)) {
+              document.documentElement.style.setProperty(fixKey, fixVal);
+              updatedColors[fixKey] = fixVal;
+              if (bg) saveContrastCorrection(bg, fixKey, fixVal);
+              console.log(`[Themal]   Fixed ${fixKey}: ${liveColors[fixKey]} -> ${fixVal}`);
+            }
+            persistContrastFixes(fixes);
+            setColors(updatedColors);
+            window.dispatchEvent(new Event("theme-pending-update"));
           }
-          persistContrastFixes(fixes);
-          setColors(updatedColors);
-          window.dispatchEvent(new Event("theme-pending-update"));
         }
         const reResults = await axe.run(
           { exclude: ["[data-axe-exclude]"] },
@@ -1639,7 +1655,7 @@ function DesignSystemEditorInner({
           <div className="w-full px-4 sm:px-6 lg:px-8">
             {/* Title + nav links - single header row */}
             <div className="w-full mb-2 sm:mb-3 lg:mb-4 flex items-end gap-x-8 sm:gap-x-12 pt-2 sm:pt-3 lg:pt-4 relative">
-              <a
+              {showLogo && <a
                 href="/"
                 className="flex-shrink-0 leading-none"
                 style={{ color: "hsl(var(--foreground))" }}
@@ -1702,7 +1718,7 @@ function DesignSystemEditorInner({
                     fill="currentColor"
                   />
                 </svg>
-              </a>
+              </a>}
 
               {/* Nav links - desktop (next to logo) */}
               {showNavLinks && (
@@ -1812,6 +1828,11 @@ function DesignSystemEditorInner({
                 });
               } else if (v === "pr") setShowPrSetupModal(true);
               else if (v === "audit") runAccessibilityAudit(true);
+              else if (v === "wcag-toggle") {
+                const next = !wcagEnforcement;
+                setWcagEnforcement(next);
+                storage.set("themal-wcag-enforcement", next);
+              }
               e.target.value = "";
             }}
           >
@@ -1827,6 +1848,7 @@ function DesignSystemEditorInner({
             <option value="share">Share</option>
             <option value="pr">Open PR</option>
             {accessibilityAudit && <option value="audit">Accessibility Check</option>}
+            {accessibilityAudit && <option value="wcag-toggle">WCAG {wcagEnforcement ? "On → Off" : "Off → On"}</option>}
           </select>
         </div>
       </div>
@@ -1895,7 +1917,7 @@ function DesignSystemEditorInner({
                 />
               </svg>
               <span className="truncate">Refresh Theme</span>
-              {prevColors && (
+              {colorUndoStack.length > 0 && (
                 <span
                   onClick={(e) => {
                     e.stopPropagation();
@@ -2142,6 +2164,25 @@ function DesignSystemEditorInner({
               <span className="truncate">
                 {auditStatus === "running" ? "Auditing..." : "Accessibility Check"}
               </span>
+            </button>
+          )}
+          {accessibilityAudit && (
+            <button
+              onClick={() => {
+                const next = !wcagEnforcement;
+                setWcagEnforcement(next);
+                storage.set("themal-wcag-enforcement", next);
+              }}
+              className="ds-global-btn h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1.5"
+              title={wcagEnforcement ? "WCAG contrast enforcement is ON. Click to allow violations." : "WCAG contrast enforcement is OFF. Colors are not auto-corrected."}
+            >
+              <span
+                className="inline-block w-3 h-3 rounded-full flex-shrink-0"
+                style={{
+                  backgroundColor: wcagEnforcement ? "hsl(142 71% 45%)" : "hsl(var(--muted-foreground))",
+                }}
+              />
+              <span className="truncate">WCAG {wcagEnforcement ? "On" : "Off"}</span>
             </button>
           )}
         </div>

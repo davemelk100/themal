@@ -318,6 +318,60 @@ Import the main entry point for components and utilities, and `style.css` separa
 
 The editor ships pre-compiled CSS via `@themal/editor/style.css`. Styles are scoped using Tailwind's `important: '.ds-editor'` so they don't conflict with your app's styles. The root element is automatically wrapped in `<div className="ds-editor">`.
 
+## Web Component
+
+The editor is also available as a `<themal-editor>` custom element for non-React sites (WordPress, Shopify, plain HTML).
+
+### Basic usage
+
+```html
+<script src="https://unpkg.com/@themal/editor/dist/themal-editor.js"></script>
+<themal-editor></themal-editor>
+```
+
+### Attributes
+
+All props that accept strings or booleans can be set as HTML attributes using kebab-case:
+
+```html
+<themal-editor
+  license-key="THEMAL-XXXX-XXXX-XXXX"
+  show-header="false"
+  show-nav-links="false"
+  icon-mode="replace"
+  accessibility-audit="true"
+  upgrade-url="/pricing"
+  sign-in-url="/sign-in"
+  about-url="/about"
+  pr-endpoint-url="/api/create-design-pr"
+></themal-editor>
+```
+
+### Custom icons via JavaScript
+
+Since HTML attributes can only pass strings, custom icons are set programmatically with the `setIcons()` method. Pass an array of `{ name, svg }` objects where `svg` is a raw SVG string:
+
+```html
+<script src="https://unpkg.com/@themal/editor/dist/themal-editor.js"></script>
+<themal-editor icon-mode="replace"></themal-editor>
+
+<script>
+  const editor = document.querySelector('themal-editor');
+  editor.setIcons([
+    {
+      name: "Heart",
+      svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>'
+    },
+    {
+      name: "Star",
+      svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>'
+    },
+  ]);
+</script>
+```
+
+Set `icon-mode="replace"` to hide the built-in icons and show only your custom set, or omit it (defaults to `"append"`) to add yours alongside the built-ins.
+
 ## Development
 
 ```bash
