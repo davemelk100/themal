@@ -959,8 +959,12 @@ function saveCustomFonts(fonts: CustomFontEntry[]) {
   localStorage.setItem(CUSTOM_FONTS_KEY, JSON.stringify(fonts));
 }
 
+function titleCase(str: string): string {
+  return str.replace(/\w\S*/g, (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
+}
+
 export function validateGoogleFont(name: string): Promise<boolean> {
-  const encoded = name.trim().replace(/\s+/g, "+");
+  const encoded = titleCase(name.trim()).replace(/\s+/g, "+");
   return new Promise((resolve) => {
     const link = document.createElement("link");
     link.rel = "stylesheet";
@@ -972,7 +976,7 @@ export function validateGoogleFont(name: string): Promise<boolean> {
 }
 
 export async function addCustomFont(name: string): Promise<CustomFontEntry> {
-  const trimmed = name.trim();
+  const trimmed = titleCase(name.trim());
   const valid = await validateGoogleFont(trimmed);
   if (!valid) throw new Error(`"${trimmed}" not found on Google Fonts`);
 

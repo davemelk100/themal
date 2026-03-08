@@ -1618,6 +1618,7 @@ function DesignSystemEditorInner({
       const type = target.getAttribute("type");
       if (tag === "INPUT" && type === "color") return;
       if (target.closest("[data-mobile-picker]")) return;
+      if (!target.closest("#colors")) return;
       if (tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA") {
         scrollToTop(target);
       }
@@ -1627,6 +1628,7 @@ function DesignSystemEditorInner({
       const target = e.target as HTMLElement;
       if (!target) return;
       if (target.closest("[data-mobile-picker]")) return;
+      if (!target.closest("#colors")) return;
       // Swatch buttons handle their own scroll in onClick, skip them here
       if (target.closest("button[aria-label*='color swatch']")) return;
       // Handle range inputs
