@@ -96,10 +96,16 @@ function App() {
               </thead>
               <tbody style={{ color: "hsl(var(--foreground))" }}>
                 <tr className="border-t" style={{ borderColor: "hsl(var(--border))" }}>
+                  <td className="px-4 py-2 font-mono text-xs">github</td>
+                  <td className="px-4 py-2 font-mono text-xs">GitHubConfig</td>
+                  <td className="px-4 py-2">-</td>
+                  <td className="px-4 py-2">GitHub integration config. Enables client-side PR creation via OAuth. No backend needed. See GitHub Integration below.</td>
+                </tr>
+                <tr className="border-t" style={{ borderColor: "hsl(var(--border))" }}>
                   <td className="px-4 py-2 font-mono text-xs">prEndpointUrl</td>
                   <td className="px-4 py-2 font-mono text-xs">string</td>
                   <td className="px-4 py-2">-</td>
-                  <td className="px-4 py-2">URL for your PR creation endpoint. The PR button is hidden if omitted. See the PR Endpoint section below for the required API contract.</td>
+                  <td className="px-4 py-2">Legacy: URL for a custom server-side PR endpoint. Use <code className="font-mono text-xs">github</code> instead for zero-backend setup.</td>
                 </tr>
                 <tr className="border-t" style={{ borderColor: "hsl(var(--border))" }}>
                   <td className="px-4 py-2 font-mono text-xs">accessibilityAudit</td>
@@ -181,9 +187,14 @@ function App() {
             <code>{`<DesignSystemEditor accessibilityAudit={false} />`}</code>
           </pre>
 
-          <h3 className="text-[14px] font-medium mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>With PR creation</h3>
+          <h3 className="text-[14px] font-medium mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>With GitHub PR integration</h3>
           <pre className="rounded-lg p-4 text-[14px] overflow-x-auto mb-4" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
-            <code>{`<DesignSystemEditor prEndpointUrl="/api/create-design-pr" />`}</code>
+            <code>{`<DesignSystemEditor
+  github={{
+    clientId: "Iv1.abc123",
+    repo: "your-org/your-repo",
+  }}
+/>`}</code>
           </pre>
 
           <h3 className="text-[14px] font-medium mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>With premium features</h3>
@@ -214,90 +225,151 @@ function App() {
           </pre>
         </section>
 
-        {/* PR Endpoint */}
+        {/* GitHub Integration */}
         <section className="mb-8">
-          <h2 className="text-xl font-medium mb-3" style={{ color: "hsl(var(--foreground))" }}>PR Endpoint</h2>
+          <h2 className="text-xl font-medium mb-3" style={{ color: "hsl(var(--foreground))" }}>GitHub Integration</h2>
           <p className="text-[14px] leading-relaxed mb-3" style={{ color: "hsl(var(--foreground))" }}>
-            When you pass a <code className="font-mono text-[14px]">prEndpointUrl</code>, the editor sends design changes to your backend so you can create a pull request (or apply them however you like). You need to implement this endpoint yourself. The editor is entirely client-side and does not ship a backend.
+            The editor can open GitHub pull requests directly from the browser. Users click "Connect GitHub", authorize via OAuth, and the editor creates branches, commits CSS changes, and returns a compare URL. No backend required from the consuming app.
           </p>
           <p className="text-[14px] leading-relaxed mb-3" style={{ color: "hsl(var(--foreground))" }}>
-            If <code className="font-mono text-[14px]">prEndpointUrl</code> is omitted, the PR button is hidden and no server is needed.
+            If neither <code className="font-mono text-[14px]">github</code> nor <code className="font-mono text-[14px]">prEndpointUrl</code> is provided, the PR button is hidden entirely.
           </p>
 
-          <h3 className="text-[14px] font-medium mb-2 mt-4" style={{ color: "hsl(var(--muted-foreground))" }}>Request (Editor sends)</h3>
+          <h3 className="text-[14px] font-medium mb-2 mt-6" style={{ color: "hsl(var(--muted-foreground))" }}>Public mode (recommended for most users)</h3>
+          <p className="text-[14px] leading-relaxed mb-3" style={{ color: "hsl(var(--foreground))" }}>
+            Uses Themal's hosted OAuth proxy for the token exchange. The user authenticates with their own GitHub account, and the editor calls the GitHub API directly from the browser using their token. The only thing that passes through the proxy is the OAuth authorization code (exchanged for a token). No CSS content or repository data ever touches Themal's servers.
+          </p>
           <pre className="rounded-lg p-4 text-[14px] overflow-x-auto mb-4" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
-            <code>{`POST <prEndpointUrl>
-Content-Type: application/json
-
-{
-  "css": ":root {\\n  --brand: 210 50% 40%;\\n  --primary: 210 83% 48%;\\n  ...\\n}",
-  "sections": ["colors", "typography", "card", "alerts", "interactions"]
-}`}</code>
+            <code>{`<DesignSystemEditor
+  github={{
+    clientId: "Iv1.abc123",        // Your GitHub OAuth App client ID
+    repo: "your-org/your-repo",    // Target repository
+    filePath: "src/globals.css",   // CSS file to update (default)
+    baseBranch: "main",            // Branch to PR against (default)
+  }}
+/>`}</code>
           </pre>
-          <ul className="text-[14px] leading-relaxed list-disc pl-5 space-y-1 mb-4" style={{ color: "hsl(var(--foreground))" }}>
-            <li><code className="font-mono text-[14px]">css</code> (string) — Complete <code className="font-mono text-[14px]">{`:root { ... }`}</code> block with CSS custom properties for the selected sections.</li>
-            <li><code className="font-mono text-[14px]">sections</code> (string[]) — Which sections the user chose to include. Possible values: <code className="font-mono text-[14px]">"colors"</code>, <code className="font-mono text-[14px]">"card"</code>, <code className="font-mono text-[14px]">"typography"</code>, <code className="font-mono text-[14px]">"alerts"</code>, <code className="font-mono text-[14px]">"interactions"</code>.</li>
+          <p className="text-[14px] leading-relaxed mb-2" style={{ color: "hsl(var(--foreground))" }}>
+            Setup steps:
+          </p>
+          <ol className="text-[14px] leading-relaxed list-decimal pl-5 space-y-1 mb-4" style={{ color: "hsl(var(--foreground))" }}>
+            <li>Create a <a href="https://github.com/settings/applications/new" target="_blank" rel="noopener noreferrer" className="underline hover:opacity-70">GitHub OAuth App</a>. Set the authorization callback URL to <code className="font-mono text-[14px]">https://themalive.com/.netlify/functions/github-oauth/callback</code>.</li>
+            <li>Copy the Client ID (starts with <code className="font-mono text-[14px]">Iv1.</code>) and pass it as <code className="font-mono text-[14px]">github.clientId</code>.</li>
+            <li>That's it. No backend, no server-side token, no environment variables needed in your app.</li>
+          </ol>
+
+          <h3 className="text-[14px] font-medium mb-2 mt-6" style={{ color: "hsl(var(--muted-foreground))" }}>Enterprise mode (self-hosted, for corporate environments)</h3>
+          <p className="text-[14px] leading-relaxed mb-3" style={{ color: "hsl(var(--foreground))" }}>
+            For organizations using GitHub Enterprise Server or requiring that no credentials pass through external services, the entire flow can be self-hosted. You deploy your own OAuth proxy (a single serverless function that exchanges an authorization code for a token) and register your own GitHub App with fine-grained permissions.
+          </p>
+          <pre className="rounded-lg p-4 text-[14px] overflow-x-auto mb-4" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
+            <code>{`<DesignSystemEditor
+  github={{
+    clientId: "Iv1.your-ghe-app",
+    repo: "internal-org/design-system",
+    oauthProxyUrl: "https://internal-tools.yourcompany.com/github-oauth",
+    apiBaseUrl: "https://github.yourcompany.com/api/v3",
+    webBaseUrl: "https://github.yourcompany.com",
+  }}
+/>`}</code>
+          </pre>
+
+          <h3 className="text-[14px] font-medium mb-2 mt-4" style={{ color: "hsl(var(--muted-foreground))" }}>Enterprise setup steps</h3>
+          <ol className="text-[14px] leading-relaxed list-decimal pl-5 space-y-2 mb-4" style={{ color: "hsl(var(--foreground))" }}>
+            <li>
+              <span className="font-medium">Register a GitHub App</span> on your GitHub Enterprise Server instance. Use a GitHub App (not an OAuth App) for fine-grained permissions. Grant only <code className="font-mono text-[14px]">Contents: Read and write</code> on the specific repositories you want Themal to target. This avoids the broad <code className="font-mono text-[14px]">repo</code> scope that OAuth Apps require.
+            </li>
+            <li>
+              <span className="font-medium">Deploy the OAuth proxy.</span> It is a single function (~30 lines) that exchanges an authorization code for a token by calling your GHE instance's token endpoint with the client secret. Deploy it behind your corporate firewall. The proxy source is available in the Themal repo at <code className="font-mono text-[14px]">netlify/functions/github-oauth.ts</code>.
+            </li>
+            <li>
+              <span className="font-medium">Set the callback URL</span> in your GitHub App to <code className="font-mono text-[14px]">{"https://<your-proxy-host>/callback"}</code>.
+            </li>
+            <li>
+              <span className="font-medium">Configure the editor</span> with your <code className="font-mono text-[14px]">clientId</code>, <code className="font-mono text-[14px]">oauthProxyUrl</code>, <code className="font-mono text-[14px]">apiBaseUrl</code>, and <code className="font-mono text-[14px]">webBaseUrl</code>.
+            </li>
+          </ol>
+
+          <h3 className="text-[14px] font-medium mb-2 mt-6" style={{ color: "hsl(var(--muted-foreground))" }}>Security model</h3>
+          <ul className="text-[14px] leading-relaxed list-disc pl-5 space-y-2 mb-4" style={{ color: "hsl(var(--foreground))" }}>
+            <li><span className="font-medium">Token ownership.</span> Each user authenticates with their own GitHub account. The editor stores the OAuth token in <code className="font-mono text-[14px]">localStorage</code> on their browser. No shared service account or static token is involved.</li>
+            <li><span className="font-medium">Proxy scope.</span> The OAuth proxy only handles the code-to-token exchange. All GitHub API calls (reading files, creating branches, committing) happen directly from the browser to the GitHub API. No CSS content or repository data passes through the proxy.</li>
+            <li><span className="font-medium">Fine-grained permissions.</span> Enterprise deployments using GitHub Apps can scope permissions to specific repositories and grant only <code className="font-mono text-[14px]">Contents: Read and write</code>. Public deployments using OAuth Apps request <code className="font-mono text-[14px]">repo</code> scope (GitHub's limitation for OAuth Apps).</li>
+            <li><span className="font-medium">Token lifecycle.</span> GitHub OAuth tokens do not expire. Users can disconnect from the editor (clears <code className="font-mono text-[14px]">localStorage</code>) or revoke access from their GitHub Settings at any time. If a token is revoked, the editor detects the 401 and prompts re-authentication.</li>
+            <li><span className="font-medium">Self-hostable.</span> In enterprise mode, no traffic leaves your network. The proxy runs behind your firewall, the GitHub API calls go to your GHE instance, and the editor runs on your domain under your CSP headers.</li>
           </ul>
 
-          <h3 className="text-[14px] font-medium mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>Success response</h3>
-          <pre className="rounded-lg p-4 text-[14px] overflow-x-auto mb-3" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
-            <code>{`200 OK
-{ "url": "https://github.com/owner/repo/compare/main...design-update" }`}</code>
-          </pre>
-          <p className="text-[14px] leading-relaxed mb-4" style={{ color: "hsl(var(--foreground))" }}>
-            The editor opens <code className="font-mono text-[14px]">url</code> in a new tab so the user can review the changes.
-          </p>
+          <h3 className="text-[14px] font-medium mb-2 mt-6" style={{ color: "hsl(var(--muted-foreground))" }}>github prop reference</h3>
+          <div className="overflow-x-auto rounded-lg border mb-4" style={{ borderColor: "hsl(var(--border))" }}>
+            <table className="w-full text-[14px]">
+              <thead>
+                <tr style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
+                  <th className="text-left px-4 py-2 font-medium">Property</th>
+                  <th className="text-left px-4 py-2 font-medium">Type</th>
+                  <th className="text-left px-4 py-2 font-medium">Default</th>
+                  <th className="text-left px-4 py-2 font-medium">Description</th>
+                </tr>
+              </thead>
+              <tbody style={{ color: "hsl(var(--foreground))" }}>
+                <tr className="border-t" style={{ borderColor: "hsl(var(--border))" }}>
+                  <td className="px-4 py-2 font-mono text-xs">clientId</td>
+                  <td className="px-4 py-2 font-mono text-xs">string</td>
+                  <td className="px-4 py-2">required</td>
+                  <td className="px-4 py-2">GitHub OAuth App or GitHub App client ID. Safe to expose in client code.</td>
+                </tr>
+                <tr className="border-t" style={{ borderColor: "hsl(var(--border))" }}>
+                  <td className="px-4 py-2 font-mono text-xs">repo</td>
+                  <td className="px-4 py-2 font-mono text-xs">string</td>
+                  <td className="px-4 py-2">required</td>
+                  <td className="px-4 py-2">Target repository in <code className="font-mono text-xs">"owner/repo"</code> format.</td>
+                </tr>
+                <tr className="border-t" style={{ borderColor: "hsl(var(--border))" }}>
+                  <td className="px-4 py-2 font-mono text-xs">filePath</td>
+                  <td className="px-4 py-2 font-mono text-xs">string</td>
+                  <td className="px-4 py-2 font-mono text-xs">"src/globals.css"</td>
+                  <td className="px-4 py-2">Path to the CSS file containing the <code className="font-mono text-xs">@layer base {"{"} :root {"{"} ... {"}"} {"}"}</code> block.</td>
+                </tr>
+                <tr className="border-t" style={{ borderColor: "hsl(var(--border))" }}>
+                  <td className="px-4 py-2 font-mono text-xs">baseBranch</td>
+                  <td className="px-4 py-2 font-mono text-xs">string</td>
+                  <td className="px-4 py-2 font-mono text-xs">"main"</td>
+                  <td className="px-4 py-2">Branch to create PRs against.</td>
+                </tr>
+                <tr className="border-t" style={{ borderColor: "hsl(var(--border))" }}>
+                  <td className="px-4 py-2 font-mono text-xs">oauthProxyUrl</td>
+                  <td className="px-4 py-2 font-mono text-xs">string</td>
+                  <td className="px-4 py-2 font-mono text-xs" style={{ fontSize: "10px" }}>themalive.com proxy</td>
+                  <td className="px-4 py-2">Token exchange proxy URL. Override for self-hosted enterprise deployments.</td>
+                </tr>
+                <tr className="border-t" style={{ borderColor: "hsl(var(--border))" }}>
+                  <td className="px-4 py-2 font-mono text-xs">apiBaseUrl</td>
+                  <td className="px-4 py-2 font-mono text-xs">string</td>
+                  <td className="px-4 py-2 font-mono text-xs">api.github.com</td>
+                  <td className="px-4 py-2">GitHub API base URL. Set for GitHub Enterprise Server.</td>
+                </tr>
+                <tr className="border-t" style={{ borderColor: "hsl(var(--border))" }}>
+                  <td className="px-4 py-2 font-mono text-xs">webBaseUrl</td>
+                  <td className="px-4 py-2 font-mono text-xs">string</td>
+                  <td className="px-4 py-2 font-mono text-xs">github.com</td>
+                  <td className="px-4 py-2">GitHub web base URL. Set for GitHub Enterprise Server.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-          <h3 className="text-[14px] font-medium mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>Error response</h3>
-          <pre className="rounded-lg p-4 text-[14px] overflow-x-auto mb-3" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
-            <code>{`4xx / 5xx
-{ "error": "Human-readable error message" }`}</code>
-          </pre>
-          <p className="text-[14px] leading-relaxed mb-4" style={{ color: "hsl(var(--foreground))" }}>
-            If the response includes an <code className="font-mono text-[14px]">error</code> field, that message is shown to the user. Otherwise the editor shows a generic message with the status code.
-          </p>
+          <h3 className="text-[14px] font-medium mb-2 mt-6" style={{ color: "hsl(var(--muted-foreground))" }}>How it works</h3>
+          <ol className="text-[14px] leading-relaxed list-decimal pl-5 space-y-1 mb-4" style={{ color: "hsl(var(--foreground))" }}>
+            <li>User clicks "Open PR" in the editor.</li>
+            <li>If not connected, a "Connect GitHub" button appears. Clicking it opens a popup to GitHub's OAuth authorization page.</li>
+            <li>After the user authorizes, the popup exchanges the authorization code for a token via the proxy and passes it back to the editor via <code className="font-mono text-[14px]">postMessage</code>.</li>
+            <li>The editor stores the token in <code className="font-mono text-[14px]">localStorage</code> and shows the section selector.</li>
+            <li>On submit, the editor fetches the target CSS file from the repo, merges the updated CSS variables into the <code className="font-mono text-[14px]">@layer base {"{"} :root {"{"} ... {"}"} {"}"}</code> block, creates a new branch, commits the change, and opens the GitHub compare URL in a new tab.</li>
+            <li>The user reviews the diff and creates the PR on GitHub.</li>
+          </ol>
 
-          <h3 className="text-[14px] font-medium mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>Example: Express</h3>
-          <pre className="rounded-lg p-4 text-[14px] overflow-x-auto mb-4" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
-            <code>{`app.post('/api/create-design-pr', async (req, res) => {
-  const { css, sections } = req.body;
-
-  // 1. Parse CSS variables from the :root block
-  // 2. Read your current CSS file from GitHub / disk
-  // 3. Replace the variables
-  // 4. Create a branch and commit via GitHub API
-  // 5. Return a compare URL
-
-  res.json({
-    url: \`https://github.com/you/repo/compare/main...\${branch}\`
-  });
-});`}</code>
-          </pre>
-
-          <h3 className="text-[14px] font-medium mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>Example: Next.js API route</h3>
-          <pre className="rounded-lg p-4 text-[14px] overflow-x-auto mb-4" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
-            <code>{`// app/api/create-design-pr/route.ts
-import { NextResponse } from 'next/server';
-
-export async function POST(req: Request) {
-  const { css, sections } = await req.json();
-
-  // ... create branch, commit, return compare URL
-
-  return NextResponse.json({
-    url: \`https://github.com/you/repo/compare/main...\${branch}\`
-  });
-}`}</code>
-          </pre>
-
-          <h3 className="text-[14px] font-medium mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>CORS</h3>
-          <p className="text-[14px] leading-relaxed mb-4" style={{ color: "hsl(var(--foreground))" }}>
-            If the editor and your endpoint are on different origins, your endpoint must handle CORS (return appropriate <code className="font-mono text-[14px]">Access-Control-Allow-Origin</code> and <code className="font-mono text-[14px]">Access-Control-Allow-Headers</code> headers, and respond to <code className="font-mono text-[14px]">OPTIONS</code> preflight requests).
-          </p>
-
-          <h3 className="text-[14px] font-medium mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>CSS variables by section</h3>
+          <h3 className="text-[14px] font-medium mb-2 mt-6" style={{ color: "hsl(var(--muted-foreground))" }}>CSS variables by section</h3>
           <p className="text-[14px] leading-relaxed mb-2" style={{ color: "hsl(var(--foreground))" }}>
-            The <code className="font-mono text-[14px]">css</code> field includes variables for whichever sections the user selected:
+            The PR includes CSS custom properties for whichever sections the user selected:
           </p>
           <ul className="text-[14px] leading-relaxed list-disc pl-5 space-y-1 mb-4" style={{ color: "hsl(var(--foreground))" }}>
             <li><span className="font-medium">colors</span> — <code className="font-mono text-[14px]">--brand</code>, <code className="font-mono text-[14px]">--primary</code>, <code className="font-mono text-[14px]">--accent</code>, <code className="font-mono text-[14px]">--foreground</code>, <code className="font-mono text-[14px]">--background</code>, <code className="font-mono text-[14px]">--border</code>, <code className="font-mono text-[14px]">--muted</code>, <code className="font-mono text-[14px]">--muted-foreground</code>, <code className="font-mono text-[14px]">--destructive</code>, <code className="font-mono text-[14px]">--success</code>, <code className="font-mono text-[14px]">--warning</code>, and their foreground pairs</li>
@@ -306,6 +378,20 @@ export async function POST(req: Request) {
             <li><span className="font-medium">alerts</span> — <code className="font-mono text-[14px]">--alert-radius</code>, <code className="font-mono text-[14px]">--alert-border-width</code>, <code className="font-mono text-[14px]">--alert-padding</code></li>
             <li><span className="font-medium">interactions</span> — <code className="font-mono text-[14px]">--hover-opacity</code>, <code className="font-mono text-[14px]">--hover-scale</code>, <code className="font-mono text-[14px]">--active-scale</code>, <code className="font-mono text-[14px]">--transition-duration</code>, <code className="font-mono text-[14px]">--focus-ring-width</code>, <code className="font-mono text-[14px]">--focus-ring-color</code></li>
           </ul>
+
+          <h3 className="text-[14px] font-medium mb-2 mt-6" style={{ color: "hsl(var(--muted-foreground))" }}>Legacy: custom PR endpoint</h3>
+          <p className="text-[14px] leading-relaxed mb-3" style={{ color: "hsl(var(--foreground))" }}>
+            The <code className="font-mono text-[14px]">prEndpointUrl</code> prop is still supported for apps that want full control over the server-side PR logic. When provided, the editor POSTs <code className="font-mono text-[14px]">{`{ css, sections }`}</code> to your endpoint and expects <code className="font-mono text-[14px]">{`{ url }`}</code> back. See the <code className="font-mono text-[14px]">prEndpointUrl</code> row in the Props table above.
+          </p>
+          <pre className="rounded-lg p-4 text-[14px] overflow-x-auto mb-3" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
+            <code>{`// Request:  POST { css: ":root { ... }", sections: ["colors", ...] }
+// Response: { url: "https://github.com/owner/repo/compare/main...branch" }
+
+<DesignSystemEditor prEndpointUrl="/api/create-design-pr" />`}</code>
+          </pre>
+          <p className="text-[14px] leading-relaxed mb-4" style={{ color: "hsl(var(--foreground))" }}>
+            If both <code className="font-mono text-[14px]">github</code> and <code className="font-mono text-[14px]">prEndpointUrl</code> are provided, <code className="font-mono text-[14px]">github</code> takes precedence.
+          </p>
         </section>
 
         {/* Exported Utilities */}

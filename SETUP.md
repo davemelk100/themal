@@ -18,7 +18,10 @@ npm run dev
 3. [Stripe (Billing)](#3-stripe-billing)
 4. [GitHub Token (PR creation)](#4-github-token)
 5. [Netlify (Production)](#5-netlify-production)
-6. [Environment Variable Reference](#6-environment-variable-reference)
+6. [Importing @themal/editor Into Your App](#6-importing-themal-editor-into-your-app)
+7. [GitHub PR Integration](#7-github-pr-integration)
+8. [Environment Variable Reference](#8-environment-variable-reference)
+9. [Command Reference](#9-command-reference)
 
 ---
 
@@ -179,7 +182,166 @@ Netlify caches env vars per deploy. After updating a variable, trigger a new dep
 
 ---
 
-## 6. Environment Variable Reference
+## 6. Importing @themal/editor Into Your App
+
+This section is for developers who install `@themal/editor` as a dependency in their own project.
+
+### Minimal setup (no backend required)
+
+```bash
+npm install @themal/editor
+```
+
+Peer dependencies: `react` and `react-dom` (v18 or v19).
+Optional: `axe-core` (accessibility auditing), `lucide-react` (icon previews).
+
+```tsx
+import { DesignSystemEditor } from '@themal/editor';
+import '@themal/editor/style.css';
+
+function App() {
+  return <DesignSystemEditor />;
+}
+```
+
+Run your normal dev server. No env vars, no serverless functions, no special CLI. The editor is entirely client-side. Colors, typography, cards, alerts, export, and shareable URLs all work out of the box.
+
+### With all features enabled
+
+```tsx
+<DesignSystemEditor
+  github={{
+    clientId: "Iv1.abc123",
+    repo: "your-org/your-repo",
+    filePath: "src/globals.css",
+    baseBranch: "main",
+  }}
+  accessibilityAudit={true}
+  licenseKey="THEMAL-XXXX-XXXX-XXXX"
+  upgradeUrl="/pricing"
+  signInUrl="/sign-in"
+/>
+```
+
+### Web component (Vue, Svelte, WordPress, Shopify, etc.)
+
+No npm install needed. Single script tag:
+
+```html
+<script src="https://themalive.com/themal-editor.js"></script>
+<themal-editor
+  license-key="THEMAL-XXXX-XXXX-XXXX"
+  accessibility-audit="true"
+></themal-editor>
+```
+
+Bundles React internally. Works anywhere you can load a script tag.
+
+---
+
+## 7. GitHub PR Integration
+
+Two modes. Choose based on your environment.
+
+### Public mode (recommended for most users)
+
+Uses Themal's hosted OAuth proxy for the token exchange. All GitHub API calls happen directly from the browser using the user's own OAuth token. No CSS content or repo data passes through Themal's servers.
+
+**Setup:**
+
+1. Create a [GitHub OAuth App](https://github.com/settings/applications/new).
+2. Set callback URL to `https://themalive.com/.netlify/functions/github-oauth/callback`.
+3. Copy the Client ID (starts with `Iv1.`).
+
+```tsx
+<DesignSystemEditor
+  github={{
+    clientId: "Iv1.abc123",
+    repo: "your-org/your-repo",
+  }}
+/>
+```
+
+No backend, no env vars, no server functions in your app.
+
+### Enterprise mode (self-hosted, for corporate environments)
+
+For organizations using GitHub Enterprise Server or requiring that no credentials pass through external services. The entire flow stays within your network.
+
+**Setup:**
+
+1. Register a **GitHub App** on your GHE instance. Grant `Contents: Read and write` on target repos only (fine-grained, not the broad `repo` scope).
+2. Deploy the OAuth proxy behind your firewall. It is a single serverless function (~30 lines) that exchanges an authorization code for a token. Source: `netlify/functions/github-oauth.ts`.
+3. Set the callback URL in your GitHub App to `https://<your-proxy-host>/callback`.
+
+```tsx
+<DesignSystemEditor
+  github={{
+    clientId: "Iv1.your-ghe-app-id",
+    repo: "internal-org/design-system",
+    oauthProxyUrl: "https://internal-tools.yourcompany.com/github-oauth",
+    apiBaseUrl: "https://github.yourcompany.com/api/v3",
+    webBaseUrl: "https://github.yourcompany.com",
+  }}
+/>
+```
+
+**Proxy env vars** (on your internal proxy server):
+
+| Variable | Value |
+|----------|-------|
+| `GITHUB_CLIENT_ID` | Your GitHub App client ID |
+| `GITHUB_CLIENT_SECRET` | Your GitHub App client secret |
+| `GITHUB_WEB_BASE_URL` | `https://github.yourcompany.com` |
+
+### `github` prop reference
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `clientId` | string | required | GitHub OAuth/App client ID |
+| `repo` | string | required | Target repo (`"owner/repo"`) |
+| `filePath` | string | `"src/globals.css"` | CSS file with `@layer base { :root { ... } }` |
+| `baseBranch` | string | `"main"` | Branch to PR against |
+| `oauthProxyUrl` | string | Themal's hosted proxy | Token exchange proxy URL |
+| `apiBaseUrl` | string | `https://api.github.com` | GitHub API URL (for GHE) |
+| `webBaseUrl` | string | `https://github.com` | GitHub web URL (for GHE) |
+
+### Security comparison
+
+| Concern | Public mode | Enterprise mode |
+|---------|-------------|-----------------|
+| Token exchange | Themal's hosted proxy | Your self-hosted proxy |
+| GitHub API calls | Browser to api.github.com | Browser to your GHE |
+| Permissions | `repo` scope (OAuth App) | Fine-grained per-repo (GitHub App) |
+| Token storage | User's browser localStorage | User's browser localStorage |
+| CSS data in transit | Browser to GitHub directly | Browser to GHE directly |
+| Network traffic to Themal | OAuth code exchange only | None |
+
+### How the flow works
+
+1. User clicks "Open PR" in the editor.
+2. If not connected, "Connect GitHub" button appears. Clicking opens a popup to GitHub's OAuth page.
+3. User authorizes. Popup exchanges the code for a token via the proxy, passes it back via `postMessage`.
+4. Token stored in localStorage. Editor shows the section selector.
+5. User selects sections and clicks "Submit PR".
+6. Editor fetches the CSS file from the repo, merges updated variables into the `:root` block, creates a branch, commits, and opens the GitHub compare URL in a new tab.
+7. User reviews the diff and creates the PR on GitHub.
+
+### Legacy: custom PR endpoint
+
+The `prEndpointUrl` prop is still supported for apps that want full server-side control:
+
+```tsx
+<DesignSystemEditor prEndpointUrl="/api/create-design-pr" />
+```
+
+Your endpoint receives `POST { css, sections }` and returns `{ url }`. You implement the GitHub logic on your server. See the `prEndpointUrl` row in the Props table on the [Dev Docs page](https://themalive.com/readme).
+
+If both `github` and `prEndpointUrl` are provided, `github` takes precedence.
+
+---
+
+## 8. Environment Variable Reference
 
 | Variable | Where Used | Prefix | Where to Find |
 |----------|-----------|--------|---------------|
@@ -202,7 +364,7 @@ Netlify caches env vars per deploy. After updating a variable, trigger a new dep
 
 ---
 
-## 7. Command Reference
+## 9. Command Reference
 
 ### Root (from repo root)
 
