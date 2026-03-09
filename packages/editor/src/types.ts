@@ -53,6 +53,8 @@ export interface DesignSystemEditorProps {
   onAiGenerate?: (prompt: string) => Promise<AiGenerateResult>;
 }
 
+export type { ImportedIconData } from "./utils/iconImport";
+
 export interface TokenDefinition {
   key: string;
   label: string;

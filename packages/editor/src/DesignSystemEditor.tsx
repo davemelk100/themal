@@ -57,6 +57,7 @@ import {
   removeToastStyleProperties,
   BUTTON_STYLE_KEY,
   DEFAULT_BUTTON_STYLE,
+  BUTTON_PRESETS,
   applyButtonStyle,
   applyStoredButtonStyle,
   removeButtonStyleProperties,
@@ -98,6 +99,8 @@ import {
   extractPaletteFromImage,
   extractPaletteFromUrl,
 } from "./utils/extractPalette";
+import { useImportedIcons } from "./hooks/useImportedIcons";
+import { IconImportModal } from "./components/IconImportModal";
 import "./styles/editor.css";
 
 const LazyHome = React.lazy(() =>
@@ -434,7 +437,7 @@ function DesignSystemEditorInner({
   const [generatedCode, setGeneratedCode] = useState<string | null>(null);
   const [codeCopied, setCodeCopied] = useState(false);
   const [prSections, setPrSections] = useState<Set<string>>(
-    new Set(["colors", "card", "typography", "alerts", "interactions"]),
+    new Set(["colors", "card", "typography", "alerts", "buttons", "interactions"]),
   );
   const [showPrModal, setShowPrModal] = useState(false);
   const [prError, setPrError] = useState<string | null>(null);
@@ -458,6 +461,8 @@ function DesignSystemEditorInner({
   const spectrumRef = useRef<HTMLDivElement | null>(null);
   const [navOffsets, setNavOffsets] = useState<Record<string, number>>({});
   const [iconsHidden, setIconsHidden] = useState(false);
+  const [showIconImportModal, setShowIconImportModal] = useState(false);
+  const { importedIcons, importedIconData, addIcons: addImportedIcons, removeIcon: removeImportedIcon, clearAll: clearImportedIcons } = useImportedIcons();
   const [auditViolations, setAuditViolations] = useState<
     { selector: string; text: string }[]
   >([]);
@@ -798,7 +803,20 @@ function DesignSystemEditorInner({
   }, [buttonStyle]);
 
   const updateButtonStyle = useCallback((patch: Partial<ButtonStyleState>) => {
-    setButtonStyle((prev) => ({ ...prev, ...patch }));
+    setButtonStyle((prev) => {
+      const next = { ...prev, ...patch };
+      if (patch.preset === undefined && prev.preset !== "custom") {
+        next.preset = "custom";
+      }
+      return next;
+    });
+  }, []);
+
+  const selectButtonPreset = useCallback((presetKey: string) => {
+    const preset = BUTTON_PRESETS[presetKey];
+    if (preset) {
+      setButtonStyle({ ...preset });
+    }
   }, []);
 
   useEffect(() => {
@@ -916,6 +934,23 @@ function DesignSystemEditorInner({
             vars += `  --alert-border-width: ${alertStyle.borderWidth}px;\n`;
             vars += `  --alert-padding: ${alertStyle.padding}px;\n`;
             break;
+          case "buttons": {
+            const btnShadow =
+              buttonStyle.shadowBlur === 0 &&
+              buttonStyle.shadowOffsetX === 0 &&
+              buttonStyle.shadowOffsetY === 0 &&
+              buttonStyle.shadowSpread === 0
+                ? "none"
+                : `${buttonStyle.shadowOffsetX}px ${buttonStyle.shadowOffsetY}px ${buttonStyle.shadowBlur}px ${buttonStyle.shadowSpread}px ${buttonStyle.shadowColor}`;
+            vars += `  --btn-px: ${buttonStyle.paddingX}px;\n`;
+            vars += `  --btn-py: ${buttonStyle.paddingY}px;\n`;
+            vars += `  --btn-font-size: ${buttonStyle.fontSize}px;\n`;
+            vars += `  --btn-font-weight: ${buttonStyle.fontWeight};\n`;
+            vars += `  --btn-radius: ${buttonStyle.borderRadius}px;\n`;
+            vars += `  --btn-shadow: ${btnShadow};\n`;
+            vars += `  --btn-border-width: ${buttonStyle.borderWidth}px;\n`;
+            break;
+          }
           case "interactions":
             vars += `  --hover-opacity: ${interactionStyle.hoverOpacity};\n`;
             vars += `  --hover-scale: ${interactionStyle.hoverScale};\n`;
@@ -928,7 +963,7 @@ function DesignSystemEditorInner({
       }
       return `:root {\n${vars}}`;
     },
-    [colors, cardStyle, typographyState, alertStyle, interactionStyle],
+    [colors, cardStyle, typographyState, alertStyle, buttonStyle, interactionStyle],
   );
 
   const submitPr = useCallback(
@@ -1323,6 +1358,24 @@ function DesignSystemEditorInner({
     if (accessibilityAudit) runAccessibilityAudit();
     setImagePaletteStatus("done");
     setTimeout(() => setImagePaletteStatus("idle"), 3000);
+  };
+
+  const handleResetColors = () => {
+    EDITABLE_VARS.forEach(({ key }) => {
+      editorRootRef.current?.style.removeProperty(key);
+    });
+    if (defaultColors) {
+      Object.entries(defaultColors).forEach(([key, value]) => {
+        editorRootRef.current?.style.setProperty(key, value);
+      });
+    }
+    storage.remove(THEME_COLORS_KEY);
+    storage.remove(PENDING_COLORS_KEY);
+    storage.remove(COLOR_HISTORY_KEY);
+    storage.remove(CONTRAST_KNOWLEDGE_KEY);
+    readCurrentColors();
+    setGeneratedCode(null);
+    window.dispatchEvent(new Event("theme-pending-update"));
   };
 
   const handleReset = () => {
@@ -1987,12 +2040,12 @@ function DesignSystemEditorInner({
         </div>
       </div>
       {/* Palette action buttons - desktop only */}
-      <div className="w-full px-4 sm:px-6 lg:px-8 pt-2 pb-2 md:pb-6 flex flex-wrap items-center gap-2 sm:gap-4" data-axe-exclude>
+      <div className="w-full px-4 sm:px-6 lg:px-8 pt-2 pb-2 md:pb-6 flex flex-wrap items-center gap-2 sm:gap-3" data-axe-exclude>
         {/* Desktop buttons */}
         <div className="hidden sm:contents">
           <button
             onClick={() => setShowGlobalResetModal(true)}
-            className="ds-global-btn h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+            className="ds-global-btn flex-1 min-w-0 h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
             title="Reset all sections to defaults"
           >
             <svg
@@ -2032,10 +2085,10 @@ function DesignSystemEditorInner({
             <span className="truncate">Import CSS</span>
           </button>
           */}
-          <div className="flex items-center">
+          <div className="flex items-center flex-1 min-w-0">
             <button
               onClick={handleGenerate}
-              className="ds-global-btn h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+              className="ds-global-btn w-full h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
             >
               <svg
                 className="w-4 h-4 flex-shrink-0"
@@ -2087,6 +2140,7 @@ function DesignSystemEditorInner({
               )}
             </button>
           </div>
+          <div className="flex-1 min-w-0">
           <PremiumGate
             feature="harmony-schemes"
             variant="inline"
@@ -2094,10 +2148,10 @@ function DesignSystemEditorInner({
             upgradeUrl={upgradeUrl}
             signInUrl={signInUrl}
           >
-            <div className="relative">
+            <div className="relative w-full">
               <button
                 onClick={() => setShuffleOpen(!shuffleOpen)}
-                className="ds-global-btn h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+                className="ds-global-btn w-full h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
               >
                 <svg
                   className="w-4 h-4 flex-shrink-0"
@@ -2189,6 +2243,8 @@ function DesignSystemEditorInner({
               )}
             </div>
           </PremiumGate>
+          </div>
+          <div className="flex-1 min-w-0">
           <PremiumGate
             feature="image-palette"
             variant="inline"
@@ -2198,7 +2254,7 @@ function DesignSystemEditorInner({
           >
             <button
               onClick={() => setShowImagePaletteModal(true)}
-              className="ds-global-btn h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+              className="ds-global-btn w-full h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
               title="Extract a color palette from an image"
             >
               {imagePaletteStatus === "extracting" ? (
@@ -2285,10 +2341,11 @@ function DesignSystemEditorInner({
               )}
             </button>
           </PremiumGate>
+          </div>
           {accessibilityAudit && (
             <button
               onClick={() => runAccessibilityAudit(true)}
-              className="ds-global-btn h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+              className="ds-global-btn flex-1 min-w-0 h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
               title="Run accessibility audit"
             >
               <svg
@@ -2631,7 +2688,7 @@ function DesignSystemEditorInner({
           <ResetConfirmModal
             open={showResetModal}
             onClose={() => setShowResetModal(false)}
-            onConfirm={handleReset}
+            onConfirm={handleResetColors}
             title="Reset to Defaults?"
             message="This will revert all theme colors to their original values. Any saved customizations will be lost."
             id="home-reset-modal-title"
@@ -2646,6 +2703,13 @@ function DesignSystemEditorInner({
             message="This will reset all sections - colors, buttons, cards, alerts, and typography - to their defaults. All customizations will be lost."
             confirmText="Reset theme to default"
             id="global-reset-modal-title"
+          />
+
+          {/* Icon Import Modal */}
+          <IconImportModal
+            open={showIconImportModal}
+            onClose={() => setShowIconImportModal(false)}
+            onImport={addImportedIcons}
           />
 
           {/* Card Style Reset Confirmation Modal */}
@@ -3488,8 +3552,16 @@ function DesignSystemEditorInner({
                     name: ci.name,
                     icon: ci.icon as React.ComponentType<any>,
                   }));
-                  const allIcons = [...builtInIcons, ...extraIcons];
-                  if (allIcons.length === 0) return null;
+                  const importedIconEntries = importedIcons.map((ci) => ({
+                    name: ci.name,
+                    icon: ci.icon as React.ComponentType<any>,
+                    imported: true,
+                  }));
+                  const allIcons = [
+                    ...builtInIcons.map((i) => ({ ...i, imported: false })),
+                    ...extraIcons.map((i) => ({ ...i, imported: false })),
+                    ...importedIconEntries,
+                  ];
                   return (
                     <div className="w-full hidden md:block" data-axe-exclude>
                       <div className="flex items-center gap-2 mb-2 md:mb-3">
@@ -3511,23 +3583,64 @@ function DesignSystemEditorInner({
                             {iconsHidden ? "Show All" : "Hide All"}
                           </button>
                         )}
+                        <PremiumGate feature="icon-import" variant="inline" upgradeUrl={upgradeUrl} signInUrl={signInUrl}>
+                          <button
+                            onClick={() => setShowIconImportModal(true)}
+                            className="text-[12px] font-light px-2 py-0.5 rounded transition-colors hover:opacity-80"
+                            style={{
+                              color: "hsl(var(--muted-foreground))",
+                              border: "1px solid hsl(var(--border))",
+                            }}
+                          >
+                            Import
+                          </button>
+                        </PremiumGate>
+                        {importedIconData.length > 0 && (
+                          <button
+                            onClick={clearImportedIcons}
+                            className="text-[12px] font-light px-2 py-0.5 rounded transition-colors hover:opacity-80"
+                            style={{
+                              color: "hsl(var(--muted-foreground))",
+                              border: "1px solid hsl(var(--border))",
+                            }}
+                          >
+                            Clear Imported ({importedIconData.length})
+                          </button>
+                        )}
                       </div>
-                      {!iconsHidden && (
+                      {!iconsHidden && allIcons.length > 0 && (
                         <div className="flex flex-row flex-wrap gap-2">
                           <Suspense fallback={null}>
-                            {allIcons.map(({ name, icon: Icon }) => (
-                              <div
-                                key={name}
-                                className="bg-brand-dynamic/10 dark:bg-brand-dynamic/20 hover:bg-brand-dynamic/20 dark:hover:bg-brand-dynamic/30 rounded-full p-2 shadow-sm hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center"
-                                title={name}
-                              >
-                                <Icon
-                                  className="h-5 w-5 text-brand-dynamic"
-                                  aria-label={name}
-                                  role="img"
-                                />
-                              </div>
-                            ))}
+                            {allIcons.map(({ name, icon: Icon, imported }) => {
+                              const matchingData = imported
+                                ? importedIconData.find((d) => d.name === name)
+                                : null;
+                              return (
+                                <div
+                                  key={`${imported ? "imported" : "builtin"}-${name}`}
+                                  className={`bg-brand-dynamic/10 dark:bg-brand-dynamic/20 hover:bg-brand-dynamic/20 dark:hover:bg-brand-dynamic/30 rounded-full p-2 shadow-sm hover:scale-110 transition-all duration-200 w-10 h-10 flex items-center justify-center relative${imported ? " ds-icon-remove-parent" : ""}`}
+                                  title={name}
+                                >
+                                  <Icon
+                                    className="h-5 w-5 text-brand-dynamic"
+                                    aria-label={name}
+                                    role="img"
+                                  />
+                                  {matchingData && (
+                                    <button
+                                      className="ds-icon-remove-badge"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        removeImportedIcon(matchingData.id);
+                                      }}
+                                      aria-label={`Remove ${name}`}
+                                    >
+                                      &times;
+                                    </button>
+                                  )}
+                                </div>
+                              );
+                            })}
                           </Suspense>
                         </div>
                       )}
@@ -3746,6 +3859,92 @@ function DesignSystemEditorInner({
                     </div>
                   );
                 })()}
+
+                {/* Preset buttons */}
+                <div className="flex flex-wrap gap-2 sm:gap-4 rounded-lg p-3">
+                  {(["subtle", "elevated", "bold"] as const).map((key) => {
+                    const labels: Record<string, string> = {
+                      subtle: "Subtle",
+                      elevated: "Elevated",
+                      bold: "Bold",
+                    };
+                    const icons: Record<string, React.ReactNode> = {
+                      subtle: (
+                        <svg
+                          className="w-4 h-4 flex-shrink-0"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          strokeWidth={2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M20 12H4"
+                          />
+                        </svg>
+                      ),
+                      elevated: (
+                        <svg
+                          className="w-4 h-4 flex-shrink-0"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          strokeWidth={2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M5 15l7-7 7 7"
+                          />
+                        </svg>
+                      ),
+                      bold: (
+                        <svg
+                          className="w-4 h-4 flex-shrink-0"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          strokeWidth={2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M13 10V3L4 14h7v7l9-11h-7z"
+                          />
+                        </svg>
+                      ),
+                    };
+                    const active = buttonStyle.preset === key;
+                    return (
+                      <button
+                        key={key}
+                        onClick={() => selectButtonPreset(key)}
+                        className="h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+                        style={
+                          active
+                            ? {
+                                backgroundColor: "hsl(var(--brand))",
+                                color: colors["--brand"]
+                                  ? `hsl(${fgForBg(colors["--brand"])})`
+                                  : "#fff",
+                                boxShadow:
+                                  "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
+                              }
+                            : {
+                                backgroundColor: "hsl(var(--muted))",
+                                color: "hsl(var(--foreground))",
+                                boxShadow:
+                                  "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
+                              }
+                        }
+                      >
+                        {icons[key]}
+                        {labels[key]}
+                      </button>
+                    );
+                  })}
+                </div>
 
                 <div className="flex flex-col md:flex-row gap-4 md:gap-6 flex-1">
                   {/* Controls */}
@@ -4195,7 +4394,6 @@ function DesignSystemEditorInner({
                   {/* Preset buttons */}
                   <div
                     className="flex flex-wrap gap-2 sm:gap-4 rounded-lg p-3"
-                    style={{ backgroundColor: "hsl(var(--foreground) / 0.04)" }}
                   >
                     {(["subtle", "elevated", "bold"] as const).map((key) => {
                       const labels: Record<string, string> = {
@@ -4793,7 +4991,6 @@ function DesignSystemEditorInner({
               {/* Preset buttons */}
               <div
                 className="flex flex-wrap gap-2 sm:gap-4 rounded-lg p-3"
-                style={{ backgroundColor: "hsl(var(--foreground) / 0.04)" }}
               >
                 {(
                   ["liquid-glass", "solid", "gradient", "border-only"] as const
@@ -6448,7 +6645,6 @@ function DesignSystemEditorInner({
                 {/* Preset buttons */}
                 <div
                   className="flex flex-wrap gap-2 sm:gap-4 rounded-lg p-3"
-                  style={{ backgroundColor: "hsl(var(--foreground) / 0.04)" }}
                 >
                   {(
                     [
@@ -7216,7 +7412,6 @@ function DesignSystemEditorInner({
                   {/* Preset buttons */}
                   <div
                     className="flex flex-wrap gap-2 sm:gap-4 rounded-lg p-3"
-                    style={{ backgroundColor: "hsl(var(--foreground) / 0.04)" }}
                   >
                     {(["subtle", "elevated", "bold"] as const).map((key) => {
                       const labels: Record<string, string> = {
@@ -8718,6 +8913,7 @@ function DesignSystemEditorInner({
                   "card",
                   "typography",
                   "alerts",
+                  "buttons",
                   "interactions",
                 ] as const
               ).map((section) => {
@@ -8726,6 +8922,7 @@ function DesignSystemEditorInner({
                   card: "Cards",
                   typography: "Typography",
                   alerts: "Alerts",
+                  buttons: "Buttons",
                   interactions: "Interactions",
                 };
                 return (

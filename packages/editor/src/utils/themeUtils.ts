@@ -1067,7 +1067,7 @@ export function applyTypography(state: TypographyState, root: HTMLElement = docu
       line-height: ${state.lineHeight};
       letter-spacing: ${state.letterSpacing}em;
     }
-    body {
+    .ds-editor {
       font-size: ${state.baseFontSize}px;
     }
     h1, h2, h3, h4, h5, h6 {
@@ -1338,6 +1338,7 @@ export function applyStoredInteractionStyle(root: HTMLElement = document.documen
 export const BUTTON_STYLE_KEY = "ds-button-style";
 
 export interface ButtonStyleState {
+  preset: "subtle" | "elevated" | "bold" | "custom";
   paddingX: number;
   paddingY: number;
   fontSize: number;
@@ -1352,6 +1353,7 @@ export interface ButtonStyleState {
 }
 
 export const DEFAULT_BUTTON_STYLE: ButtonStyleState = {
+  preset: "subtle",
   paddingX: 16,
   paddingY: 8,
   fontSize: 14,
@@ -1363,6 +1365,38 @@ export const DEFAULT_BUTTON_STYLE: ButtonStyleState = {
   shadowSpread: 0,
   shadowColor: "rgba(0,0,0,0.1)",
   borderWidth: 0,
+};
+
+export const BUTTON_PRESETS: Record<string, ButtonStyleState> = {
+  subtle: { ...DEFAULT_BUTTON_STYLE },
+  elevated: {
+    preset: "elevated",
+    paddingX: 20,
+    paddingY: 10,
+    fontSize: 14,
+    fontWeight: 500,
+    borderRadius: 8,
+    shadowOffsetX: 0,
+    shadowOffsetY: 4,
+    shadowBlur: 12,
+    shadowSpread: 0,
+    shadowColor: "rgba(0,0,0,0.15)",
+    borderWidth: 0,
+  },
+  bold: {
+    preset: "bold",
+    paddingX: 24,
+    paddingY: 12,
+    fontSize: 16,
+    fontWeight: 600,
+    borderRadius: 16,
+    shadowOffsetX: 0,
+    shadowOffsetY: 6,
+    shadowBlur: 20,
+    shadowSpread: 2,
+    shadowColor: "rgba(0,0,0,0.2)",
+    borderWidth: 0,
+  },
 };
 
 export function applyButtonStyle(state: ButtonStyleState, root: HTMLElement = document.documentElement) {

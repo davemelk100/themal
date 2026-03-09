@@ -363,7 +363,7 @@ export default function SiteFooter({ sticky = false }: { sticky?: boolean }) {
       className={`hidden md:block ${sticky ? "sticky bottom-0 z-40" : ""} mt-auto border-t`}
       style={{
         borderColor: "hsl(var(--border))",
-        backgroundColor: "hsl(var(--background))",
+        backgroundColor: "inherit",
       }}
     >
       <div className="w-full px-4 sm:px-6 lg:px-8 py-5 flex items-center">

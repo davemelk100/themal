@@ -366,7 +366,7 @@ export default function LandingPage() {
               ].map((fw) => (
                 <div
                   key={fw.name}
-                  className="flex flex-col items-center gap-1.5 opacity-50 hover:opacity-80 transition-opacity"
+                  className="flex flex-col items-center gap-1.5 opacity-70 hover:opacity-90 transition-opacity"
                   style={{ color: "hsl(var(--foreground))" }}
                   title={fw.name}
                 >
