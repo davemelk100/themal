@@ -36,6 +36,7 @@
 
 /* Header nav links: subtle bottom border for active state */
 .ds-nav-link {
+  color: hsl(var(--foreground) / 0.65);
   border-bottom: 1px solid transparent;
   padding-bottom: 2px;
   transition: color 0.2s, border-bottom-color 0.2s;
