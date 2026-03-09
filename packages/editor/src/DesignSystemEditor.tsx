@@ -306,6 +306,7 @@ function DesignSystemEditorInner({
   defaultColors,
   defaultTypography,
   onAiGenerate,
+  devMode = false,
 }: DesignSystemEditorProps) {
   const { isPremium } = useLicense();
   const [hoveredLockKey, setHoveredLockKey] = useState<string | null>(null);
@@ -1436,6 +1437,11 @@ function DesignSystemEditorInner({
     if (defaultTypography) applyTypography(resetTypo, editorRootRef.current!);
   };
 
+  const handlePurgeStorage = () => {
+    try { localStorage.clear(); } catch { /* noop */ }
+    try { sessionStorage.clear(); } catch { /* noop */ }
+    window.location.reload();
+  };
 
   const runAccessibilityAudit = async (manual = false) => {
     if (!accessibilityAudit) return;
@@ -2020,6 +2026,7 @@ function DesignSystemEditorInner({
               }
               else if (v === "audit") runAccessibilityAudit(true);
               else if (v === "ai-generate") setShowAiGenerateModal(true);
+              else if (v === "purge") handlePurgeStorage();
               e.target.value = "";
             }}
           >
@@ -2036,6 +2043,7 @@ function DesignSystemEditorInner({
             {prEndpointUrl && <option value="pr">Open PR</option>}
             {accessibilityAudit && <option value="audit">Accessibility Check</option>}
             {onAiGenerate && <option value="ai-generate">AI Generate</option>}
+            {devMode && <option value="purge">Purge Storage</option>}
           </select>
         </div>
       </div>
@@ -2376,6 +2384,19 @@ function DesignSystemEditorInner({
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
               </svg>
               <span className="truncate">AI Generate</span>
+            </button>
+          )}
+          {devMode && (
+            <button
+              onClick={handlePurgeStorage}
+              className="ds-global-btn flex-1 min-w-0 h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+              title="Clear all localStorage and sessionStorage, then reload"
+              style={{ borderColor: "hsl(var(--destructive))", borderWidth: 1 }}
+            >
+              <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              <span className="truncate">Purge Storage</span>
             </button>
           )}
         </div>

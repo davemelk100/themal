@@ -51,6 +51,8 @@ export interface DesignSystemEditorProps {
   defaultTypography?: Partial<import("./utils/themeUtils").TypographyState>;
   /** Provider-agnostic AI theme generation. When provided, an "AI Generate" button appears in Global Actions. The callback receives the user's text prompt and should return colors and/or typography to preview and apply. */
   onAiGenerate?: (prompt: string) => Promise<AiGenerateResult>;
+  /** Show a "Purge Storage" button in Global Actions that clears all Themal localStorage keys. Useful during development. Default: false */
+  devMode?: boolean;
 }
 
 export type { ImportedIconData } from "./utils/iconImport";

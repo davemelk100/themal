@@ -48,6 +48,7 @@ export default function PortfolioLanding() {
         headerRight={<UserNav />}
         featuresUrl="/readme"
         aboutUrl="/about"
+        devMode={import.meta.env.DEV}
       />
       <SiteFooterBranding />
       <SiteFooter sticky={false} />
