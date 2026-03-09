@@ -1059,13 +1059,12 @@ export function applyTypography(state: TypographyState) {
   }
   document.head.appendChild(styleEl);
 
-  /* Global rules use !important on font-family so they override site CSS
-     regardless of selector specificity (e.g. .my-class span).
-     The .ds-editor scoped rules do NOT use !important so custom classes
-     like .ds-h2 can still override via natural specificity. */
+  /* Scoped rules under .ds-editor avoid !important so custom classes
+     like .ds-h2 can override via natural specificity. Global rules also
+     avoid !important and rely on specificity instead. */
   styleEl.textContent = `
     body, body * {
-      font-family: ${state.bodyFamily} !important;
+      font-family: ${state.bodyFamily};
       font-weight: ${state.bodyWeight};
       line-height: ${state.lineHeight};
       letter-spacing: ${state.letterSpacing}em;
@@ -1074,7 +1073,7 @@ export function applyTypography(state: TypographyState) {
       font-size: ${state.baseFontSize}px;
     }
     h1, h2, h3, h4, h5, h6 {
-      font-family: ${state.headingFamily} !important;
+      font-family: ${state.headingFamily};
       font-weight: ${state.headingWeight};
       letter-spacing: ${state.headingLetterSpacing}em;
     }

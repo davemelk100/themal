@@ -62,29 +62,29 @@ function UpgradeModal({
     >
       <div
         className="rounded-xl p-6 w-[360px] shadow-xl relative"
-        style={{ backgroundColor: "#fff", color: "#111" }}
+        style={{ backgroundColor: "hsl(var(--card))", color: "hsl(var(--foreground))" }}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: "#f3f4f6" }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: "hsl(var(--muted))" }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
               <path d="M7 11V7a5 5 0 0 1 10 0v4" />
             </svg>
           </div>
           <div>
-            <h3 className="text-[18px] font-medium" style={{ color: "#111" }}>Pro Feature</h3>
-            <p className="text-[13px]" style={{ color: "#888" }}>{feature.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase())}</p>
+            <h3 className="text-[18px] font-medium" style={{ color: "hsl(var(--foreground))" }}>Pro Feature</h3>
+            <p className="text-[13px]" style={{ color: "hsl(var(--muted-foreground))" }}>{feature.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase())}</p>
           </div>
         </div>
-        <p className="text-[14px] font-light mb-5" style={{ color: "#555" }}>
+        <p className="text-[14px] font-light mb-5" style={{ color: "hsl(var(--muted-foreground))" }}>
           This feature requires a Themal Pro license. Upgrade to unlock all premium features including harmony schemes, color locks, interaction controls, and more.
         </p>
         <div className="flex flex-col gap-2">
           <a
             href={upgradeUrl}
             className="w-full text-center px-4 py-2.5 text-[14px] font-medium rounded-lg transition-opacity hover:opacity-90"
-            style={{ backgroundColor: "#111", color: "#fff" }}
+            style={{ backgroundColor: "hsl(var(--foreground))", color: "hsl(var(--background))" }}
           >
             View Pricing
           </a>
@@ -96,7 +96,7 @@ function UpgradeModal({
                 window.dispatchEvent(new CustomEvent("themal:sign-in"));
               }}
               className="w-full text-center px-4 py-2.5 text-[14px] font-light rounded-lg transition-opacity hover:opacity-70"
-              style={{ backgroundColor: "#f3f4f6", color: "#111" }}
+              style={{ backgroundColor: "hsl(var(--muted))", color: "hsl(var(--foreground))" }}
             >
               Already have a license? Sign in
             </button>
@@ -105,7 +105,7 @@ function UpgradeModal({
             <button
               onClick={() => setShowLicenseInput(true)}
               className="w-full text-center px-4 py-2 text-[13px] font-light transition-opacity hover:opacity-70"
-              style={{ color: "#888" }}
+              style={{ color: "hsl(var(--muted-foreground))" }}
             >
               Enter license key
             </button>
@@ -118,26 +118,26 @@ function UpgradeModal({
                   onChange={(e) => { setLicenseInput(e.target.value); setLicenseError(""); }}
                   placeholder="THEMAL-XXXX-XXXX-XXXX"
                   className="flex-1 px-3 py-2 text-[13px] font-light rounded-lg border outline-none"
-                  style={{ borderColor: licenseError ? "#ef4444" : "#e5e7eb", color: "#111" }}
+                  style={{ borderColor: licenseError ? "hsl(var(--destructive))" : "hsl(var(--border))", color: "hsl(var(--foreground))", backgroundColor: "hsl(var(--card))" }}
                   onKeyDown={(e) => { if (e.key === "Enter") handleActivate(); }}
                   autoFocus
                 />
                 <button
                   onClick={handleActivate}
                   className="px-3 py-2 text-[13px] font-medium rounded-lg transition-opacity hover:opacity-90"
-                  style={{ backgroundColor: "#111", color: "#fff" }}
+                  style={{ backgroundColor: "hsl(var(--foreground))", color: "hsl(var(--background))" }}
                 >
                   Activate
                 </button>
               </div>
-              {licenseError && <p className="text-[12px]" style={{ color: "#ef4444" }}>{licenseError}</p>}
+              {licenseError && <p className="text-[12px]" style={{ color: "hsl(var(--destructive))" }}>{licenseError}</p>}
             </div>
           )}
         </div>
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-1 rounded-lg transition-opacity hover:opacity-70"
-          style={{ color: "#999" }}
+          style={{ color: "hsl(var(--muted-foreground))" }}
           aria-label="Close"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

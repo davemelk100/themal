@@ -2050,7 +2050,7 @@ function DesignSystemEditorInner({
                     }
                   }}
                   className="ds-undo-btn ml-1 pl-1 border-l flex items-center justify-center hover:opacity-70 cursor-pointer"
-                  style={{ borderColor: "rgba(0,0,0,0.2)" }}
+                  style={{ borderColor: "hsl(var(--foreground) / 0.2)" }}
                   title="Undo last refresh"
                 >
                   <svg
@@ -2332,7 +2332,7 @@ function DesignSystemEditorInner({
       <nav
         ref={navContainerRef}
         className="sticky top-0 z-40 w-full px-4 sm:px-6 lg:px-8 pt-3 pb-2 hidden sm:flex items-center gap-3 lg:gap-4"
-        style={{ backgroundColor: defaultColors?.["--background"] ? `hsl(${defaultColors["--background"]})` : "hsl(var(--background, 0 0% 98%))" }}
+        style={{ backgroundColor: "hsl(var(--background, 0 0% 98%))" }}
       >
         {[
           {
@@ -2601,8 +2601,8 @@ function DesignSystemEditorInner({
                             onClick={() => setAuditStatus("idle")}
                             className="px-4 py-2 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
                             style={{
-                              backgroundColor: "#e5e7eb",
-                              color: "#374151",
+                              backgroundColor: "hsl(var(--muted))",
+                              color: "hsl(var(--muted-foreground))",
                             }}
                           >
                             Ignore
@@ -2875,7 +2875,7 @@ function DesignSystemEditorInner({
                 id="color-swatch-grid"
                 className="grid grid-cols-3 sm:grid-cols-5 gap-2 sm:gap-5 rounded-lg p-4 overflow-visible"
                 data-axe-exclude
-                style={{ backgroundColor: "rgba(0,0,0,0.04)" }}
+                style={{ backgroundColor: "hsl(var(--foreground) / 0.04)" }}
               >
                 {COLOR_SWATCHES.filter(({ key }) =>
                   [
@@ -2917,7 +2917,7 @@ function DesignSystemEditorInner({
                           aria-label={`${label} color swatch`}
                           className="w-full h-20 text-[12px] sm:text-[14px] font-light transition-colors hover:opacity-80 flex flex-col items-center justify-center gap-0.5 cursor-pointer rounded-tl-lg rounded-tr-lg sm:rounded-tr-none sm:rounded-bl-lg"
                           style={{
-                            backgroundColor: hsl ? `hsl(${hsl})` : "#e5e7eb",
+                            backgroundColor: hsl ? `hsl(${hsl})` : "hsl(var(--muted))",
                             color: btnTextColor,
                           }}
                           onClick={(e) => {
@@ -3080,20 +3080,20 @@ function DesignSystemEditorInner({
                 >
                   <div
                     className="rounded-xl p-6 w-[360px] shadow-xl"
-                    style={{ backgroundColor: "#fff", color: "#111" }}
+                    style={{ backgroundColor: "hsl(var(--card))", color: "hsl(var(--foreground))" }}
                     onClick={(e) => e.stopPropagation()}
                   >
                     <div className="flex items-center gap-3 mb-4">
                       <div
                         className="w-10 h-10 rounded-full flex items-center justify-center"
-                        style={{ backgroundColor: "#f3f4f6" }}
+                        style={{ backgroundColor: "hsl(var(--muted))" }}
                       >
                         <svg
                           width="20"
                           height="20"
                           viewBox="0 0 24 24"
                           fill="none"
-                          stroke="#111"
+                          stroke="currentColor"
                           strokeWidth="2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -3112,18 +3112,18 @@ function DesignSystemEditorInner({
                       <div>
                         <h3
                           className="text-[18px] font-medium"
-                          style={{ color: "#111" }}
+                          style={{ color: "hsl(var(--foreground))" }}
                         >
                           Pro Feature
                         </h3>
-                        <p className="text-[13px]" style={{ color: "#888" }}>
+                        <p className="text-[13px]" style={{ color: "hsl(var(--muted-foreground))" }}>
                           Color Locks
                         </p>
                       </div>
                     </div>
                     <p
                       className="text-[14px] font-light mb-5"
-                      style={{ color: "#555" }}
+                      style={{ color: "hsl(var(--muted-foreground))" }}
                     >
                       This feature requires a Themal Pro license. Upgrade to
                       unlock all premium features including harmony schemes,
@@ -3133,7 +3133,7 @@ function DesignSystemEditorInner({
                       <a
                         href={upgradeUrl || "/pricing"}
                         className="w-full text-center px-4 py-2.5 text-[14px] font-medium rounded-lg transition-opacity hover:opacity-90"
-                        style={{ backgroundColor: "#111", color: "#fff" }}
+                        style={{ backgroundColor: "hsl(var(--foreground))", color: "hsl(var(--background))" }}
                       >
                         View Pricing
                       </a>
@@ -3146,7 +3146,7 @@ function DesignSystemEditorInner({
                             );
                           }}
                           className="w-full text-center px-4 py-2.5 text-[14px] font-light rounded-lg transition-opacity hover:opacity-70"
-                          style={{ backgroundColor: "#f3f4f6", color: "#111" }}
+                          style={{ backgroundColor: "hsl(var(--muted))", color: "hsl(var(--foreground))" }}
                         >
                           Already have a license? Sign in
                         </button>
@@ -3155,7 +3155,7 @@ function DesignSystemEditorInner({
                     <button
                       onClick={() => setHoveredLockKey(null)}
                       className="absolute top-4 right-4 p-1 rounded-lg transition-opacity hover:opacity-70"
-                      style={{ color: "#999" }}
+                      style={{ color: "hsl(var(--muted-foreground))" }}
                       aria-label="Close"
                     >
                       <svg
@@ -4191,7 +4191,7 @@ function DesignSystemEditorInner({
                   {/* Preset buttons */}
                   <div
                     className="flex flex-wrap gap-2 sm:gap-4 rounded-lg p-3"
-                    style={{ backgroundColor: "rgba(0,0,0,0.04)" }}
+                    style={{ backgroundColor: "hsl(var(--foreground) / 0.04)" }}
                   >
                     {(["subtle", "elevated", "bold"] as const).map((key) => {
                       const labels: Record<string, string> = {
@@ -4263,8 +4263,8 @@ function DesignSystemEditorInner({
                                     "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
                                 }
                               : {
-                                  backgroundColor: "#e5e7eb",
-                                  color: "#111",
+                                  backgroundColor: "hsl(var(--muted))",
+                                  color: "hsl(var(--foreground))",
                                   boxShadow:
                                     "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
                                 }
@@ -4784,7 +4784,7 @@ function DesignSystemEditorInner({
               {/* Preset buttons */}
               <div
                 className="flex flex-wrap gap-2 sm:gap-4 rounded-lg p-3"
-                style={{ backgroundColor: "rgba(0,0,0,0.04)" }}
+                style={{ backgroundColor: "hsl(var(--foreground) / 0.04)" }}
               >
                 {(
                   ["liquid-glass", "solid", "gradient", "border-only"] as const
@@ -4882,8 +4882,8 @@ function DesignSystemEditorInner({
                                 "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
                             }
                           : {
-                              backgroundColor: "#e5e7eb",
-                              color: "#111",
+                              backgroundColor: "hsl(var(--muted))",
+                              color: "hsl(var(--foreground))",
                               boxShadow:
                                 "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
                             }
@@ -5543,8 +5543,8 @@ function DesignSystemEditorInner({
                                     "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
                                 }
                               : {
-                                  backgroundColor: "#e5e7eb",
-                                  color: "#111",
+                                  backgroundColor: "hsl(var(--muted))",
+                                  color: "hsl(var(--foreground))",
                                   boxShadow:
                                     "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
                                 }
@@ -5943,8 +5943,8 @@ function DesignSystemEditorInner({
                                       "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
                                   }
                                 : {
-                                    backgroundColor: "#e5e7eb",
-                                    color: "#111",
+                                    backgroundColor: "hsl(var(--muted))",
+                                    color: "hsl(var(--foreground))",
                                     boxShadow:
                                       "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
                                   }
@@ -6427,7 +6427,7 @@ function DesignSystemEditorInner({
                 {/* Preset buttons */}
                 <div
                   className="flex flex-wrap gap-2 sm:gap-4 rounded-lg p-3"
-                  style={{ backgroundColor: "rgba(0,0,0,0.04)" }}
+                  style={{ backgroundColor: "hsl(var(--foreground) / 0.04)" }}
                 >
                   {(
                     [
@@ -6539,8 +6539,8 @@ function DesignSystemEditorInner({
                                   "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
                               }
                             : {
-                                backgroundColor: "#e5e7eb",
-                                color: "#111",
+                                backgroundColor: "hsl(var(--muted))",
+                                color: "hsl(var(--foreground))",
                                 boxShadow:
                                   "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
                               }
@@ -6638,13 +6638,13 @@ function DesignSystemEditorInner({
                     <div className="space-y-1.5">
                       <p
                         className="text-[14px] font-light uppercase tracking-wider"
-                        style={{ color: "#6b7280" }}
+                        style={{ color: "hsl(var(--muted-foreground))" }}
                       >
                         Fonts
                       </p>
                       <label
                         className="flex items-center justify-between gap-2 text-[14px] font-light"
-                        style={{ color: "#111827" }}
+                        style={{ color: "hsl(var(--foreground))" }}
                       >
                         <span>Heading:</span>
                         <select
@@ -6654,9 +6654,9 @@ function DesignSystemEditorInner({
                           }
                           className="w-40 h-8 px-2 text-[14px] font-light rounded-md border"
                           style={{
-                            backgroundColor: "#ffffff",
-                            color: "#111827",
-                            borderColor: "#d1d5db",
+                            backgroundColor: "hsl(var(--card))",
+                            color: "hsl(var(--foreground))",
+                            borderColor: "hsl(var(--border))",
                           }}
                         >
                           {fontOptions.map((opt) => (
@@ -6668,7 +6668,7 @@ function DesignSystemEditorInner({
                       </label>
                       <label
                         className="flex items-center justify-between gap-2 text-[14px] font-light"
-                        style={{ color: "#111827" }}
+                        style={{ color: "hsl(var(--foreground))" }}
                       >
                         <span>Body:</span>
                         <select
@@ -6678,9 +6678,9 @@ function DesignSystemEditorInner({
                           }
                           className="w-40 h-8 px-2 text-[14px] font-light rounded-md border"
                           style={{
-                            backgroundColor: "#ffffff",
-                            color: "#111827",
-                            borderColor: "#d1d5db",
+                            backgroundColor: "hsl(var(--card))",
+                            color: "hsl(var(--foreground))",
+                            borderColor: "hsl(var(--border))",
                           }}
                         >
                           {fontOptions.map((opt) => (
@@ -6695,13 +6695,13 @@ function DesignSystemEditorInner({
                     <div className="space-y-1.5">
                       <p
                         className="text-[14px] font-light uppercase tracking-wider"
-                        style={{ color: "#6b7280" }}
+                        style={{ color: "hsl(var(--muted-foreground))" }}
                       >
                         Size & Weight
                       </p>
                       <label
                         className="flex items-center justify-between gap-2 text-[14px] font-light"
-                        style={{ color: "#111827" }}
+                        style={{ color: "hsl(var(--foreground))" }}
                       >
                         <span>Base Size: {typographyState.baseFontSize}px</span>
                         <input
@@ -6719,7 +6719,7 @@ function DesignSystemEditorInner({
                       </label>
                       <label
                         className="flex items-center justify-between gap-2 text-[14px] font-light"
-                        style={{ color: "#111827" }}
+                        style={{ color: "hsl(var(--foreground))" }}
                       >
                         <span>Heading Wt: {typographyState.headingWeight}</span>
                         <input
@@ -6738,7 +6738,7 @@ function DesignSystemEditorInner({
                       </label>
                       <label
                         className="flex items-center justify-between gap-2 text-[14px] font-light"
-                        style={{ color: "#111827" }}
+                        style={{ color: "hsl(var(--foreground))" }}
                       >
                         <span>Body Wt: {typographyState.bodyWeight}</span>
                         <input
@@ -6766,13 +6766,13 @@ function DesignSystemEditorInner({
                       <div className="space-y-1.5">
                         <p
                           className="text-[14px] font-light uppercase tracking-wider"
-                          style={{ color: "#6b7280" }}
+                          style={{ color: "hsl(var(--muted-foreground))" }}
                         >
                           Spacing
                         </p>
                         <label
                           className="flex items-center justify-between gap-2 text-[14px] font-light"
-                          style={{ color: "#111827" }}
+                          style={{ color: "hsl(var(--foreground))" }}
                         >
                           <span>
                             Line Height: {typographyState.lineHeight.toFixed(2)}
@@ -6793,7 +6793,7 @@ function DesignSystemEditorInner({
                         </label>
                         <label
                           className="flex items-center justify-between gap-2 text-[14px] font-light"
-                          style={{ color: "#111827" }}
+                          style={{ color: "hsl(var(--foreground))" }}
                         >
                           <span>
                             Letter Sp:{" "}
@@ -6817,7 +6817,7 @@ function DesignSystemEditorInner({
                         </label>
                         <label
                           className="flex items-center justify-between gap-2 text-[14px] font-light"
-                          style={{ color: "#111827" }}
+                          style={{ color: "hsl(var(--foreground))" }}
                         >
                           <span>
                             Heading Sp:{" "}
@@ -7187,7 +7187,7 @@ function DesignSystemEditorInner({
                   {/* Preset buttons */}
                   <div
                     className="flex flex-wrap gap-2 sm:gap-4 rounded-lg p-3"
-                    style={{ backgroundColor: "rgba(0,0,0,0.04)" }}
+                    style={{ backgroundColor: "hsl(var(--foreground) / 0.04)" }}
                   >
                     {(["subtle", "elevated", "bold"] as const).map((key) => {
                       const labels: Record<string, string> = {
@@ -7259,8 +7259,8 @@ function DesignSystemEditorInner({
                                     "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
                                 }
                               : {
-                                  backgroundColor: "#e5e7eb",
-                                  color: "#111",
+                                  backgroundColor: "hsl(var(--muted))",
+                                  color: "hsl(var(--foreground))",
                                   boxShadow:
                                     "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
                                 }
@@ -7908,7 +7908,7 @@ function DesignSystemEditorInner({
                 <button
                   onClick={() => { setShowCssImportModal(false); setCssImportText(""); setCssImportPreview(null); }}
                   className="px-4 py-2 text-[14px] font-light rounded-lg"
-                  style={{ backgroundColor: "#e5e7eb", color: "#111" }}
+                  style={{ backgroundColor: "hsl(var(--muted))", color: "hsl(var(--foreground))" }}
                 >
                   Cancel
                 </button>
@@ -8012,12 +8012,12 @@ function DesignSystemEditorInner({
           <div
             className="rounded-xl p-6 w-[380px] max-h-[90vh] overflow-y-auto shadow-xl"
             style={{
-              backgroundColor: "#ffffff",
-              color: "#111827",
+              backgroundColor: "hsl(var(--card))",
+              color: "hsl(var(--foreground))",
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 className="text-[18px] font-light mb-4" style={{ color: "#111827" }}>
+            <h3 className="text-[18px] font-light mb-4" style={{ color: "hsl(var(--foreground))" }}>
               Extract Palette from Image
             </h3>
 
@@ -8025,7 +8025,7 @@ function DesignSystemEditorInner({
             <div className="mb-4">
               <p
                 className="text-[13px] font-light mb-2"
-                style={{ color: "#6b7280" }}
+                style={{ color: "hsl(var(--muted-foreground))" }}
               >
                 Upload an image file
               </p>
@@ -8053,8 +8053,8 @@ function DesignSystemEditorInner({
                 }}
                 className="w-full py-6 text-[14px] font-light rounded-lg border-2 border-dashed flex flex-col items-center justify-center gap-2 transition-colors hover:opacity-80 cursor-pointer [&[data-dragging=true]]:border-solid [&[data-dragging=true]]:bg-gray-50"
                 style={{
-                  borderColor: "#d1d5db",
-                  color: "#6b7280",
+                  borderColor: "hsl(var(--border))",
+                  color: "hsl(var(--muted-foreground))",
                 }}
               >
                 <svg
@@ -8079,17 +8079,17 @@ function DesignSystemEditorInner({
             <div className="flex items-center gap-3 mb-4">
               <div
                 className="flex-1 h-px"
-                style={{ backgroundColor: "#d1d5db" }}
+                style={{ backgroundColor: "hsl(var(--border))" }}
               />
               <span
                 className="text-[12px] font-light"
-                style={{ color: "#6b7280" }}
+                style={{ color: "hsl(var(--muted-foreground))" }}
               >
                 or
               </span>
               <div
                 className="flex-1 h-px"
-                style={{ backgroundColor: "#d1d5db" }}
+                style={{ backgroundColor: "hsl(var(--border))" }}
               />
             </div>
 
@@ -8097,7 +8097,7 @@ function DesignSystemEditorInner({
             <div className="mb-4">
               <p
                 className="text-[13px] font-light mb-2"
-                style={{ color: "#6b7280" }}
+                style={{ color: "hsl(var(--muted-foreground))" }}
               >
                 Paste an image URL
               </p>
@@ -8118,9 +8118,9 @@ function DesignSystemEditorInner({
                   placeholder="https://example.com/photo.jpg"
                   className="flex-1 h-10 px-3 text-[14px] font-light rounded-lg border"
                   style={{
-                    borderColor: imageUrlError ? "#ef4444" : "#d1d5db",
-                    color: "#111827",
-                    backgroundColor: "#f9fafb",
+                    borderColor: imageUrlError ? "hsl(var(--destructive))" : "hsl(var(--border))",
+                    color: "hsl(var(--foreground))",
+                    backgroundColor: "hsl(var(--background))",
                   }}
                   autoFocus
                 />
@@ -8134,8 +8134,8 @@ function DesignSystemEditorInner({
                   }
                   className="h-10 px-4 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
                   style={{
-                    backgroundColor: "#374151",
-                    color: "#ffffff",
+                    backgroundColor: "hsl(var(--foreground))",
+                    color: "hsl(var(--background))",
                   }}
                 >
                   Go
@@ -8144,7 +8144,7 @@ function DesignSystemEditorInner({
               {imageUrlError && (
                 <p
                   className="text-[12px] font-light mt-1"
-                  style={{ color: "#ef4444" }}
+                  style={{ color: "hsl(var(--destructive))" }}
                 >
                   {imageUrlError}
                 </p>
@@ -8155,7 +8155,7 @@ function DesignSystemEditorInner({
             {imagePaletteStatus === "extracting" && (
               <div
                 className="flex items-center gap-2 text-[13px] font-light"
-                style={{ color: "#6b7280" }}
+                style={{ color: "hsl(var(--muted-foreground))" }}
               >
                 <svg
                   className="w-4 h-4 animate-spin"
@@ -8183,7 +8183,7 @@ function DesignSystemEditorInner({
                   setImageUrlError("");
                 }}
                 className="px-3 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
-                style={{ color: "#6b7280" }}
+                style={{ color: "hsl(var(--muted-foreground))" }}
               >
                 Cancel
               </button>
@@ -8374,7 +8374,7 @@ function DesignSystemEditorInner({
             style={{ backgroundColor: "hsl(var(--background))" }}
           >
             {/* Swatch preview row */}
-            <div className="flex gap-1.5 p-3" style={{ backgroundColor: "rgba(0,0,0,0.04)" }}>
+            <div className="flex gap-1.5 p-3" style={{ backgroundColor: "hsl(var(--foreground) / 0.04)" }}>
               {previewColors.map(pc => (
                 <button
                   key={pc.key}
@@ -8387,7 +8387,7 @@ function DesignSystemEditorInner({
                   <div
                     className="w-full aspect-square rounded-lg transition-all"
                     style={{
-                      backgroundColor: pc.hsl ? `hsl(${pc.hsl})` : "#e5e7eb",
+                      backgroundColor: pc.hsl ? `hsl(${pc.hsl})` : "hsl(var(--muted))",
                       boxShadow: pc.active ? "0 0 0 3px hsl(var(--primary))" : "0 1px 3px rgba(0,0,0,0.15)",
                     }}
                   />
@@ -8740,8 +8740,8 @@ function DesignSystemEditorInner({
                 }}
                 className="px-4 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 disabled:opacity-50"
                 style={{
-                  backgroundColor: "#e5e7eb",
-                  color: "#111",
+                  backgroundColor: "hsl(var(--muted))",
+                  color: "hsl(var(--foreground))",
                   boxShadow:
                     "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
                 }}
@@ -8968,21 +8968,21 @@ function DesignSystemEditorInner({
         >
           <div
             className="rounded-xl shadow-xl p-6 w-full max-w-md mx-4"
-            style={{ backgroundColor: "#ffffff", color: "#111827" }}
+            style={{ backgroundColor: "hsl(var(--card))", color: "hsl(var(--foreground))" }}
             onClick={(e) => e.stopPropagation()}
           >
             {aiPreview === null ? (
               <>
-                <h3 className="text-xl font-light mb-4" style={{ color: "#111827" }}>
+                <h3 className="text-xl font-light mb-4" style={{ color: "hsl(var(--foreground))" }}>
                   AI Generate Theme
                 </h3>
                 <textarea
                   rows={4}
                   className="w-full rounded-lg border p-3 text-[14px] font-light resize-none focus:outline-none focus:ring-2 focus:ring-offset-1"
                   style={{
-                    borderColor: "#d1d5db",
-                    backgroundColor: "#f9fafb",
-                    color: "#111827",
+                    borderColor: "hsl(var(--border))",
+                    backgroundColor: "hsl(var(--background))",
+                    color: "hsl(var(--foreground))",
                   }}
                   placeholder="Describe the theme you want, e.g. warm earthy tones for a coffee shop website..."
                   value={aiPrompt}
@@ -8990,7 +8990,7 @@ function DesignSystemEditorInner({
                   disabled={aiLoading}
                 />
                 {aiError && (
-                  <p className="mt-2 text-[13px]" style={{ color: "#ef4444" }}>
+                  <p className="mt-2 text-[13px]" style={{ color: "hsl(var(--destructive))" }}>
                     {aiError}
                   </p>
                 )}
@@ -9003,7 +9003,7 @@ function DesignSystemEditorInner({
                       setAiError("");
                     }}
                     className="px-4 py-2 text-[14px] font-light rounded-lg transition-opacity hover:opacity-70"
-                    style={{ backgroundColor: "transparent", color: "#374151" }}
+                    style={{ backgroundColor: "transparent", color: "hsl(var(--muted-foreground))" }}
                   >
                     Cancel
                   </button>
@@ -9011,7 +9011,7 @@ function DesignSystemEditorInner({
                     onClick={handleAiGenerate}
                     disabled={!aiPrompt.trim() || aiLoading}
                     className="px-4 py-2 text-[14px] font-light rounded-lg transition-opacity hover:opacity-80 disabled:opacity-40 flex items-center gap-2"
-                    style={{ backgroundColor: "#374151", color: "#ffffff" }}
+                    style={{ backgroundColor: "hsl(var(--foreground))", color: "hsl(var(--background))" }}
                   >
                     {aiLoading && (
                       <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -9025,12 +9025,12 @@ function DesignSystemEditorInner({
               </>
             ) : (
               <>
-                <h3 className="text-xl font-light mb-4" style={{ color: "#111827" }}>
+                <h3 className="text-xl font-light mb-4" style={{ color: "hsl(var(--foreground))" }}>
                   Preview AI Theme
                 </h3>
                 {aiPreview.colors && Object.keys(aiPreview.colors).length > 0 && (
                   <div className="mb-4">
-                    <p className="text-[13px] font-light mb-2" style={{ color: "#374151" }}>
+                    <p className="text-[13px] font-light mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>
                       Colors
                     </p>
                     <div className="flex flex-wrap gap-3">
@@ -9040,10 +9040,10 @@ function DesignSystemEditorInner({
                             className="w-8 h-8 rounded border"
                             style={{
                               backgroundColor: `hsl(${value})`,
-                              borderColor: "#d1d5db",
+                              borderColor: "hsl(var(--border))",
                             }}
                           />
-                          <span className="text-[11px] font-light" style={{ color: "#374151" }}>
+                          <span className="text-[11px] font-light" style={{ color: "hsl(var(--muted-foreground))" }}>
                             {varName.replace("--", "")}
                           </span>
                         </div>
@@ -9053,13 +9053,13 @@ function DesignSystemEditorInner({
                 )}
                 {aiPreview.typography && Object.keys(aiPreview.typography).length > 0 && (
                   <div className="mb-4">
-                    <p className="text-[13px] font-light mb-2" style={{ color: "#374151" }}>
+                    <p className="text-[13px] font-light mb-2" style={{ color: "hsl(var(--muted-foreground))" }}>
                       Typography
                     </p>
                     <div className="flex flex-col gap-1">
                       {Object.entries(aiPreview.typography).map(([key, value]) => (
-                        <div key={key} className="text-[13px] font-light" style={{ color: "#374151" }}>
-                          <span style={{ color: "#111827" }}>{key}:</span> {String(value)}
+                        <div key={key} className="text-[13px] font-light" style={{ color: "hsl(var(--muted-foreground))" }}>
+                          <span style={{ color: "hsl(var(--foreground))" }}>{key}:</span> {String(value)}
                         </div>
                       ))}
                     </div>
@@ -9069,7 +9069,7 @@ function DesignSystemEditorInner({
                   <button
                     onClick={() => setAiPreview(null)}
                     className="px-4 py-2 text-[14px] font-light rounded-lg transition-opacity hover:opacity-70"
-                    style={{ backgroundColor: "transparent", color: "#374151" }}
+                    style={{ backgroundColor: "transparent", color: "hsl(var(--muted-foreground))" }}
                   >
                     Back
                   </button>
@@ -9081,14 +9081,14 @@ function DesignSystemEditorInner({
                       setAiError("");
                     }}
                     className="px-4 py-2 text-[14px] font-light rounded-lg transition-opacity hover:opacity-70"
-                    style={{ backgroundColor: "transparent", color: "#374151" }}
+                    style={{ backgroundColor: "transparent", color: "hsl(var(--muted-foreground))" }}
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleAiApply}
                     className="px-4 py-2 text-[14px] font-light rounded-lg transition-opacity hover:opacity-80"
-                    style={{ backgroundColor: "#374151", color: "#ffffff" }}
+                    style={{ backgroundColor: "hsl(var(--foreground))", color: "hsl(var(--background))" }}
                   >
                     Apply
                   </button>
