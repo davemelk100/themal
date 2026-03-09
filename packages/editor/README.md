@@ -74,6 +74,7 @@ The following features require a valid license key:
 | Palette export | Download palette as SVG/PNG, or copy as HEX/RGB/RGBA text. |
 | Interaction states | Style hover, focus, and active states for buttons and components. |
 | Typography interactions | Customize hover, active, and underline behavior for links and headings. |
+| Icon import | Import icons from SVG sprites, icon font CSS (Font Awesome, Bootstrap Icons, Material Icons), or CDN packages (Lucide, Heroicons, Phosphor). |
 | Custom fonts | Add any Google Font by name — validated, loaded, and persisted across sessions. |
 
 ### License Key Format
@@ -195,6 +196,16 @@ import { MyBrandIcon } from './icons';
 
 The Icons section includes a "Hide All" / "Show All" toggle so users can collapse the icon grid.
 
+### Import icons from the browser (Pro)
+
+Premium users can import icons directly from the editor UI without writing code. Click the "Import" button in the Icons row to open the import modal with three tabs:
+
+- **CDN Package** — Pick from Lucide, Heroicons, or Phosphor. Search, select, and import individual icons.
+- **SVG Sprite** — Paste a URL to an SVG sprite file. The editor parses `<symbol>` elements and lets you pick which icons to import.
+- **Icon Font** — Paste a CSS URL (or choose a preset for Font Awesome, Bootstrap Icons, or Material Icons). The editor detects icon classes and renders previews.
+
+Imported icons are persisted to localStorage and rendered alongside built-in and custom icons. Each imported icon shows a remove badge on hover.
+
 ### Embedded / headless
 
 ```tsx
@@ -222,6 +233,7 @@ import {
   TYPOGRAPHY_KEY,            // Key for typography storage
   ALERT_STYLE_KEY,           // Key for dialog alert style storage
   TOAST_STYLE_KEY,           // Key for toast style storage
+  BUTTON_STYLE_KEY,          // Key for button style storage
   INTERACTION_STYLE_KEY,     // Key for interaction style storage
 
   // Card, typography & interaction style utilities
@@ -229,6 +241,8 @@ import {
   applyStoredTypography,          // Restore typography from localStorage (applies site-wide)
   applyStoredAlertStyle,          // Restore dialog alert style from localStorage
   applyStoredToastStyle,          // Restore toast style from localStorage
+  BUTTON_PRESETS,                     // Subtle, Elevated, Bold button style presets
+  applyStoredButtonStyle,             // Restore button style from localStorage
   applyStoredInteractionStyle,    // Restore button interaction style from localStorage
 
   // Shareable URL utilities
@@ -265,8 +279,10 @@ import type {
   DesignSystemEditorProps,
   TokenDefinition,
   CustomIcon,
+  ImportedIconData,
   HarmonyScheme,
   CardStyleState,
+  ButtonStyleState,
   TypographyState,
   AlertStyleState,
   ToastStyleState,
@@ -286,14 +302,16 @@ import type {
 2. **Harmony schemes** *(Pro)* — Generate palettes using complementary, analogous, triadic, or split-complementary color relationships.
 3. **Contrast enforcement** — Every foreground/background pair is checked against WCAG AA (4.5:1). Failing pairs are auto-corrected by adjusting lightness. The accessibility audit shows a centered modal with results. On failure, choose "Ignore" to dismiss or "Suggest Alternative" to auto-fix contrast issues. A WCAG On/Off toggle lets you disable auto-correction for marketing or other contexts that don't require WCAG compliance. Locks are still honored when enforcement is off.
 4. **Typography** — Choose heading and body fonts (including custom Google Fonts), adjust sizes, weights, line height, and letter spacing with live preview. Five built-in presets (System, Modern, Classic, Compact, Editorial). Typography applies site-wide, not just within the editor component, so toggling fonts updates the entire page.
-5. **Button interactions** *(Pro)* — Fine-tune hover opacity, hover/active scale, transition duration, and focus ring width with presets (Subtle, Elevated, Bold).
-6. **Typography interactions** *(Pro)* — Customize link hover/active behavior (opacity, scale, underline) and heading hover effects with live preview.
-7. **Persistence** — All settings (colors, typography, card styles, dialog styles, toast styles, interactions) are saved to `localStorage` and restored on reload.
-8. **Per-section export** — Every section header includes a CSS | Tokens split button to export CSS custom properties with Tailwind config, or W3C Design Token JSON, for that section.
-9. **Shareable URLs** — Encode your full theme state in the URL hash and share it with anyone via a single link.
-10. **Palette export** *(Pro)* — Download your palette as SVG or PNG, or copy as a HEX/RGB/RGBA text list.
-11. **Custom fonts** *(Pro)* — Add any Google Font by name. The editor validates the font exists, loads all weights, adds it to heading/body dropdowns, and persists it across sessions.
-12. **Mobile friendly** — Fully responsive UI with a 2D color spectrum picker (saturation/lightness canvas + hue slider) for intuitive touch-based color selection, mobile-optimized dropdowns, compact swatch labels, and stacked layouts for smaller screens.
+5. **Button styles** — Customize button padding, font size, font weight, border radius, shadow, and border width with presets (Subtle, Elevated, Bold).
+6. **Button interactions** *(Pro)* — Fine-tune hover opacity, hover/active scale, transition duration, and focus ring width with presets (Subtle, Elevated, Bold).
+7. **Typography interactions** *(Pro)* — Customize link hover/active behavior (opacity, scale, underline) and heading hover effects with live preview.
+8. **Persistence** — All settings (colors, typography, card styles, dialog styles, toast styles, interactions) are saved to `localStorage` and restored on reload.
+9. **Per-section export** — Every section header includes a CSS | Tokens split button to export CSS custom properties with Tailwind config, or W3C Design Token JSON, for that section.
+10. **Shareable URLs** — Encode your full theme state in the URL hash and share it with anyone via a single link.
+11. **Palette export** *(Pro)* — Download your palette as SVG or PNG, or copy as a HEX/RGB/RGBA text list.
+12. **Custom fonts** *(Pro)* — Add any Google Font by name. The editor validates the font exists, loads all weights, adds it to heading/body dropdowns, and persists it across sessions.
+13. **Icon import** *(Pro)* — Import icons from CDN packages (Lucide, Heroicons, Phosphor), SVG sprites, or icon font CSS files directly from the browser.
+14. **Mobile friendly** — Fully responsive UI with a 2D color spectrum picker (saturation/lightness canvas + hue slider) for intuitive touch-based color selection, mobile-optimized dropdowns, compact swatch labels, and stacked layouts for smaller screens.
 
 ## Package Architecture
 

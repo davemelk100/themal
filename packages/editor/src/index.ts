@@ -1,5 +1,5 @@
 export { DesignSystemEditor } from "./DesignSystemEditor";
-export type { DesignSystemEditorProps, TokenDefinition, CustomIcon, AiGenerateResult } from "./types";
+export type { DesignSystemEditorProps, TokenDefinition, CustomIcon, AiGenerateResult, ImportedIconData } from "./types";
 export {
   hslStringToHex,
   hexToHslString,
@@ -16,6 +16,9 @@ export {
   applyStoredAlertStyle,
   TOAST_STYLE_KEY,
   applyStoredToastStyle,
+  BUTTON_STYLE_KEY,
+  BUTTON_PRESETS,
+  applyStoredButtonStyle,
   INTERACTION_STYLE_KEY,
   applyStoredInteractionStyle,
   serializeThemeState,
@@ -30,7 +33,7 @@ export {
   initCustomFonts,
   buildAiSystemPrompt,
 } from "./utils/themeUtils";
-export type { HarmonyScheme, CardStyleState, TypographyState, AlertStyleState, ToastStyleState, InteractionStyleState, TypoInteractionStyleState, CustomFontEntry } from "./utils/themeUtils";
+export type { HarmonyScheme, CardStyleState, ButtonStyleState, TypographyState, AlertStyleState, ToastStyleState, InteractionStyleState, TypoInteractionStyleState, CustomFontEntry } from "./utils/themeUtils";
 
 export { validateLicenseKey, generateLicenseKey } from "./utils/license";
 export type { PremiumFeature, LicenseValidation } from "./utils/license";
