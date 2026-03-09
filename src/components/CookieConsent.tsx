@@ -32,7 +32,7 @@ export default function CookieConsent() {
         <p className="text-[14px] font-light flex-1">
           This site uses third-party cookies from authentication and payment providers to deliver its services.
           See our{" "}
-          <Link to="/cookies" className="underline hover:opacity-70 transition-opacity">
+          <Link to="/cookies" className="text-[14px] underline hover:opacity-70 transition-opacity">
             Cookies Policy
           </Link>{" "}
           for details.

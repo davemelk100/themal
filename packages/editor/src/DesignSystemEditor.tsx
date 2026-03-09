@@ -1983,8 +1983,8 @@ function DesignSystemEditorInner({
         >
           Global Actions
         </h2>
-        {/* Mobile dropdown - right-aligned */}
-        <div className="ml-auto sm:hidden">
+        {/* Mobile/tablet dropdown - right-aligned */}
+        <div className="ml-auto lg:hidden">
           <select
             aria-label="Global actions"
             className="h-8 w-[120px] px-2 text-[16px] font-light rounded-md border"
@@ -2026,7 +2026,6 @@ function DesignSystemEditorInner({
               }
               else if (v === "audit") runAccessibilityAudit(true);
               else if (v === "ai-generate") setShowAiGenerateModal(true);
-              else if (v === "purge") handlePurgeStorage();
               e.target.value = "";
             }}
           >
@@ -2043,14 +2042,13 @@ function DesignSystemEditorInner({
             {prEndpointUrl && <option value="pr">Open PR</option>}
             {accessibilityAudit && <option value="audit">Accessibility Check</option>}
             {onAiGenerate && <option value="ai-generate">AI Generate</option>}
-            {devMode && <option value="purge">Purge Storage</option>}
           </select>
         </div>
       </div>
       {/* Palette action buttons - desktop only */}
       <div className="w-full px-4 sm:px-6 lg:px-8 pt-2 pb-2 md:pb-6 flex flex-wrap items-center gap-2 sm:gap-3" data-axe-exclude>
         {/* Desktop buttons */}
-        <div className="hidden sm:contents">
+        <div className="hidden lg:contents">
           <button
             onClick={() => setShowGlobalResetModal(true)}
             className="ds-global-btn flex-1 min-w-0 h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
@@ -2384,19 +2382,6 @@ function DesignSystemEditorInner({
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
               </svg>
               <span className="truncate">AI Generate</span>
-            </button>
-          )}
-          {devMode && (
-            <button
-              onClick={handlePurgeStorage}
-              className="ds-global-btn flex-1 min-w-0 h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
-              title="Clear all localStorage and sessionStorage, then reload"
-              style={{ borderColor: "hsl(var(--destructive))", borderWidth: 1 }}
-            >
-              <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-              </svg>
-              <span className="truncate">Purge Storage</span>
             </button>
           )}
         </div>
@@ -9356,6 +9341,23 @@ function DesignSystemEditorInner({
             )}
           </div>
         </div>
+      )}
+
+      {devMode && (
+        <button
+          onClick={handlePurgeStorage}
+          className="fixed bottom-4 left-4 z-[9999] h-8 px-3 text-[12px] font-medium rounded-md flex items-center gap-1.5 shadow-lg hover:opacity-90 transition-opacity"
+          style={{
+            backgroundColor: "hsl(var(--destructive, 0 84% 60%))",
+            color: "#fff",
+          }}
+          title="Clear all localStorage and sessionStorage, then reload"
+        >
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+          Purge
+        </button>
       )}
     </div>
   );
