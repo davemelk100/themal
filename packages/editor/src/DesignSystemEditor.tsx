@@ -2973,7 +2973,7 @@ function DesignSystemEditorInner({
                         className="relative group flex flex-col sm:flex-row items-stretch rounded-lg overflow-visible"
                         style={{
                           boxShadow:
-                            "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
+                            "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1)",
                         }}
                       >
                         <button
@@ -3929,7 +3929,7 @@ function DesignSystemEditorInner({
                                   ? `hsl(${fgForBg(colors["--brand"])})`
                                   : "#fff",
                                 boxShadow:
-                                  "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
+                                  "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1)",
                               }
                             : {
                                 backgroundColor: "hsl(var(--foreground) / 0.1)",
@@ -4462,13 +4462,13 @@ function DesignSystemEditorInner({
                                     ? `hsl(${fgForBg(colors["--brand"])})`
                                     : "#fff",
                                   boxShadow:
-                                    "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
+                                    "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1)",
                                 }
                               : {
                                   backgroundColor: "hsl(var(--muted))",
                                   color: "hsl(var(--foreground))",
                                   boxShadow:
-                                    "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
+                                    "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1)",
                                 }
                           }
                         >
@@ -5085,13 +5085,13 @@ function DesignSystemEditorInner({
                                 ? `hsl(${fgForBg(colors["--brand"])})`
                                 : "#fff",
                               boxShadow:
-                                "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
+                                "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1)",
                             }
                           : {
-                              backgroundColor: "hsl(var(--muted))",
+                              backgroundColor: "hsl(var(--foreground) / 0.1)",
                               color: "hsl(var(--foreground))",
                               boxShadow:
-                                "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
+                                "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1)",
                             }
                       }
                     >
@@ -5753,13 +5753,13 @@ function DesignSystemEditorInner({
                                     ? `hsl(${fgForBg(colors["--brand"])})`
                                     : "#fff",
                                   boxShadow:
-                                    "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
+                                    "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1)",
                                 }
                               : {
                                   backgroundColor: "hsl(var(--muted))",
                                   color: "hsl(var(--foreground))",
                                   boxShadow:
-                                    "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
+                                    "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1)",
                                 }
                           }
                         >
@@ -6156,13 +6156,13 @@ function DesignSystemEditorInner({
                                       ? `hsl(${fgForBg(colors["--brand"])})`
                                       : "#fff",
                                     boxShadow:
-                                      "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
+                                      "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1)",
                                   }
                                 : {
                                     backgroundColor: "hsl(var(--muted))",
                                     color: "hsl(var(--foreground))",
                                     boxShadow:
-                                      "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
+                                      "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1)",
                                   }
                             }
                           >
@@ -6753,7 +6753,7 @@ function DesignSystemEditorInner({
                                   ? `hsl(${fgForBg(colors["--brand"])})`
                                   : "#fff",
                                 boxShadow:
-                                  "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
+                                  "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1)",
                               }
                             : {
                                 backgroundColor: "hsl(var(--foreground) / 0.1)",
@@ -7480,13 +7480,13 @@ function DesignSystemEditorInner({
                                     ? `hsl(${fgForBg(colors["--brand"])})`
                                     : "#fff",
                                   boxShadow:
-                                    "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
+                                    "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1)",
                                 }
                               : {
                                   backgroundColor: "hsl(var(--muted))",
                                   color: "hsl(var(--foreground))",
                                   boxShadow:
-                                    "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
+                                    "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1)",
                                 }
                           }
                         >
@@ -8981,7 +8981,7 @@ function DesignSystemEditorInner({
                   backgroundColor: "hsl(var(--muted))",
                   color: "hsl(var(--foreground))",
                   boxShadow:
-                    "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
+                    "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1)",
                 }}
               >
                 {sectionPrStatus["main"]?.status === "creating"
