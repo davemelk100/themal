@@ -1844,6 +1844,7 @@ function DesignSystemEditorInner({
                 setHarmonySchemeIndex(-1);
                 handleGenerate();
               } else if (v === "refresh") handleGenerate();
+              else if (v === "undo-refresh") handleUndo();
               else if (v === "upload") setShowImagePaletteModal(true);
               else if (v === "export") setShowPaletteExport(true);
               else if (v === "share") {
@@ -1877,6 +1878,9 @@ function DesignSystemEditorInner({
             <option value="reset-all">Reset theme to default</option>
             {/* <option value="import-css">Import CSS</option> */}
             <option value="refresh">Refresh Theme</option>
+            {colorUndoStack.length > 0 && (
+              <option value="undo-refresh">Undo last refresh</option>
+            )}
             <option value="default">Default Scheme</option>
             <option value="upload">Upload Image</option>
             <option value="export">Export Palette</option>
@@ -1957,6 +1961,7 @@ function DesignSystemEditorInner({
                   role="button"
                   tabIndex={0}
                   onClick={(e) => {
+                    e.preventDefault();
                     e.stopPropagation();
                     handleUndo();
                   }}
@@ -1967,7 +1972,7 @@ function DesignSystemEditorInner({
                       handleUndo();
                     }
                   }}
-                  className="ds-undo-btn ml-1 pl-1 border-l flex items-center justify-center hover:opacity-70 cursor-pointer"
+                  className="ds-undo-btn ml-1 pl-2 pr-1.5 py-1 -my-1 border-l flex items-center justify-center hover:opacity-70 cursor-pointer"
                   style={{ borderColor: "hsl(var(--foreground) / 0.2)" }}
                   title="Undo last refresh"
                 >

@@ -1,11 +1,43 @@
+import React from "react";
 import ReactDOM from "react-dom/client";
 import { ClerkProvider } from "@clerk/clerk-react";
 import App from "./App";
 import "./globals.css";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY as string;
-if (!PUBLISHABLE_KEY) {
-  throw new Error("Missing VITE_CLERK_PUBLISHABLE_KEY");
+
+function MissingClerkKey() {
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 24,
+        fontFamily: "system-ui, sans-serif",
+        background: "#f5f5f5",
+        color: "#333",
+      }}
+    >
+      <div style={{ maxWidth: 480, textAlign: "center" }}>
+        <h1 style={{ fontSize: 18, marginBottom: 12 }}>Missing Clerk key</h1>
+        <p style={{ marginBottom: 16, lineHeight: 1.5 }}>
+          Copy <code style={{ background: "#eee", padding: "2px 6px" }}>.env.example</code> to{" "}
+          <code style={{ background: "#eee", padding: "2px 6px" }}>.env</code> and set{" "}
+          <code style={{ background: "#eee", padding: "2px 6px" }}>VITE_CLERK_PUBLISHABLE_KEY</code> (get a
+          publishable key from{" "}
+          <a href="https://dashboard.clerk.com" target="_blank" rel="noopener noreferrer">
+            dashboard.clerk.com
+          </a>
+          ). See SETUP.md for details.
+        </p>
+        <p style={{ fontSize: 14, color: "#666" }}>
+          Until then, the app cannot load because auth is required.
+        </p>
+      </div>
+    </div>
+  );
 }
 
 // Register service worker in production only
@@ -22,8 +54,13 @@ if (import.meta.env.PROD && "serviceWorker" in navigator) {
   });
 }
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
-    <App />
-  </ClerkProvider>,
-);
+const root = document.getElementById("root")!;
+if (!PUBLISHABLE_KEY) {
+  ReactDOM.createRoot(root).render(<MissingClerkKey />);
+} else {
+  ReactDOM.createRoot(root).render(
+    <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+      <App />
+    </ClerkProvider>,
+  );
+}
