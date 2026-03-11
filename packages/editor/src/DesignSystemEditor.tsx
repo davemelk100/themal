@@ -1053,8 +1053,20 @@ function DesignSystemEditorInner({
 
   const MAX_UNDO = 10;
 
+  const captureColorsForUndo = useCallback(() => {
+    const el = editorRootRef.current || document.documentElement;
+    const style = getComputedStyle(el);
+    const snapshot: Record<string, string> = {};
+    EDITABLE_VARS.forEach(({ key }) => {
+      const val = style.getPropertyValue(key).trim();
+      if (val) snapshot[key] = val;
+    });
+    return Object.keys(snapshot).length > 0 ? snapshot : { ...colors };
+  }, [colors]);
+
   const handleGenerate = () => {
-    setColorUndoStack((s) => [...s.slice(-(MAX_UNDO - 1)), { ...colors }]);
+    const snapshot = captureColorsForUndo();
+    setColorUndoStack((s) => [...s.slice(-(MAX_UNDO - 1)), snapshot]);
     const isDark = document.documentElement.classList.contains("dark");
     const result = generateRandomPalette(colors, lockedKeys, isDark);
     const history =
@@ -1085,14 +1097,18 @@ function DesignSystemEditorInner({
     if (colorUndoStack.length === 0) return;
     const restored = colorUndoStack[colorUndoStack.length - 1];
     setColorUndoStack((s) => s.slice(0, -1));
+    const el = editorRootRef.current || document.documentElement;
     const pending =
       storage.get<Record<string, string>>(PENDING_COLORS_KEY) || {};
+    const saved = storage.get<Record<string, string>>(THEME_COLORS_KEY) || {};
     for (const [key, val] of Object.entries(restored)) {
-      editorRootRef.current?.style.setProperty(key, val);
+      el.style.setProperty(key, val);
       pending[key] = val;
+      saved[key] = val;
     }
     setColors(restored);
     storage.set(PENDING_COLORS_KEY, pending);
+    storage.set(THEME_COLORS_KEY, saved);
     window.dispatchEvent(new Event("theme-pending-update"));
     fireOnChange(restored);
     if (accessibilityAudit) runAccessibilityAudit();
@@ -1139,7 +1155,8 @@ function DesignSystemEditorInner({
   };
 
   const applyImagePalette = (palette: Record<string, string>) => {
-    setColorUndoStack((s) => [...s.slice(-(MAX_UNDO - 1)), { ...colors }]);
+    const snapshot = captureColorsForUndo();
+    setColorUndoStack((s) => [...s.slice(-(MAX_UNDO - 1)), snapshot]);
 
     let newColors = { ...colors };
     const brandDerived = derivePaletteFromChange(
@@ -1937,10 +1954,12 @@ function DesignSystemEditorInner({
             <span className="truncate">Import CSS</span>
           </button>
           */}
-          <div className="flex items-center flex-1 min-w-0">
+          <div className="flex items-center flex-1 min-w-0 gap-1">
             <button
+              type="button"
               onClick={handleGenerate}
-              className="ds-global-btn w-full h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+              className="ds-global-btn flex-1 min-w-0 h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+              title="Generate new random palette"
             >
               <svg
                 className="w-4 h-4 flex-shrink-0"
@@ -1956,42 +1975,30 @@ function DesignSystemEditorInner({
                 />
               </svg>
               <span className="truncate">Refresh Theme</span>
-              {colorUndoStack.length > 0 && (
-                <span
-                  role="button"
-                  tabIndex={0}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    handleUndo();
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.stopPropagation();
-                      e.preventDefault();
-                      handleUndo();
-                    }
-                  }}
-                  className="ds-undo-btn ml-1 pl-2 pr-1.5 py-1 -my-1 border-l flex items-center justify-center hover:opacity-70 cursor-pointer"
-                  style={{ borderColor: "hsl(var(--foreground) / 0.2)" }}
-                  title="Undo last refresh"
-                >
-                  <svg
-                    className="w-3.5 h-3.5 flex-shrink-0"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M3 10h10a5 5 0 010 10H9m-6-10l4-4m-4 4l4 4"
-                    />
-                  </svg>
-                </span>
-              )}
             </button>
+            {colorUndoStack.length > 0 && (
+              <button
+                type="button"
+                onClick={handleUndo}
+                className="ds-global-btn ds-undo-btn h-12 px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center shrink-0"
+                title="Undo last refresh"
+                aria-label="Undo last refresh"
+              >
+                <svg
+                  className="w-4 h-4 flex-shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 10h10a5 5 0 010 10H9m-6-10l4-4m-4 4l4 4"
+                  />
+                </svg>
+              </button>
+            )}
           </div>
           <div className="flex-1 min-w-0">
           <PremiumGate
