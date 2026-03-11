@@ -261,19 +261,38 @@
   opacity: 1;
 }
 
+/* Base text size for editor elements */
+.ds-editor p,
+.ds-editor a,
+.ds-editor li,
+.ds-editor span,
+.ds-editor button,
+.ds-editor [class*="chip"],
+.ds-editor [class*="badge"],
+.ds-editor [role="status"] {
+  font-size: 16px;
+}
+
 /* Left sidebar nav */
 .ds-left-nav {
   border-right: 1px solid hsl(var(--border));
   background-color: hsl(var(--background, 0 0% 98%));
+  font-size: 16px;
 }
-.ds-left-nav .ds-global-btn {
+.ds-left-nav .ds-global-btn,
+.ds-left-nav a,
+.ds-left-nav button,
+.ds-left-nav p,
+.ds-left-nav li,
+.ds-left-nav span {
   justify-content: flex-start;
+  font-size: 16px !important;
 }
 
 /* Floating scroll-to-top button */
 .ds-scroll-top {
   position: fixed;
-  bottom: 24px;
+  bottom: 80px;
   left: 24px;
   z-index: 50;
   width: 36px;

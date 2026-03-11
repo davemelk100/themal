@@ -4,6 +4,7 @@ import { DesignSystemEditor } from "@design-alive/editor";
 import { useSubscription } from "../../hooks/useSubscription";
 import UserNav from "../../components/UserNav";
 import usePageMeta from "../../hooks/usePageMeta";
+import { ContactForm, ReportBugForm } from "../../components/SiteFooter";
 
 export default function PortfolioLanding() {
   usePageMeta({
@@ -49,6 +50,20 @@ export default function PortfolioLanding() {
         aboutUrl="/about"
         showHeader={false}
         showNavLinks={false}
+        sidebarLinks={[
+          { to: "/features", label: "Features" },
+          { to: "/pricing", label: "Pricing" },
+          { to: "/about", label: "About" },
+          { to: "/readme", label: "Docs" },
+          { to: "/privacy", label: "Privacy" },
+          { to: "/terms", label: "Terms" },
+        ]}
+        sidebarExtra={
+          <>
+            <ContactForm buttonClassName="ds-global-btn w-full h-9 px-2 text-[13px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center gap-2" />
+            <ReportBugForm buttonClassName="ds-global-btn w-full h-9 px-2 text-[13px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center gap-2" />
+          </>
+        }
       />
     </div>
   );

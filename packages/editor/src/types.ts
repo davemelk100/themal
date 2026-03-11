@@ -53,6 +53,10 @@ export interface DesignSystemEditorProps {
   onAiGenerate?: (prompt: string) => Promise<AiGenerateResult>;
   /** Show a "Purge Storage" button in Global Actions that clears all Themal localStorage keys. Useful during development. Default: false */
   devMode?: boolean;
+  /** Navigation links to render at the bottom of the left sidebar */
+  sidebarLinks?: { to: string; label: string }[];
+  /** Extra content rendered at the very bottom of the left sidebar (e.g. contact forms) */
+  sidebarExtra?: React.ReactNode;
 }
 
 export type { ImportedIconData } from "./utils/iconImport";

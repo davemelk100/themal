@@ -593,7 +593,7 @@ export default function LandingPage() {
         }}
       >
         <SiteFooterBranding />
-        <SiteFooter sticky={false} />
+        <SiteFooter />
       </div>
 
     </div>
