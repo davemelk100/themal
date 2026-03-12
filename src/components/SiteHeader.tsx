@@ -118,7 +118,7 @@ export default function SiteHeader() {
       {isEditor ? (
         <div className="w-full mx-auto flex flex-col lg:flex-row site-container">
           {/* Logo row: stacked above nav on mobile, sidebar-width column at lg */}
-          <div className="flex items-end flex-shrink-0 pl-4 pr-2 lg:w-48 pt-3 pb-1 lg:py-3">
+          <div className="flex items-end flex-shrink-0 pl-4 pr-2 lg:w-48 pt-3 pb-1.5 lg:py-3">
             <Link
               to="/"
               className="flex-shrink-0 hover:opacity-70 transition-opacity"
