@@ -273,7 +273,7 @@
 .ds-editor textarea,
 .ds-editor label,
 .ds-editor span:not(.ds-premium-tooltip span):not(.ds-h2):not(.ds-palette-label) {
-  font-size: 16px;
+  font-size: 13px;
 }
 
 /* H2 back-to-top links — no transitions or size changes */
@@ -297,7 +297,7 @@
 .ds-left-nav li,
 .ds-left-nav span {
   justify-content: flex-start;
-  font-size: 16px !important;
+  font-size: 16px;
 }
 
 /* Themed input styles */

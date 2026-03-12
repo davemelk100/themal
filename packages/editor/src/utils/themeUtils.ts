@@ -1086,9 +1086,6 @@ export function applyTypography(state: TypographyState, root: HTMLElement = docu
       line-height: ${state.lineHeight};
       letter-spacing: ${state.letterSpacing}em;
     }
-    .ds-editor {
-      font-size: ${state.baseFontSize}px;
-    }
     h1, h2, h3, h4, h5, h6 {
       font-family: ${state.headingFamily};
       font-weight: ${state.headingWeight};
@@ -1096,7 +1093,6 @@ export function applyTypography(state: TypographyState, root: HTMLElement = docu
     }
     .ds-editor {
       font-family: ${state.bodyFamily};
-      font-size: ${state.baseFontSize}px;
       font-weight: ${state.bodyWeight};
       line-height: ${state.lineHeight};
       letter-spacing: ${state.letterSpacing}em;
@@ -1113,7 +1109,6 @@ export function applyTypography(state: TypographyState, root: HTMLElement = docu
     .ds-editor textarea, .ds-editor label,
     .ds-editor span:not(.ds-premium-tooltip span):not(.ds-h2):not(.ds-palette-label) {
       font-family: ${state.bodyFamily};
-      font-size: ${state.baseFontSize}px;
       font-weight: ${state.bodyWeight};
       line-height: ${state.lineHeight};
     }
