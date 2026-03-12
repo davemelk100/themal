@@ -19,6 +19,9 @@ export {
   BUTTON_STYLE_KEY,
   BUTTON_PRESETS,
   applyStoredButtonStyle,
+  INPUT_STYLE_KEY,
+  INPUT_PRESETS,
+  applyStoredInputStyle,
   INTERACTION_STYLE_KEY,
   applyStoredInteractionStyle,
   serializeThemeState,
@@ -33,7 +36,12 @@ export {
   initCustomFonts,
   buildAiSystemPrompt,
 } from "./utils/themeUtils";
-export type { HarmonyScheme, CardStyleState, ButtonStyleState, TypographyState, AlertStyleState, ToastStyleState, InteractionStyleState, TypoInteractionStyleState, CustomFontEntry } from "./utils/themeUtils";
+export type { HarmonyScheme, CardStyleState, ButtonStyleState, InputStyleState, TypographyState, AlertStyleState, ToastStyleState, InteractionStyleState, TypoInteractionStyleState, CustomFontEntry } from "./utils/themeUtils";
+
+export { createDesignPr, replaceRootBlock, getAuthenticatedUser } from "./utils/githubApi";
+export type { GitHubConfig } from "./utils/githubApi";
+export { startOAuthFlow, getStoredAuth, clearAuth, validateStoredToken } from "./utils/githubAuth";
+export type { StoredGitHubAuth } from "./utils/githubAuth";
 
 export { validateLicenseKey, generateLicenseKey } from "./utils/license";
 export type { PremiumFeature, LicenseValidation } from "./utils/license";

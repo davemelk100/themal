@@ -45,7 +45,7 @@ The editor writes CSS custom properties (HSL values) to `:root`. Typography styl
 | `licenseKey` | `string` | — | License key to unlock premium features. |
 | `upgradeUrl` | `string` | `"/pricing"` | URL shown in premium gate upgrade prompts. |
 | `signInUrl` | `string` | — | URL shown in premium gate sign-in prompts. |
-| `prEndpointUrl` | `string` | — | URL for PR creation endpoint. PR button hidden if omitted. |
+| `prEndpointUrl` | `string` | — | URL for your server-side PR creation endpoint. The editor POSTs `{ css, sections }` and expects `{ url }` back. PR button hidden if omitted. |
 | `accessibilityAudit` | `boolean` | `true` | Enable axe-core color contrast auditing. |
 | `onChange` | `(colors: Record<string, string>) => void` | — | Callback on every color change with the full color map. |
 | `onExport` | `(css: string) => void` | — | Override built-in CSS modal. Receives the generated CSS string. |
@@ -124,11 +124,56 @@ import { LicenseProvider } from '@themal/editor';
 <DesignSystemEditor accessibilityAudit={false} />
 ```
 
-### With PR creation
+### With PR creation (server-side endpoint)
+
+The editor can open design system PRs against your repo. Pass `prEndpointUrl` pointing to your backend endpoint. The editor POSTs JSON with `{ css, sections }` and expects a JSON response with `{ url }` (the GitHub PR or compare URL).
 
 ```tsx
 <DesignSystemEditor prEndpointUrl="/api/create-design-pr" />
 ```
+
+Your endpoint receives:
+
+```json
+{
+  "css": ":root {\n  --brand: 210 50% 40%;\n  ...\n}",
+  "sections": ["colors", "typography"]
+}
+```
+
+And should return:
+
+```json
+{
+  "url": "https://github.com/your-org/your-repo/pull/42"
+}
+```
+
+The PR button is hidden when `prEndpointUrl` is omitted.
+
+### With PR creation (client-side GitHub API)
+
+For apps that don't have a backend, the editor also exports client-side utilities to create PRs directly via the GitHub API using OAuth:
+
+```tsx
+import { createDesignPr, startOAuthFlow } from '@themal/editor';
+
+const config = {
+  clientId: 'your-github-oauth-client-id',
+  repo: 'your-org/your-repo',
+  filePath: 'src/globals.css',   // optional, default: "src/globals.css"
+  baseBranch: 'main',            // optional, default: "main"
+};
+
+// 1. Authenticate via OAuth popup
+const auth = await startOAuthFlow(config);
+
+// 2. Create a PR with the current CSS
+const compareUrl = await createDesignPr(config, auth.access_token, css, ['colors', 'typography']);
+window.open(compareUrl, '_blank');
+```
+
+This flow opens a GitHub OAuth popup, exchanges the code for a token via a proxy, then creates a branch and commit using the GitHub API entirely from the browser. The default OAuth proxy is hosted at `themalive.com`. Override it with `oauthProxyUrl` in the config for self-hosted setups or GitHub Enterprise.
 
 ### With premium features
 
@@ -282,6 +327,15 @@ import {
   removeCustomFont,     // Remove a custom font by label
   initCustomFonts,      // Re-register all custom fonts on startup
 
+  // GitHub PR utilities (client-side)
+  createDesignPr,       // Create a design system PR via GitHub API
+  replaceRootBlock,     // Replace CSS vars in a :root block string
+  getAuthenticatedUser, // Verify a GitHub token and get username
+  startOAuthFlow,       // Start GitHub OAuth popup flow
+  getStoredAuth,        // Retrieve stored GitHub auth from sessionStorage
+  clearAuth,            // Clear stored GitHub auth
+  validateStoredToken,  // Validate stored token against GitHub API
+
   // License utilities
   validateLicenseKey,   // Validate a THEMAL-XXXX-XXXX-XXXX key
   generateLicenseKey,   // Generate a valid license key
@@ -315,6 +369,8 @@ import type {
   LicenseValidation,
   LicenseProviderProps,
   PremiumGateProps,
+  GitHubConfig,
+  StoredGitHubAuth,
 } from '@themal/editor';
 ```
 
@@ -367,6 +423,8 @@ src/
 │   │   ├── interactionStyle.ts # Button interaction states
 │   │   └── exportUtils.ts      # Serialization, design tokens, export
 │   ├── themeUtils.ts           # Barrel re-export of all style utilities
+│   ├── githubApi.ts            # Client-side GitHub PR creation
+│   ├── githubAuth.ts           # GitHub OAuth popup flow
 │   ├── iconImport.ts           # SVG sanitizer, icon fetching
 │   ├── storage.ts              # localStorage with fallbacks
 │   └── license.ts              # License key validation

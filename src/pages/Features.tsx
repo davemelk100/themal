@@ -243,7 +243,7 @@ export default function Features() {
               { title: "Palette Export", desc: "Download palette as SVG or PNG, copy as HEX, RGB, or RGBA." },
               { title: "Shareable URLs", desc: "Encode full theme state in a URL hash and share with one click." },
               { title: "Accessibility Audit", desc: "Built-in axe-core audit with inline violation reporting." },
-              { title: "GitHub PR Integration", desc: "Open design system PRs directly from the editor." },
+              { title: "GitHub PR Integration", desc: "Open design system PRs via your server endpoint or directly through the GitHub API with built-in OAuth." },
               { title: "Color Locks", desc: "Pin individual color tokens during palette generation." },
               { title: "Responsive Layout", desc: "Mobile-first design with a 2D color spectrum picker for touch, adaptive controls across all viewports." },
               { title: "Plugin Mode", desc: "Embed the editor in any React app with props for custom default colors, typography, header content, and white-label branding." },
