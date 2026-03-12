@@ -91,8 +91,7 @@ export function CardsSection({
           data-axe-exclude
         >
           <h2
-            className="text-[14px] sm:text-[16px] md:text-[20px] font-bold tracking-wider mb-[5px] flex items-baseline gap-2"
-            style={{ color: "hsl(var(--foreground))" }}
+            className="text-[14px] sm:text-[16px] md:text-[20px] font-bold tracking-wider mb-[5px] flex items-baseline gap-2 ds-text-fg"
           >
             Cards{" "}
             <a
@@ -139,8 +138,7 @@ export function CardsSection({
             {/* Desktop: buttons */}
             <div className="hidden sm:flex flex-wrap items-center gap-1 sm:gap-2">
               <div
-                className="flex items-center rounded-lg overflow-hidden border"
-                style={{ borderColor: "hsl(var(--border))" }}
+                className="flex items-center rounded-lg overflow-hidden border ds-border"
               >
                 <button
                   onClick={() => {
@@ -225,8 +223,7 @@ export function CardsSection({
               </div>
               <button
                 onClick={() => setShowCardResetModal(true)}
-                className="h-10 px-2 sm:px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1"
-                style={{ color: "hsl(var(--muted-foreground))" }}
+                className="h-10 px-2 sm:px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1 ds-text-muted"
               >
                 <svg
                   className="w-4 h-4 flex-shrink-0"
@@ -385,16 +382,13 @@ export function CardsSection({
                 cardExportFormat === "tokens" ? cardTokens : cardCss;
               return (
                 <div
-                  className="rounded-lg border"
-                  style={{ borderColor: "hsl(var(--border))" }}
+                  className="rounded-lg border ds-border"
                 >
                   <div
-                    className="flex items-center justify-between px-3 py-1.5 border-b"
-                    style={{ borderColor: "hsl(var(--border))" }}
+                    className="flex items-center justify-between px-3 py-1.5 border-b ds-border"
                   >
                     <span
-                      className="text-[14px] font-light uppercase tracking-wider"
-                      style={{ color: "hsl(var(--card-foreground))" }}
+                      className="text-[14px] font-light uppercase tracking-wider ds-text-card"
                     >
                       {cardExportFormat === "tokens"
                         ? "Card Tokens"
@@ -433,8 +427,7 @@ export function CardsSection({
                     </div>
                   </div>
                   <pre
-                    className="p-3 overflow-x-auto max-h-64 text-xs leading-relaxed font-mono"
-                    style={{ color: "hsl(var(--card-foreground))" }}
+                    className="p-3 overflow-x-auto max-h-64 text-xs leading-relaxed font-mono ds-text-card"
                   >
                     <code>{output}</code>
                   </pre>
@@ -449,14 +442,12 @@ export function CardsSection({
               {/* Shadow */}
               <div className="space-y-1.5">
                 <p
-                  className="text-[14px] font-light uppercase tracking-wider"
-                  style={{ color: "hsl(var(--muted-foreground))" }}
+                  className="text-[14px] font-light uppercase tracking-wider ds-text-muted"
                 >
                   Shadow
                 </p>
                 <label
-                  className="flex items-center justify-between gap-2 text-[14px] font-light"
-                  style={{ color: "hsl(var(--foreground))" }}
+                  className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                 >
                   <span>Y Offset: {cardStyle.shadowOffsetY}px</span>
                   <input
@@ -474,8 +465,7 @@ export function CardsSection({
                   />
                 </label>
                 <label
-                  className="flex items-center justify-between gap-2 text-[14px] font-light"
-                  style={{ color: "hsl(var(--foreground))" }}
+                  className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                 >
                   <span>Blur: {cardStyle.shadowBlur}px</span>
                   <input
@@ -493,8 +483,7 @@ export function CardsSection({
                   />
                 </label>
                 <label
-                  className="flex items-center justify-between gap-2 text-[14px] font-light"
-                  style={{ color: "hsl(var(--foreground))" }}
+                  className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                 >
                   <span>Spread: {cardStyle.shadowSpread}px</span>
                   <input
@@ -515,14 +504,12 @@ export function CardsSection({
               {/* Shape */}
               <div className="space-y-1.5">
                 <p
-                  className="text-[14px] font-light uppercase tracking-wider"
-                  style={{ color: "hsl(var(--muted-foreground))" }}
+                  className="text-[14px] font-light uppercase tracking-wider ds-text-muted"
                 >
                   Shape
                 </p>
                 <label
-                  className="flex items-center justify-between gap-2 text-[14px] font-light"
-                  style={{ color: "hsl(var(--foreground))" }}
+                  className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                 >
                   <span>Border Radius: {cardStyle.borderRadius}px</span>
                   <input
@@ -540,8 +527,7 @@ export function CardsSection({
                   />
                 </label>
                 <label
-                  className="flex items-center justify-between gap-2 text-[14px] font-light"
-                  style={{ color: "hsl(var(--foreground))" }}
+                  className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                 >
                   <span>Border Width: {cardStyle.borderWidth}px</span>
                   <input
@@ -562,14 +548,12 @@ export function CardsSection({
               {/* Background */}
               <div className="space-y-1.5">
                 <p
-                  className="text-[14px] font-light uppercase tracking-wider"
-                  style={{ color: "hsl(var(--muted-foreground))" }}
+                  className="text-[14px] font-light uppercase tracking-wider ds-text-muted"
                 >
                   Background
                 </p>
                 <label
-                  className="flex items-center justify-between gap-2 text-[14px] font-light"
-                  style={{ color: "hsl(var(--foreground))" }}
+                  className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                 >
                   <span>
                     Opacity: {Math.round(cardStyle.bgOpacity * 100)}%
@@ -589,8 +573,7 @@ export function CardsSection({
                   />
                 </label>
                 <label
-                  className="flex items-center justify-between gap-2 text-[14px] font-light"
-                  style={{ color: "hsl(var(--foreground))" }}
+                  className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                 >
                   <span>Backdrop Blur: {cardStyle.backdropBlur}px</span>
                   <input

@@ -86,8 +86,7 @@ export function AlertsSection({
               data-axe-exclude
             >
               <h2
-                className="text-[14px] sm:text-[16px] md:text-[20px] font-bold tracking-wider mb-[5px] flex items-baseline gap-2"
-                style={{ color: "hsl(var(--foreground))" }}
+                className="text-[14px] sm:text-[16px] md:text-[20px] font-bold tracking-wider mb-[5px] flex items-baseline gap-2 ds-text-fg"
               >
                 Alerts{" "}
                 <a
@@ -120,15 +119,13 @@ export function AlertsSection({
                 >
                   <div className="flex items-center justify-between gap-2 flex-wrap">
                     <h3
-                      className="text-[16px] font-normal uppercase tracking-wider"
-                      style={{ color: "hsl(var(--foreground))" }}
+                      className="text-[16px] font-normal uppercase tracking-wider ds-text-fg"
                     >
                       Dialog Boxes
                     </h3>
                     <div className="flex items-center gap-1">
                       <div
-                        className="flex items-center rounded-lg overflow-hidden border"
-                        style={{ borderColor: "hsl(var(--border))" }}
+                        className="flex items-center rounded-lg overflow-hidden border ds-border"
                       >
                         <button
                           onClick={() => {
@@ -193,8 +190,7 @@ export function AlertsSection({
                       </div>
                       <button
                         onClick={handleResetDialogStyle}
-                        className="h-10 px-2 sm:px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1"
-                        style={{ color: "hsl(var(--muted-foreground))" }}
+                        className="h-10 px-2 sm:px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1 ds-text-muted"
                       >
                         <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" />
@@ -244,14 +240,12 @@ export function AlertsSection({
                   {/* Controls */}
                   <div className="space-y-1.5">
                     <p
-                      className="text-[14px] font-light uppercase tracking-wider"
-                      style={{ color: "hsl(var(--muted-foreground))" }}
+                      className="text-[14px] font-light uppercase tracking-wider ds-text-muted"
                     >
                       Shape
                     </p>
                     <label
-                      className="flex items-center justify-between gap-2 text-[14px] font-light"
-                      style={{ color: "hsl(var(--foreground))" }}
+                      className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                     >
                       <span>Border Radius: {alertStyle.borderRadius}px</span>
                       <input
@@ -269,8 +263,7 @@ export function AlertsSection({
                       />
                     </label>
                     <label
-                      className="flex items-center justify-between gap-2 text-[14px] font-light"
-                      style={{ color: "hsl(var(--foreground))" }}
+                      className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                     >
                       <span>Border Width: {alertStyle.borderWidth}px</span>
                       <input
@@ -288,8 +281,7 @@ export function AlertsSection({
                       />
                     </label>
                     <label
-                      className="flex items-center justify-between gap-2 text-[14px] font-light"
-                      style={{ color: "hsl(var(--foreground))" }}
+                      className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                     >
                       <span>Padding: {alertStyle.padding}px</span>
                       <input
@@ -450,12 +442,10 @@ export function AlertsSection({
                         alertExportFormat === "tokens" ? dialogTokens : dialogCss;
                       return (
                         <div
-                          className="rounded-lg border"
-                          style={{ borderColor: "hsl(var(--border))" }}
+                          className="rounded-lg border ds-border"
                         >
                           <div
-                            className="flex items-center justify-between px-3 py-1.5 border-b"
-                            style={{ borderColor: "hsl(var(--border))" }}
+                            className="flex items-center justify-between px-3 py-1.5 border-b ds-border"
                           >
                             <span
                               className="text-[13px] font-light uppercase tracking-wider"
@@ -519,15 +509,13 @@ export function AlertsSection({
                   >
                     <div className="flex items-center justify-between gap-2 flex-wrap">
                       <h3
-                        className="text-[16px] font-normal uppercase tracking-wider"
-                        style={{ color: "hsl(var(--foreground))" }}
+                        className="text-[16px] font-normal uppercase tracking-wider ds-text-fg"
                       >
                         Toast Messages
                       </h3>
                       <div className="flex items-center gap-1">
                         <div
-                          className="flex items-center rounded-lg overflow-hidden border"
-                          style={{ borderColor: "hsl(var(--border))" }}
+                          className="flex items-center rounded-lg overflow-hidden border ds-border"
                         >
                           <button
                             onClick={() => {
@@ -592,8 +580,7 @@ export function AlertsSection({
                         </div>
                         <button
                           onClick={handleResetToastStyle}
-                          className="h-10 px-2 sm:px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1"
-                          style={{ color: "hsl(var(--muted-foreground))" }}
+                          className="h-10 px-2 sm:px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1 ds-text-muted"
                         >
                           <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" />
@@ -643,14 +630,12 @@ export function AlertsSection({
                     {/* Toast Controls */}
                     <div className="space-y-1.5">
                       <p
-                        className="text-[14px] font-light uppercase tracking-wider"
-                        style={{ color: "hsl(var(--muted-foreground))" }}
+                        className="text-[14px] font-light uppercase tracking-wider ds-text-muted"
                       >
                         Shape
                       </p>
                       <label
-                        className="flex items-center justify-between gap-2 text-[14px] font-light"
-                        style={{ color: "hsl(var(--foreground))" }}
+                        className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                       >
                         <span>Border Radius: {toastStyle.borderRadius}px</span>
                         <input
@@ -668,8 +653,7 @@ export function AlertsSection({
                         />
                       </label>
                       <label
-                        className="flex items-center justify-between gap-2 text-[14px] font-light"
-                        style={{ color: "hsl(var(--foreground))" }}
+                        className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                       >
                         <span>
                           Padding: {Math.max(toastStyle.padding - 4, 8)}px
@@ -689,8 +673,7 @@ export function AlertsSection({
                         />
                       </label>
                       <label
-                        className="flex items-center justify-between gap-2 text-[14px] font-light"
-                        style={{ color: "hsl(var(--foreground))" }}
+                        className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                       >
                         <span>Shadow</span>
                         <CustomSelect
@@ -844,12 +827,10 @@ export function AlertsSection({
                           toastExportFormat === "tokens" ? tTokens : tCss;
                         return (
                           <div
-                            className="rounded-lg border"
-                            style={{ borderColor: "hsl(var(--border))" }}
+                            className="rounded-lg border ds-border"
                           >
                             <div
-                              className="flex items-center justify-between px-3 py-1.5 border-b"
-                              style={{ borderColor: "hsl(var(--border))" }}
+                              className="flex items-center justify-between px-3 py-1.5 border-b ds-border"
                             >
                               <span
                                 className="text-[13px] font-light uppercase tracking-wider"

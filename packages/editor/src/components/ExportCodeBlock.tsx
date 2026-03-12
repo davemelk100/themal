@@ -57,16 +57,13 @@ export function ExportCodeBlock({
 
   return (
     <div
-      className="rounded-lg border"
-      style={{ borderColor: "hsl(var(--border))" }}
+      className="rounded-lg border ds-border"
     >
       <div
-        className="flex items-center justify-between px-3 py-1.5 border-b"
-        style={{ borderColor: "hsl(var(--border))" }}
+        className="flex items-center justify-between px-3 py-1.5 border-b ds-border"
       >
         <span
-          className="text-[14px] font-light uppercase tracking-wider"
-          style={{ color: "hsl(var(--card-foreground))" }}
+          className="text-[14px] font-light uppercase tracking-wider ds-text-card"
         >
           {label}
         </span>
@@ -74,9 +71,8 @@ export function ExportCodeBlock({
           <button
             onClick={onCopy}
             aria-label="Copy"
-            className="p-1 rounded-lg transition-colors hover:opacity-80"
+            className="p-1 rounded-lg transition-colors hover:opacity-80 ds-bg-muted"
             style={{
-              backgroundColor: "hsl(var(--muted))",
               color: buttonTextColor,
             }}
           >
@@ -85,9 +81,8 @@ export function ExportCodeBlock({
           <button
             onClick={onClose}
             aria-label="Close"
-            className="p-1 rounded-lg transition-colors hover:opacity-80"
+            className="p-1 rounded-lg transition-colors hover:opacity-80 ds-bg-muted"
             style={{
-              backgroundColor: "hsl(var(--muted))",
               color: buttonTextColor,
             }}
           >
@@ -96,8 +91,7 @@ export function ExportCodeBlock({
         </div>
       </div>
       <pre
-        className="p-3 overflow-x-auto max-h-64 text-xs leading-relaxed font-mono"
-        style={{ color: "hsl(var(--card-foreground))" }}
+        className="p-3 overflow-x-auto max-h-64 text-xs leading-relaxed font-mono ds-text-card"
       >
         <code>{code}</code>
       </pre>

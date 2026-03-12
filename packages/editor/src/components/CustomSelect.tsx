@@ -70,9 +70,8 @@ export function CustomSelect({
       >
         <span className="truncate">{displayLabel}</span>
         <svg
-          className="w-3.5 h-3.5 flex-shrink-0"
+          className="w-3.5 h-3.5 flex-shrink-0 ds-text-muted"
           style={{
-            color: "hsl(var(--muted-foreground))",
             transform: open ? "rotate(180deg)" : "rotate(0)",
             transition: "transform 0.15s",
           }}

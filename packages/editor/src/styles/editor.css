@@ -12,6 +12,33 @@
   .focus\:ring-brand-dynamic:focus { --tw-ring-color: hsl(var(--brand)); }
 }
 
+/* ── Design-system color utilities ──────────────────────────────────── */
+/* Text colors */
+.ds-text-fg            { color: hsl(var(--foreground)); }
+.ds-text-muted         { color: hsl(var(--muted-foreground)); }
+.ds-text-brand         { color: hsl(var(--brand)); }
+.ds-text-destructive   { color: hsl(var(--destructive)); }
+.ds-text-card          { color: hsl(var(--card-foreground)); }
+
+/* Background colors */
+.ds-bg                 { background-color: hsl(var(--background)); }
+.ds-bg-card            { background-color: hsl(var(--card)); }
+.ds-bg-muted           { background-color: hsl(var(--muted)); }
+.ds-bg-fg              { background-color: hsl(var(--foreground)); }
+.ds-bg-brand           { background-color: hsl(var(--brand)); }
+.ds-bg-destructive     { background-color: hsl(var(--destructive)); }
+.ds-bg-accent          { background-color: hsl(var(--accent)); }
+
+/* Border colors */
+.ds-border             { border-color: hsl(var(--border)); }
+.ds-border-brand       { border-color: hsl(var(--brand)); }
+
+/* Common surface combos */
+.ds-surface            { background-color: hsl(var(--card)); color: hsl(var(--foreground)); }
+.ds-surface-bg         { background-color: hsl(var(--background)); color: hsl(var(--foreground)); }
+.ds-surface-muted      { background-color: hsl(var(--muted)); color: hsl(var(--foreground)); }
+.ds-surface-invert     { background-color: hsl(var(--foreground)); color: hsl(var(--background)); }
+
 .ds-editor .ds-section-nav {
   background-color: hsl(var(--background, 0 0% 98%));
   border-bottom: none;

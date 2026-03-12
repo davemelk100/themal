@@ -29,29 +29,20 @@ export const ResetConfirmModal: React.FC<ResetConfirmModalProps> = ({
       aria-labelledby={id}
     >
       <div
-        className="rounded-lg shadow-xl p-6 w-full max-w-sm mx-4"
-        style={{
-          backgroundColor: "hsl(var(--card))",
-          color: "hsl(var(--card-foreground))",
-        }}
+        className="rounded-lg shadow-xl p-6 w-full max-w-sm mx-4 ds-surface"
       >
         <h4 id={id} className="text-2xl font-light mb-2">
           {title}
         </h4>
         <p
-          className="text-[14px] mb-4"
-          style={{ color: "hsl(var(--card-foreground))" }}
+          className="text-[14px] mb-4 ds-text-card"
         >
           {message}
         </p>
         <div className="flex justify-end gap-2">
           <button
             onClick={onClose}
-            className="px-3 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
-            style={{
-              backgroundColor: "transparent",
-              color: "hsl(var(--card-foreground))",
-            }}
+            className="px-3 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 ds-text-card"
           >
             Cancel
           </button>

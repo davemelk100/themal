@@ -122,8 +122,7 @@ export function TypographySection({
         className="min-w-0 space-y-3 mt-6 mb-6 md:mt-16 md:mb-16 scroll-mt-[56px]"
       >
         <h2
-          className="text-[14px] sm:text-[16px] md:text-[20px] font-bold tracking-wider mb-[5px] flex items-baseline gap-2"
-          style={{ color: "hsl(var(--foreground))" }}
+          className="text-[14px] sm:text-[16px] md:text-[20px] font-bold tracking-wider mb-[5px] flex items-baseline gap-2 ds-text-fg"
         >
           Typography{" "}
           <a
@@ -159,8 +158,7 @@ export function TypographySection({
               data-axe-exclude
             >
               <h3
-                className="text-[16px] font-normal uppercase tracking-wider"
-                style={{ color: "hsl(var(--foreground))" }}
+                className="text-[16px] font-normal uppercase tracking-wider ds-text-fg"
               >
                 Styles
               </h3>
@@ -187,8 +185,7 @@ export function TypographySection({
                 {/* Desktop: buttons */}
                 <div className="hidden sm:flex flex-wrap items-center gap-1 sm:gap-2">
                   <div
-                    className="flex items-center rounded-lg overflow-hidden border"
-                    style={{ borderColor: "hsl(var(--border))" }}
+                    className="flex items-center rounded-lg overflow-hidden border ds-border"
                   >
                     <button
                       onClick={() => {
@@ -276,8 +273,7 @@ export function TypographySection({
                   </div>
                   <button
                     onClick={() => setShowTypoResetModal(true)}
-                    className="h-10 px-2 sm:px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1"
-                    style={{ color: "hsl(var(--muted-foreground))" }}
+                    className="h-10 px-2 sm:px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1 ds-text-muted"
                   >
                     <svg
                       className="w-4 h-4 flex-shrink-0"
@@ -446,16 +442,13 @@ export function TypographySection({
                   typoExportFormat === "tokens" ? typoTokens : typoCss;
                 return (
                   <div
-                    className="rounded-lg border"
-                    style={{ borderColor: "hsl(var(--border))" }}
+                    className="rounded-lg border ds-border"
                   >
                     <div
-                      className="flex items-center justify-between px-3 py-1.5 border-b"
-                      style={{ borderColor: "hsl(var(--border))" }}
+                      className="flex items-center justify-between px-3 py-1.5 border-b ds-border"
                     >
                       <span
-                        className="text-[14px] font-light uppercase tracking-wider"
-                        style={{ color: "hsl(var(--card-foreground))" }}
+                        className="text-[14px] font-light uppercase tracking-wider ds-text-card"
                       >
                         {typoExportFormat === "tokens"
                           ? "Typography Tokens"
@@ -494,8 +487,7 @@ export function TypographySection({
                       </div>
                     </div>
                     <pre
-                      className="p-3 overflow-x-auto max-h-64 text-xs leading-relaxed font-mono"
-                      style={{ color: "hsl(var(--card-foreground))" }}
+                      className="p-3 overflow-x-auto max-h-64 text-xs leading-relaxed font-mono ds-text-card"
                     >
                       <code>{output}</code>
                     </pre>
@@ -510,14 +502,12 @@ export function TypographySection({
                 {/* Fonts */}
                 <div className="space-y-1.5">
                   <p
-                    className="text-[14px] font-light uppercase tracking-wider"
-                    style={{ color: "hsl(var(--muted-foreground))" }}
+                    className="text-[14px] font-light uppercase tracking-wider ds-text-muted"
                   >
                     Fonts
                   </p>
                   <label
-                    className="flex items-center justify-between gap-2 text-[14px] font-light"
-                    style={{ color: "hsl(var(--foreground))" }}
+                    className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                   >
                     <span>Heading:</span>
                     <CustomSelect
@@ -529,8 +519,7 @@ export function TypographySection({
                     />
                   </label>
                   <label
-                    className="flex items-center justify-between gap-2 text-[14px] font-light"
-                    style={{ color: "hsl(var(--foreground))" }}
+                    className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                   >
                     <span>Body:</span>
                     <CustomSelect
@@ -545,14 +534,12 @@ export function TypographySection({
                 {/* Size & Weight */}
                 <div className="space-y-1.5">
                   <p
-                    className="text-[14px] font-light uppercase tracking-wider"
-                    style={{ color: "hsl(var(--muted-foreground))" }}
+                    className="text-[14px] font-light uppercase tracking-wider ds-text-muted"
                   >
                     Size & Weight
                   </p>
                   <label
-                    className="flex items-center justify-between gap-2 text-[14px] font-light"
-                    style={{ color: "hsl(var(--foreground))" }}
+                    className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                   >
                     <span>Base Size: {typographyState.baseFontSize}px</span>
                     <input
@@ -570,8 +557,7 @@ export function TypographySection({
                     />
                   </label>
                   <label
-                    className="flex items-center justify-between gap-2 text-[14px] font-light"
-                    style={{ color: "hsl(var(--foreground))" }}
+                    className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                   >
                     <span>Heading Wt: {typographyState.headingWeight}</span>
                     <input
@@ -590,8 +576,7 @@ export function TypographySection({
                     />
                   </label>
                   <label
-                    className="flex items-center justify-between gap-2 text-[14px] font-light"
-                    style={{ color: "hsl(var(--foreground))" }}
+                    className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                   >
                     <span>Body Wt: {typographyState.bodyWeight}</span>
                     <input
@@ -619,14 +604,12 @@ export function TypographySection({
                 >
                   <div className="space-y-1.5">
                     <p
-                      className="text-[14px] font-light uppercase tracking-wider"
-                      style={{ color: "hsl(var(--muted-foreground))" }}
+                      className="text-[14px] font-light uppercase tracking-wider ds-text-muted"
                     >
                       Spacing
                     </p>
                     <label
-                      className="flex items-center justify-between gap-2 text-[14px] font-light"
-                      style={{ color: "hsl(var(--foreground))" }}
+                      className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                     >
                       <span>
                         Line Height: {typographyState.lineHeight.toFixed(2)}
@@ -647,8 +630,7 @@ export function TypographySection({
                       />
                     </label>
                     <label
-                      className="flex items-center justify-between gap-2 text-[14px] font-light"
-                      style={{ color: "hsl(var(--foreground))" }}
+                      className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                     >
                       <span>
                         Letter Sp:{" "}
@@ -672,8 +654,7 @@ export function TypographySection({
                       />
                     </label>
                     <label
-                      className="flex items-center justify-between gap-2 text-[14px] font-light"
-                      style={{ color: "hsl(var(--foreground))" }}
+                      className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                     >
                       <span>
                         Heading Sp:{" "}
@@ -716,8 +697,7 @@ export function TypographySection({
                   >
                     <div className="space-y-1.5">
                       <label
-                        className="flex items-center gap-2 text-[14px] font-light"
-                        style={{ color: "hsl(var(--foreground))" }}
+                        className="flex items-center gap-2 text-[14px] font-light ds-text-fg"
                       >
                         <span className="whitespace-nowrap">Custom:</span>
                         <div className="flex items-center gap-1.5 flex-1 min-w-0">
@@ -731,12 +711,7 @@ export function TypographySection({
                               setFontAddError("");
                             }}
                             placeholder="Google Font name…"
-                            className="flex-1 min-w-0 h-8 px-2 text-[14px] font-light rounded-md border"
-                            style={{
-                              backgroundColor: "hsl(var(--background))",
-                              color: "hsl(var(--foreground))",
-                              borderColor: "hsl(var(--border))",
-                            }}
+                            className="flex-1 min-w-0 h-8 px-2 text-[14px] font-light rounded-md border ds-surface-bg ds-border"
                             onKeyDown={(e) => {
                               if (e.key === "Enter" && newFontName.trim()) {
                                 e.preventDefault();
@@ -764,8 +739,7 @@ export function TypographySection({
                       </label>
                       {fontAddError && (
                         <p
-                          className="text-[12px] mt-0.5"
-                          style={{ color: "hsl(var(--destructive))" }}
+                          className="text-[12px] mt-0.5 ds-text-destructive"
                         >
                           {fontAddError}
                         </p>
@@ -775,21 +749,14 @@ export function TypographySection({
                           {customFonts.map((f) => (
                             <span
                               key={f.label}
-                              className="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[11px] rounded-md border"
-                              style={{
-                                borderColor: "hsl(var(--border))",
-                                color: "hsl(var(--foreground))",
-                              }}
+                              className="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[11px] rounded-md border ds-border ds-text-fg"
                             >
                               {f.label}
                               <button
                                 onClick={() =>
                                   handleRemoveCustomFont(f.label)
                                 }
-                                className="ml-0.5 hover:opacity-70"
-                                style={{
-                                  color: "hsl(var(--muted-foreground))",
-                                }}
+                                className="ml-0.5 hover:opacity-70 ds-text-muted"
                                 title={`Remove ${f.label}`}
                               >
                                 ×
@@ -801,17 +768,12 @@ export function TypographySection({
                     </div>
                   </PremiumGate>
                   <p
-                    className="text-[14px] font-light uppercase tracking-wider"
-                    style={{ color: "hsl(var(--muted-foreground))" }}
+                    className="text-[14px] font-light uppercase tracking-wider ds-text-muted"
                   >
                     Preview
                   </p>
                   <div
-                    className="w-full rounded-lg p-5 space-y-3"
-                    style={{
-                      backgroundColor: "hsl(var(--card))",
-                      color: "hsl(var(--card-foreground))",
-                    }}
+                    className="w-full rounded-lg p-5 space-y-3 ds-surface"
                   >
                     <h3
                       style={{
@@ -880,8 +842,7 @@ export function TypographySection({
               data-axe-exclude
             >
               <h3
-                className="text-[16px] font-normal uppercase tracking-wider"
-                style={{ color: "hsl(var(--foreground))" }}
+                className="text-[16px] font-normal uppercase tracking-wider ds-text-fg"
               >
                 Interactions
               </h3>
@@ -908,8 +869,7 @@ export function TypographySection({
                 {/* Desktop: buttons */}
                 <div className="hidden sm:flex flex-wrap items-center gap-1 sm:gap-2">
                   <div
-                    className="flex items-center rounded-lg overflow-hidden border"
-                    style={{ borderColor: "hsl(var(--border))" }}
+                    className="flex items-center rounded-lg overflow-hidden border ds-border"
                   >
                     <button
                       onClick={() => {
@@ -1004,8 +964,7 @@ export function TypographySection({
                   </div>
                   <button
                     onClick={() => setShowTypoInteractionResetModal(true)}
-                    className="h-10 px-2 sm:px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1"
-                    style={{ color: "hsl(var(--muted-foreground))" }}
+                    className="h-10 px-2 sm:px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1 ds-text-muted"
                   >
                     <svg
                       className="w-4 h-4 flex-shrink-0"
@@ -1142,16 +1101,13 @@ export function TypographySection({
                       : tiCss;
                   return (
                     <div
-                      className="rounded-lg border"
-                      style={{ borderColor: "hsl(var(--border))" }}
+                      className="rounded-lg border ds-border"
                     >
                       <div
-                        className="flex items-center justify-between px-3 py-1.5 border-b"
-                        style={{ borderColor: "hsl(var(--border))" }}
+                        className="flex items-center justify-between px-3 py-1.5 border-b ds-border"
                       >
                         <span
-                          className="text-[14px] font-light uppercase tracking-wider"
-                          style={{ color: "hsl(var(--card-foreground))" }}
+                          className="text-[14px] font-light uppercase tracking-wider ds-text-card"
                         >
                           {typoInteractionExportFormat === "tokens"
                             ? "Interaction Tokens"
@@ -1195,8 +1151,7 @@ export function TypographySection({
                         </div>
                       </div>
                       <pre
-                        className="p-3 overflow-x-auto max-h-64 text-xs leading-relaxed font-mono"
-                        style={{ color: "hsl(var(--card-foreground))" }}
+                        className="p-3 overflow-x-auto max-h-64 text-xs leading-relaxed font-mono ds-text-card"
                       >
                         <code>{output}</code>
                       </pre>
@@ -1210,14 +1165,12 @@ export function TypographySection({
                 <div className="flex-1 min-w-0 space-y-3 order-2 md:order-1">
                   <div className="space-y-1.5">
                     <p
-                      className="text-[14px] font-light uppercase tracking-wider"
-                      style={{ color: "hsl(var(--muted-foreground))" }}
+                      className="text-[14px] font-light uppercase tracking-wider ds-text-muted"
                     >
                       Links - Hover
                     </p>
                     <label
-                      className="flex items-center justify-between gap-2 text-[14px] font-light"
-                      style={{ color: "hsl(var(--foreground))" }}
+                      className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                     >
                       <span>
                         Opacity: {typoInteractionStyle.linkHoverOpacity}
@@ -1238,8 +1191,7 @@ export function TypographySection({
                       />
                     </label>
                     <label
-                      className="flex items-center justify-between gap-2 text-[14px] font-light"
-                      style={{ color: "hsl(var(--foreground))" }}
+                      className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                     >
                       <span>
                         Scale: {typoInteractionStyle.linkHoverScale}
@@ -1260,8 +1212,7 @@ export function TypographySection({
                       />
                     </label>
                     <label
-                      className="flex items-center justify-between gap-2 text-[14px] font-light"
-                      style={{ color: "hsl(var(--foreground))" }}
+                      className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                     >
                       <span>Underline:</span>
                       <CustomSelect
@@ -1279,14 +1230,12 @@ export function TypographySection({
                   </div>
                   <div className="space-y-1.5">
                     <p
-                      className="text-[14px] font-light uppercase tracking-wider"
-                      style={{ color: "hsl(var(--muted-foreground))" }}
+                      className="text-[14px] font-light uppercase tracking-wider ds-text-muted"
                     >
                       Links - Active
                     </p>
                     <label
-                      className="flex items-center justify-between gap-2 text-[14px] font-light"
-                      style={{ color: "hsl(var(--foreground))" }}
+                      className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                     >
                       <span>
                         Scale: {typoInteractionStyle.linkActiveScale}
@@ -1309,14 +1258,12 @@ export function TypographySection({
                   </div>
                   <div className="space-y-1.5">
                     <p
-                      className="text-[14px] font-light uppercase tracking-wider"
-                      style={{ color: "hsl(var(--muted-foreground))" }}
+                      className="text-[14px] font-light uppercase tracking-wider ds-text-muted"
                     >
                       Headings - Hover
                     </p>
                     <label
-                      className="flex items-center justify-between gap-2 text-[14px] font-light"
-                      style={{ color: "hsl(var(--foreground))" }}
+                      className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                     >
                       <span>
                         Opacity: {typoInteractionStyle.headingHoverOpacity}
@@ -1337,8 +1284,7 @@ export function TypographySection({
                       />
                     </label>
                     <label
-                      className="flex items-center justify-between gap-2 text-[14px] font-light"
-                      style={{ color: "hsl(var(--foreground))" }}
+                      className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                     >
                       <span>
                         Scale: {typoInteractionStyle.headingHoverScale}
@@ -1361,14 +1307,12 @@ export function TypographySection({
                   </div>
                   <div className="space-y-1.5">
                     <p
-                      className="text-[14px] font-light uppercase tracking-wider"
-                      style={{ color: "hsl(var(--muted-foreground))" }}
+                      className="text-[14px] font-light uppercase tracking-wider ds-text-muted"
                     >
                       Timing
                     </p>
                     <label
-                      className="flex items-center justify-between gap-2 text-[14px] font-light"
-                      style={{ color: "hsl(var(--foreground))" }}
+                      className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                     >
                       <span>
                         Link Duration:{" "}
@@ -1390,8 +1334,7 @@ export function TypographySection({
                       />
                     </label>
                     <label
-                      className="flex items-center justify-between gap-2 text-[14px] font-light"
-                      style={{ color: "hsl(var(--foreground))" }}
+                      className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                     >
                       <span>
                         Heading Duration:{" "}
@@ -1426,17 +1369,12 @@ export function TypographySection({
                     data-axe-exclude
                   >
                     <p
-                      className="text-[14px] font-light uppercase tracking-wider"
-                      style={{ color: "hsl(var(--muted-foreground))" }}
+                      className="text-[14px] font-light uppercase tracking-wider ds-text-muted"
                     >
                       Preview
                     </p>
                     <div
-                      className="space-y-4 rounded-lg p-4"
-                      style={{
-                        backgroundColor: "hsl(var(--card))",
-                        color: "hsl(var(--card-foreground))",
-                      }}
+                      className="space-y-4 rounded-lg p-4 ds-surface"
                     >
                       <h3
                         className="cursor-default"
@@ -1561,8 +1499,7 @@ export function TypographySection({
                         to test hover states.
                       </p>
                       <p
-                        className="text-[12px] font-light"
-                        style={{ color: "hsl(var(--muted-foreground))" }}
+                        className="text-[12px] font-light ds-text-muted"
                       >
                         Hover over the heading and links to preview
                         interaction states.

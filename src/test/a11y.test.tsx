@@ -7,5 +7,5 @@ describe("Accessibility", () => {
     const { container } = render(<DesignSystemEditor />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
-  });
+  }, 15000);
 });

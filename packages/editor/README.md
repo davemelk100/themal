@@ -36,7 +36,7 @@ function App() {
 }
 ```
 
-The editor writes CSS custom properties (HSL values) to `:root` and injects global typography styles, so colors and fonts apply across your entire site.
+The editor writes CSS custom properties (HSL values) to `:root`. Typography styles are scoped to `.ds-editor` so they do not override your site's fonts. The editor inherits your site's base font size by default. Override it with `--ds-base-font-size`.
 
 ## Props
 
@@ -323,7 +323,7 @@ import type {
 1. **Color picking** — Click any swatch to scroll the Colors section into view, then open the native color picker. Changing a key color (brand, secondary, accent, background) automatically derives related tokens.
 2. **Harmony schemes** *(Pro)* — Generate palettes using complementary, analogous, triadic, or split-complementary color relationships.
 3. **Contrast enforcement** — Every foreground/background pair is checked against WCAG AA (4.5:1). Failing pairs are auto-corrected by adjusting lightness. The accessibility audit shows a centered modal with results. On failure, choose "Ignore" to dismiss or "Suggest Alternative" to auto-fix contrast issues. A WCAG On/Off toggle lets you disable auto-correction for marketing or other contexts that don't require WCAG compliance. Locks are still honored when enforcement is off.
-4. **Typography** — Choose heading and body fonts (including custom Google Fonts), adjust sizes, weights, line height, and letter spacing with live preview. Five built-in presets (System, Modern, Classic, Compact, Editorial). Typography applies site-wide, not just within the editor component, so toggling fonts updates the entire page.
+4. **Typography** — Choose heading and body fonts (including custom Google Fonts), adjust sizes, weights, line height, and letter spacing with live preview. Five built-in presets (System, Modern, Classic, Compact, Editorial). Typography is scoped to the editor and does not override the host site's fonts.
 5. **Button styles** — Customize button padding, font size, font weight, border radius, shadow, and border width with presets (Subtle, Elevated, Bold).
 6. **Button interactions** *(Pro)* — Fine-tune hover opacity, hover/active scale, transition duration, and focus ring width with presets (Subtle, Elevated, Bold).
 7. **Typography interactions** *(Pro)* — Customize link hover/active behavior (opacity, scale, underline) and heading hover effects with live preview.
@@ -348,6 +348,31 @@ The editor is built with Vite in library mode and published as an ES module:
 └── dist/style.css     # Pre-compiled, scoped Tailwind styles
 ```
 
+### Source Structure
+
+```
+src/
+├── DesignSystemEditor.tsx      # Main orchestrator component
+├── sections/                   # Section components (Colors, Buttons, Cards, etc.)
+├── components/                 # Shared UI (SectionHeader, modals, PremiumGate)
+├── hooks/                      # Custom hooks (useColorState, useNavigationState, etc.)
+├── utils/
+│   ├── styles/                 # Domain-specific style utilities
+│   │   ├── colorUtils.ts       # Color conversion, contrast, harmony
+│   │   ├── cardStyle.ts        # Card style management
+│   │   ├── buttonStyle.ts      # Button style management
+│   │   ├── inputStyle.ts       # Input style management
+│   │   ├── typographyStyle.ts  # Typography and custom fonts
+│   │   ├── alertStyle.ts       # Alert and toast styles
+│   │   ├── interactionStyle.ts # Button interaction states
+│   │   └── exportUtils.ts      # Serialization, design tokens, export
+│   ├── themeUtils.ts           # Barrel re-export of all style utilities
+│   ├── iconImport.ts           # SVG sanitizer, icon fetching
+│   ├── storage.ts              # localStorage with fallbacks
+│   └── license.ts              # License key validation
+└── styles/editor.css           # Scoped Tailwind + custom CSS
+```
+
 ### Exports Map
 
 ```json
@@ -358,6 +383,18 @@ The editor is built with Vite in library mode and published as an ES module:
 ```
 
 Import the main entry point for components and utilities, and `style.css` separately for styles. This keeps CSS opt-in and avoids side effects during tree-shaking.
+
+## Theming & Customization
+
+The editor inherits your site's base font size by default (13px fallback). Override it with a CSS custom property:
+
+```css
+:root {
+  --ds-base-font-size: 16px;
+}
+```
+
+Typography changes made in the editor are scoped to `.ds-editor` and do not override fonts on the rest of your page.
 
 ## Tailwind Scoping
 
@@ -433,6 +470,18 @@ npm run build
 # Watch mode
 npm run dev
 ```
+
+## Security
+
+The editor follows these security practices:
+
+- **SVG sanitization** — All imported SVGs are sanitized with element and attribute whitelists. Script tags, event handlers, `javascript:` URIs, and `style` attributes are stripped.
+- **CSS injection prevention** — Font family names are sanitized before interpolation into `<style>` tags to prevent CSS breakout attacks.
+- **HTTPS-only fetching** — Icon imports (sprites, fonts, CDN) enforce HTTPS URLs only.
+- **Pinned CDN versions** — CDN icon fetches use pinned package versions instead of `@latest`.
+- **Origin-checked OAuth** — GitHub OAuth `postMessage` listener validates `event.origin`.
+- **Session-scoped tokens** — GitHub OAuth tokens are stored in `sessionStorage` (not `localStorage`) so they do not persist across browser sessions.
+- **No runtime dependencies** — Zero production dependencies beyond React peer deps, minimizing supply chain risk.
 
 ## Testing
 

@@ -205,8 +205,7 @@ export function IconImportModal({ open, onClose, onImport }: Props) {
       }}
     >
       <div
-        className="rounded-xl shadow-2xl w-full max-w-2xl max-h-[80vh] flex flex-col"
-        style={{ backgroundColor: "hsl(var(--card))", color: "hsl(var(--foreground))" }}
+        className="rounded-xl shadow-2xl w-full max-w-2xl max-h-[80vh] flex flex-col ds-surface"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -216,8 +215,7 @@ export function IconImportModal({ open, onClose, onImport }: Props) {
           <h2 className="text-[18px] font-medium">Import Icons</h2>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg transition-opacity hover:opacity-70"
-            style={{ color: "hsl(var(--muted-foreground))" }}
+            className="p-1 rounded-lg transition-opacity hover:opacity-70 ds-text-muted"
             aria-label="Close"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -294,28 +292,22 @@ export function IconImportModal({ open, onClose, onImport }: Props) {
 
         {/* Footer */}
         <div
-          className="flex items-center justify-between px-5 py-3 border-t"
-          style={{ borderColor: "hsl(var(--border))" }}
+          className="flex items-center justify-between px-5 py-3 border-t ds-border"
         >
-          <span className="text-[13px] font-light" style={{ color: "hsl(var(--muted-foreground))" }}>
+          <span className="text-[13px] font-light ds-text-muted">
             {selected.size} selected
           </span>
           <div className="flex gap-2">
             <button
               onClick={onClose}
-              className="px-4 py-2 text-[13px] font-light rounded-lg transition-opacity hover:opacity-70"
-              style={{ color: "hsl(var(--muted-foreground))" }}
+              className="px-4 py-2 text-[13px] font-light rounded-lg transition-opacity hover:opacity-70 ds-text-muted"
             >
               Cancel
             </button>
             <button
               onClick={handleImport}
               disabled={selected.size === 0 || cdnFetchingSelected}
-              className="px-4 py-2 text-[13px] font-medium rounded-lg transition-opacity hover:opacity-90 disabled:opacity-40"
-              style={{
-                backgroundColor: "hsl(var(--foreground))",
-                color: "hsl(var(--background))",
-              }}
+              className="px-4 py-2 text-[13px] font-medium rounded-lg transition-opacity hover:opacity-90 disabled:opacity-40 ds-surface-invert"
             >
               {cdnFetchingSelected ? "Fetching..." : `Import (${selected.size})`}
             </button>
@@ -353,7 +345,7 @@ function SpriteTab({
 }) {
   return (
     <div className="space-y-3">
-      <p className="text-[13px] font-light" style={{ color: "hsl(var(--muted-foreground))" }}>
+      <p className="text-[13px] font-light ds-text-muted">
         Paste a URL to an SVG sprite file containing &lt;symbol&gt; elements.
       </p>
       <div className="flex gap-2">
@@ -362,22 +354,13 @@ function SpriteTab({
           value={url}
           onChange={(e) => onUrlChange(e.target.value)}
           placeholder="https://example.com/icons.svg"
-          className="flex-1 px-3 py-2 text-[13px] font-light rounded-lg border outline-none"
-          style={{
-            borderColor: "hsl(var(--border))",
-            backgroundColor: "hsl(var(--background))",
-            color: "hsl(var(--foreground))",
-          }}
+          className="flex-1 px-3 py-2 text-[13px] font-light rounded-lg border outline-none ds-border ds-surface-bg"
           onKeyDown={(e) => { if (e.key === "Enter") onFetch(); }}
         />
         <button
           onClick={onFetch}
           disabled={loading || !url.trim()}
-          className="px-4 py-2 text-[13px] font-medium rounded-lg transition-opacity hover:opacity-90 disabled:opacity-40"
-          style={{
-            backgroundColor: "hsl(var(--foreground))",
-            color: "hsl(var(--background))",
-          }}
+          className="px-4 py-2 text-[13px] font-medium rounded-lg transition-opacity hover:opacity-90 disabled:opacity-40 ds-surface-invert"
         >
           {loading ? "Loading..." : "Fetch"}
         </button>
@@ -428,7 +411,7 @@ function FontTab({
 }) {
   return (
     <div className="space-y-3">
-      <p className="text-[13px] font-light" style={{ color: "hsl(var(--muted-foreground))" }}>
+      <p className="text-[13px] font-light ds-text-muted">
         Paste a URL to an icon font CSS file, or choose a preset.
       </p>
       <div className="flex flex-wrap gap-2">
@@ -453,22 +436,13 @@ function FontTab({
           value={url}
           onChange={(e) => onUrlChange(e.target.value)}
           placeholder="https://cdn.example.com/icons.css"
-          className="flex-1 px-3 py-2 text-[13px] font-light rounded-lg border outline-none"
-          style={{
-            borderColor: "hsl(var(--border))",
-            backgroundColor: "hsl(var(--background))",
-            color: "hsl(var(--foreground))",
-          }}
+          className="flex-1 px-3 py-2 text-[13px] font-light rounded-lg border outline-none ds-border ds-surface-bg"
           onKeyDown={(e) => { if (e.key === "Enter") onFetch(); }}
         />
         <button
           onClick={onFetch}
           disabled={loading || !url.trim()}
-          className="px-4 py-2 text-[13px] font-medium rounded-lg transition-opacity hover:opacity-90 disabled:opacity-40"
-          style={{
-            backgroundColor: "hsl(var(--foreground))",
-            color: "hsl(var(--background))",
-          }}
+          className="px-4 py-2 text-[13px] font-medium rounded-lg transition-opacity hover:opacity-90 disabled:opacity-40 ds-surface-invert"
         >
           {loading ? "Loading..." : "Fetch"}
         </button>
@@ -529,7 +503,7 @@ function CdnTab({
 }) {
   return (
     <div className="space-y-3">
-      <p className="text-[13px] font-light" style={{ color: "hsl(var(--muted-foreground))" }}>
+      <p className="text-[13px] font-light ds-text-muted">
         Pick an icon library and select icons to import.
       </p>
       <div className="flex gap-2 flex-wrap">
@@ -554,12 +528,7 @@ function CdnTab({
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
           placeholder="Search icons..."
-          className="w-full px-3 py-2 text-[13px] font-light rounded-lg border outline-none"
-          style={{
-            borderColor: "hsl(var(--border))",
-            backgroundColor: "hsl(var(--background))",
-            color: "hsl(var(--foreground))",
-          }}
+          className="w-full px-3 py-2 text-[13px] font-light rounded-lg border outline-none ds-border ds-surface-bg"
         />
       )}
       {loading && <LoadingSpinner />}
@@ -567,16 +536,15 @@ function CdnTab({
       {!loading && icons.length > 0 && (
         <>
           <div className="flex items-center justify-between">
-            <span className="text-[12px] font-light" style={{ color: "hsl(var(--muted-foreground))" }}>
+            <span className="text-[12px] font-light ds-text-muted">
               {totalCount} icons
             </span>
             <button
               onClick={() =>
                 onSelectAll(icons.map((i) => `cdn:${currentLibrary}:${i.name}`))
               }
-              className="text-[12px] font-light px-2 py-0.5 rounded transition-colors hover:opacity-80"
+              className="text-[12px] font-light px-2 py-0.5 rounded transition-colors hover:opacity-80 ds-text-muted"
               style={{
-                color: "hsl(var(--muted-foreground))",
                 border: "1px solid hsl(var(--border))",
               }}
             >
@@ -593,7 +561,7 @@ function CdnTab({
                 <button
                   key={id}
                   onClick={() => onToggle(id)}
-                  className="ds-icon-import-item"
+                  className="ds-icon-import-item ds-text-fg"
                   style={{
                     backgroundColor: isSelected
                       ? "hsl(var(--foreground) / 0.1)"
@@ -601,7 +569,6 @@ function CdnTab({
                     borderColor: isSelected
                       ? "hsl(var(--foreground) / 0.3)"
                       : "hsl(var(--border))",
-                    color: "hsl(var(--foreground))",
                   }}
                   title={entry.name}
                 >
@@ -615,9 +582,8 @@ function CdnTab({
           {hasMore && (
             <button
               onClick={onLoadMore}
-              className="w-full py-2 text-[13px] font-light rounded-lg transition-colors hover:opacity-80"
+              className="w-full py-2 text-[13px] font-light rounded-lg transition-colors hover:opacity-80 ds-text-muted"
               style={{
-                color: "hsl(var(--muted-foreground))",
                 border: "1px solid hsl(var(--border))",
               }}
             >
@@ -650,14 +616,13 @@ function IconGrid({
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <span className="text-[12px] font-light" style={{ color: "hsl(var(--muted-foreground))" }}>
+        <span className="text-[12px] font-light ds-text-muted">
           {icons.length} icons found
         </span>
         <button
           onClick={() => onSelectAll(icons.map((i) => i.id))}
-          className="text-[12px] font-light px-2 py-0.5 rounded transition-colors hover:opacity-80"
+          className="text-[12px] font-light px-2 py-0.5 rounded transition-colors hover:opacity-80 ds-text-muted"
           style={{
-            color: "hsl(var(--muted-foreground))",
             border: "1px solid hsl(var(--border))",
           }}
         >
@@ -671,7 +636,7 @@ function IconGrid({
             <button
               key={ic.id}
               onClick={() => onToggle(ic.id)}
-              className="ds-icon-import-item"
+              className="ds-icon-import-item ds-text-fg"
               style={{
                 backgroundColor: isSelected
                   ? "hsl(var(--foreground) / 0.1)"
@@ -679,7 +644,6 @@ function IconGrid({
                 borderColor: isSelected
                   ? "hsl(var(--foreground) / 0.3)"
                   : "hsl(var(--border))",
-                color: "hsl(var(--foreground))",
               }}
               title={ic.name}
             >
@@ -696,10 +660,9 @@ function IconGrid({
 function ErrorMessage({ message }: { message: string }) {
   return (
     <div
-      className="text-[13px] font-light rounded-lg p-3"
+      className="text-[13px] font-light rounded-lg p-3 ds-text-destructive"
       style={{
         backgroundColor: "hsl(var(--destructive) / 0.1)",
-        color: "hsl(var(--destructive))",
       }}
     >
       {message}

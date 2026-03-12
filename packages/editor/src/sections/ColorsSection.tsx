@@ -209,8 +209,7 @@ export function ColorsSection({
               data-axe-exclude
             >
               <h2
-                className="text-[14px] sm:text-[16px] md:text-[20px] font-bold tracking-wider mb-[5px] flex items-baseline gap-2"
-                style={{ color: "hsl(var(--foreground))" }}
+                className="text-[14px] sm:text-[16px] md:text-[20px] font-bold tracking-wider mb-[5px] flex items-baseline gap-2 ds-text-fg"
               >
                 Colors{" "}
                 <a
@@ -272,8 +271,7 @@ export function ColorsSection({
                 {/* Desktop: buttons */}
                 <div className="hidden sm:flex flex-wrap items-center gap-1 sm:gap-2">
                   <div
-                    className="flex items-center rounded-lg overflow-hidden border"
-                    style={{ borderColor: "hsl(var(--border))" }}
+                    className="flex items-center rounded-lg overflow-hidden border ds-border"
                   >
                     <button
                       onClick={() => {
@@ -358,8 +356,7 @@ export function ColorsSection({
                   </div>
                   <button
                     onClick={() => setShowResetModal(true)}
-                    className="h-10 px-2 sm:px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1"
-                    style={{ color: "hsl(var(--muted-foreground))" }}
+                    className="h-10 px-2 sm:px-3 text-[14px] font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1 ds-text-muted"
                   >
                     <svg
                       className="w-4 h-4 flex-shrink-0"
@@ -415,8 +412,7 @@ export function ColorsSection({
                       className="flex flex-col items-stretch overflow-visible"
                     >
                       <span
-                        className="sm:hidden text-[11px] font-light text-center truncate mb-0.5"
-                        style={{ color: "hsl(var(--muted-foreground))" }}
+                        className="sm:hidden text-[11px] font-light text-center truncate mb-0.5 ds-text-muted"
                       >
                         {label}
                       </span>
@@ -593,14 +589,12 @@ export function ColorsSection({
                   onClick={() => setHoveredLockKey(null)}
                 >
                   <div
-                    className="rounded-xl p-6 w-[360px] shadow-xl"
-                    style={{ backgroundColor: "hsl(var(--card))", color: "hsl(var(--foreground))" }}
+                    className="rounded-xl p-6 w-[360px] shadow-xl ds-surface"
                     onClick={(e) => e.stopPropagation()}
                   >
                     <div className="flex items-center gap-3 mb-4">
                       <div
-                        className="w-10 h-10 rounded-full flex items-center justify-center"
-                        style={{ backgroundColor: "hsl(var(--muted))" }}
+                        className="w-10 h-10 rounded-full flex items-center justify-center ds-bg-muted"
                       >
                         <svg
                           width="20"
@@ -625,19 +619,17 @@ export function ColorsSection({
                       </div>
                       <div>
                         <h3
-                          className="text-[18px] font-medium"
-                          style={{ color: "hsl(var(--foreground))" }}
+                          className="text-[18px] font-medium ds-text-fg"
                         >
                           Pro Feature
                         </h3>
-                        <p className="text-[13px]" style={{ color: "hsl(var(--muted-foreground))" }}>
+                        <p className="text-[13px] ds-text-muted">
                           Color Locks
                         </p>
                       </div>
                     </div>
                     <p
-                      className="text-[14px] font-light mb-5"
-                      style={{ color: "hsl(var(--muted-foreground))" }}
+                      className="text-[14px] font-light mb-5 ds-text-muted"
                     >
                       This feature requires a Themal Pro license. Upgrade to
                       unlock all premium features including harmony schemes,
@@ -646,8 +638,7 @@ export function ColorsSection({
                     <div className="flex flex-col gap-2">
                       <a
                         href={upgradeUrl || "/pricing"}
-                        className="w-full text-center px-4 py-2.5 text-[14px] font-medium rounded-lg transition-opacity hover:opacity-90"
-                        style={{ backgroundColor: "hsl(var(--foreground))", color: "hsl(var(--background))" }}
+                        className="w-full text-center px-4 py-2.5 text-[14px] font-medium rounded-lg transition-opacity hover:opacity-90 ds-surface-invert"
                       >
                         View Pricing
                       </a>
@@ -659,8 +650,7 @@ export function ColorsSection({
                               new CustomEvent("themal:sign-in"),
                             );
                           }}
-                          className="w-full text-center px-4 py-2.5 text-[14px] font-light rounded-lg transition-opacity hover:opacity-70"
-                          style={{ backgroundColor: "hsl(var(--muted))", color: "hsl(var(--foreground))" }}
+                          className="w-full text-center px-4 py-2.5 text-[14px] font-light rounded-lg transition-opacity hover:opacity-70 ds-bg-muted ds-text-fg"
                         >
                           Already have a license? Sign in
                         </button>
@@ -668,8 +658,7 @@ export function ColorsSection({
                     </div>
                     <button
                       onClick={() => setHoveredLockKey(null)}
-                      className="absolute top-4 right-4 p-1 rounded-lg transition-opacity hover:opacity-70"
-                      style={{ color: "hsl(var(--muted-foreground))" }}
+                      className="absolute top-4 right-4 p-1 rounded-lg transition-opacity hover:opacity-70 ds-text-muted"
                       aria-label="Close"
                     >
                       <svg
@@ -710,8 +699,7 @@ export function ColorsSection({
                 {/* Palette (own row) */}
                 <div className="w-full" data-axe-exclude>
                   <p
-                    className="text-[14px] font-light uppercase tracking-wider mb-2 md:mb-3"
-                    style={{ color: "hsl(var(--muted-foreground))" }}
+                    className="text-[14px] font-light uppercase tracking-wider mb-2 md:mb-3 ds-text-muted"
                   >
                     Palette
                   </p>
@@ -743,8 +731,7 @@ export function ColorsSection({
                           className="text-left"
                         >
                           <p
-                            className="sm:hidden text-[11px] font-light text-center mb-0.5"
-                            style={{ color: "hsl(var(--muted-foreground))" }}
+                            className="sm:hidden text-[11px] font-light text-center mb-0.5 ds-text-muted"
                           >
                             {initials}
                           </p>
@@ -776,8 +763,7 @@ export function ColorsSection({
                 {/* Chips / Badges row */}
                 <div className="w-full space-y-2" data-axe-exclude>
                   <p
-                    className="text-[14px] font-light uppercase tracking-wider"
-                    style={{ color: "hsl(var(--muted-foreground))" }}
+                    className="text-[14px] font-light uppercase tracking-wider ds-text-muted"
                   >
                     Chips / Badges
                   </p>
@@ -917,8 +903,7 @@ export function ColorsSection({
                       Warning
                     </span>
                     <span
-                      className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-[14px] font-light border border-border max-w-full truncate"
-                      style={{ color: "hsl(var(--foreground))" }}
+                      className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-[14px] font-light border border-border max-w-full truncate ds-text-fg"
                     >
                       Outlined
                     </span>
@@ -948,17 +933,15 @@ export function ColorsSection({
                     <div className="w-full hidden md:block" data-axe-exclude>
                       <div className="flex items-center gap-2 mb-2 md:mb-3">
                         <p
-                          className="text-[14px] font-light uppercase tracking-wider"
-                          style={{ color: "hsl(var(--muted-foreground))" }}
+                          className="text-[14px] font-light uppercase tracking-wider ds-text-muted"
                         >
                           Icons
                         </p>
                         {allIcons.length > 0 && (
                           <button
                             onClick={() => setIconsHidden((h) => !h)}
-                            className="text-[12px] font-light px-2 py-0.5 rounded transition-colors hover:opacity-80"
+                            className="text-[12px] font-light px-2 py-0.5 rounded transition-colors hover:opacity-80 ds-text-muted"
                             style={{
-                              color: "hsl(var(--muted-foreground))",
                               border: "1px solid hsl(var(--border))",
                             }}
                           >
@@ -968,9 +951,8 @@ export function ColorsSection({
                         <PremiumGate feature="icon-import" variant="inline" upgradeUrl={upgradeUrl} signInUrl={signInUrl}>
                           <button
                             onClick={() => setShowIconImportModal(true)}
-                            className="text-[12px] font-light px-2 py-0.5 rounded transition-colors hover:opacity-80"
+                            className="text-[12px] font-light px-2 py-0.5 rounded transition-colors hover:opacity-80 ds-text-muted"
                             style={{
-                              color: "hsl(var(--muted-foreground))",
                               border: "1px solid hsl(var(--border))",
                             }}
                           >
@@ -980,9 +962,8 @@ export function ColorsSection({
                         {importedIconData.length > 0 && (
                           <button
                             onClick={clearImportedIcons}
-                            className="text-[12px] font-light px-2 py-0.5 rounded transition-colors hover:opacity-80"
+                            className="text-[12px] font-light px-2 py-0.5 rounded transition-colors hover:opacity-80 ds-text-muted"
                             style={{
-                              color: "hsl(var(--muted-foreground))",
                               border: "1px solid hsl(var(--border))",
                             }}
                           >

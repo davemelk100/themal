@@ -31,11 +31,7 @@ export function PrModal({
       onClick={onClose}
     >
       <div
-        className="rounded-xl p-6 w-[340px] shadow-xl"
-        style={{
-          backgroundColor: "hsl(var(--card))",
-          color: "hsl(var(--card-foreground))",
-        }}
+        className="rounded-xl p-6 w-[340px] shadow-xl ds-surface"
         onClick={(e) => e.stopPropagation()}
       >
         <h3 className="text-[18px] font-light mb-4 flex items-center gap-2">
@@ -45,8 +41,7 @@ export function PrModal({
           Open Pull Request
         </h3>
         <p
-          className="text-[14px] font-light mb-4"
-          style={{ color: "hsl(var(--muted-foreground))" }}
+          className="text-[14px] font-light mb-4 ds-text-muted"
         >
           Select sections to include:
         </p>
@@ -95,8 +90,8 @@ export function PrModal({
         </div>
         {prError && (
           <div
-            className="text-[13px] font-light rounded-lg p-3 mb-4"
-            style={{ backgroundColor: "hsl(var(--destructive) / 0.1)", color: "hsl(var(--destructive))" }}
+            className="text-[13px] font-light rounded-lg p-3 mb-4 ds-text-destructive"
+            style={{ backgroundColor: "hsl(var(--destructive) / 0.1)" }}
           >
             {prError}
           </div>
@@ -104,11 +99,7 @@ export function PrModal({
         <div className="flex justify-end gap-2">
           <button
             onClick={onClose}
-            className="px-3 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
-            style={{
-              backgroundColor: "transparent",
-              color: "hsl(var(--card-foreground))",
-            }}
+            className="px-3 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 ds-text-card"
           >
             Cancel
           </button>
@@ -120,10 +111,8 @@ export function PrModal({
             onClick={() => {
               submitPr(prSections, "main");
             }}
-            className="px-4 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 disabled:opacity-50"
+            className="px-4 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 disabled:opacity-50 ds-surface-muted"
             style={{
-              backgroundColor: "hsl(var(--muted))",
-              color: "hsl(var(--foreground))",
               boxShadow:
                 "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1)",
             }}

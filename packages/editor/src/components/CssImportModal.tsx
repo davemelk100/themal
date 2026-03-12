@@ -57,8 +57,7 @@ export function CssImportModal({
     >
       <div className="absolute inset-0 bg-black/50" />
       <div
-        className="relative w-full max-w-2xl mx-4 rounded-xl shadow-2xl max-h-[90vh] overflow-y-auto"
-        style={{ backgroundColor: "hsl(var(--background))", color: "hsl(var(--foreground))" }}
+        className="relative w-full max-w-2xl mx-4 rounded-xl shadow-2xl max-h-[90vh] overflow-y-auto ds-surface-bg"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-6 space-y-4">
@@ -66,8 +65,7 @@ export function CssImportModal({
             <h3 className="text-lg font-semibold">Import CSS / SCSS</h3>
             <button
               onClick={handleClose}
-              className="p-1 rounded hover:opacity-70"
-              style={{ color: "hsl(var(--muted-foreground))" }}
+              className="p-1 rounded hover:opacity-70 ds-text-muted"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -75,17 +73,12 @@ export function CssImportModal({
             </button>
           </div>
 
-          <p className="text-sm font-light" style={{ color: "hsl(var(--muted-foreground))" }}>
+          <p className="text-sm font-light ds-text-muted">
             Paste CSS or SCSS containing custom properties or variables. Themal will parse colors, typography, button, card, and interaction values.
           </p>
 
           <textarea
-            className="w-full h-48 p-3 rounded-lg border font-mono text-sm resize-y"
-            style={{
-              backgroundColor: "hsl(var(--card))",
-              color: "hsl(var(--card-foreground))",
-              borderColor: "hsl(var(--border))",
-            }}
+            className="w-full h-48 p-3 rounded-lg border font-mono text-sm resize-y ds-surface ds-border"
             placeholder={`:root {\n  --brand: 220 70% 50%;\n  --primary: #3b82f6;\n  --background: #ffffff;\n  --font-heading: "Inter";\n  --border-radius: 12px;\n}\n\n/* or SCSS */\n$primary: #3b82f6;\n$background: #fff;`}
             value={cssImportText}
             onChange={(e) => {
@@ -100,24 +93,24 @@ export function CssImportModal({
 
           {cssImportPreview && (
             <div className="space-y-3">
-              <p className="text-sm font-medium" style={{ color: "hsl(var(--foreground))" }}>
+              <p className="text-sm font-medium ds-text-fg">
                 Detected values:
               </p>
 
               {/* Colors */}
               {Object.keys(cssImportPreview.colors).length > 0 && (
                 <div className="space-y-1">
-                  <p className="text-xs font-light uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>
+                  <p className="text-xs font-light uppercase tracking-wider ds-text-muted">
                     Colors ({Object.keys(cssImportPreview.colors).length})
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {Object.entries(cssImportPreview.colors).map(([key, hsl]) => (
                       <div key={key} className="flex items-center gap-1.5 text-xs font-light">
                         <span
-                          className="w-4 h-4 rounded border"
-                          style={{ backgroundColor: `hsl(${hsl})`, borderColor: "hsl(var(--border))" }}
+                          className="w-4 h-4 rounded border ds-border"
+                          style={{ backgroundColor: `hsl(${hsl})` }}
                         />
-                        <span style={{ color: "hsl(var(--foreground))" }}>{key}</span>
+                        <span className="ds-text-fg">{key}</span>
                       </div>
                     ))}
                   </div>
@@ -127,10 +120,10 @@ export function CssImportModal({
               {/* Typography */}
               {Object.keys(cssImportPreview.typographyState).length > 0 && (
                 <div className="space-y-1">
-                  <p className="text-xs font-light uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>
+                  <p className="text-xs font-light uppercase tracking-wider ds-text-muted">
                     Typography
                   </p>
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-light" style={{ color: "hsl(var(--foreground))" }}>
+                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-light ds-text-fg">
                     {Object.entries(cssImportPreview.typographyState).map(([k, v]) => (
                       <span key={k}>{k}: {String(v)}</span>
                     ))}
@@ -141,10 +134,10 @@ export function CssImportModal({
               {/* Button */}
               {Object.keys(cssImportPreview.buttonStyle).length > 0 && (
                 <div className="space-y-1">
-                  <p className="text-xs font-light uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>
+                  <p className="text-xs font-light uppercase tracking-wider ds-text-muted">
                     Buttons
                   </p>
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-light" style={{ color: "hsl(var(--foreground))" }}>
+                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-light ds-text-fg">
                     {Object.entries(cssImportPreview.buttonStyle).map(([k, v]) => (
                       <span key={k}>{k}: {String(v)}</span>
                     ))}
@@ -155,10 +148,10 @@ export function CssImportModal({
               {/* Card */}
               {Object.keys(cssImportPreview.cardStyle).length > 0 && (
                 <div className="space-y-1">
-                  <p className="text-xs font-light uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>
+                  <p className="text-xs font-light uppercase tracking-wider ds-text-muted">
                     Card Style
                   </p>
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-light" style={{ color: "hsl(var(--foreground))" }}>
+                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-light ds-text-fg">
                     {Object.entries(cssImportPreview.cardStyle).map(([k, v]) => (
                       <span key={k}>{k}: {String(v)}</span>
                     ))}
@@ -169,10 +162,10 @@ export function CssImportModal({
               {/* Interactions */}
               {Object.keys(cssImportPreview.interactionStyle).length > 0 && (
                 <div className="space-y-1">
-                  <p className="text-xs font-light uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>
+                  <p className="text-xs font-light uppercase tracking-wider ds-text-muted">
                     Interactions
                   </p>
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-light" style={{ color: "hsl(var(--foreground))" }}>
+                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-light ds-text-fg">
                     {Object.entries(cssImportPreview.interactionStyle).map(([k, v]) => (
                       <span key={k}>{k}: {String(v)}</span>
                     ))}
@@ -183,10 +176,10 @@ export function CssImportModal({
               {/* Alerts */}
               {Object.keys(cssImportPreview.alertStyle).length > 0 && (
                 <div className="space-y-1">
-                  <p className="text-xs font-light uppercase tracking-wider" style={{ color: "hsl(var(--muted-foreground))" }}>
+                  <p className="text-xs font-light uppercase tracking-wider ds-text-muted">
                     Alerts
                   </p>
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-light" style={{ color: "hsl(var(--foreground))" }}>
+                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-light ds-text-fg">
                     {Object.entries(cssImportPreview.alertStyle).map(([k, v]) => (
                       <span key={k}>{k}: {String(v)}</span>
                     ))}
@@ -201,7 +194,7 @@ export function CssImportModal({
                 Object.keys(cssImportPreview.buttonStyle).length === 0 &&
                 Object.keys(cssImportPreview.interactionStyle).length === 0 &&
                 Object.keys(cssImportPreview.alertStyle).length === 0 && (
-                <p className="text-sm font-light" style={{ color: "hsl(var(--destructive))" }}>
+                <p className="text-sm font-light ds-text-destructive">
                   No recognized values found. Make sure your CSS uses custom properties (--var-name) or SCSS variables ($var-name).
                 </p>
               )}
@@ -211,8 +204,7 @@ export function CssImportModal({
           <div className="flex items-center justify-end gap-2 pt-2">
             <button
               onClick={handleClose}
-              className="px-4 py-2 text-[14px] font-light rounded-lg"
-              style={{ backgroundColor: "hsl(var(--muted))", color: "hsl(var(--foreground))" }}
+              className="px-4 py-2 text-[14px] font-light rounded-lg ds-surface-muted"
             >
               Cancel
             </button>

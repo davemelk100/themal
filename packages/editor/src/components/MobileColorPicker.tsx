@@ -70,8 +70,7 @@ export function MobileColorPicker({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex flex-col"
-      style={{ backgroundColor: "hsl(var(--background))" }}
+      className="fixed inset-0 z-50 flex flex-col ds-bg"
     >
       {/* Swatch preview row */}
       <div className="flex gap-1.5 p-3" style={{ backgroundColor: "hsl(var(--foreground) / 0.04)" }}>
@@ -195,7 +194,7 @@ export function MobileColorPicker({
 
         {/* Hex input */}
         <div>
-          <label className="text-[13px] font-medium mb-1.5 block" style={{ color: "hsl(var(--foreground))" }}>
+          <label className="text-[13px] font-medium mb-1.5 block ds-text-fg">
             Hex
           </label>
           <input
@@ -212,8 +211,7 @@ export function MobileColorPicker({
                 setMobilePickerHex(v);
               }
             }}
-            className="w-full h-10 px-3 text-[16px] font-mono rounded-lg border bg-transparent"
-            style={{ borderColor: "hsl(var(--border))", color: "hsl(var(--foreground))" }}
+            className="w-full h-10 px-3 text-[16px] font-mono rounded-lg border bg-transparent ds-text-fg ds-border"
           />
         </div>
       </div>

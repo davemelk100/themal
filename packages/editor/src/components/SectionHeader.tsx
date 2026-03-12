@@ -64,8 +64,7 @@ export function SectionHeader({
       data-axe-exclude
     >
       <h2
-        className="text-[14px] sm:text-[16px] md:text-[20px] font-bold tracking-wider mb-[5px] flex items-baseline gap-2"
-        style={{ color: "hsl(var(--foreground))" }}
+        className="text-[14px] sm:text-[16px] md:text-[20px] font-bold tracking-wider mb-[5px] flex items-baseline gap-2 ds-text-fg"
       >
         {title}{" "}
         <a
@@ -103,8 +102,7 @@ export function SectionHeader({
         {/* Desktop: buttons */}
         <div className="hidden sm:flex flex-wrap items-center gap-1 sm:gap-2">
           <div
-            className="flex items-center rounded-lg overflow-hidden border"
-            style={{ borderColor: "hsl(var(--border))" }}
+            className="flex items-center rounded-lg overflow-hidden border ds-border"
           >
             <button
               onClick={onToggleCss}

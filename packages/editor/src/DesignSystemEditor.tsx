@@ -1366,8 +1366,7 @@ function DesignSystemEditorInner({
             <div className="w-full mb-2 sm:mb-3 lg:mb-4 flex items-end gap-x-8 sm:gap-x-12 pt-2 sm:pt-3 lg:pt-4 relative" data-axe-exclude>
               {showLogo && <a
                 href="/"
-                className="flex-shrink-0 leading-none"
-                style={{ color: "hsl(var(--foreground))" }}
+                className="flex-shrink-0 leading-none ds-text-fg"
               >
                 <svg
                   className="h-10 block"
@@ -1463,8 +1462,7 @@ function DesignSystemEditorInner({
                 {headerRight}
                 <button
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                  className="p-2 rounded-lg transition-opacity hover:opacity-70 md:hidden"
-                  style={{ color: "hsl(var(--foreground))" }}
+                  className="p-2 rounded-lg transition-opacity hover:opacity-70 md:hidden ds-text-fg"
                   aria-label="Toggle menu"
                 >
                   <svg
@@ -1556,12 +1554,11 @@ function DesignSystemEditorInner({
         {/* Mobile menu button — visible below lg */}
         <button
           type="button"
-          className="lg:hidden fixed bottom-3 left-3 z-50 w-10 h-10 rounded-full flex items-center justify-center"
+          className="lg:hidden fixed bottom-3 left-3 z-50 w-10 h-10 rounded-full flex items-center justify-center ds-text-fg"
           style={{
             background: "linear-gradient(135deg, rgba(128,128,128,0.35), rgba(160,160,160,0.2))",
             backdropFilter: "blur(12px) saturate(180%)",
             WebkitBackdropFilter: "blur(12px) saturate(180%)",
-            color: "hsl(var(--foreground))",
             border: "1px solid rgba(128,128,128,0.25)",
             boxShadow: "4px 4px 12px rgba(0,0,0,0.1), -2px -2px 8px rgba(255,255,255,0.15), inset 1px 1px 2px rgba(255,255,255,0.2)",
           }}
@@ -1667,13 +1664,11 @@ function DesignSystemEditorInner({
                 <>
                   <div className="fixed inset-0 z-40" onClick={() => setShuffleOpen(false)} />
                   <div
-                    className="absolute left-0 top-full mt-1 z-50 min-w-[180px] rounded-lg shadow-lg py-1 border"
-                    style={{ backgroundColor: "hsl(var(--background))", borderColor: "hsl(var(--border))" }}
+                    className="absolute left-0 top-full mt-1 z-50 min-w-[180px] rounded-lg shadow-lg py-1 border ds-bg ds-border"
                   >
                     <button
                       onClick={() => { setHarmonySchemeIndex(-1); setShuffleOpen(false); }}
-                      className="w-full text-left px-4 py-2 text-[13px] font-light transition-colors hover:opacity-80 flex items-center justify-between"
-                      style={{ color: "hsl(var(--foreground))" }}
+                      className="w-full text-left px-4 py-2 text-[13px] font-light transition-colors hover:opacity-80 flex items-center justify-between ds-text-fg"
                     >
                       Default
                       {harmonySchemeIndex < 0 && <span className="text-green-600 dark:text-green-400">&#10003;</span>}
@@ -1682,8 +1677,7 @@ function DesignSystemEditorInner({
                       <button
                         key={scheme}
                         onClick={() => handleRegenerate(idx)}
-                        className="w-full text-left px-4 py-2 text-[13px] font-light transition-colors hover:opacity-80 flex items-center justify-between"
-                        style={{ color: "hsl(var(--foreground))" }}
+                        className="w-full text-left px-4 py-2 text-[13px] font-light transition-colors hover:opacity-80 flex items-center justify-between ds-text-fg"
                       >
                         {scheme}
                         {idx === harmonySchemeIndex && <span className="text-green-600 dark:text-green-400">&#10003;</span>}
@@ -1762,7 +1756,7 @@ function DesignSystemEditorInner({
           )}
 
           {/* Divider */}
-          <div className="my-1 border-t" style={{ borderColor: "hsl(var(--border))" }} />
+          <div className="my-1 border-t ds-border" />
 
           <PremiumGate feature="palette-export" variant="inline" hideLock upgradeUrl={upgradeUrl} signInUrl={signInUrl}>
             <button
@@ -1816,13 +1810,12 @@ function DesignSystemEditorInner({
           </button>
           {sidebarLinks && sidebarLinks.length > 0 && (
             <>
-              <div className="my-1 border-t" style={{ borderColor: "hsl(var(--border))" }} />
+              <div className="my-1 border-t ds-border" />
               {sidebarLinks.map(({ to, label }) => (
                 <a
                   key={to}
                   href={to}
-                  className="ds-global-btn w-full h-9 px-2 text-[13px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
-                  style={{ color: "hsl(var(--foreground))" }}
+                  className="ds-global-btn w-full h-9 px-2 text-[13px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center gap-2 ds-text-fg"
                 >
                   <span className="truncate">{label}</span>
                 </a>
@@ -1831,7 +1824,7 @@ function DesignSystemEditorInner({
           )}
           {sidebarExtra && (
             <>
-              <div className="my-1 border-t" style={{ borderColor: "hsl(var(--border))" }} />
+              <div className="my-1 border-t ds-border" />
               {sidebarExtra}
             </>
           )}
@@ -1996,10 +1989,8 @@ function DesignSystemEditorInner({
                     role="dialog"
                     aria-modal="true"
                     aria-label="Accessibility audit results"
-                    className="rounded-xl shadow-2xl p-6 max-w-sm w-[90vw] text-center space-y-4"
+                    className="rounded-xl shadow-2xl p-6 max-w-sm w-[90vw] text-center space-y-4 ds-surface-bg"
                     style={{
-                      backgroundColor: "hsl(var(--background))",
-                      color: "hsl(var(--foreground))",
                       border: "1px solid hsl(var(--border))",
                     }}
                     aria-live="assertive"
@@ -2012,7 +2003,7 @@ function DesignSystemEditorInner({
                           </svg>
                         </div>
                         <p className="text-[16px] font-medium">WCAG AA Passed</p>
-                        <p className="text-[14px] font-light" style={{ color: "hsl(var(--muted-foreground))" }}>
+                        <p className="text-[14px] font-light ds-text-muted">
                           All color contrast checks passed.
                         </p>
                         <button
@@ -2036,17 +2027,13 @@ function DesignSystemEditorInner({
                         <p className="text-[16px] font-medium">
                           {auditViolations.length} Contrast Issue{auditViolations.length !== 1 ? "s" : ""} Found
                         </p>
-                        <p className="text-[14px] font-light" style={{ color: "hsl(var(--muted-foreground))" }}>
+                        <p className="text-[14px] font-light ds-text-muted">
                           Some color combinations do not meet WCAG AA contrast requirements.
                         </p>
                         <div className="flex items-center justify-center gap-3">
                           <button
                             onClick={() => setAuditStatus("idle")}
-                            className="px-4 py-2 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
-                            style={{
-                              backgroundColor: "hsl(var(--muted))",
-                              color: "hsl(var(--muted-foreground))",
-                            }}
+                            className="px-4 py-2 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 ds-bg-muted ds-text-muted"
                           >
                             Ignore
                           </button>
@@ -2316,11 +2303,7 @@ function DesignSystemEditorInner({
           onClick={() => setShowPaletteExport(false)}
         >
           <div
-            className="rounded-xl p-6 w-[340px] shadow-xl"
-            style={{
-              backgroundColor: "hsl(var(--card))",
-              color: "hsl(var(--card-foreground))",
-            }}
+            className="rounded-xl p-6 w-[340px] shadow-xl ds-bg-card ds-text-card"
             onClick={(e) => e.stopPropagation()}
           >
             <h3 className="text-[18px] font-light mb-4">Export Palette</h3>
@@ -2500,8 +2483,7 @@ function DesignSystemEditorInner({
           onClick={() => setShowPurgeModal(false)}
         >
           <div
-            className="rounded-xl p-6 w-[380px] shadow-xl"
-            style={{ backgroundColor: "hsl(var(--card))", color: "hsl(var(--foreground))" }}
+            className="rounded-xl p-6 w-[380px] shadow-xl ds-surface"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center gap-3 mb-4">
@@ -2515,10 +2497,10 @@ function DesignSystemEditorInner({
               </div>
               <h3 className="text-[18px] font-medium">Purge Storage</h3>
             </div>
-            <p className="text-[14px] font-light mb-4" style={{ color: "hsl(var(--muted-foreground))" }}>
+            <p className="text-[14px] font-light mb-4 ds-text-muted">
               This will clear all saved theme data, preferences, and cached settings. The page will reload with default values. This cannot be undone.
             </p>
-            <p className="text-[13px] font-light mb-4" style={{ color: "hsl(var(--muted-foreground))" }}>
+            <p className="text-[13px] font-light mb-4 ds-text-muted">
               Save your current theme first?
             </p>
             <div className="flex gap-2 mb-6">
@@ -2527,8 +2509,7 @@ function DesignSystemEditorInner({
                   setShowPurgeModal(false);
                   setShowPaletteExport(true);
                 }}
-                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-[13px] font-light rounded-lg transition-colors hover:opacity-80 border"
-                style={{ borderColor: "hsl(var(--border))", color: "hsl(var(--foreground))" }}
+                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-[13px] font-light rounded-lg transition-colors hover:opacity-80 border ds-border ds-text-fg"
               >
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
@@ -2553,8 +2534,7 @@ function DesignSystemEditorInner({
                   });
                   setShowPurgeModal(false);
                 }}
-                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-[13px] font-light rounded-lg transition-colors hover:opacity-80 border"
-                style={{ borderColor: "hsl(var(--border))", color: "hsl(var(--foreground))" }}
+                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-[13px] font-light rounded-lg transition-colors hover:opacity-80 border ds-border ds-text-fg"
               >
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />
@@ -2565,8 +2545,7 @@ function DesignSystemEditorInner({
             <div className="flex justify-end gap-2">
               <button
                 onClick={() => setShowPurgeModal(false)}
-                className="px-4 py-2 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
-                style={{ color: "hsl(var(--foreground))" }}
+                className="px-4 py-2 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 ds-text-fg"
               >
                 Cancel
               </button>

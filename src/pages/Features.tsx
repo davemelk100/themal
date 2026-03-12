@@ -4,6 +4,19 @@ import usePageMeta from "../hooks/usePageMeta";
 
 const features = [
   {
+    version: "0.23",
+    items: [
+      "Major refactor - DesignSystemEditor split from 9,500 lines into focused section components, domain hooks, and shared UI",
+      "Modular style utilities - themeUtils split into 9 domain-specific modules (colorUtils, cardStyle, buttonStyle, etc.)",
+      "Security hardening - SVG sanitizer strips style attributes, font family CSS injection prevention, HTTPS-only icon fetching, pinned CDN versions, origin-checked OAuth, session-scoped GitHub tokens",
+      "Scoped typography - font changes no longer override the host site's styles, scoped to the editor only",
+      "Customizable base font size - new --ds-base-font-size CSS variable (defaults to 13px) lets importing apps control editor text size",
+      "Responsive arrows - section nav and heading arrows scale with text size using em units",
+      "Accessibility fix - toggle switches now include aria-label for screen readers",
+      "30 new security and regression tests added",
+    ],
+  },
+  {
     version: "0.22",
     items: [
       "Compact base font size - editor UI text reduced to 13px for a tighter, more professional layout",
@@ -38,7 +51,7 @@ const features = [
       "Plugin contrast hardening - typography controls (Fonts, Size & Weight, Spacing) now use fixed colors so labels and inputs remain readable on any host theme",
       "Case-insensitive font search - custom Google Font lookups now accept lowercase input and title-case it automatically",
       "Custom reset defaults - new defaultColors and defaultTypography props let consuming apps define their own baseline for \"Reset theme to default\"",
-      "Site-wide typography - font changes now apply across the entire page, not just within the editor, using prioritized CSS injection",
+      "Scoped typography injection - font changes applied via prioritized CSS injection, scoped to the editor component",
       "Editor chrome contrast fixes - section nav, modals (Extract Palette, WCAG audit), and action buttons all use fixed colors to prevent contrast issues on dark-themed host sites",
       "Autoscroll scoping - clicking typography inputs and dropdowns no longer triggers the scroll-to-top behavior meant for color swatches",
     ],
@@ -188,7 +201,7 @@ export default function Features() {
   usePageMeta({
     title: "Features | Themal Design System Editor",
     description:
-      "25+ features including real-time color picking, color harmony schemes, WCAG AA contrast, typography presets, card styles, input styles, icon import, GitHub PR integration, and web component support. Plus changelog.",
+      "30+ features including real-time color picking, color harmony schemes, WCAG AA contrast, typography presets, card styles, input styles, icon import, security hardening, GitHub PR integration, and web component support. Plus changelog.",
   });
 
   return (

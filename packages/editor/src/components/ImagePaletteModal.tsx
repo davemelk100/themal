@@ -39,22 +39,17 @@ export function ImagePaletteModal({
       onDrop={(e) => { e.preventDefault(); e.stopPropagation(); }}
     >
       <div
-        className="rounded-xl p-6 w-[380px] max-h-[90vh] overflow-y-auto shadow-xl"
-        style={{
-          backgroundColor: "hsl(var(--card))",
-          color: "hsl(var(--foreground))",
-        }}
+        className="rounded-xl p-6 w-[380px] max-h-[90vh] overflow-y-auto shadow-xl ds-surface"
         onClick={(e) => e.stopPropagation()}
       >
-        <h3 className="text-[18px] font-light mb-4" style={{ color: "hsl(var(--foreground))" }}>
+        <h3 className="text-[18px] font-light mb-4 ds-text-fg">
           Extract Palette from Image
         </h3>
 
         {/* Upload file / drag-and-drop */}
         <div className="mb-4">
           <p
-            className="text-[13px] font-light mb-2"
-            style={{ color: "hsl(var(--muted-foreground))" }}
+            className="text-[13px] font-light mb-2 ds-text-muted"
           >
             Upload an image file
           </p>
@@ -80,11 +75,7 @@ export function ImagePaletteModal({
                 onClose();
               }
             }}
-            className="w-full py-6 text-[14px] font-light rounded-lg border-2 border-dashed flex flex-col items-center justify-center gap-2 transition-colors hover:opacity-80 cursor-pointer [&[data-dragging=true]]:border-solid [&[data-dragging=true]]:bg-gray-50"
-            style={{
-              borderColor: "hsl(var(--border))",
-              color: "hsl(var(--muted-foreground))",
-            }}
+            className="w-full py-6 text-[14px] font-light rounded-lg border-2 border-dashed flex flex-col items-center justify-center gap-2 transition-colors hover:opacity-80 cursor-pointer [&[data-dragging=true]]:border-solid [&[data-dragging=true]]:bg-gray-50 ds-text-muted ds-border"
           >
             <svg
               className="w-8 h-8 flex-shrink-0"
@@ -111,8 +102,7 @@ export function ImagePaletteModal({
             style={{ backgroundColor: "hsl(var(--border))" }}
           />
           <span
-            className="text-[12px] font-light"
-            style={{ color: "hsl(var(--muted-foreground))" }}
+            className="text-[12px] font-light ds-text-muted"
           >
             or
           </span>
@@ -125,8 +115,7 @@ export function ImagePaletteModal({
         {/* Paste URL */}
         <div className="mb-4">
           <p
-            className="text-[13px] font-light mb-2"
-            style={{ color: "hsl(var(--muted-foreground))" }}
+            className="text-[13px] font-light mb-2 ds-text-muted"
           >
             Paste an image URL
           </p>
@@ -147,11 +136,9 @@ export function ImagePaletteModal({
                 }
               }}
               placeholder="https://example.com/photo.jpg"
-              className="flex-1 h-10 px-3 text-[14px] font-light rounded-lg border"
+              className="flex-1 h-10 px-3 text-[14px] font-light rounded-lg border ds-text-fg ds-bg"
               style={{
                 borderColor: imageUrlError ? "hsl(var(--destructive))" : "hsl(var(--border))",
-                color: "hsl(var(--foreground))",
-                backgroundColor: "hsl(var(--background))",
               }}
               autoFocus
             />
@@ -163,19 +150,14 @@ export function ImagePaletteModal({
               disabled={
                 imagePaletteStatus === "extracting" || !imageUrlInput.trim()
               }
-              className="h-10 px-4 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
-              style={{
-                backgroundColor: "hsl(var(--foreground))",
-                color: "hsl(var(--background))",
-              }}
+              className="h-10 px-4 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 ds-surface-invert"
             >
               Go
             </button>
           </div>
           {imageUrlError && (
             <p
-              className="text-[12px] font-light mt-1"
-              style={{ color: "hsl(var(--destructive))" }}
+              className="text-[12px] font-light mt-1 ds-text-destructive"
             >
               {imageUrlError}
             </p>
@@ -185,8 +167,7 @@ export function ImagePaletteModal({
         {/* Status */}
         {imagePaletteStatus === "extracting" && (
           <div
-            className="flex items-center gap-2 text-[13px] font-light"
-            style={{ color: "hsl(var(--muted-foreground))" }}
+            className="flex items-center gap-2 text-[13px] font-light ds-text-muted"
           >
             <svg
               className="w-4 h-4 animate-spin"
@@ -209,8 +190,7 @@ export function ImagePaletteModal({
         <div className="flex justify-end mt-2">
           <button
             onClick={handleClose}
-            className="px-3 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
-            style={{ color: "hsl(var(--muted-foreground))" }}
+            className="px-3 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 ds-text-muted"
           >
             Cancel
           </button>
@@ -253,11 +233,7 @@ export function PendingImagePaletteConfirm({
       }}
     >
       <div
-        className="rounded-xl p-6 w-[90vw] max-w-[480px] max-h-[90vh] overflow-y-auto shadow-xl"
-        style={{
-          backgroundColor: "hsl(var(--card))",
-          color: "hsl(var(--card-foreground))",
-        }}
+        className="rounded-xl p-6 w-[90vw] max-w-[480px] max-h-[90vh] overflow-y-auto shadow-xl ds-surface"
         onClick={(e) => e.stopPropagation()}
       >
         <h3 className="text-[18px] font-light mb-4">Extracted Palette</h3>
@@ -290,8 +266,7 @@ export function PendingImagePaletteConfirm({
                   }}
                 />
                 <span
-                  className="ds-palette-label font-light block truncate"
-                  style={{ color: "hsl(var(--muted-foreground))" }}
+                  className="ds-palette-label font-light block truncate ds-text-muted"
                 >
                   {key
                     .replace("--", "")
@@ -300,8 +275,7 @@ export function PendingImagePaletteConfirm({
                     .join(" ")}
                 </span>
                 <span
-                  className="ds-palette-label font-mono block truncate"
-                  style={{ color: "hsl(var(--muted-foreground))" }}
+                  className="ds-palette-label font-mono block truncate ds-text-muted"
                 >
                   {hex}
                 </span>
@@ -315,8 +289,7 @@ export function PendingImagePaletteConfirm({
               URL.revokeObjectURL(pendingImagePalette.imageUrl);
               setPendingImagePalette(null);
             }}
-            className="px-3 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80"
-            style={{ color: "hsl(var(--card-foreground))" }}
+            className="px-3 py-1.5 text-[14px] font-light rounded-lg transition-colors hover:opacity-80 ds-text-card"
           >
             Cancel
           </button>

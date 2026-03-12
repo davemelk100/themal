@@ -52,8 +52,7 @@ export function InputsSection({
             className="min-w-0 space-y-4 mt-6 mb-6 md:mt-16 md:mb-16 scroll-mt-[56px]"
           >
             <h2
-              className="text-[14px] sm:text-[16px] md:text-[20px] font-bold tracking-wider mb-[5px] flex items-baseline gap-2"
-              style={{ color: "hsl(var(--foreground))" }}
+              className="text-[14px] sm:text-[16px] md:text-[20px] font-bold tracking-wider mb-[5px] flex items-baseline gap-2 ds-text-fg"
             >
               Inputs{" "}
               <a
@@ -100,8 +99,7 @@ export function InputsSection({
                   <button
                     type="button"
                     onClick={() => setShowInputResetModal(true)}
-                    className="h-8 px-3 text-[13px] font-light rounded-lg transition-colors hover:opacity-70 flex items-center gap-1 ml-auto"
-                    style={{ color: "hsl(var(--muted-foreground))" }}
+                    className="h-8 px-3 text-[13px] font-light rounded-lg transition-colors hover:opacity-70 flex items-center gap-1 ml-auto ds-text-muted"
                   >
                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -113,14 +111,12 @@ export function InputsSection({
                 {/* Shape */}
                 <div className="space-y-1.5">
                   <p
-                    className="text-[14px] font-light uppercase tracking-wider"
-                    style={{ color: "hsl(var(--muted-foreground))" }}
+                    className="text-[14px] font-light uppercase tracking-wider ds-text-muted"
                   >
                     Shape
                   </p>
                   <label
-                    className="flex items-center justify-between gap-2 text-[14px] font-light"
-                    style={{ color: "hsl(var(--foreground))" }}
+                    className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                   >
                     <span>Radius: {inputStyle.borderRadius}px</span>
                     <input
@@ -133,8 +129,7 @@ export function InputsSection({
                     />
                   </label>
                   <label
-                    className="flex items-center justify-between gap-2 text-[14px] font-light"
-                    style={{ color: "hsl(var(--foreground))" }}
+                    className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                   >
                     <span>Border: {inputStyle.borderWidth}px</span>
                     <input
@@ -151,14 +146,12 @@ export function InputsSection({
                 {/* Size */}
                 <div className="space-y-1.5">
                   <p
-                    className="text-[14px] font-light uppercase tracking-wider"
-                    style={{ color: "hsl(var(--muted-foreground))" }}
+                    className="text-[14px] font-light uppercase tracking-wider ds-text-muted"
                   >
                     Size
                   </p>
                   <label
-                    className="flex items-center justify-between gap-2 text-[14px] font-light"
-                    style={{ color: "hsl(var(--foreground))" }}
+                    className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                   >
                     <span>Padding X: {inputStyle.paddingX}px</span>
                     <input
@@ -171,8 +164,7 @@ export function InputsSection({
                     />
                   </label>
                   <label
-                    className="flex items-center justify-between gap-2 text-[14px] font-light"
-                    style={{ color: "hsl(var(--foreground))" }}
+                    className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                   >
                     <span>Padding Y: {inputStyle.paddingY}px</span>
                     <input
@@ -185,8 +177,7 @@ export function InputsSection({
                     />
                   </label>
                   <label
-                    className="flex items-center justify-between gap-2 text-[14px] font-light"
-                    style={{ color: "hsl(var(--foreground))" }}
+                    className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                   >
                     <span>Font Size: {inputStyle.fontSize}px</span>
                     <input
@@ -203,14 +194,12 @@ export function InputsSection({
                 {/* Focus */}
                 <div className="space-y-1.5">
                   <p
-                    className="text-[14px] font-light uppercase tracking-wider"
-                    style={{ color: "hsl(var(--muted-foreground))" }}
+                    className="text-[14px] font-light uppercase tracking-wider ds-text-muted"
                   >
                     Focus
                   </p>
                   <label
-                    className="flex items-center justify-between gap-2 text-[14px] font-light"
-                    style={{ color: "hsl(var(--foreground))" }}
+                    className="flex items-center justify-between gap-2 text-[14px] font-light ds-text-fg"
                   >
                     <span>Ring Width: {inputStyle.focusRingWidth}px</span>
                     <input
@@ -227,10 +216,9 @@ export function InputsSection({
 
               {/* Preview */}
               <div
-                className="flex-1 min-w-0 rounded-lg p-4 sm:p-6 order-1 md:order-2"
+                className="flex-1 min-w-0 rounded-lg p-4 sm:p-6 order-1 md:order-2 ds-bg"
                 style={{
                   border: "1px solid hsl(var(--border))",
-                  backgroundColor: "hsl(var(--background))",
                 }}
               >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
@@ -239,19 +227,15 @@ export function InputsSection({
                   {/* Text Input */}
                   <div>
                     <label
-                      className="block text-[13px] font-medium mb-1.5"
-                      style={{ color: "hsl(var(--foreground))" }}
+                      className="block text-[13px] font-medium mb-1.5 ds-text-fg"
                     >
                       Text Input
                     </label>
                     <input
                       type="text"
                       placeholder="Enter some text..."
-                      className="ds-input w-full border"
+                      className="ds-input w-full border ds-surface-bg ds-border"
                       style={{
-                        backgroundColor: "hsl(var(--background))",
-                        color: "hsl(var(--foreground))",
-                        borderColor: "hsl(var(--border))",
                         borderRadius: `${inputStyle.borderRadius}px`,
                         borderWidth: `${inputStyle.borderWidth}px`,
                         padding: `${inputStyle.paddingY}px ${inputStyle.paddingX}px`,
@@ -263,19 +247,15 @@ export function InputsSection({
                   {/* Email Input */}
                   <div>
                     <label
-                      className="block text-[13px] font-medium mb-1.5"
-                      style={{ color: "hsl(var(--foreground))" }}
+                      className="block text-[13px] font-medium mb-1.5 ds-text-fg"
                     >
                       Email Input
                     </label>
                     <input
                       type="email"
                       placeholder="you@example.com"
-                      className="ds-input w-full border"
+                      className="ds-input w-full border ds-surface-bg ds-border"
                       style={{
-                        backgroundColor: "hsl(var(--background))",
-                        color: "hsl(var(--foreground))",
-                        borderColor: "hsl(var(--border))",
                         borderRadius: `${inputStyle.borderRadius}px`,
                         borderWidth: `${inputStyle.borderWidth}px`,
                         padding: `${inputStyle.paddingY}px ${inputStyle.paddingX}px`,
@@ -287,19 +267,15 @@ export function InputsSection({
                   {/* Textarea */}
                   <div>
                     <label
-                      className="block text-[13px] font-medium mb-1.5"
-                      style={{ color: "hsl(var(--foreground))" }}
+                      className="block text-[13px] font-medium mb-1.5 ds-text-fg"
                     >
                       Textarea
                     </label>
                     <textarea
                       rows={3}
                       placeholder="Write a message..."
-                      className="ds-input w-full border resize-none"
+                      className="ds-input w-full border resize-none ds-surface-bg ds-border"
                       style={{
-                        backgroundColor: "hsl(var(--background))",
-                        color: "hsl(var(--foreground))",
-                        borderColor: "hsl(var(--border))",
                         borderRadius: `${inputStyle.borderRadius}px`,
                         borderWidth: `${inputStyle.borderWidth}px`,
                         padding: `${inputStyle.paddingY}px ${inputStyle.paddingX}px`,
@@ -311,8 +287,7 @@ export function InputsSection({
                   {/* Disabled Input */}
                   <div>
                     <label
-                      className="block text-[13px] font-medium mb-1.5"
-                      style={{ color: "hsl(var(--muted-foreground))" }}
+                      className="block text-[13px] font-medium mb-1.5 ds-text-muted"
                     >
                       Disabled Input
                     </label>
@@ -320,11 +295,8 @@ export function InputsSection({
                       type="text"
                       disabled
                       placeholder="Not editable"
-                      className="ds-input w-full border cursor-not-allowed opacity-60"
+                      className="ds-input w-full border cursor-not-allowed opacity-60 ds-bg-muted ds-text-muted ds-border"
                       style={{
-                        backgroundColor: "hsl(var(--muted))",
-                        color: "hsl(var(--muted-foreground))",
-                        borderColor: "hsl(var(--border))",
                         borderRadius: `${inputStyle.borderRadius}px`,
                         borderWidth: `${inputStyle.borderWidth}px`,
                         padding: `${inputStyle.paddingY}px ${inputStyle.paddingX}px`,
@@ -339,8 +311,7 @@ export function InputsSection({
                   {/* Custom Select */}
                   <div>
                     <label
-                      className="block text-[13px] font-medium mb-1.5"
-                      style={{ color: "hsl(var(--foreground))" }}
+                      className="block text-[13px] font-medium mb-1.5 ds-text-fg"
                     >
                       Select
                     </label>
@@ -348,10 +319,8 @@ export function InputsSection({
                       <button
                         type="button"
                         onClick={() => setInputSelectOpen(!inputSelectOpen)}
-                        className="ds-input w-full border text-left flex items-center justify-between"
+                        className="ds-input w-full border text-left flex items-center justify-between ds-surface-bg"
                         style={{
-                          backgroundColor: "hsl(var(--background))",
-                          color: "hsl(var(--foreground))",
                           borderColor: inputSelectOpen ? "hsl(var(--ring))" : "hsl(var(--border))",
                           borderRadius: `${inputStyle.borderRadius}px`,
                           borderWidth: `${inputStyle.borderWidth}px`,
@@ -362,8 +331,8 @@ export function InputsSection({
                       >
                         <span>{inputSelectValue}</span>
                         <svg
-                          className="w-4 h-4 flex-shrink-0"
-                          style={{ color: "hsl(var(--muted-foreground))", transform: inputSelectOpen ? "rotate(180deg)" : "rotate(0)", transition: "transform 0.15s" }}
+                          className="w-4 h-4 flex-shrink-0 ds-text-muted"
+                          style={{ transform: inputSelectOpen ? "rotate(180deg)" : "rotate(0)", transition: "transform 0.15s" }}
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -374,10 +343,8 @@ export function InputsSection({
                       </button>
                       {inputSelectOpen && (
                         <div
-                          className="absolute z-20 mt-1 w-full border shadow-lg overflow-hidden"
+                          className="absolute z-20 mt-1 w-full border shadow-lg overflow-hidden ds-bg ds-border"
                           style={{
-                            backgroundColor: "hsl(var(--background))",
-                            borderColor: "hsl(var(--border))",
                             borderRadius: `${inputStyle.borderRadius}px`,
                           }}
                         >
@@ -405,8 +372,7 @@ export function InputsSection({
                   {/* Checkboxes */}
                   <div>
                     <label
-                      className="block text-[13px] font-medium mb-2"
-                      style={{ color: "hsl(var(--foreground))" }}
+                      className="block text-[13px] font-medium mb-2 ds-text-fg"
                     >
                       Checkboxes
                     </label>
@@ -434,7 +400,7 @@ export function InputsSection({
                               </svg>
                             )}
                           </button>
-                          <span className="text-[15px]" style={{ color: "hsl(var(--foreground))" }}>{label}</span>
+                          <span className="text-[15px] ds-text-fg">{label}</span>
                         </label>
                       ))}
                     </div>
@@ -443,8 +409,7 @@ export function InputsSection({
                   {/* Radio Buttons */}
                   <div>
                     <label
-                      className="block text-[13px] font-medium mb-2"
-                      style={{ color: "hsl(var(--foreground))" }}
+                      className="block text-[13px] font-medium mb-2 ds-text-fg"
                     >
                       Radio Buttons
                     </label>
@@ -472,7 +437,7 @@ export function InputsSection({
                               />
                             )}
                           </button>
-                          <span className="text-[15px]" style={{ color: "hsl(var(--foreground))" }}>{label}</span>
+                          <span className="text-[15px] ds-text-fg">{label}</span>
                         </label>
                       ))}
                     </div>
@@ -481,8 +446,7 @@ export function InputsSection({
                   {/* Toggle Switches */}
                   <div>
                     <label
-                      className="block text-[13px] font-medium mb-2"
-                      style={{ color: "hsl(var(--foreground))" }}
+                      className="block text-[13px] font-medium mb-2 ds-text-fg"
                     >
                       Toggle Switches
                     </label>
@@ -493,7 +457,7 @@ export function InputsSection({
                         { label: "Notifications", on: inputToggle2, set: setInputToggle2 },
                       ].map(({ label, on, set }) => (
                         <div key={label} className="flex items-center gap-3">
-                          <span className="text-[15px]" style={{ color: "hsl(var(--foreground))" }}>{label}</span>
+                          <span className="text-[15px] ds-text-fg">{label}</span>
                           <button
                             type="button"
                             role="switch"
@@ -506,9 +470,8 @@ export function InputsSection({
                             }}
                           >
                             <span
-                              className="ds-toggle-thumb absolute top-0.5 left-0.5 w-5 h-5 rounded-full shadow-sm"
+                              className="ds-toggle-thumb absolute top-0.5 left-0.5 w-5 h-5 rounded-full shadow-sm ds-bg"
                               style={{
-                                backgroundColor: "hsl(var(--background))",
                                 transform: on ? "translateX(20px)" : "translateX(0)",
                               }}
                             />
@@ -518,12 +481,11 @@ export function InputsSection({
 
                       {/* Segmented toggle */}
                       <div className="pt-2">
-                        <span className="block text-[13px] font-medium mb-1.5" style={{ color: "hsl(var(--foreground))" }}>
+                        <span className="block text-[13px] font-medium mb-1.5 ds-text-fg">
                           Segmented
                         </span>
                         <div
-                          className="inline-flex items-center rounded-lg overflow-hidden border"
-                          style={{ borderColor: "hsl(var(--border))" }}
+                          className="inline-flex items-center rounded-lg overflow-hidden border ds-border"
                         >
                           {["Light", "Dark", "System"].map((opt, i) => (
                             <React.Fragment key={opt}>
