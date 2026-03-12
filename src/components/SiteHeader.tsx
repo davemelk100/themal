@@ -116,9 +116,9 @@ export default function SiteHeader() {
       className="sticky top-0 z-50 bg-page"
     >
       {isEditor ? (
-        <div className="w-full mx-auto flex site-container">
-          {/* Logo: inline on mobile, sidebar-width at lg */}
-          <div className="flex items-end flex-shrink-0 pl-4 pr-2 lg:w-48 py-3">
+        <div className="w-full mx-auto flex flex-col lg:flex-row site-container">
+          {/* Logo row: stacked above nav on mobile, sidebar-width column at lg */}
+          <div className="flex items-end flex-shrink-0 pl-4 pr-2 lg:w-48 pt-3 pb-1 lg:py-3">
             <Link
               to="/"
               className="flex-shrink-0 hover:opacity-70 transition-opacity"
@@ -127,8 +127,8 @@ export default function SiteHeader() {
               <ThemalLogo className="h-6 sm:h-7" />
             </Link>
           </div>
-          {/* Match content area: px-4 sm:px-6 lg:px-8 */}
-          <div className="flex-1 min-w-0 px-4 sm:px-6 lg:px-8 py-3 flex items-end">
+          {/* Nav row: full-width on mobile, flex-1 at lg */}
+          <div className="flex-1 min-w-0 px-4 sm:px-6 lg:px-8 pb-3 pt-1 lg:py-3 flex items-end">
             <nav
               ref={navContainerRef}
               className="flex items-baseline gap-2 sm:gap-3 md:gap-4 lg:gap-6 overflow-x-auto flex-nowrap"
