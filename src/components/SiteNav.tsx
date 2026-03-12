@@ -22,12 +22,9 @@ export default function SiteNav() {
         <Link
           key={to}
           to={to}
-          className="w-full h-9 px-2 font-light rounded-lg transition-colors hover:opacity-80 flex items-center gap-2 no-underline"
-          style={{
-            fontSize: "13px",
-            color: pathname === to ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))",
-            backgroundColor: pathname === to ? "hsl(var(--foreground) / 0.05)" : "transparent",
-          }}
+          className={`w-full h-9 px-2 text-[13px] font-light rounded-lg transition-colors hover:opacity-80 flex items-center gap-2 no-underline ${
+            pathname === to ? "site-nav-active" : "site-nav-link"
+          }`}
         >
           <span className="truncate">{label}</span>
         </Link>

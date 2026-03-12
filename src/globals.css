@@ -163,4 +163,16 @@
   .title-font {
     font-family: var(--font-heading);
   }
+
+  /* Site left nav links */
+  .site-nav-link {
+    font-size: 13px;
+    color: hsl(var(--muted-foreground));
+    background-color: transparent;
+  }
+  .site-nav-active {
+    font-size: 13px;
+    color: hsl(var(--foreground));
+    background-color: hsl(var(--foreground) / 0.05);
+  }
 }
