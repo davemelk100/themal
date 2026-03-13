@@ -268,7 +268,6 @@ export default function Features() {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
             {[
-              { title: "Figma Plugin", desc: "Sync design tokens between Themal and Figma for seamless designer-developer handoff." },
               { title: "VS Code Extension", desc: "Edit and preview design tokens directly inside your code editor." },
               { title: "AI-Assisted Design", desc: "Describe your brand or mood and let AI generate a complete design system with colors, typography, and component styles." },
               { title: "Mobile App", desc: "Edit and preview your design system on the go with a native iOS and Android app." },

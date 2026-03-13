@@ -76,7 +76,7 @@ export function InputsSection({
               </a>
             </h2>
 
-            <div className="flex flex-col md:flex-row gap-4 md:gap-6">
+            <div className="flex flex-col md:flex-row gap-4 md:gap-6 border rounded-lg p-4 ds-border">
               {/* Controls */}
               <div className="flex-1 min-w-0 space-y-3 order-2 md:order-1">
                 {/* Presets */}
