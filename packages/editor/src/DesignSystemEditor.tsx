@@ -601,7 +601,7 @@ function DesignSystemEditorInner({
     setSectionPrStatus,
     submitPr,
     openPrModal,
-  } = usePrSubmission(isPremium, prEndpointUrl, prApiKey, githubConfig, buildSectionCss);
+  } = usePrSubmission(prEndpointUrl, prApiKey, githubConfig, buildSectionCss);
 
   const handleColorChange = (key: string, hex: string) => {
     const lower = hex.toLowerCase();
@@ -1701,7 +1701,6 @@ function DesignSystemEditorInner({
             <span className="truncate">{shareCopied ? "Copied!" : "Share"}</span>
           </button>
           {(prEndpointUrl || githubConfig) && (
-            <PremiumGate feature="pr-integration" variant="inline" hideLock upgradeUrl={upgradeUrl} signInUrl={signInUrl}>
               <button
                 onClick={openPrModal}
                 className="ds-global-btn w-full h-9 px-2 text-xs font-light rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
@@ -1712,7 +1711,6 @@ function DesignSystemEditorInner({
                 </svg>
                 <span className="truncate">Open PR</span>
               </button>
-            </PremiumGate>
           )}
           <button
             onClick={() => setShowPurgeModal(true)}

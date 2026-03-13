@@ -14,7 +14,7 @@ function corsHeaders(origin?: string) {
   };
 }
 
-const REPO = "davemelk100/design-alive";
+const REPO = "davemelk100/themal";
 const FILE_PATH = "src/globals.css";
 const API = "https://api.github.com";
 
@@ -44,6 +44,8 @@ const SECTION_LABELS: Record<string, string> = {
   card: "Card Style",
   typography: "Typography",
   alerts: "Alerts",
+  buttons: "Buttons",
+  interactions: "Interactions",
 };
 
 function replaceRootBlock(fileContent: string, newCssVars: string): string {

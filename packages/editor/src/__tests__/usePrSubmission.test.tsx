@@ -48,21 +48,21 @@ describe("usePrSubmission", () => {
   describe("initial state", () => {
     it("has showPrModal false", () => {
       const { result } = renderHook(() =>
-        usePrSubmission(true, PR_ENDPOINT, undefined, undefined, buildSectionCss),
+        usePrSubmission(PR_ENDPOINT, undefined, undefined, buildSectionCss),
       );
       expect(result.current.showPrModal).toBe(false);
     });
 
     it("has no prError", () => {
       const { result } = renderHook(() =>
-        usePrSubmission(true, PR_ENDPOINT, undefined, undefined, buildSectionCss),
+        usePrSubmission(PR_ENDPOINT, undefined, undefined, buildSectionCss),
       );
       expect(result.current.prError).toBeNull();
     });
 
     it("has default sections", () => {
       const { result } = renderHook(() =>
-        usePrSubmission(true, PR_ENDPOINT, undefined, undefined, buildSectionCss),
+        usePrSubmission(PR_ENDPOINT, undefined, undefined, buildSectionCss),
       );
       const sections = result.current.prSections;
       expect(sections).toBeInstanceOf(Set);
@@ -77,7 +77,7 @@ describe("usePrSubmission", () => {
 
     it("has empty sectionPrStatus", () => {
       const { result } = renderHook(() =>
-        usePrSubmission(true, PR_ENDPOINT, undefined, undefined, buildSectionCss),
+        usePrSubmission(PR_ENDPOINT, undefined, undefined, buildSectionCss),
       );
       expect(result.current.sectionPrStatus).toEqual({});
     });
@@ -88,7 +88,7 @@ describe("usePrSubmission", () => {
   describe("openPrModal", () => {
     it("clears sections, clears error, and sets showPrModal to true", () => {
       const { result } = renderHook(() =>
-        usePrSubmission(true, PR_ENDPOINT, undefined, undefined, buildSectionCss),
+        usePrSubmission(PR_ENDPOINT, undefined, undefined, buildSectionCss),
       );
 
       // Sections start with defaults
@@ -103,7 +103,7 @@ describe("usePrSubmission", () => {
 
     it("clears a pre-existing error", async () => {
       const { result } = renderHook(() =>
-        usePrSubmission(true, undefined, undefined, undefined, buildSectionCss),
+        usePrSubmission(undefined, undefined, undefined, buildSectionCss),
       );
 
       // Trigger an error first (no endpoint and no githubConfig)
@@ -130,7 +130,7 @@ describe("usePrSubmission", () => {
       } as Response);
 
       const { result } = renderHook(() =>
-        usePrSubmission(true, PR_ENDPOINT, undefined, undefined, buildSectionCss),
+        usePrSubmission(PR_ENDPOINT, undefined, undefined, buildSectionCss),
       );
 
       // Open modal first so showPrModal is true
@@ -173,7 +173,7 @@ describe("usePrSubmission", () => {
       } as Response);
 
       const { result } = renderHook(() =>
-        usePrSubmission(true, PR_ENDPOINT, "my-secret-key", undefined, buildSectionCss),
+        usePrSubmission(PR_ENDPOINT, "my-secret-key", undefined, buildSectionCss),
       );
 
       await act(async () => {
@@ -198,7 +198,7 @@ describe("usePrSubmission", () => {
       } as Response);
 
       const { result } = renderHook(() =>
-        usePrSubmission(true, PR_ENDPOINT, undefined, undefined, buildSectionCss),
+        usePrSubmission(PR_ENDPOINT, undefined, undefined, buildSectionCss),
       );
 
       await act(async () => {
@@ -217,7 +217,7 @@ describe("usePrSubmission", () => {
       } as Response);
 
       const { result } = renderHook(() =>
-        usePrSubmission(true, PR_ENDPOINT, undefined, undefined, buildSectionCss),
+        usePrSubmission(PR_ENDPOINT, undefined, undefined, buildSectionCss),
       );
 
       await act(async () => {
@@ -240,7 +240,7 @@ describe("usePrSubmission", () => {
       } as Response);
 
       const { result } = renderHook(() =>
-        usePrSubmission(true, PR_ENDPOINT, undefined, undefined, buildSectionCss),
+        usePrSubmission(PR_ENDPOINT, undefined, undefined, buildSectionCss),
       );
 
       await act(async () => {
@@ -261,7 +261,7 @@ describe("usePrSubmission", () => {
       } as Response);
 
       const { result } = renderHook(() =>
-        usePrSubmission(true, PR_ENDPOINT, undefined, undefined, buildSectionCss),
+        usePrSubmission(PR_ENDPOINT, undefined, undefined, buildSectionCss),
       );
 
       await act(async () => {
@@ -280,7 +280,7 @@ describe("usePrSubmission", () => {
       vi.mocked(global.fetch).mockRejectedValueOnce(new Error("Network failure"));
 
       const { result } = renderHook(() =>
-        usePrSubmission(true, PR_ENDPOINT, undefined, undefined, buildSectionCss),
+        usePrSubmission(PR_ENDPOINT, undefined, undefined, buildSectionCss),
       );
 
       await act(async () => {
@@ -295,7 +295,7 @@ describe("usePrSubmission", () => {
       vi.mocked(global.fetch).mockRejectedValueOnce("string error");
 
       const { result } = renderHook(() =>
-        usePrSubmission(true, PR_ENDPOINT, undefined, undefined, buildSectionCss),
+        usePrSubmission(PR_ENDPOINT, undefined, undefined, buildSectionCss),
       );
 
       await act(async () => {
@@ -317,7 +317,7 @@ describe("usePrSubmission", () => {
       } as Response);
 
       const { result } = renderHook(() =>
-        usePrSubmission(true, PR_ENDPOINT, undefined, undefined, buildSectionCss),
+        usePrSubmission(PR_ENDPOINT, undefined, undefined, buildSectionCss),
       );
 
       await act(async () => {
@@ -341,7 +341,7 @@ describe("usePrSubmission", () => {
       } as Response);
 
       const { result } = renderHook(() =>
-        usePrSubmission(true, PR_ENDPOINT, undefined, undefined, buildSectionCss),
+        usePrSubmission(PR_ENDPOINT, undefined, undefined, buildSectionCss),
       );
 
       await act(async () => {
@@ -360,7 +360,7 @@ describe("usePrSubmission", () => {
       );
 
       const { result } = renderHook(() =>
-        usePrSubmission(true, PR_ENDPOINT, undefined, undefined, buildSectionCss),
+        usePrSubmission(PR_ENDPOINT, undefined, undefined, buildSectionCss),
       );
 
       // Start the submission but don't await
@@ -397,7 +397,7 @@ describe("usePrSubmission", () => {
       mockedCreateDesignPr.mockResolvedValueOnce(compareUrl);
 
       const { result } = renderHook(() =>
-        usePrSubmission(true, undefined, undefined, GITHUB_CONFIG, buildSectionCss),
+        usePrSubmission(undefined, undefined, GITHUB_CONFIG, buildSectionCss),
       );
 
       act(() => result.current.openPrModal());
@@ -432,7 +432,7 @@ describe("usePrSubmission", () => {
       mockedCreateDesignPr.mockResolvedValueOnce(compareUrl);
 
       const { result } = renderHook(() =>
-        usePrSubmission(true, undefined, undefined, GITHUB_CONFIG, buildSectionCss),
+        usePrSubmission(undefined, undefined, GITHUB_CONFIG, buildSectionCss),
       );
 
       await act(async () => {
@@ -461,7 +461,7 @@ describe("usePrSubmission", () => {
       mockedCreateDesignPr.mockRejectedValueOnce(new Error("GitHub API error"));
 
       const { result } = renderHook(() =>
-        usePrSubmission(true, undefined, undefined, GITHUB_CONFIG, buildSectionCss),
+        usePrSubmission(undefined, undefined, GITHUB_CONFIG, buildSectionCss),
       );
 
       await act(async () => {
@@ -477,7 +477,7 @@ describe("usePrSubmission", () => {
       mockedStartOAuthFlow.mockRejectedValueOnce(new Error("OAuth popup closed"));
 
       const { result } = renderHook(() =>
-        usePrSubmission(true, undefined, undefined, GITHUB_CONFIG, buildSectionCss),
+        usePrSubmission(undefined, undefined, GITHUB_CONFIG, buildSectionCss),
       );
 
       await act(async () => {
@@ -493,7 +493,7 @@ describe("usePrSubmission", () => {
       mockedStartOAuthFlow.mockRejectedValueOnce("unexpected");
 
       const { result } = renderHook(() =>
-        usePrSubmission(true, undefined, undefined, GITHUB_CONFIG, buildSectionCss),
+        usePrSubmission(undefined, undefined, GITHUB_CONFIG, buildSectionCss),
       );
 
       await act(async () => {
@@ -512,7 +512,7 @@ describe("usePrSubmission", () => {
       mockedCreateDesignPr.mockResolvedValueOnce("https://example.com");
 
       const { result } = renderHook(() =>
-        usePrSubmission(true, undefined, undefined, GITHUB_CONFIG, buildSectionCss),
+        usePrSubmission(undefined, undefined, GITHUB_CONFIG, buildSectionCss),
       );
 
       await act(async () => {
@@ -531,7 +531,7 @@ describe("usePrSubmission", () => {
       mockedCreateDesignPr.mockResolvedValueOnce("https://example.com");
 
       const { result } = renderHook(() =>
-        usePrSubmission(true, PR_ENDPOINT, undefined, GITHUB_CONFIG, buildSectionCss),
+        usePrSubmission(PR_ENDPOINT, undefined, GITHUB_CONFIG, buildSectionCss),
       );
 
       await act(async () => {
@@ -544,31 +544,12 @@ describe("usePrSubmission", () => {
     });
   });
 
-  // ---------- 5. submitPr when not premium ----------
-
-  describe("submitPr when not premium", () => {
-    it("does nothing and returns early", async () => {
-      const { result } = renderHook(() =>
-        usePrSubmission(false, PR_ENDPOINT, undefined, undefined, buildSectionCss),
-      );
-
-      await act(async () => {
-        await result.current.submitPr(["colors"], "all");
-      });
-
-      expect(global.fetch).not.toHaveBeenCalled();
-      expect(buildSectionCss).not.toHaveBeenCalled();
-      expect(result.current.prError).toBeNull();
-      expect(result.current.sectionPrStatus).toEqual({});
-    });
-  });
-
-  // ---------- 6. submitPr with neither endpoint nor githubConfig ----------
+  // ---------- 5. submitPr with neither endpoint nor githubConfig ----------
 
   describe("submitPr with no prEndpointUrl or githubConfig", () => {
     it("sets an error message", async () => {
       const { result } = renderHook(() =>
-        usePrSubmission(true, undefined, undefined, undefined, buildSectionCss),
+        usePrSubmission(undefined, undefined, undefined, buildSectionCss),
       );
 
       await act(async () => {

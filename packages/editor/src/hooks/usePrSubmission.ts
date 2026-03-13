@@ -13,7 +13,6 @@ type SectionPrStatus = Record<
 >;
 
 export function usePrSubmission(
-  isPremium: boolean,
   prEndpointUrl: string | undefined,
   prApiKey: string | undefined,
   githubConfig: GitHubConfig | undefined,
@@ -28,7 +27,6 @@ export function usePrSubmission(
 
   const submitPr = useCallback(
     async (sections: Iterable<string>, statusKey: string) => {
-      if (!isPremium) return;
       if (!prEndpointUrl && !githubConfig) {
         setPrError("No prEndpointUrl or githubConfig prop provided. Pass one to enable PR creation.");
         return;
@@ -123,7 +121,7 @@ export function usePrSubmission(
         popup?.close();
       }
     },
-    [isPremium, prEndpointUrl, prApiKey, githubConfig, buildSectionCss],
+    [prEndpointUrl, prApiKey, githubConfig, buildSectionCss],
   );
 
   const openPrModal = useCallback(() => {
