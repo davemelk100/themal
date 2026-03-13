@@ -139,7 +139,7 @@ export default function SiteHeader() {
     <header
       className="sticky top-0 z-50"
       style={{
-        backgroundColor: "rgba(255, 255, 255, 0.45)",
+        backgroundColor: "rgba(255, 255, 255, 0.15)",
         backdropFilter: "blur(16px) saturate(180%)",
         WebkitBackdropFilter: "blur(16px) saturate(180%)",
         borderBottom: "1px solid rgba(255, 255, 255, 0.25)",
