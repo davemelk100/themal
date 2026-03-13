@@ -141,8 +141,8 @@ export default function SiteHeader() {
     >
       {isEditor ? (
         <div className="w-full mx-auto flex flex-col lg:flex-row site-container">
-          {/* Logo + mobile dropdown row */}
-          <div className="flex items-center justify-center lg:justify-start flex-shrink-0 px-4 lg:pl-4 lg:pr-2 lg:w-48 pt-3 pb-3 lg:py-3 gap-3">
+          {/* Logo row */}
+          <div className="flex items-center flex-shrink-0 px-4 lg:pl-4 lg:pr-2 lg:w-48 pt-3 pb-1 lg:py-3">
             <Link
               to="/"
               className="flex-shrink-0 hover:opacity-70 transition-opacity"
@@ -150,9 +150,11 @@ export default function SiteHeader() {
             >
               <ThemalLogo className="h-6 sm:h-7" />
             </Link>
+          </div>
 
-            {/* Mobile section dropdown */}
-            <div ref={dropdownRef} className="relative lg:hidden">
+          {/* Mobile section dropdown row */}
+          <div className="px-4 pb-3 lg:hidden">
+            <div ref={dropdownRef} className="relative">
               <button
                 onClick={() => setDropdownOpen((v) => !v)}
                 className="flex items-center gap-1.5 px-3 h-9 rounded-lg text-sm font-light text-fg hover:opacity-80 transition-opacity"
