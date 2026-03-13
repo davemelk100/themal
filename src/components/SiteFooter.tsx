@@ -251,8 +251,8 @@ export function ReportBugForm({ buttonClassName }: { buttonClassName?: string })
 
 export function SiteFooterBranding() {
   return (
-    <div className="flex justify-center pb-6 pt-4">
-      <img src="/circled-themal.svg" alt="Themal" className="h-16" />
+    <div className="flex justify-center py-1.5">
+      <img src="/circled-themal.svg" alt="Themal" className="h-8" />
     </div>
   );
 }
@@ -262,12 +262,10 @@ export default function SiteFooter() {
   if (pathname === "/editor") return null;
 
   return (
-    <footer
-      className="hidden md:block sticky bottom-0 z-40 mt-auto border-t border-theme bg-page"
-    >
-      <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-end gap-3 site-container">
-        <Link to="/" className="flex-shrink-0 leading-none hover:opacity-70 transition-opacity">
-          <img src="/themal-just-t.svg" alt="Themal" className="h-8" width="27" height="32" />
+    <footer className="hidden md:block sticky bottom-0 z-40 mt-auto bg-page">
+      <div className="flex justify-center py-1.5">
+        <Link to="/" className="hover:opacity-70 transition-opacity">
+          <img src="/circled-themal.svg" alt="Themal" className="h-8" />
         </Link>
       </div>
     </footer>
