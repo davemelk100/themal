@@ -234,7 +234,7 @@ describe("usePrSubmission", () => {
       vi.mocked(global.fetch).mockResolvedValueOnce({
         ok: false,
         status: 502,
-        json: async () => {
+        json: async (): Promise<Record<string, unknown>> => {
           throw new Error("not JSON");
         },
       } as Response);

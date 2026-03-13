@@ -138,7 +138,7 @@ describe("create-design-pr", () => {
       const second = await handler(event);
       expect(second.statusCode).toBe(429);
       expect(parseBody(second).error).toMatch(/Rate limited/);
-      expect(second.headers["Retry-After"]).toBeDefined();
+      expect((second.headers as Record<string, string>)["Retry-After"]).toBeDefined();
     });
 
     it("allows requests from different IPs", async () => {
