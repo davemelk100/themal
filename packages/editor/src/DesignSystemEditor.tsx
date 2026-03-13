@@ -1362,7 +1362,7 @@ function DesignSystemEditorInner({
     <div id="top" ref={editorRootRef} className={`ds-editor${className ? ` ${className}` : ""}`} style={{ background: "transparent" }}>
       {showHeader && (
         <div
-          className="pt-2 sm:pt-3 pb-4 sm:pb-2 lg:pb-3"
+          className="pt-2 sm:pt-3 pb-4 sm:pb-2 lg:pb-6"
         >
           <div className="w-full px-4 sm:px-6 lg:px-8">
             {/* Title + nav links - single header row */}
