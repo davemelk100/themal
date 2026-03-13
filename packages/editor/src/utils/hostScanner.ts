@@ -361,3 +361,60 @@ export function buildIntegrationCss(palette: HostPalette, tokenMap: Record<strin
 
   return lines.join("\n");
 }
+
+// ── Phase 2-AI: Build prompt for AI-assisted palette mapping ─────────
+
+export function buildAiPalettePrompt(palette: HostPalette): string {
+  const lines: string[] = [
+    "You are a design-system expert. Given the detected color palette from a website, map each color to the most appropriate Themal design token.",
+    "",
+    "Return ONLY a valid JSON object where keys are CSS variable names (e.g. \"--background\", \"--foreground\", \"--brand\") and values are HSL strings in the format \"H S% L%\" (e.g. \"210 50% 40%\").",
+    "",
+    "Available tokens: --background, --foreground, --muted, --muted-foreground, --brand, --brand-foreground, --secondary, --secondary-foreground, --accent, --accent-foreground, --card, --card-foreground, --border, --ring, --destructive, --destructive-foreground, --success, --success-foreground, --warning, --warning-foreground",
+    "",
+    "Detected palette:",
+    "",
+  ];
+
+  if (palette.backgrounds.length > 0) {
+    lines.push("Backgrounds (by frequency):");
+    for (const c of palette.backgrounds.slice(0, 8)) {
+      lines.push(`  ${c.hex} → hsl(${c.hsl}) — used ${c.count}×`);
+    }
+    lines.push("");
+  }
+
+  if (palette.texts.length > 0) {
+    lines.push("Text colors (by frequency):");
+    for (const c of palette.texts.slice(0, 8)) {
+      lines.push(`  ${c.hex} → hsl(${c.hsl}) — used ${c.count}×`);
+    }
+    lines.push("");
+  }
+
+  if (palette.borders.length > 0) {
+    lines.push("Border colors (by frequency):");
+    for (const c of palette.borders.slice(0, 5)) {
+      lines.push(`  ${c.hex} → hsl(${c.hsl}) — used ${c.count}×`);
+    }
+    lines.push("");
+  }
+
+  if (palette.fonts.length > 0) {
+    lines.push("Fonts (by frequency):");
+    for (const f of palette.fonts.slice(0, 3)) {
+      lines.push(`  "${f.family}" — used ${f.count}×`);
+    }
+    lines.push("");
+  }
+
+  lines.push("Guidelines:");
+  lines.push("- The most common background should map to --background");
+  lines.push("- Choose --foreground as the text color with highest contrast against --background");
+  lines.push("- The most saturated/vibrant color should map to --brand");
+  lines.push("- Ensure WCAG AA contrast (≥4.5:1) between foreground/background pairs");
+  lines.push("- Derive --muted as a desaturated, lower-contrast variant of --background");
+  lines.push("- Map remaining colors to the most semantically appropriate tokens");
+
+  return lines.join("\n");
+}

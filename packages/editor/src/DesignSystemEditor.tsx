@@ -146,6 +146,7 @@ function DesignSystemEditorInner({
   sidebarExtra,
   showSectionNav = true,
   applyToRoot = false,
+  onAiPaletteMap: _onAiPaletteMap,
 }: DesignSystemEditorProps) {
   const { isPremium } = useLicense();
   const wcagEnforcement = true;

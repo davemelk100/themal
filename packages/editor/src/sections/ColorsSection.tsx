@@ -637,7 +637,7 @@ export function ColorsSection({
                               {hexCode}
                             </span>
                           </div>
-                          <p className="hidden md:block text-sm font-light text-[color:hsl(var(--foreground))] truncate">
+                          <p className="hidden md:block text-sm font-light truncate" style={{ color: colors["--background"] ? `hsl(${fgForBg(colors["--background"])})` : undefined }}>
                             {label}
                           </p>
                         </div>

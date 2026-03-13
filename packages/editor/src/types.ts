@@ -67,6 +67,8 @@ export interface DesignSystemEditorProps {
   sidebarExtra?: React.ReactNode;
   /** Mirror CSS custom properties to :root so the theme applies to the entire page, not just the editor. Default: false */
   applyToRoot?: boolean;
+  /** Provider-agnostic AI palette mapping. When provided (and the `aiPaletteMapping` feature flag is enabled), an "AI Map" button appears in the host-scan confirmation modal. The callback receives a structured prompt describing the detected palette and should return a token map to apply. */
+  onAiPaletteMap?: (prompt: string) => Promise<Record<string, string>>;
 }
 
 export type { ImportedIconData } from "./utils/iconImport";
