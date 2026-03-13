@@ -169,6 +169,72 @@ function App() {
                   <td className="px-4 py-2">-</td>
                   <td className="px-4 py-2">URL for the About page link in header navigation.</td>
                 </tr>
+                <tr className="border-t border-theme">
+                  <td className="px-4 py-2 font-mono text-xs">customIcons</td>
+                  <td className="px-4 py-2 font-mono text-xs">{"CustomIcon[]"}</td>
+                  <td className="px-4 py-2">-</td>
+                  <td className="px-4 py-2">Custom icons to display in the Icons preview section. Each entry needs <code className="font-mono text-xs">name</code> and <code className="font-mono text-xs">icon</code> (a React component).</td>
+                </tr>
+                <tr className="border-t border-theme">
+                  <td className="px-4 py-2 font-mono text-xs">iconMode</td>
+                  <td className="px-4 py-2 font-mono text-xs">{`"append" | "replace"`}</td>
+                  <td className="px-4 py-2 font-mono text-xs">"append"</td>
+                  <td className="px-4 py-2">"append" adds custom icons after built-ins. "replace" hides built-ins and shows only custom icons.</td>
+                </tr>
+                <tr className="border-t border-theme">
+                  <td className="px-4 py-2 font-mono text-xs">showLogo</td>
+                  <td className="px-4 py-2 font-mono text-xs">boolean</td>
+                  <td className="px-4 py-2 font-mono text-xs">true</td>
+                  <td className="px-4 py-2">Show the Themal logo in the header. Set false for white-label or plugin usage.</td>
+                </tr>
+                <tr className="border-t border-theme">
+                  <td className="px-4 py-2 font-mono text-xs">showSectionNav</td>
+                  <td className="px-4 py-2 font-mono text-xs">boolean</td>
+                  <td className="px-4 py-2 font-mono text-xs">true</td>
+                  <td className="px-4 py-2">Show the sticky section navigation bar (Colors, Buttons, Cards, etc.).</td>
+                </tr>
+                <tr className="border-t border-theme">
+                  <td className="px-4 py-2 font-mono text-xs">defaultColors</td>
+                  <td className="px-4 py-2 font-mono text-xs">{`Record<string, string>`}</td>
+                  <td className="px-4 py-2">-</td>
+                  <td className="px-4 py-2">Default color values keyed by CSS variable name. "Reset theme to default" restores these instead of the Themal defaults.</td>
+                </tr>
+                <tr className="border-t border-theme">
+                  <td className="px-4 py-2 font-mono text-xs">defaultTypography</td>
+                  <td className="px-4 py-2 font-mono text-xs">{`Partial<TypographyState>`}</td>
+                  <td className="px-4 py-2">-</td>
+                  <td className="px-4 py-2">Default typography state to restore on reset. Shows an "App Default" option in font dropdowns.</td>
+                </tr>
+                <tr className="border-t border-theme">
+                  <td className="px-4 py-2 font-mono text-xs">onAiGenerate</td>
+                  <td className="px-4 py-2 font-mono text-xs">{`(prompt: string) => Promise<AiGenerateResult>`}</td>
+                  <td className="px-4 py-2">-</td>
+                  <td className="px-4 py-2">AI theme generation callback. When provided, an "AI Generate" button appears in Global Actions.</td>
+                </tr>
+                <tr className="border-t border-theme">
+                  <td className="px-4 py-2 font-mono text-xs">devMode</td>
+                  <td className="px-4 py-2 font-mono text-xs">boolean</td>
+                  <td className="px-4 py-2 font-mono text-xs">false</td>
+                  <td className="px-4 py-2">Show a "Purge Storage" button that clears all Themal localStorage keys.</td>
+                </tr>
+                <tr className="border-t border-theme">
+                  <td className="px-4 py-2 font-mono text-xs">sidebarLinks</td>
+                  <td className="px-4 py-2 font-mono text-xs">{`{ to: string; label: string }[]`}</td>
+                  <td className="px-4 py-2">-</td>
+                  <td className="px-4 py-2">Navigation links to display in the left sidebar.</td>
+                </tr>
+                <tr className="border-t border-theme">
+                  <td className="px-4 py-2 font-mono text-xs">sidebarExtra</td>
+                  <td className="px-4 py-2 font-mono text-xs">ReactNode</td>
+                  <td className="px-4 py-2">-</td>
+                  <td className="px-4 py-2">Custom content rendered at the bottom of the left sidebar.</td>
+                </tr>
+                <tr className="border-t border-theme">
+                  <td className="px-4 py-2 font-mono text-xs">applyToRoot</td>
+                  <td className="px-4 py-2 font-mono text-xs">boolean</td>
+                  <td className="px-4 py-2 font-mono text-xs">false</td>
+                  <td className="px-4 py-2">Mirror CSS custom properties to :root for full-site theming. Shows a developer prompt with integration CSS.</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -231,6 +297,30 @@ function App() {
     </>
   }
 />`}</code>
+          </pre>
+
+          <h3 className="text-sm font-medium mb-2 text-muted">Full-site theming</h3>
+          <pre className="rounded-lg p-4 text-sm overflow-x-auto mb-2" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
+            <code>{`<DesignSystemEditor applyToRoot />`}</code>
+          </pre>
+          <p className="text-sm mb-3 text-muted">
+            When <code className="font-mono text-sm">applyToRoot</code> is enabled, the editor mirrors all CSS variables to <code className="font-mono text-sm">:root</code>, scans the host page to detect its color palette, and shows a banner with a "View CSS" button. The modal provides a tailored, copyable CSS snippet so your entire site responds to theme changes:
+          </p>
+          <pre className="rounded-lg p-4 text-sm overflow-x-auto mb-4" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
+            <code>{`/* Add to your global stylesheet */
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+a {
+  color: hsl(var(--brand));
+}
+/* ... more rules based on your detected palette */`}</code>
+          </pre>
+
+          <h3 className="text-sm font-medium mb-2 text-muted">Embedded / headless</h3>
+          <pre className="rounded-lg p-4 text-sm overflow-x-auto mb-4" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
+            <code>{`<DesignSystemEditor showHeader={false} showNavLinks={false} />`}</code>
           </pre>
         </section>
 
@@ -443,10 +533,26 @@ function App() {
   validateLicenseKey,          // Validate a THEMAL key
   generateLicenseKey,          // Generate a valid key
 
+  // GitHub PR utilities
+  createDesignPr,              // Create a PR via GitHub API
+  startOAuthFlow,              // Start GitHub OAuth popup
+  getStoredAuth,               // Retrieve stored GitHub auth
+  clearAuth,                   // Clear stored GitHub auth
+  validateStoredToken,         // Validate token against GitHub
+
   // Premium components & hooks
   LicenseProvider,             // Context provider
   useLicense,                  // Hook: { isValid, isPremium }
   PremiumGate,                 // Gate component
+
+  // Feature flags
+  FeatureFlag,                 // Conditional rendering by flag
+  FEATURE_FLAGS,               // Current flag values
+
+  // Host style scanner
+  scanHostStyles,              // Scan host page DOM for colors
+  mapPaletteToTokens,          // Map detected palette to tokens
+  buildIntegrationCss,         // Generate integration CSS snippet
 } from '@themal/editor';`}</code>
           </pre>
         </section>
