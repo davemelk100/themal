@@ -1,5 +1,5 @@
 /// <reference types="vitest/globals" />
-import { scanHostStyles, mapPaletteToTokens, buildOverrideStylesheet } from "../utils/hostScanner";
+import { scanHostStyles, mapPaletteToTokens, buildIntegrationCss } from "../utils/hostScanner";
 import type { HostPalette } from "../utils/hostScanner";
 
 describe("scanHostStyles", () => {
@@ -97,17 +97,42 @@ describe("mapPaletteToTokens", () => {
   });
 });
 
-describe("buildOverrideStylesheet", () => {
+describe("buildIntegrationCss", () => {
+  const palette: HostPalette = {
+    backgrounds: [
+      { hex: "#ffffff", hsl: "0 0% 100%", count: 50 },
+      { hex: "#f5f5f5", hsl: "0 0% 96.1%", count: 10 },
+    ],
+    texts: [
+      { hex: "#1a1a1a", hsl: "0 0% 10.2%", count: 40 },
+      { hex: "#2563eb", hsl: "217.2 91.2% 53.3%", count: 8 },
+    ],
+    borders: [{ hex: "#e5e5e5", hsl: "0 0% 89.8%", count: 15 }],
+    fonts: [{ family: "Inter", count: 50 }],
+  };
+  const tokens = mapPaletteToTokens(palette);
+
   it("generates CSS with var() references", () => {
-    const css = buildOverrideStylesheet();
+    const css = buildIntegrationCss(palette, tokens);
     expect(css).toContain("hsl(var(--background))");
     expect(css).toContain("hsl(var(--foreground))");
-    expect(css).toContain("hsl(var(--brand))");
-    expect(css).toContain(":not(.ds-editor)");
+  });
+
+  it("includes detected palette summary as a comment", () => {
+    const css = buildIntegrationCss(palette, tokens);
+    expect(css).toContain("Detected palette");
+    expect(css).toContain("#ffffff");
   });
 
   it("does not contain !important", () => {
-    const css = buildOverrideStylesheet();
+    const css = buildIntegrationCss(palette, tokens);
     expect(css).not.toContain("!important");
+  });
+
+  it("includes card rules when card differs from background", () => {
+    const css = buildIntegrationCss(palette, tokens);
+    if (tokens["--card"] && tokens["--card"] !== tokens["--background"]) {
+      expect(css).toContain("hsl(var(--card))");
+    }
   });
 });

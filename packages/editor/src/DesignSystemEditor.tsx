@@ -110,6 +110,7 @@ import type {
 } from "./utils/themeUtils";
 import { useImportedIcons } from "./hooks/useImportedIcons";
 import { useHostScanner } from "./hooks/useHostScanner";
+import { buildIntegrationCss } from "./utils/hostScanner";
 import { useStyleState } from "./hooks/useStyleState";
 import { IconImportModal } from "./components/IconImportModal";
 import { ColorsSection } from "./sections/ColorsSection";
@@ -200,8 +201,9 @@ function DesignSystemEditorInner({
     };
   }, [applyToRoot]);
 
-  // Scan host page styles and inject overrides when applyToRoot is enabled
-  useHostScanner(applyToRoot, setColors, setVar, editorRootRef);
+  // Scan host page styles when applyToRoot is enabled
+  const { scanResult, dismissed: scanDismissed, dismiss: dismissScan } = useHostScanner(applyToRoot, setColors, setVar, editorRootRef);
+  const [showIntegrationGuide, setShowIntegrationGuide] = useState(false);
 
   const {
     activeSection,
@@ -1801,6 +1803,45 @@ function DesignSystemEditorInner({
         {/* Main content area */}
         <div className="flex-1 min-w-0">
 
+      {/* Integration guide banner */}
+      {applyToRoot && scanResult && !scanDismissed && (
+        <div className="mx-4 sm:mx-6 lg:mx-8 mt-3 mb-2 px-4 py-3 rounded-lg ds-text-fg" style={{ backgroundColor: "hsl(var(--brand) / 0.1)", border: "1px solid hsl(var(--brand) / 0.25)" }}>
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex-1 min-w-0">
+              <p className="font-medium text-sm mb-1" style={{ color: "hsl(var(--brand))" }}>
+                Theme your entire site with Themal
+              </p>
+              <p className="text-xs font-light opacity-80">
+                We detected {scanResult.palette.backgrounds.length} background color{scanResult.palette.backgrounds.length !== 1 ? "s" : ""},{" "}
+                {scanResult.palette.texts.length} text color{scanResult.palette.texts.length !== 1 ? "s" : ""},{" "}
+                and {scanResult.palette.fonts.length} font{scanResult.palette.fonts.length !== 1 ? "s" : ""} on your page.
+                Add a few CSS rules to make the full site respond to Themal changes.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <button
+                type="button"
+                onClick={() => setShowIntegrationGuide(true)}
+                className="px-3 py-1.5 text-xs font-medium rounded-md transition-colors"
+                style={{ backgroundColor: "hsl(var(--brand))", color: "hsl(var(--background))" }}
+              >
+                View CSS
+              </button>
+              <button
+                type="button"
+                onClick={dismissScan}
+                className="p-1 rounded opacity-60 hover:opacity-100 transition-opacity"
+                title="Dismiss"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Section nav */}
       <nav
         ref={navContainerRef}
@@ -2439,6 +2480,71 @@ function DesignSystemEditorInner({
           onApply={handleAiApply}
           onClose={() => setShowAiGenerateModal(false)}
         />
+      )}
+
+      {/* Integration Guide Modal */}
+      {showIntegrationGuide && scanResult && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+          onClick={() => setShowIntegrationGuide(false)}
+        >
+          <div
+            className="rounded-xl p-6 w-[560px] max-h-[80vh] overflow-y-auto shadow-xl ds-surface"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-medium">Site Integration CSS</h3>
+              <button
+                type="button"
+                onClick={() => setShowIntegrationGuide(false)}
+                className="p-1 rounded opacity-60 hover:opacity-100 transition-opacity"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <p className="text-sm font-light mb-3 ds-text-muted">
+              Add the following CSS to your global stylesheet. Themal will set the CSS variables on <code className="text-xs px-1 py-0.5 rounded" style={{ backgroundColor: "hsl(var(--muted) / 0.5)" }}>:root</code> — these rules tell your site to use them.
+            </p>
+            <div className="relative">
+              <pre
+                className="text-xs font-mono p-4 rounded-lg overflow-x-auto whitespace-pre"
+                style={{ backgroundColor: "hsl(var(--muted) / 0.3)", color: "hsl(var(--foreground))" }}
+              >
+                {buildIntegrationCss(scanResult.palette, scanResult.tokenMap)}
+              </pre>
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard.writeText(buildIntegrationCss(scanResult.palette, scanResult.tokenMap));
+                }}
+                className="absolute top-2 right-2 px-2 py-1 text-xs rounded-md transition-colors"
+                style={{ backgroundColor: "hsl(var(--muted))", color: "hsl(var(--foreground))" }}
+                title="Copy to clipboard"
+              >
+                Copy
+              </button>
+            </div>
+            <div className="flex justify-between items-center mt-4">
+              <button
+                type="button"
+                onClick={() => { dismissScan(); setShowIntegrationGuide(false); }}
+                className="text-xs font-light ds-text-muted hover:opacity-80 transition-opacity"
+              >
+                Don't show again
+              </button>
+              <button
+                onClick={() => setShowIntegrationGuide(false)}
+                className="px-4 py-1.5 text-sm font-light rounded-lg transition-colors hover:opacity-80"
+                style={{ backgroundColor: "hsl(var(--brand))", color: "hsl(var(--background))" }}
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        </div>
       )}
 
       {showPurgeModal && (

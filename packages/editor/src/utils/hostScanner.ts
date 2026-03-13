@@ -246,41 +246,118 @@ export function mapPaletteToTokens(palette: HostPalette): Record<string, string>
   return tokens;
 }
 
-// ── Phase 3: Build override stylesheet ───────────────────────────────
+// ── Phase 3: Build integration guide ─────────────────────────────────
 
-export function buildOverrideStylesheet(): string {
-  return `
-/* Themal host overrides — auto-generated */
-body:not(.ds-editor) {
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
-}
-:not(.ds-editor) h1,
-:not(.ds-editor) h2,
-:not(.ds-editor) h3,
-:not(.ds-editor) h4,
-:not(.ds-editor) h5,
-:not(.ds-editor) h6 {
-  color: hsl(var(--foreground));
-  font-family: var(--font-family-heading, inherit);
-}
-:not(.ds-editor) a {
-  color: hsl(var(--brand));
-}
-:not(.ds-editor) button:not(.ds-editor button),
-:not(.ds-editor) [role="button"]:not(.ds-editor [role="button"]) {
-  border-radius: var(--btn-radius, 0.375rem);
-}
-nav:not(.ds-editor nav) {
-  background-color: hsl(var(--card, var(--background)));
-}
-header:not(.ds-editor header) {
-  background-color: hsl(var(--card, var(--background)));
-  color: hsl(var(--foreground));
-}
-footer:not(.ds-editor footer) {
-  background-color: hsl(var(--card, var(--background)));
-  color: hsl(var(--foreground));
-}
-`.trim();
+export function buildIntegrationCss(palette: HostPalette, tokenMap: Record<string, string>): string {
+  const lines: string[] = [
+    "/* Add to your global stylesheet to let Themal theme your site */",
+    "",
+  ];
+
+  // Core: body background + text
+  if (tokenMap["--background"] || tokenMap["--foreground"]) {
+    lines.push("body {");
+    if (tokenMap["--background"]) lines.push("  background-color: hsl(var(--background));");
+    if (tokenMap["--foreground"]) lines.push("  color: hsl(var(--foreground));");
+    lines.push("}");
+    lines.push("");
+  }
+
+  // Headings
+  if (tokenMap["--foreground"]) {
+    lines.push("h1, h2, h3, h4, h5, h6 {");
+    lines.push("  color: hsl(var(--foreground));");
+    if (tokenMap["--font-family-heading"]) {
+      lines.push("  font-family: var(--font-family-heading);");
+    }
+    lines.push("}");
+    lines.push("");
+  }
+
+  // Links (only if a brand color was detected)
+  if (tokenMap["--brand"]) {
+    lines.push("a {");
+    lines.push("  color: hsl(var(--brand));");
+    lines.push("}");
+    lines.push("");
+  }
+
+  // Cards (only if a distinct card background was detected)
+  if (tokenMap["--card"] && tokenMap["--card"] !== tokenMap["--background"]) {
+    lines.push("/* Card-like surfaces — adjust selectors to match your markup */");
+    lines.push(".card, [class*='card'] {");
+    lines.push("  background-color: hsl(var(--card));");
+    if (tokenMap["--card-foreground"]) lines.push("  color: hsl(var(--card-foreground));");
+    if (tokenMap["--card-radius"]) lines.push("  border-radius: var(--card-radius);");
+    lines.push("}");
+    lines.push("");
+  }
+
+  // Borders
+  if (tokenMap["--border"]) {
+    lines.push("/* Borders — adjust selectors to match your markup */");
+    lines.push("hr, .border {");
+    lines.push("  border-color: hsl(var(--border));");
+    lines.push("}");
+    lines.push("");
+  }
+
+  // Nav / header / footer (only if we detected distinct card/surface colors)
+  if (tokenMap["--card"] || tokenMap["--background"]) {
+    lines.push("nav, header, footer {");
+    lines.push("  background-color: hsl(var(--card, var(--background)));");
+    lines.push("  color: hsl(var(--foreground));");
+    lines.push("}");
+    lines.push("");
+  }
+
+  // Buttons
+  if (tokenMap["--brand"]) {
+    lines.push("button, .btn {");
+    lines.push("  background-color: hsl(var(--brand));");
+    lines.push("  color: hsl(var(--brand-foreground, var(--background)));");
+    lines.push("  border-radius: var(--btn-radius, 0.375rem);");
+    lines.push("}");
+    lines.push("");
+  }
+
+  // Muted text
+  if (tokenMap["--muted-foreground"]) {
+    lines.push("/* Muted / secondary text */");
+    lines.push(".text-muted, .text-secondary, small, figcaption {");
+    lines.push("  color: hsl(var(--muted-foreground));");
+    lines.push("}");
+    lines.push("");
+  }
+
+  // Inputs
+  if (tokenMap["--border"] || tokenMap["--ring"]) {
+    lines.push("input, select, textarea {");
+    if (tokenMap["--border"]) lines.push("  border-color: hsl(var(--border));");
+    lines.push("  border-radius: var(--input-radius, var(--radius, 0.375rem));");
+    lines.push("}");
+    lines.push("input:focus, select:focus, textarea:focus {");
+    lines.push("  outline-color: hsl(var(--ring, var(--brand)));");
+    lines.push("}");
+    lines.push("");
+  }
+
+  // Summary of detected palette
+  lines.push("/*");
+  lines.push(" * Detected palette from your site:");
+  if (palette.backgrounds.length > 0) {
+    lines.push(` *   Backgrounds: ${palette.backgrounds.slice(0, 3).map((c) => c.hex).join(", ")}`);
+  }
+  if (palette.texts.length > 0) {
+    lines.push(` *   Text colors: ${palette.texts.slice(0, 3).map((c) => c.hex).join(", ")}`);
+  }
+  if (palette.borders.length > 0) {
+    lines.push(` *   Borders:     ${palette.borders.slice(0, 3).map((c) => c.hex).join(", ")}`);
+  }
+  if (palette.fonts.length > 0) {
+    lines.push(` *   Fonts:       ${palette.fonts.slice(0, 2).map((f) => f.family).join(", ")}`);
+  }
+  lines.push(" */");
+
+  return lines.join("\n");
 }

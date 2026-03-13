@@ -54,5 +54,5 @@ export { FeatureFlag } from "./components/FeatureFlag";
 export { FEATURE_FLAGS } from "./utils/featureFlags";
 export type { FeatureFlagName } from "./utils/featureFlags";
 
-export { scanHostStyles, mapPaletteToTokens, buildOverrideStylesheet } from "./utils/hostScanner";
+export { scanHostStyles, mapPaletteToTokens, buildIntegrationCss } from "./utils/hostScanner";
 export type { HostPalette, ColorEntry, FontEntry } from "./utils/hostScanner";
