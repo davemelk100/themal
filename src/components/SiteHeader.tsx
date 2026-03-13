@@ -141,7 +141,7 @@ export default function SiteHeader() {
       style={{ backgroundColor: "transparent" }}
     >
       {isEditor ? (
-        <div className="w-full mx-auto flex flex-col lg:flex-row site-container">
+        <div className="w-full mx-auto flex flex-col lg:flex-row site-container relative">
           {/* Logo row */}
           <div className="flex items-center flex-shrink-0 px-4 lg:pl-4 lg:pr-2 lg:w-48 pt-3 mb-5 lg:mb-0 lg:py-3">
             <Link
@@ -187,6 +187,20 @@ export default function SiteHeader() {
                 </div>
               )}
             </div>
+          </div>
+
+          {/* Beta badge — top right */}
+          <div className="absolute top-3 right-4 lg:right-6">
+            <span
+              className="text-[10px] font-semibold uppercase tracking-widest px-2.5 py-1 rounded-full"
+              style={{
+                backgroundColor: "hsl(var(--foreground) / 0.08)",
+                color: "hsl(var(--foreground) / 0.5)",
+                border: "1px solid hsl(var(--foreground) / 0.1)",
+              }}
+            >
+              Beta
+            </span>
           </div>
 
           {/* Desktop nav: hidden on mobile, visible at lg */}

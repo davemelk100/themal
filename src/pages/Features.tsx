@@ -4,6 +4,26 @@ import usePageMeta from "../hooks/usePageMeta";
 
 const features = [
   {
+    version: "0.29",
+    items: [
+      "Contrast auto-fix rewrite - \"Suggest Alternative\" now fixes CSS variables directly, persists to localStorage, and updates design tokens in sync",
+      "Second-pass contrast enforcement - iterates all foreground/background pairs with fgForBg fallback for any remaining failures",
+      "Transparent section nav - nav bar no longer forces a background color, works cleanly on any host site",
+      "Early access mode - all Pro features unlocked for free, no account required",
+    ],
+  },
+  {
+    version: "0.28",
+    items: [
+      "Color locks free for all users - no longer gated behind premium",
+      "Feature flag system - FeatureFlag component and featureFlags.ts for hiding in-progress features behind a toggle",
+      "Root color sync - MutationObserver mirrors editor color changes to :root so host site header/footer stay in sync",
+      "Premium modal contrast fix - body text uses foreground color for readable contrast",
+      "Sidebar background fix - sidebar inherits host background transparently",
+      "Example app heading font changed to Roboto Serif",
+    ],
+  },
+  {
     version: "0.27",
     items: [
       "CSS isolation - disabled Tailwind preflight globally, replaced with a scoped reset inside .ds-editor only to prevent leaking styles into the host site",
