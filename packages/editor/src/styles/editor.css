@@ -9,6 +9,7 @@
   border-style: solid;
 }
 .ds-editor {
+  font-size: var(--ds-base-font-size, 0.8125rem);
   line-height: 1.5;
   -webkit-text-size-adjust: 100%;
   tab-size: 4;
