@@ -2199,12 +2199,12 @@ function DesignSystemEditorInner({
             selectToastPreset={selectToastPreset}
             handleResetDialogStyle={() => {
               storage.remove(ALERT_STYLE_KEY);
-              removeAlertStyleProperties();
+              removeAlertStyleProperties(editorRootRef.current!);
               setAlertStyle({ ...DEFAULT_ALERT_STYLE });
             }}
             handleResetToastStyle={() => {
               storage.remove(TOAST_STYLE_KEY);
-              removeToastStyleProperties();
+              removeToastStyleProperties(editorRootRef.current!);
               setToastStyle({ ...DEFAULT_TOAST_STYLE });
             }}
             handleResetAlertStyle={handleResetAlertStyle}
