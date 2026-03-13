@@ -36,7 +36,7 @@ function App() {
 }
 ```
 
-The editor writes CSS custom properties (HSL values) to `:root`. Typography styles are scoped to `.ds-editor` so they do not override your site's fonts. The editor inherits your site's base font size by default. Override it with `--ds-base-font-size`.
+The editor writes CSS custom properties (HSL values) to `:root`. All styles are scoped to `.ds-editor` — the editor does not override your site's fonts, colors, or layout. Typography defaults to `inherit`, so headings and body text automatically use your host site's font families. Override the base font size with `--ds-base-font-size`.
 
 ## Props
 
@@ -59,7 +59,8 @@ The editor writes CSS custom properties (HSL values) to `:root`. Typography styl
 | `customIcons` | `CustomIcon[]` | — | Custom icons to display in the Icons preview section. Each entry needs `name` and `icon` (a React component). |
 | `iconMode` | `"append" \| "replace"` | `"append"` | `"append"` adds custom icons after the built-in lucide icons. `"replace"` hides built-ins and shows only custom icons. |
 | `showLogo` | `boolean` | `true` | Show the Themal logo in the header. Set `false` for white-label or plugin usage. |
-| `defaultColors` | `Record<string, string>` | — | Default color values to restore on reset, keyed by CSS variable name (e.g. `{"--brand": "210 50% 40%"}`). When provided, "Reset theme to default" restores these instead of the Themal defaults. |
+| `showSectionNav` | `boolean` | `true` | Show the sticky section navigation bar (Colors, Buttons, Cards, etc.). |
+| `defaultColors` | `Record<string, string>` | — | Default color values keyed by CSS variable name (e.g. `{"--brand": "210 50% 40%"}`). Applied on mount and whenever the prop changes, taking priority over stored theme colors. "Reset theme to default" restores these instead of the Themal defaults. |
 | `defaultTypography` | `Partial<TypographyState>` | — | Default typography state to restore on reset. When provided, the font dropdown shows an "App Default" option with your font name, the editor initializes with your fonts on first load, and "Reset theme to default" restores your font settings instead of the Themal defaults. |
 | `sidebarLinks` | `{ to: string; label: string }[]` | — | Navigation links to display in the left sidebar. |
 | `sidebarExtra` | `React.ReactNode` | — | Custom content rendered at the bottom of the left sidebar (e.g. contact forms, branding). |
@@ -101,7 +102,7 @@ import { PremiumGate } from '@themal/editor';
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `feature` | `string` | — | Name of the premium feature being gated. |
-| `variant` | `"section" \| "inline"` | `"section"` | `"section"` dims content with a lock overlay; `"inline"` shows a lock icon inline. Both open a modal on click. |
+| `variant` | `"section" \| "inline"` | `"section"` | `"section"` shows a lock icon and `not-allowed` cursor; `"inline"` shows a lock icon inline. Both open a modal on click. |
 | `upgradeUrl` | `string` | `"/pricing"` | URL for the upgrade prompt. |
 | `signInUrl` | `string` | — | URL for the sign-in prompt. |
 
@@ -411,7 +412,7 @@ import type {
 1. **Color picking** — Click any swatch to scroll the Colors section into view, then open the native color picker. Changing a key color (brand, secondary, accent, background) automatically derives related tokens.
 2. **Harmony schemes** *(Pro)* — Generate palettes using complementary, analogous, triadic, or split-complementary color relationships.
 3. **Contrast enforcement** — Every foreground/background pair is checked against WCAG AA (4.5:1). Failing pairs are auto-corrected by adjusting lightness. The accessibility audit shows a centered modal with results. On failure, choose "Ignore" to dismiss or "Suggest Alternative" to auto-fix contrast issues. A WCAG On/Off toggle lets you disable auto-correction for marketing or other contexts that don't require WCAG compliance. Locks are still honored when enforcement is off.
-4. **Typography** — Choose heading and body fonts (including custom Google Fonts), adjust sizes, weights, line height, and letter spacing with live preview. Five built-in presets (System, Modern, Classic, Compact, Editorial). Typography is scoped to the editor and does not override the host site's fonts.
+4. **Typography** — Choose heading and body fonts (including custom Google Fonts), adjust sizes, weights, line height, and letter spacing with live preview. Five built-in presets (System, Modern, Classic, Compact, Editorial). The default "Inherit (Host)" option defers to the host site's font-family rules, so the editor naturally assumes your site's heading and body fonts. Typography is scoped to `.ds-editor` and does not override the host site's fonts.
 5. **Button styles** — Customize button padding, font size, font weight, border radius, shadow, and border width with presets (Subtle, Elevated, Bold).
 6. **Button interactions** *(Pro)* — Fine-tune hover opacity, hover/active scale, transition duration, and focus ring width with presets (Subtle, Elevated, Bold).
 7. **Typography interactions** *(Pro)* — Customize link hover/active behavior (opacity, scale, underline) and heading hover effects with live preview.
@@ -486,9 +487,14 @@ The editor inherits your site's base font size by default (0.8125rem fallback). 
 
 Typography changes made in the editor are scoped to `.ds-editor` and do not override fonts on the rest of your page.
 
-## Tailwind Scoping
+## CSS Isolation
 
-The editor ships pre-compiled CSS via `@themal/editor/style.css`. Styles are scoped using Tailwind's `important: '.ds-editor'` so they don't conflict with your app's styles. The root element is automatically wrapped in `<div className="ds-editor">`.
+The editor ships pre-compiled CSS via `@themal/editor/style.css`. Tailwind's global preflight is disabled — only a scoped reset applies inside `.ds-editor`, so the plugin never injects global `html`, `body`, or heading rules into your page. Utility classes are scoped using Tailwind's `important: '.ds-editor'`. The root element is automatically wrapped in `<div className="ds-editor">`.
+
+This means:
+- Your site's `font-family`, `color`, and `background` rules are never overridden.
+- Host heading fonts (e.g. `h2 { font-family: "League Gothic" }`) flow through into the editor.
+- No `!important` declarations leak into the global scope.
 
 ## Web Component
 
@@ -575,17 +581,37 @@ The editor follows these security practices:
 
 ## Testing
 
-The project includes automated accessibility testing:
+The project includes automated accessibility and integration testing:
 
 ```bash
-# Run all tests (includes axe-core a11y checks)
+# Run all unit tests (includes axe-core a11y checks)
 npm run test:run
 
 # Lint for accessibility issues
 npm run lint
 ```
 
-The test suite uses **vitest-axe** to run axe-core against rendered components, catching WCAG violations automatically. ESLint with **eslint-plugin-jsx-a11y** provides static analysis for common accessibility anti-patterns.
+The unit test suite uses **vitest-axe** to run axe-core against rendered components. ESLint with **eslint-plugin-jsx-a11y** provides static analysis for common accessibility anti-patterns.
+
+### Playwright Health Checks
+
+The example consumer app (`packages/example-app`) includes a Playwright e2e health check suite that validates the plugin across all theme presets:
+
+```bash
+cd packages/example-app
+npm run test:health
+```
+
+The suite covers 39 checks including:
+- **CSS variables** — all required tokens resolve on every theme
+- **Theme switching** — `--background` changes when switching presets
+- **Section nav** — background matches `--background`, arrow sizes match section headers
+- **Font inheritance** — headings use the host's heading font, body uses the host's body font, they differ when the host sets them differently
+- **Contrast** — foreground/background lightness difference is sufficient on every theme
+- **CSS isolation** — plugin does not override `body` font-family or background-color
+- **Accessibility** — no critical/serious axe-core violations (WCAG 2 AA) on any theme
+- **Premium gate** — locked features show lock icon without opacity dimming; premium toggle unlocks them
+- **Sections** — all 6 sections (colors, buttons, card, alerts, typography, inputs) are present
 
 ## Publishing to npm
 

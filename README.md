@@ -54,6 +54,7 @@ For WordPress, static sites, or any non-React platform, use the `<themal-editor>
 
 - **Vitest + Testing Library** — unit and component tests
 - **vitest-axe** — automated axe-core accessibility testing
+- **Playwright** — e2e health checks across all theme presets (CSS isolation, font inheritance, a11y, contrast)
 - **ESLint + eslint-plugin-jsx-a11y** — static accessibility linting
 - **Lighthouse CI** — automated performance, accessibility, SEO, and best practices auditing
 
@@ -61,6 +62,10 @@ For WordPress, static sites, or any non-React platform, use the `<themal-editor>
 npm run test        # watch mode
 npm run test:run    # single run
 npm run lint        # ESLint with jsx-a11y rules
+
+# Playwright health checks (example app)
+cd packages/example-app
+npm run test:health
 ```
 
 ## Getting Started
