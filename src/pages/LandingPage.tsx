@@ -56,47 +56,6 @@ function CodeBlock({ label, code }: { label: string; code: string }) {
   );
 }
 
-/* Default theme values so editor changes don't bleed into the landing page */
-const DEFAULT_THEME: Record<string, string> = {
-  "--brand": "199.2 18.8% 26.1%",
-  "--background": "0 0% 87.1%",
-  "--foreground": "0 0% 0%",
-  "--card": "0 0% 87.1%",
-  "--card-foreground": "0 0% 0%",
-  "--popover": "0 0% 87.1%",
-  "--popover-foreground": "0 0% 0%",
-  "--primary": "199.2 83.2% 48.0%",
-  "--primary-foreground": "199.2 40% 16%",
-  "--secondary": "199.2 16.1% 27.3%",
-  "--secondary-foreground": "0 0% 100%",
-  "--muted": "199.2 17.9% 95.3%",
-  "--muted-foreground": "0 0% 38%",
-  "--accent": "199.2 63.8% 49.5%",
-  "--accent-foreground": "0 0% 0%",
-  "--destructive": "0 20.7% 35.0%",
-  "--destructive-foreground": "0 0% 100%",
-  "--success": "142 16.9% 35.0%",
-  "--success-foreground": "0 0% 100%",
-  "--warning": "45 19.7% 40.0%",
-  "--warning-foreground": "0 0% 99%",
-  "--border": "0 0.0% 78.1%",
-  "--input": "214.3 31.8% 91.4%",
-  "--ring": "199.2 83.2% 53.3%",
-  "--radius": "0.5rem",
-  "--font-heading": "Roboto, sans-serif",
-  "--font-body": "Roboto, sans-serif",
-  "--font-size-base": "17px",
-  "--font-weight-heading": "300",
-  "--font-weight-body": "300",
-  "--line-height": "1.5",
-  "--letter-spacing": "0em",
-  "--letter-spacing-heading": "0em",
-  "--card-radius": "16px",
-  "--card-shadow": "0px 4px 16px 0px rgba(0,0,0,0.08)",
-  "--card-border": "none",
-  "--card-backdrop": "blur(16px)",
-};
-
 const CODE_SNIPPET = `npm install @themal/editor`;
 
 
@@ -183,11 +142,10 @@ export default function LandingPage() {
       ref={scrollRef}
       className="flex flex-col bg-page"
       style={{
-        ...DEFAULT_THEME,
         height: "100dvh",
         overflowY: "auto",
         scrollSnapType: "y mandatory",
-      } as React.CSSProperties}
+      }}
     >
       <JsonLd data={ORGANIZATION_SCHEMA} />
       <JsonLd data={SOFTWARE_SCHEMA} />
