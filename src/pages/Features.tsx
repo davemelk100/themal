@@ -4,6 +4,15 @@ import usePageMeta from "../hooks/usePageMeta";
 
 const features = [
   {
+    version: "0.33",
+    items: [
+      "Fix build failure and contrast-aware swatch labels - palette swatch labels now compute text color against page background instead of relying on --foreground variable",
+      "onAiPaletteMap prop - provider-agnostic AI palette mapping callback behind the aiPaletteMapping feature flag",
+      "buildAiPalettePrompt utility - generates a structured prompt describing the detected host palette for AI-assisted token mapping",
+      "aiPaletteMapping feature flag - Phase 2 AI palette mapping hidden behind feature flag (disabled by default)",
+    ],
+  },
+  {
     version: "0.32",
     items: [
       "Host style scanner - detects the consuming page's existing color palette (backgrounds, text, borders, fonts) on mount",

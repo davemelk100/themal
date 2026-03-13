@@ -235,6 +235,12 @@ function App() {
                   <td className="px-4 py-2 font-mono text-xs">false</td>
                   <td className="px-4 py-2">Mirror CSS custom properties to :root for full-site theming. Shows a developer prompt with integration CSS.</td>
                 </tr>
+                <tr className="border-t border-theme">
+                  <td className="px-4 py-2 font-mono text-xs">onAiPaletteMap</td>
+                  <td className="px-4 py-2 font-mono text-xs">{`(prompt: string) => Promise<Record<string, string>>`}</td>
+                  <td className="px-4 py-2">-</td>
+                  <td className="px-4 py-2">AI palette mapping callback. When provided and the aiPaletteMapping flag is enabled, an "AI Map" button appears in the scan confirmation modal.</td>
+                </tr>
               </tbody>
             </table>
           </div>

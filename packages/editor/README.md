@@ -68,6 +68,7 @@ The editor writes CSS custom properties (HSL values) to `:root`. All styles are 
 | `featuresUrl` | `string` | — | URL for the Features page link in the sidebar. |
 | `onAiGenerate` | `(prompt: string) => Promise<AiGenerateResult>` | — | AI theme generation callback. When provided, an "AI Generate" button appears in Global Actions. |
 | `applyToRoot` | `boolean` | `false` | Mirror CSS custom properties to `:root` so the theme applies beyond the editor. When enabled, the editor scans the host page's colors and shows a developer prompt with a tailored CSS snippet for full-site theming. |
+| `onAiPaletteMap` | `(prompt: string) => Promise<Record<string, string>>` | — | AI palette mapping callback. When provided and the `aiPaletteMapping` feature flag is enabled, an "AI Map" button appears in the host-scan confirmation modal. The callback receives a structured prompt describing the detected palette and should return a token map to apply. |
 | `devMode` | `boolean` | `false` | Show a "Purge Storage" button in Global Actions that clears all Themal localStorage keys. |
 
 ## Premium Features
@@ -414,6 +415,7 @@ import {
   scanHostStyles,       // Scan host page DOM and extract color palette
   mapPaletteToTokens,   // Map detected palette to Themal CSS variable tokens
   buildIntegrationCss,  // Generate CSS snippet for full-site theming
+  buildAiPalettePrompt, // Build structured prompt for AI-assisted palette mapping
 } from '@themal/editor';
 ```
 
