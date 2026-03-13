@@ -15,6 +15,7 @@ type SectionPrStatus = Record<
 export function usePrSubmission(
   isPremium: boolean,
   prEndpointUrl: string | undefined,
+  prApiKey: string | undefined,
   githubConfig: GitHubConfig | undefined,
   buildSectionCss: (sections: Iterable<string>) => string,
 ) {
@@ -70,7 +71,10 @@ export function usePrSubmission(
       try {
         const res = await fetch(prEndpointUrl!, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            ...(prApiKey ? { "x-api-key": prApiKey } : {}),
+          },
           body: JSON.stringify({ css, sections: sectionArr }),
         });
         let data: Record<string, unknown> = {};
@@ -119,7 +123,7 @@ export function usePrSubmission(
         popup?.close();
       }
     },
-    [isPremium, prEndpointUrl, githubConfig, buildSectionCss],
+    [isPremium, prEndpointUrl, prApiKey, githubConfig, buildSectionCss],
   );
 
   const openPrModal = useCallback(() => {

@@ -119,6 +119,7 @@ import "./styles/editor.css";
 
 function DesignSystemEditorInner({
   prEndpointUrl,
+  prApiKey,
   githubConfig,
   accessibilityAudit = true,
   onChange,
@@ -603,7 +604,7 @@ function DesignSystemEditorInner({
     setSectionPrStatus,
     submitPr,
     openPrModal,
-  } = usePrSubmission(isPremium, prEndpointUrl, githubConfig, buildSectionCss);
+  } = usePrSubmission(isPremium, prEndpointUrl, prApiKey, githubConfig, buildSectionCss);
 
   const handleColorChange = (key: string, hex: string) => {
     const lower = hex.toLowerCase();
