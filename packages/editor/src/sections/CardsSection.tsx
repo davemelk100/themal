@@ -84,7 +84,7 @@ export function CardsSection({
       {/* Card Style section */}
       <div
         id="card"
-        className="min-w-0 mt-6 mb-6 md:mt-16 md:mb-16 scroll-mt-[56px] space-y-3"
+        className="min-w-0 mt-6 mb-6 md:mt-16 md:mb-16 scroll-mt-28 lg:scroll-mt-14 space-y-3"
       >
         <div
           className="flex items-center flex-wrap gap-2 sm:gap-4"

@@ -202,7 +202,7 @@ export function ColorsSection({
   return (
           <div
             id="colors"
-            className="min-w-0 space-y-3 mb-6 md:mt-0 md:mb-16 scroll-mt-[56px]"
+            className="min-w-0 space-y-3 mb-6 md:mt-0 md:mb-16 scroll-mt-28 lg:scroll-mt-14"
           >
             <div
               className="flex items-center flex-wrap gap-2 sm:gap-4"

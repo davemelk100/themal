@@ -49,7 +49,7 @@ export function InputsSection({
           {/* Inputs section */}
           <div
             id="inputs"
-            className="min-w-0 space-y-4 mt-6 mb-6 md:mt-16 md:mb-16 scroll-mt-[56px]"
+            className="min-w-0 space-y-4 mt-6 mb-6 md:mt-16 md:mb-16 scroll-mt-28 lg:scroll-mt-14"
           >
             <h2
               className="text-sm sm:text-base md:text-lg font-bold tracking-wider mb-[5px] flex items-baseline gap-2 ds-text-fg"
