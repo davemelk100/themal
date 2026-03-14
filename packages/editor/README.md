@@ -389,6 +389,9 @@ import {
   removeCustomFont,     // Remove a custom font by label
   initCustomFonts,      // Re-register all custom fonts on startup
 
+  // AI utilities
+  buildAiSystemPrompt,  // Build a system prompt describing available tokens for AI theme generation
+
   // GitHub PR utilities (client-side)
   createDesignPr,       // Create a design system PR via GitHub API
   replaceRootBlock,     // Replace CSS vars in a :root block string
@@ -416,6 +419,9 @@ import {
   mapPaletteToTokens,   // Map detected palette to Themal CSS variable tokens
   buildIntegrationCss,  // Generate CSS snippet for full-site theming
   buildAiPalettePrompt, // Build structured prompt for AI-assisted palette mapping
+
+  // Standalone components
+  SectionNav,           // Sticky section navigation bar (can be used independently)
 } from '@themal/editor';
 ```
 

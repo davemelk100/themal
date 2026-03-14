@@ -258,7 +258,7 @@ function App() {
           <h3 className="text-sm font-medium mb-2 text-muted">With GitHub PR integration</h3>
           <pre className="rounded-lg p-4 text-sm overflow-x-auto mb-4" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
             <code>{`<DesignSystemEditor
-  github={{
+  githubConfig={{
     clientId: "Iv1.abc123",
     repo: "your-org/your-repo",
   }}
@@ -354,7 +354,7 @@ a {
           </p>
           <pre className="rounded-lg p-4 text-sm overflow-x-auto mb-4" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
             <code>{`<DesignSystemEditor
-  github={{
+  githubConfig={{
     clientId: "Iv1.abc123",        // Your GitHub OAuth App client ID
     repo: "your-org/your-repo",    // Target repository
     filePath: "src/globals.css",   // CSS file to update (default)
@@ -377,7 +377,7 @@ a {
           </p>
           <pre className="rounded-lg p-4 text-sm overflow-x-auto mb-4" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
             <code>{`<DesignSystemEditor
-  github={{
+  githubConfig={{
     clientId: "Iv1.your-ghe-app",
     repo: "internal-org/design-system",
     oauthProxyUrl: "https://internal-tools.yourcompany.com/github-oauth",

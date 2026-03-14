@@ -212,7 +212,7 @@ Run your normal dev server. No env vars, no serverless functions, no special CLI
 
 ```tsx
 <DesignSystemEditor
-  github={{
+  githubConfig={{
     clientId: "Iv1.abc123",
     repo: "your-org/your-repo",
     filePath: "src/globals.css",
@@ -257,7 +257,7 @@ Uses Themal's hosted OAuth proxy for the token exchange. All GitHub API calls ha
 
 ```tsx
 <DesignSystemEditor
-  github={{
+  githubConfig={{
     clientId: "Iv1.abc123",
     repo: "your-org/your-repo",
   }}
@@ -278,7 +278,7 @@ For organizations using GitHub Enterprise Server or requiring that no credential
 
 ```tsx
 <DesignSystemEditor
-  github={{
+  githubConfig={{
     clientId: "Iv1.your-ghe-app-id",
     repo: "internal-org/design-system",
     oauthProxyUrl: "https://internal-tools.yourcompany.com/github-oauth",
@@ -296,7 +296,7 @@ For organizations using GitHub Enterprise Server or requiring that no credential
 | `GITHUB_CLIENT_SECRET` | Your GitHub App client secret |
 | `GITHUB_WEB_BASE_URL` | `https://github.yourcompany.com` |
 
-### `github` prop reference
+### `githubConfig` prop reference
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
@@ -339,7 +339,7 @@ The `prEndpointUrl` prop is still supported for apps that want full server-side 
 
 Your endpoint receives `POST { css, sections }` and returns `{ url }`. You implement the GitHub logic on your server. See the `prEndpointUrl` row in the Props table on the [Dev Docs page](https://themalive.com/readme).
 
-If both `github` and `prEndpointUrl` are provided, `github` takes precedence.
+If both `githubConfig` and `prEndpointUrl` are provided, `githubConfig` takes precedence.
 
 ---
 

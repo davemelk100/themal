@@ -4,7 +4,7 @@ An interactive design system editor that lets you pick a brand color and watch e
 
 **Live:** [themalive.com](https://themalive.com)
 
-> Free tier available. Pro features require a subscription ($9/mo or $50/yr).
+> **Early access — all features are free.** Pro subscription tiers will be introduced in a future release.
 
 ## How It Works
 

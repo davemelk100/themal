@@ -37,7 +37,7 @@ That's it — the script bundles React, the editor, and all styles into one file
            'themal-editor',
            get_template_directory_uri() . '/js/themal-editor.js',
            [],
-           '0.16.0',
+           '0.3.0',
            true
        );
    });
@@ -56,7 +56,7 @@ Create `wp-content/plugins/themal/themal.php`:
 /**
  * Plugin Name: Themal Editor
  * Description: Embed the Themal design system editor via [themal] shortcode.
- * Version: 0.16.0
+ * Version: 0.3.0
  */
 
 add_action('wp_enqueue_scripts', function() {
@@ -64,7 +64,7 @@ add_action('wp_enqueue_scripts', function() {
         'themal-editor',
         plugins_url('themal-editor.js', __FILE__),
         [],
-        '0.16.0',
+        '0.3.0',
         true
     );
 });
@@ -73,8 +73,11 @@ add_shortcode('themal', function($atts) {
     $atts = shortcode_atts([
         'license-key' => '',
         'show-header' => 'true',
+        'show-logo' => '',
+        'icon-mode' => '',
         'upgrade-url' => '',
         'sign-in-url' => '',
+        'about-url' => '',
     ], $atts);
 
     wp_enqueue_script('themal-editor');
@@ -98,6 +101,8 @@ Then copy `themal-editor.js` into the same plugin folder and use the `[themal]` 
 
 ## Attributes
 
+All props that accept strings or booleans can be set as HTML attributes using kebab-case:
+
 | Attribute | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `license-key` | string | — | License key to unlock premium features. |
@@ -105,9 +110,55 @@ Then copy `themal-editor.js` into the same plugin folder and use the `[themal]` 
 | `accessibility-audit` | boolean | `true` | Enable axe-core WCAG contrast auditing. |
 | `show-nav-links` | boolean | `true` | Show section navigation links. |
 | `show-header` | boolean | `true` | Show the editor header. Set `false` for embedded use. |
+| `show-logo` | boolean | `false` | Show the Themal logo in the header. Defaults to `false` in the web component. Set `true` to display it. |
+| `icon-mode` | string | `"append"` | `"append"` adds custom icons after built-ins. `"replace"` hides built-ins and shows only custom icons. |
 | `upgrade-url` | string | — | Custom URL for upgrade prompts. |
 | `sign-in-url` | string | — | Custom URL for sign-in prompts. |
 | `about-url` | string | — | URL for the About page link in header navigation. |
+
+### Example with all attributes
+
+```html
+<themal-editor
+  license-key="THEMAL-XXXX-XXXX-XXXX"
+  show-header="false"
+  show-nav-links="false"
+  show-logo="true"
+  icon-mode="replace"
+  accessibility-audit="true"
+  upgrade-url="/pricing"
+  sign-in-url="/sign-in"
+  about-url="/about"
+  pr-endpoint-url="/api/create-design-pr"
+></themal-editor>
+```
+
+## Custom Icons via JavaScript
+
+Since HTML attributes can only pass strings, custom icons are set programmatically with the `setIcons()` method. Pass an array of `{ name, svg }` objects where `svg` is a raw SVG string:
+
+```html
+<script src="https://themalive.com/themal-editor.js"></script>
+<themal-editor icon-mode="replace"></themal-editor>
+
+<script>
+  const editor = document.querySelector('themal-editor');
+  editor.setIcons([
+    {
+      name: "Heart",
+      svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>'
+    },
+    {
+      name: "Star",
+      svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>'
+    },
+  ]);
+</script>
+```
+
+Set `icon-mode="replace"` to hide the built-in icons and show only your custom set, or omit it (defaults to `"append"`) to add yours alongside the built-ins.
+
+All SVG strings are sanitized — script tags, event handlers, `javascript:` URIs, and `style` attributes are automatically stripped.
 
 ## Building
 
