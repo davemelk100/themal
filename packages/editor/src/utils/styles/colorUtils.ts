@@ -797,8 +797,9 @@ export function applyStoredThemeColors(root: HTMLElement = document.documentElem
   }
 
   const applied: Record<string, string> = {};
+  const computed = getComputedStyle(root);
   EDITABLE_VARS.forEach((v) => {
-    const val = root.style.getPropertyValue(v.key)?.trim();
+    const val = (root.style.getPropertyValue(v.key) || computed.getPropertyValue(v.key))?.trim();
     if (val) applied[v.key] = val;
   });
   if (Object.keys(applied).length > 0) {
