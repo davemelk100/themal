@@ -23,6 +23,32 @@
   .focus\:ring-brand-dynamic:focus { --tw-ring-color: hsl(var(--brand)); }
 }
 
+/* Landing page isolation — re-declares defaults so editor theme changes don't leak */
+.landing-defaults {
+  --brand: 199.2 18.8% 26.1%;
+  --brand-foreground: 0 0% 100%;
+  --background: 0 0% 87.1%;
+  --foreground: 0 0% 0%;
+  --border: 0 0.0% 78.1%;
+  --muted: 199.2 17.9% 95.3%;
+  --muted-foreground: 0 0% 15%;
+  --card: 0 0% 87.1%;
+  --card-foreground: 0 0% 0%;
+  --ring: 199.2 83.2% 53.3%;
+}
+.dark .landing-defaults {
+  --brand: 201 72% 42%;
+  --brand-foreground: 0 0% 100%;
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --border: 217.2 32.6% 17.5%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
+  --ring: 224.3 76.3% 48%;
+}
+
 @layer base {
   :root {
     --brand: 199.2 18.8% 26.1%;

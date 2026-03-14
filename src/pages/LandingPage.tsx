@@ -140,7 +140,7 @@ export default function LandingPage() {
   return (
     <div
       ref={scrollRef}
-      className="flex flex-col bg-page"
+      className="flex flex-col bg-page landing-defaults"
       style={{
         height: "100dvh",
         overflowY: "auto",
