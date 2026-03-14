@@ -5,6 +5,7 @@
   "type": "module",
   "description": "Themal",
   "scripts": {
+    "preinstall": "echo 'Installing dependencies...'",
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
