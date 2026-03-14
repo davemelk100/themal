@@ -4,6 +4,16 @@ import usePageMeta from "../hooks/usePageMeta";
 
 const features = [
   {
+    version: "0.34",
+    items: [
+      "Modal theming CSS custom properties - consumers can now override --themal-modal-backdrop-bg, --themal-modal-bg, --themal-modal-fg, and --themal-modal-shadow to theme all editor modals without !important or high-specificity selectors",
+      "ds-modal-backdrop utility class - replaces hardcoded bg-black/50 and inline rgba backdrop styles across all modals",
+      "ds-modal-panel utility class - replaces ds-surface + shadow-xl on modal content panels with a single themeable class",
+      "All 7 modal components updated - ResetConfirmModal, AiGenerateModal, CssImportModal, IconImportModal, ImagePaletteModal, PrModal, and UpgradeModal now use the new utility classes",
+      "Simplified .env.example - removed Stripe, Clerk, database, and Google OAuth variables; only GITHUB_TOKEN and ANTHROPIC_API_KEY remain for consumers",
+    ],
+  },
+  {
     version: "0.33",
     items: [
       "Fix build failure and contrast-aware swatch labels - palette swatch labels now compute text color against page background instead of relying on --foreground variable",
@@ -351,6 +361,7 @@ export default function Features() {
               { title: "Plugin Mode", desc: "Embed the editor in any React app with props for custom default colors, typography, header content, and white-label branding." },
               { title: "Custom Icons", desc: "Pass your own icon components to the Icons preview section, or replace the built-in set entirely." },
               { title: "Full-Site Theming", desc: "applyToRoot mirrors CSS variables to :root. Host style scanner detects your page's palette and generates integration CSS." },
+              { title: "Modal Theming", desc: "Override modal backdrop, background, text, and shadow via CSS custom properties — no !important needed." },
               { title: "Web Component", desc: "Drop into Vue, Svelte, Astro, WordPress, Shopify, or any platform via a single script tag." },
             ].map(({ title, desc }) => (
               <div key={title} className="flex items-start gap-2">

@@ -45,11 +45,11 @@ export function AiGenerateModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+      className="ds-modal-backdrop"
       onClick={handleClose}
     >
       <div
-        className="rounded-xl shadow-xl p-6 w-full max-w-md mx-4 ds-surface"
+        className="ds-modal-panel rounded-xl p-6 w-full max-w-md mx-4"
         onClick={(e) => e.stopPropagation()}
       >
         {aiPreview === null ? (

@@ -23,14 +23,14 @@ export const ResetConfirmModal: React.FC<ResetConfirmModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+      className="ds-modal-backdrop"
       role="dialog"
       aria-modal="true"
       aria-labelledby={id}
       onClick={onClose}
     >
       <div
-        className="rounded-lg shadow-xl p-6 w-full max-w-sm mx-4 ds-surface"
+        className="ds-modal-panel rounded-lg p-6 w-full max-w-sm mx-4"
         onClick={(e) => e.stopPropagation()}
       >
         <h4 id={id} className="text-2xl font-light mb-2">

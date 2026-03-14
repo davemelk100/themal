@@ -52,12 +52,11 @@ export function CssImportModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center"
+      className="ds-modal-backdrop"
       onClick={handleClose}
     >
-      <div className="absolute inset-0 bg-black/50" />
       <div
-        className="relative w-full max-w-2xl mx-4 rounded-xl shadow-2xl max-h-[90vh] overflow-y-auto ds-surface-bg"
+        className="ds-modal-panel relative w-full max-w-2xl mx-4 rounded-xl max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-6 space-y-4">

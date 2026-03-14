@@ -198,14 +198,13 @@ export function IconImportModal({ open, onClose, onImport }: Props) {
   return (
     <div
       ref={backdropRef}
-      className="fixed inset-0 z-50 flex items-center justify-center"
-      style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+      className="ds-modal-backdrop"
       onClick={(e) => {
         if (e.target === backdropRef.current) onClose();
       }}
     >
       <div
-        className="rounded-xl shadow-2xl w-full max-w-2xl max-h-[80vh] flex flex-col ds-surface"
+        className="ds-modal-panel rounded-xl w-full max-w-2xl max-h-[80vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}

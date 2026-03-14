@@ -56,12 +56,11 @@ function UpgradeModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center"
-      style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+      className="ds-modal-backdrop"
       onClick={onClose}
     >
       <div
-        className="rounded-xl p-6 w-[360px] shadow-xl relative ds-surface"
+        className="ds-modal-panel rounded-xl p-6 w-[360px] relative"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center gap-3 mb-4">

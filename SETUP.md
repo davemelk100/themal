@@ -364,7 +364,8 @@ The editor UI uses CSS custom properties for all colors. No hardcoded hex values
 | Focus rings on inputs | `hsl(var(--ring))` |
 | Custom select active item | `hsl(var(--primary) / 0.08)` |
 | Custom select hover | `hsl(var(--muted))` |
-| Modal backdrop overlay | `rgba(0,0,0,0.5)` (acceptable) |
+| Modal backdrop overlay | `var(--themal-modal-backdrop-bg, rgba(0,0,0,0.5))` — customizable |
+| Modal panel background | `hsl(var(--themal-modal-bg, var(--card)))` — customizable |
 | Frosted glass (menu, scroll btn) | `rgba(128,128,128,0.35)` with `backdrop-filter: blur(12px)` |
 
 ### Exceptions (acceptable hardcoded values)

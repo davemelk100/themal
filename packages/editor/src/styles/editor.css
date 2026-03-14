@@ -87,6 +87,28 @@
 .ds-surface-invert     { background-color: hsl(var(--foreground)); color: hsl(var(--background)); }
 .ds-surface-primary    { background-color: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
 
+/* ── Modal theming ─────────────────────────────────────────────────── */
+/* Consumers can override these custom properties to theme all modals:
+ *   --themal-modal-backdrop-bg: rgba(0,0,0,0.5);
+ *   --themal-modal-bg: var(--card);  (expects an HSL value, used inside hsl())
+ *   --themal-modal-fg: var(--foreground);
+ *   --themal-modal-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+ */
+.ds-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--themal-modal-backdrop-bg, rgba(0,0,0,0.5));
+}
+.ds-modal-panel {
+  background-color: hsl(var(--themal-modal-bg, var(--card)));
+  color: hsl(var(--themal-modal-fg, var(--foreground)));
+  box-shadow: var(--themal-modal-shadow, 0 25px 50px -12px rgba(0,0,0,0.25));
+}
+
 .ds-editor .ds-section-nav {
   background-color: transparent;
   border-bottom: none;

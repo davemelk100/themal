@@ -550,6 +550,30 @@ The editor inherits your site's base font size by default (0.8125rem fallback). 
 
 Typography changes made in the editor are scoped to `.ds-editor` and do not override fonts on the rest of your page.
 
+### Modal Theming
+
+All editor modals (reset confirm, AI generate, CSS import, icon import, image palette, PR, and upgrade) use CSS custom properties for their backdrop, background, text color, and shadow. Override them without `!important`:
+
+```css
+:root {
+  --themal-modal-backdrop-bg: rgba(0, 0, 0, 0.8);   /* darker backdrop */
+  --themal-modal-bg: 0 0% 100%;                      /* white panel (HSL values) */
+  --themal-modal-fg: 0 0% 10%;                       /* near-black text (HSL values) */
+  --themal-modal-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* subtle shadow */
+}
+```
+
+| Property | Default | Description |
+|----------|---------|-------------|
+| `--themal-modal-backdrop-bg` | `rgba(0,0,0,0.5)` | Backdrop overlay color (any CSS color) |
+| `--themal-modal-bg` | `var(--card)` | Modal panel background (HSL values, used inside `hsl()`) |
+| `--themal-modal-fg` | `var(--foreground)` | Modal panel text color (HSL values, used inside `hsl()`) |
+| `--themal-modal-shadow` | `0 25px 50px -12px rgba(0,0,0,0.25)` | Modal drop shadow |
+
+Two utility classes are available for custom modal components:
+- `.ds-modal-backdrop` — full-screen centered overlay with the backdrop color
+- `.ds-modal-panel` — panel with the themed background, text color, and shadow
+
 ### Scoped Color Utilities
 
 The editor provides scoped utility classes for text and surface colors inside `.ds-editor`:

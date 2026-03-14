@@ -93,9 +93,7 @@ themal/
 - Tailwind CSS
 - axe-core (WCAG AA accessibility auditing)
 - Lucide React (icons)
-- Netlify Functions (GitHub PR creation, Stripe checkout)
-- Clerk (authentication via Google OAuth)
-- Stripe (subscription billing: $9/mo or $50/yr Pro plan)
+- Netlify Functions (GitHub PR creation)
 
 ## Testing
 
@@ -123,7 +121,7 @@ npm install
 npm run dev
 ```
 
-See [`SETUP.md`](SETUP.md) for detailed instructions on configuring Clerk, Stripe, Google OAuth, and all environment variables for local development and production.
+See [`SETUP.md`](SETUP.md) for detailed setup instructions and environment variable reference.
 
 ## Build
 

@@ -26,12 +26,11 @@ export function PrModal({
 }: PrModalProps) {
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center"
-      style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+      className="ds-modal-backdrop"
       onClick={onClose}
     >
       <div
-        className="rounded-xl p-6 w-[340px] shadow-xl ds-surface"
+        className="ds-modal-panel rounded-xl p-6 w-[340px]"
         onClick={(e) => e.stopPropagation()}
       >
         <h3 className="text-lg font-light mb-4 flex items-center gap-2">

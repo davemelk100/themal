@@ -32,14 +32,13 @@ export function ImagePaletteModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center"
-      style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+      className="ds-modal-backdrop"
       onClick={handleClose}
       onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
       onDrop={(e) => { e.preventDefault(); e.stopPropagation(); }}
     >
       <div
-        className="rounded-xl p-6 w-[380px] max-h-[90vh] overflow-y-auto shadow-xl ds-surface"
+        className="ds-modal-panel rounded-xl p-6 w-[380px] max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <h3 className="text-lg font-light mb-4 ds-text-fg">
@@ -226,15 +225,14 @@ export function PendingImagePaletteConfirm({
 }: PendingImagePaletteConfirmProps) {
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center"
-      style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+      className="ds-modal-backdrop"
       onClick={() => {
         URL.revokeObjectURL(pendingImagePalette.imageUrl);
         setPendingImagePalette(null);
       }}
     >
       <div
-        className="rounded-xl p-6 w-[90vw] max-w-[480px] max-h-[90vh] overflow-y-auto shadow-xl ds-surface"
+        className="ds-modal-panel rounded-xl p-6 w-[90vw] max-w-[480px] max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <h3 className="text-lg font-light mb-4">Extracted Palette</h3>
