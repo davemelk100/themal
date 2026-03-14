@@ -10,6 +10,8 @@ const features = [
       "onAiPaletteMap prop - provider-agnostic AI palette mapping callback behind the aiPaletteMapping feature flag",
       "buildAiPalettePrompt utility - generates a structured prompt describing the detected host palette for AI-assisted token mapping",
       "aiPaletteMapping feature flag - Phase 2 AI palette mapping hidden behind feature flag (disabled by default)",
+      "ds-text-subtle utility class - foreground at 60% opacity for guaranteed contrast on any surface, used across all modal labels",
+      "Modal contrast fix - all modal labels, buttons, and form inputs now use surface-relative colors (ds-text-subtle, brand buttons) instead of muted-foreground which could mismatch the modal background",
     ],
   },
   {

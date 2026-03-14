@@ -324,6 +324,14 @@ a {
 /* ... more rules based on your detected palette */`}</code>
           </pre>
 
+          <h3 className="text-sm font-medium mb-2 mt-6 text-muted">Scoped Color Utilities</h3>
+          <p className="text-sm mb-3 text-fg">
+            The editor provides scoped utility classes for text and surface colors inside <code className="font-mono text-sm">.ds-editor</code>.
+            Modal labels use <code className="font-mono text-sm">ds-text-subtle</code> (foreground at 60% opacity) to guarantee contrast on any surface.
+            Primary action buttons use brand colors. The <code className="font-mono text-sm">ds-text-muted</code> class uses <code className="font-mono text-sm">--muted-foreground</code> which
+            may not contrast on all surfaces — prefer <code className="font-mono text-sm">ds-text-subtle</code> for labels inside modals and cards.
+          </p>
+
           <h3 className="text-sm font-medium mb-2 text-muted">Embedded / headless</h3>
           <pre className="rounded-lg p-4 text-sm overflow-x-auto mb-4" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
             <code>{`<DesignSystemEditor showHeader={false} showNavLinks={false} />`}</code>

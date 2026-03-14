@@ -534,6 +534,22 @@ The editor inherits your site's base font size by default (0.8125rem fallback). 
 
 Typography changes made in the editor are scoped to `.ds-editor` and do not override fonts on the rest of your page.
 
+### Scoped Color Utilities
+
+The editor provides scoped utility classes for text and surface colors inside `.ds-editor`:
+
+| Class | Value | Use |
+|-------|-------|-----|
+| `ds-text-fg` | `hsl(var(--foreground))` | Primary text |
+| `ds-text-muted` | `hsl(var(--muted-foreground))` | Secondary text (may not contrast on all surfaces) |
+| `ds-text-subtle` | `hsl(var(--foreground) / 0.6)` | Subdued text — guaranteed contrast since it derives from the surface's own foreground |
+| `ds-text-brand` | `hsl(var(--brand))` | Brand-colored text |
+| `ds-text-card` | `hsl(var(--card-foreground))` | Text on card surfaces |
+| `ds-surface` | Card bg + foreground text | Modal/card containers |
+| `ds-surface-bg` | Background bg + foreground text | Page-level containers |
+
+All modal labels use `ds-text-subtle` and primary action buttons use brand colors to ensure readable contrast regardless of the active theme.
+
 ## CSS Isolation
 
 The editor ships pre-compiled CSS via `@themal/editor/style.css`. Tailwind's global preflight is disabled — only a scoped reset applies inside `.ds-editor`, so the plugin never injects global `html`, `body`, or heading rules into your page. Utility classes are scoped using Tailwind's `important: '.ds-editor'`. The root element is automatically wrapped in `<div className="ds-editor">`.
