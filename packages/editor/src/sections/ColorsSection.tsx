@@ -649,7 +649,7 @@ export function ColorsSection({
                 {/* Chips / Badges row */}
                 <div className="w-full space-y-2" data-axe-exclude>
                   <p
-                    className="text-sm font-light uppercase tracking-wider ds-text-muted"
+                    className="text-sm font-light uppercase tracking-wider ds-text-subtle"
                   >
                     Chips / Badges
                   </p>
@@ -819,7 +819,7 @@ export function ColorsSection({
                     <div className="w-full hidden md:block" data-axe-exclude>
                       <div className="flex items-center gap-2 mb-2 md:mb-3">
                         <p
-                          className="text-sm font-light uppercase tracking-wider ds-text-muted"
+                          className="text-sm font-light uppercase tracking-wider ds-text-subtle"
                         >
                           Icons
                         </p>

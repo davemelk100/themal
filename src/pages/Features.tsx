@@ -11,6 +11,7 @@ const features = [
       "ds-modal-panel utility class - replaces ds-surface + shadow-xl on modal content panels with a single themeable class",
       "All 7 modal components updated - ResetConfirmModal, AiGenerateModal, CssImportModal, IconImportModal, ImagePaletteModal, PrModal, and UpgradeModal now use the new utility classes",
       "Simplified .env.example - removed Stripe, Clerk, database, and Google OAuth variables; only GITHUB_TOKEN and ANTHROPIC_API_KEY remain for consumers",
+      "Subsection label contrast fix - all uppercase subsection headings (Size, Text, Shadow, Preview, etc.) across all 7 sections now use ds-text-subtle instead of ds-text-muted for guaranteed accessible contrast on any theme",
     ],
   },
   {

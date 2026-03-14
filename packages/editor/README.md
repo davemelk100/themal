@@ -1,6 +1,6 @@
 # @themal/editor
 
-Interactive design system editor for React apps. Pick colors, generate harmony palettes, enforce WCAG AA contrast, customize typography, interaction states, input styles, and table styles, and export CSS custom properties — all in real time. Fully responsive — works on desktop, tablet, and mobile with a collapsible sidebar menu.
+Interactive design system editor for any web app. Available as a React component or a framework-agnostic web component (`<themal-editor>`). Pick colors, generate harmony palettes, enforce WCAG AA contrast, customize typography, interaction states, input styles, and table styles, and export CSS custom properties — all in real time. Fully responsive — works on desktop, tablet, and mobile with a collapsible sidebar menu.
 
 > **Early access — all features are free.** Pro subscription tiers will be introduced in a future release.
 
@@ -589,7 +589,7 @@ The editor provides scoped utility classes for text and surface colors inside `.
 | `ds-surface-bg` | Background bg + foreground text | Page-level containers |
 | `ds-surface-primary` | Primary bg + primary-foreground text | Primary action buttons |
 
-All modal labels use `ds-text-subtle` and primary action buttons use brand colors to ensure readable contrast regardless of the active theme.
+All modal labels and subsection headings (e.g. "Size", "Text", "Shadow", "Preview") use `ds-text-subtle`, and primary action buttons use brand colors, to ensure readable contrast regardless of the active theme.
 
 ## CSS Isolation
 

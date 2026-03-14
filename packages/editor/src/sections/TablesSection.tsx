@@ -113,7 +113,7 @@ export function TablesSection({
 
             {/* Shape */}
             <div className="space-y-1.5">
-              <p className="text-sm font-light uppercase tracking-wider ds-text-muted">
+              <p className="text-sm font-light uppercase tracking-wider ds-text-subtle">
                 Shape
               </p>
               <label className="flex items-center justify-between gap-2 text-sm font-light ds-text-fg">
@@ -142,7 +142,7 @@ export function TablesSection({
 
             {/* Spacing */}
             <div className="space-y-1.5">
-              <p className="text-sm font-light uppercase tracking-wider ds-text-muted">
+              <p className="text-sm font-light uppercase tracking-wider ds-text-subtle">
                 Spacing
               </p>
               <label className="flex items-center justify-between gap-2 text-sm font-light ds-text-fg">
@@ -171,7 +171,7 @@ export function TablesSection({
 
             {/* Header */}
             <div className="space-y-1.5">
-              <p className="text-sm font-light uppercase tracking-wider ds-text-muted">
+              <p className="text-sm font-light uppercase tracking-wider ds-text-subtle">
                 Header
               </p>
               <label className="flex items-center justify-between gap-2 text-sm font-light ds-text-fg">
@@ -197,7 +197,7 @@ export function TablesSection({
 
             {/* Options */}
             <div className="space-y-1.5">
-              <p className="text-sm font-light uppercase tracking-wider ds-text-muted">
+              <p className="text-sm font-light uppercase tracking-wider ds-text-subtle">
                 Options
               </p>
               {[

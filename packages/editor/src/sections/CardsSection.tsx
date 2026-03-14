@@ -443,7 +443,7 @@ export function CardsSection({
               {/* Shadow */}
               <div className="space-y-1.5">
                 <p
-                  className="text-sm font-light uppercase tracking-wider ds-text-muted"
+                  className="text-sm font-light uppercase tracking-wider ds-text-subtle"
                 >
                   Shadow
                 </p>
@@ -505,7 +505,7 @@ export function CardsSection({
               {/* Shape */}
               <div className="space-y-1.5">
                 <p
-                  className="text-sm font-light uppercase tracking-wider ds-text-muted"
+                  className="text-sm font-light uppercase tracking-wider ds-text-subtle"
                 >
                   Shape
                 </p>
@@ -549,7 +549,7 @@ export function CardsSection({
               {/* Background */}
               <div className="space-y-1.5">
                 <p
-                  className="text-sm font-light uppercase tracking-wider ds-text-muted"
+                  className="text-sm font-light uppercase tracking-wider ds-text-subtle"
                 >
                   Background
                 </p>

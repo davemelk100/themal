@@ -378,7 +378,7 @@ export function ButtonsSection({
                   <div className="flex-1 min-w-0 space-y-3 order-2 md:order-1">
                     <div className="space-y-1.5">
                       <p
-                        className="text-sm font-light uppercase tracking-wider ds-text-muted"
+                        className="text-sm font-light uppercase tracking-wider ds-text-subtle"
                       >
                         Size
                       </p>
@@ -427,7 +427,7 @@ export function ButtonsSection({
                     </div>
                     <div className="space-y-1.5">
                       <p
-                        className="text-sm font-light uppercase tracking-wider ds-text-muted"
+                        className="text-sm font-light uppercase tracking-wider ds-text-subtle"
                       >
                         Text
                       </p>
@@ -463,7 +463,7 @@ export function ButtonsSection({
                     </div>
                     <div className="space-y-1.5">
                       <p
-                        className="text-sm font-light uppercase tracking-wider ds-text-muted"
+                        className="text-sm font-light uppercase tracking-wider ds-text-subtle"
                       >
                         Shadow
                       </p>
@@ -514,7 +514,7 @@ export function ButtonsSection({
                     </div>
                     <div className="space-y-1.5">
                       <p
-                        className="text-sm font-light uppercase tracking-wider ds-text-muted"
+                        className="text-sm font-light uppercase tracking-wider ds-text-subtle"
                       >
                         Border
                       </p>
@@ -536,7 +536,7 @@ export function ButtonsSection({
                   <div className="flex-1 min-w-0 flex items-start justify-center pt-2 order-1 md:order-2">
                     <div className="w-full space-y-3" data-axe-exclude>
                       <p
-                        className="text-sm font-light uppercase tracking-wider ds-text-muted"
+                        className="text-sm font-light uppercase tracking-wider ds-text-subtle"
                       >
                         Preview
                       </p>
@@ -959,7 +959,7 @@ export function ButtonsSection({
                     <div className="flex-1 min-w-0 space-y-3 order-2 md:order-1">
                       <div className="space-y-1.5">
                         <p
-                          className="text-sm font-light uppercase tracking-wider ds-text-muted"
+                          className="text-sm font-light uppercase tracking-wider ds-text-subtle"
                         >
                           Hover
                         </p>
@@ -1004,7 +1004,7 @@ export function ButtonsSection({
                       </div>
                       <div className="space-y-1.5">
                         <p
-                          className="text-sm font-light uppercase tracking-wider ds-text-muted"
+                          className="text-sm font-light uppercase tracking-wider ds-text-subtle"
                         >
                           Active
                         </p>
@@ -1030,7 +1030,7 @@ export function ButtonsSection({
                       </div>
                       <div className="space-y-1.5">
                         <p
-                          className="text-sm font-light uppercase tracking-wider ds-text-muted"
+                          className="text-sm font-light uppercase tracking-wider ds-text-subtle"
                         >
                           Timing & Focus
                         </p>
@@ -1086,7 +1086,7 @@ export function ButtonsSection({
                         data-axe-exclude
                       >
                         <p
-                          className="text-sm font-light uppercase tracking-wider ds-text-muted"
+                          className="text-sm font-light uppercase tracking-wider ds-text-subtle"
                         >
                           Preview
                         </p>

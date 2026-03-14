@@ -503,7 +503,7 @@ export function TypographySection({
                 {/* Fonts */}
                 <div className="space-y-1.5">
                   <p
-                    className="text-sm font-light uppercase tracking-wider ds-text-muted"
+                    className="text-sm font-light uppercase tracking-wider ds-text-subtle"
                   >
                     Fonts
                   </p>
@@ -535,7 +535,7 @@ export function TypographySection({
                 {/* Size & Weight */}
                 <div className="space-y-1.5">
                   <p
-                    className="text-sm font-light uppercase tracking-wider ds-text-muted"
+                    className="text-sm font-light uppercase tracking-wider ds-text-subtle"
                   >
                     Size & Weight
                   </p>
@@ -605,7 +605,7 @@ export function TypographySection({
                 >
                   <div className="space-y-1.5">
                     <p
-                      className="text-sm font-light uppercase tracking-wider ds-text-muted"
+                      className="text-sm font-light uppercase tracking-wider ds-text-subtle"
                     >
                       Spacing
                     </p>
@@ -769,7 +769,7 @@ export function TypographySection({
                     </div>
                   </PremiumGate>
                   <p
-                    className="text-sm font-light uppercase tracking-wider ds-text-muted"
+                    className="text-sm font-light uppercase tracking-wider ds-text-subtle"
                   >
                     Preview
                   </p>
@@ -1167,7 +1167,7 @@ export function TypographySection({
                 <div className="flex-1 min-w-0 space-y-3 order-2 md:order-1">
                   <div className="space-y-1.5">
                     <p
-                      className="text-sm font-light uppercase tracking-wider ds-text-muted"
+                      className="text-sm font-light uppercase tracking-wider ds-text-subtle"
                     >
                       Links - Hover
                     </p>
@@ -1232,7 +1232,7 @@ export function TypographySection({
                   </div>
                   <div className="space-y-1.5">
                     <p
-                      className="text-sm font-light uppercase tracking-wider ds-text-muted"
+                      className="text-sm font-light uppercase tracking-wider ds-text-subtle"
                     >
                       Links - Active
                     </p>
@@ -1260,7 +1260,7 @@ export function TypographySection({
                   </div>
                   <div className="space-y-1.5">
                     <p
-                      className="text-sm font-light uppercase tracking-wider ds-text-muted"
+                      className="text-sm font-light uppercase tracking-wider ds-text-subtle"
                     >
                       Headings - Hover
                     </p>
@@ -1309,7 +1309,7 @@ export function TypographySection({
                   </div>
                   <div className="space-y-1.5">
                     <p
-                      className="text-sm font-light uppercase tracking-wider ds-text-muted"
+                      className="text-sm font-light uppercase tracking-wider ds-text-subtle"
                     >
                       Timing
                     </p>
@@ -1371,7 +1371,7 @@ export function TypographySection({
                     data-axe-exclude
                   >
                     <p
-                      className="text-sm font-light uppercase tracking-wider ds-text-muted"
+                      className="text-sm font-light uppercase tracking-wider ds-text-subtle"
                     >
                       Preview
                     </p>
