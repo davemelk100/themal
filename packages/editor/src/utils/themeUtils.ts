@@ -6,4 +6,5 @@ export * from "./styles/buttonStyle";
 export * from "./styles/inputStyle";
 export * from "./styles/interactionStyle";
 export * from "./styles/typoInteractionStyle";
+export * from "./styles/tableStyle";
 export * from "./styles/exportUtils";

@@ -1,5 +1,5 @@
 import React from "react";
-import { hslStringToHex, fgForBg } from "../utils/themeUtils";
+import { hslStringToHex } from "../utils/themeUtils";
 
 export interface ImagePaletteModalProps {
   imageUrlInput: string;
@@ -191,7 +191,7 @@ export function ImagePaletteModal({
         <div className="flex justify-end mt-2">
           <button
             onClick={handleClose}
-            className="px-3 py-1.5 text-sm font-light rounded-lg transition-colors hover:opacity-80 ds-text-subtle"
+            className="ds-modal-btn h-9 px-4 text-sm font-light rounded-lg border transition-colors hover:opacity-80 ds-surface ds-border"
           >
             Cancel
           </button>
@@ -218,7 +218,7 @@ export interface PendingImagePaletteConfirmProps {
 
 export function PendingImagePaletteConfirm({
   pendingImagePalette,
-  colors,
+  colors: _colors,
   applyImagePalette,
   setPendingImagePalette,
   setAppliedImageUrl,
@@ -290,7 +290,7 @@ export function PendingImagePaletteConfirm({
               URL.revokeObjectURL(pendingImagePalette.imageUrl);
               setPendingImagePalette(null);
             }}
-            className="px-3 py-1.5 text-sm font-light rounded-lg transition-colors hover:opacity-80 ds-text-card"
+            className="ds-modal-btn h-9 px-4 text-sm font-light rounded-lg border transition-colors hover:opacity-80 ds-surface ds-border"
           >
             Cancel
           </button>
@@ -311,13 +311,7 @@ export function PendingImagePaletteConfirm({
                 setAppliedImageFading(false);
               }, 3000);
             }}
-            className="px-4 py-1.5 text-sm font-light rounded-lg transition-colors hover:opacity-80"
-            style={{
-              backgroundColor: "hsl(var(--brand))",
-              color: colors["--brand"]
-                ? `hsl(${fgForBg(colors["--brand"])})`
-                : "hsl(var(--primary-foreground))",
-            }}
+            className="ds-modal-btn h-9 px-4 text-sm font-light rounded-lg transition-colors hover:opacity-80 ds-surface-primary"
           >
             Apply Palette
           </button>

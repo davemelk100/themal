@@ -82,7 +82,7 @@ function UpgradeModal({
         <div className="flex flex-col gap-2">
           <a
             href={upgradeUrl}
-            className="w-full text-center px-4 py-2.5 text-sm font-medium rounded-lg transition-opacity hover:opacity-90 ds-surface-invert"
+            className="w-full text-center px-4 py-2.5 text-sm font-medium rounded-lg transition-opacity hover:opacity-90 ds-surface-primary"
           >
             View Pricing
           </a>
@@ -122,7 +122,7 @@ function UpgradeModal({
                 />
                 <button
                   onClick={handleActivate}
-                  className="px-3 py-2 text-xs font-medium rounded-lg transition-opacity hover:opacity-90 ds-surface-invert"
+                  className="px-3 py-2 text-xs font-medium rounded-lg transition-opacity hover:opacity-90 ds-surface-primary"
                 >
                   Activate
                 </button>

@@ -75,6 +75,10 @@ import {
   DEFAULT_INPUT_STYLE,
   INPUT_PRESETS,
   applyInputStyle,
+  TABLE_STYLE_KEY,
+  DEFAULT_TABLE_STYLE,
+  TABLE_PRESETS,
+  applyTableStyle,
   INTERACTION_STYLE_KEY,
   DEFAULT_INTERACTION_STYLE,
   INTERACTION_PRESETS,
@@ -107,6 +111,7 @@ import type {
   InteractionStyleState,
   TypoInteractionStyleState,
   InputStyleState,
+  TableStyleState,
 } from "./utils/themeUtils";
 import { useImportedIcons } from "./hooks/useImportedIcons";
 import { useHostScanner } from "./hooks/useHostScanner";
@@ -119,6 +124,8 @@ import { CardsSection } from "./sections/CardsSection";
 import { AlertsSection } from "./sections/AlertsSection";
 import { TypographySection } from "./sections/TypographySection";
 import { InputsSection } from "./sections/InputsSection";
+import { TablesSection } from "./sections/TablesSection";
+import { FeatureFlag } from "./components/FeatureFlag";
 import "./styles/editor.css";
 
 function DesignSystemEditorInner({
@@ -363,6 +370,14 @@ function DesignSystemEditorInner({
     () => storage.get<InputStyleState>(INPUT_STYLE_KEY) || { ...DEFAULT_INPUT_STYLE },
     INPUT_PRESETS,
   );
+  const {
+    state: tableStyle,
+    update: updateTableStyle,
+    selectPreset: selectTablePreset,
+  } = useStyleState<TableStyleState>(
+    () => storage.get<TableStyleState>(TABLE_STYLE_KEY) || { ...DEFAULT_TABLE_STYLE },
+    TABLE_PRESETS,
+  );
   const [showPaletteExport, setShowPaletteExport] = useState(false);
   const [showCssImportModal, setShowCssImportModal] = useState(false);
   const [paletteExportCopied, setPaletteExportCopied] = useState(false);
@@ -539,6 +554,9 @@ function DesignSystemEditorInner({
     applyInputStyle(inputStyle, editorRootRef.current!);
   }, [inputStyle]);
 
+  useEffect(() => {
+    applyTableStyle(tableStyle, editorRootRef.current!);
+  }, [tableStyle]);
 
   useEffect(() => {
     applyInteractionStyle(interactionStyle, editorRootRef.current!);
@@ -2196,6 +2214,13 @@ function DesignSystemEditorInner({
             updateInputStyle={updateInputStyle}
             selectInputPreset={selectInputPreset}
           />
+          <FeatureFlag name="tables">
+            <TablesSection
+              tableStyle={tableStyle}
+              updateTableStyle={updateTableStyle}
+              selectTablePreset={selectTablePreset}
+            />
+          </FeatureFlag>
         </div>
 
       </section>

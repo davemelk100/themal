@@ -300,14 +300,14 @@ export function IconImportModal({ open, onClose, onImport }: Props) {
           <div className="flex gap-2">
             <button
               onClick={onClose}
-              className="px-4 py-2 text-xs font-light rounded-lg transition-opacity hover:opacity-70 ds-text-muted"
+              className="ds-modal-btn h-9 px-4 text-xs font-light rounded-lg border transition-opacity hover:opacity-70 ds-surface ds-border"
             >
               Cancel
             </button>
             <button
               onClick={handleImport}
               disabled={selected.size === 0 || cdnFetchingSelected}
-              className="px-4 py-2 text-xs font-medium rounded-lg transition-opacity hover:opacity-90 disabled:opacity-40 ds-surface-invert"
+              className="ds-modal-btn h-9 px-4 text-xs font-medium rounded-lg transition-opacity hover:opacity-90 disabled:opacity-40 ds-surface-primary"
             >
               {cdnFetchingSelected ? "Fetching..." : `Import (${selected.size})`}
             </button>
@@ -360,7 +360,7 @@ function SpriteTab({
         <button
           onClick={onFetch}
           disabled={loading || !url.trim()}
-          className="px-4 py-2 text-xs font-medium rounded-lg transition-opacity hover:opacity-90 disabled:opacity-40 ds-surface-invert"
+          className="px-4 py-2 text-xs font-medium rounded-lg transition-opacity hover:opacity-90 disabled:opacity-40 ds-surface-primary"
         >
           {loading ? "Loading..." : "Fetch"}
         </button>
@@ -442,7 +442,7 @@ function FontTab({
         <button
           onClick={onFetch}
           disabled={loading || !url.trim()}
-          className="px-4 py-2 text-xs font-medium rounded-lg transition-opacity hover:opacity-90 disabled:opacity-40 ds-surface-invert"
+          className="px-4 py-2 text-xs font-medium rounded-lg transition-opacity hover:opacity-90 disabled:opacity-40 ds-surface-primary"
         >
           {loading ? "Loading..." : "Fetch"}
         </button>

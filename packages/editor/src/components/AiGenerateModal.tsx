@@ -73,14 +73,14 @@ export function AiGenerateModal({
             <div className="flex items-center justify-end gap-3 mt-4">
               <button
                 onClick={handleClose}
-                className="px-4 py-2 text-sm font-light rounded-lg transition-opacity hover:opacity-70 ds-text-subtle"
+                className="ds-modal-btn h-9 px-4 text-sm font-light rounded-lg border transition-opacity hover:opacity-70 ds-surface ds-border"
               >
                 Cancel
               </button>
               <button
                 onClick={handleGenerate}
                 disabled={!aiPrompt.trim() || aiLoading}
-                className="px-4 py-2 text-sm font-light rounded-lg transition-opacity hover:opacity-80 disabled:opacity-40 flex items-center gap-2 ds-surface-invert"
+                className="ds-modal-btn h-9 px-4 text-sm font-light rounded-lg transition-opacity hover:opacity-80 disabled:opacity-40 flex items-center gap-2 ds-surface-primary"
               >
                 {aiLoading && (
                   <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -136,19 +136,19 @@ export function AiGenerateModal({
             <div className="flex items-center justify-end gap-3 mt-4">
               <button
                 onClick={() => setAiPreview(null)}
-                className="px-4 py-2 text-sm font-light rounded-lg transition-opacity hover:opacity-70 ds-text-subtle"
+                className="ds-modal-btn h-9 px-4 text-sm font-light rounded-lg border transition-opacity hover:opacity-70 ds-surface ds-border"
               >
                 Back
               </button>
               <button
                 onClick={handleClose}
-                className="px-4 py-2 text-sm font-light rounded-lg transition-opacity hover:opacity-70 ds-text-subtle"
+                className="ds-modal-btn h-9 px-4 text-sm font-light rounded-lg border transition-opacity hover:opacity-70 ds-surface ds-border"
               >
                 Cancel
               </button>
               <button
                 onClick={handleApply}
-                className="px-4 py-2 text-sm font-light rounded-lg transition-opacity hover:opacity-80 ds-surface-invert"
+                className="ds-modal-btn h-9 px-4 text-sm font-light rounded-lg transition-opacity hover:opacity-80 ds-surface-primary"
               >
                 Apply
               </button>

@@ -42,6 +42,8 @@
   letter-spacing: inherit;
   color: inherit;
   margin: 0;
+}
+.ds-editor input, .ds-editor select, .ds-editor textarea {
   padding: 0;
 }
 
@@ -62,6 +64,7 @@
 .ds-editor .ds-text-subtle        { color: hsl(var(--foreground) / 0.6); }
 .ds-editor .ds-text-brand         { color: hsl(var(--brand)); }
 .ds-editor .ds-text-destructive   { color: hsl(var(--destructive)); }
+.ds-editor .ds-text-destructive-fg { color: hsl(var(--destructive-foreground)); }
 .ds-editor .ds-text-card          { color: hsl(var(--card-foreground)); }
 
 /* Background colors */
@@ -82,6 +85,7 @@
 .ds-surface-bg         { background-color: hsl(var(--background)); color: hsl(var(--foreground)); }
 .ds-surface-muted      { background-color: hsl(var(--muted)); color: hsl(var(--foreground)); }
 .ds-surface-invert     { background-color: hsl(var(--foreground)); color: hsl(var(--background)); }
+.ds-surface-primary    { background-color: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
 
 .ds-editor .ds-section-nav {
   background-color: transparent;
@@ -380,6 +384,11 @@
   color: inherit;
 }
 
+/* Modal buttons — override the scoped reset's padding:0 */
+.ds-editor .ds-modal-btn {
+  padding: 0.375rem 1rem;
+}
+
 /* Swatch text colors must override everything — computed from contrast ratio */
 .ds-editor .ds-swatch-light {
   color: #ffffff !important;
@@ -506,6 +515,30 @@
 }
 
 /* ── Mobile touch-friendly sizing ───────────────────────────────────── */
+/* ── Table section: responsive table → dl ──────────────────────────── */
+.ds-table-mobile { display: none; }
+.ds-table-desktop { display: block; }
+
+@media (max-width: 639px) {
+  .ds-table-mobile { display: block; }
+  .ds-table-desktop { display: none; }
+}
+
+.ds-editor .ds-table-row-hover:hover {
+  background-color: hsl(var(--muted) / 0.5);
+}
+
+/* Badge utilities for table status cells */
+.ds-badge-success {
+  background-color: hsl(var(--brand) / 0.15);
+  color: hsl(var(--brand));
+}
+
+.ds-badge-warning {
+  background-color: hsl(var(--accent) / 0.15);
+  color: hsl(var(--accent-foreground));
+}
+
 @media (max-width: 768px) {
   /* Range sliders: taller touch target */
   .ds-editor input[type="range"] {

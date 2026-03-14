@@ -149,7 +149,7 @@ export function CardsSection({
                     setCardExportFormat("css");
                     setCardCssVisible(true);
                   }}
-                  className="h-10 px-2 sm:px-3 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                  className="h-10 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
                   style={{
                     backgroundColor:
                       cardCssVisible && cardExportFormat === "css"
@@ -191,7 +191,7 @@ export function CardsSection({
                     setCardExportFormat("tokens");
                     setCardCssVisible(true);
                   }}
-                  className="h-10 px-2 sm:px-3 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                  className="h-10 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
                   style={{
                     backgroundColor:
                       cardCssVisible && cardExportFormat === "tokens"

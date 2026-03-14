@@ -138,7 +138,7 @@ export function AlertsSection({
                             setAlertExportFormat("css");
                             setAlertCssVisible(true);
                           }}
-                          className="h-10 px-2 sm:px-3 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                          className="h-10 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
                           style={{
                             backgroundColor:
                               alertCssVisible && alertExportFormat === "css"
@@ -170,7 +170,7 @@ export function AlertsSection({
                             setAlertExportFormat("tokens");
                             setAlertCssVisible(true);
                           }}
-                          className="h-10 px-2 sm:px-3 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                          className="h-10 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
                           style={{
                             backgroundColor:
                               alertCssVisible && alertExportFormat === "tokens"
@@ -528,7 +528,7 @@ export function AlertsSection({
                               setToastExportFormat("css");
                               setToastCssVisible(true);
                             }}
-                            className="h-10 px-2 sm:px-3 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                            className="h-10 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
                             style={{
                               backgroundColor:
                                 toastCssVisible && toastExportFormat === "css"
@@ -560,7 +560,7 @@ export function AlertsSection({
                               setToastExportFormat("tokens");
                               setToastCssVisible(true);
                             }}
-                            className="h-10 px-2 sm:px-3 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                            className="h-10 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
                             style={{
                               backgroundColor:
                                 toastCssVisible && toastExportFormat === "tokens"

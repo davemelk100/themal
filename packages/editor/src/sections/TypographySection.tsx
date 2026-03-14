@@ -196,7 +196,7 @@ export function TypographySection({
                         setTypoExportFormat("css");
                         setTypoCssVisible(true);
                       }}
-                      className="h-10 px-2 sm:px-3 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                      className="h-10 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
                       style={{
                         backgroundColor:
                           typoCssVisible && typoExportFormat === "css"
@@ -241,7 +241,7 @@ export function TypographySection({
                         setTypoExportFormat("tokens");
                         setTypoCssVisible(true);
                       }}
-                      className="h-10 px-2 sm:px-3 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                      className="h-10 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
                       style={{
                         backgroundColor:
                           typoCssVisible && typoExportFormat === "tokens"
@@ -884,7 +884,7 @@ export function TypographySection({
                         setTypoInteractionExportFormat("css");
                         setTypoInteractionCssVisible(true);
                       }}
-                      className="h-10 px-2 sm:px-3 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                      className="h-10 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
                       style={{
                         backgroundColor:
                           typoInteractionCssVisible &&
@@ -931,7 +931,7 @@ export function TypographySection({
                         setTypoInteractionExportFormat("tokens");
                         setTypoInteractionCssVisible(true);
                       }}
-                      className="h-10 px-2 sm:px-3 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                      className="h-10 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
                       style={{
                         backgroundColor:
                           typoInteractionCssVisible &&

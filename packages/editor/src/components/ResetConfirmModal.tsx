@@ -44,7 +44,7 @@ export const ResetConfirmModal: React.FC<ResetConfirmModalProps> = ({
         <div className="flex justify-end gap-2">
           <button
             onClick={onClose}
-            className="px-3 py-1.5 text-sm font-light rounded-lg transition-colors hover:opacity-80 ds-text-card"
+            className="ds-modal-btn h-9 px-4 text-sm font-light rounded-lg border transition-colors hover:opacity-80 ds-surface ds-border"
           >
             Cancel
           </button>
@@ -53,11 +53,7 @@ export const ResetConfirmModal: React.FC<ResetConfirmModalProps> = ({
               onConfirm();
               onClose();
             }}
-            className="px-3 py-1.5 text-sm font-light rounded-lg transition-colors hover:opacity-80"
-            style={{
-              backgroundColor: "hsl(var(--destructive))",
-              color: "hsl(var(--destructive-foreground))",
-            }}
+            className="ds-modal-btn h-9 px-4 text-sm font-light rounded-lg transition-colors hover:opacity-80 ds-bg-destructive ds-text-destructive-fg"
           >
             {confirmText}
           </button>

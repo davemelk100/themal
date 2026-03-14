@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { FEATURE_FLAGS } from "../utils/featureFlags";
 
-const SECTION_IDS = ["colors", "buttons", "card", "alerts", "typography", "inputs"];
-const SECTION_LINKS: { id: string; label: string }[] = [
+const BASE_SECTION_IDS = ["colors", "buttons", "card", "alerts", "typography", "inputs"];
+const BASE_SECTION_LINKS: { id: string; label: string }[] = [
   { id: "colors", label: "Colors" },
   { id: "buttons", label: "Buttons" },
   { id: "card", label: "Cards" },
@@ -11,6 +12,18 @@ const SECTION_LINKS: { id: string; label: string }[] = [
 ];
 
 export function SectionNav() {
+  const SECTION_IDS = useMemo(() => {
+    const ids = [...BASE_SECTION_IDS];
+    if (FEATURE_FLAGS.tables) ids.push("tables");
+    return ids;
+  }, []);
+
+  const SECTION_LINKS = useMemo(() => {
+    const links = [...BASE_SECTION_LINKS];
+    if (FEATURE_FLAGS.tables) links.push({ id: "tables", label: "Tables" });
+    return links;
+  }, []);
+
   const [activeSection, setActiveSection] = useState("colors");
   const [navOffsets, setNavOffsets] = useState<Record<string, number>>({});
   const navItemRefs = useRef<Record<string, HTMLAnchorElement | null>>({});

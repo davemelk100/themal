@@ -875,6 +875,26 @@ export function buildShadowCss(style: {
   return `${style.shadowOffsetX}px ${style.shadowOffsetY}px ${style.shadowBlur}px ${style.shadowSpread}px ${style.shadowColor}`;
 }
 
+/**
+ * Snapshot the current CSS custom-property colors from :root (or a given element)
+ * BEFORE the editor mounts. Pass the result as `defaultColors` so CSS-file values
+ * take precedence over stale localStorage when `applyToRoot` is enabled.
+ *
+ * ```tsx
+ * const cssColors = readRootColors();
+ * <DesignSystemEditor defaultColors={cssColors} applyToRoot />
+ * ```
+ */
+export function readRootColors(root: HTMLElement = document.documentElement): Record<string, string> {
+  const computed = getComputedStyle(root);
+  const result: Record<string, string> = {};
+  for (const { key } of EDITABLE_VARS) {
+    const val = computed.getPropertyValue(key).trim();
+    if (val) result[key] = val;
+  }
+  return result;
+}
+
 export function applyStoredThemeColors(root: HTMLElement = document.documentElement) {
   const saved = storage.get<Record<string, string>>(THEME_COLORS_KEY);
   if (saved) {

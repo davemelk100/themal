@@ -7,6 +7,7 @@ export {
   fgForBg,
   EDITABLE_VARS,
   HARMONY_SCHEMES,
+  readRootColors,
   applyStoredThemeColors,
   CARD_STYLE_KEY,
   applyStoredCardStyle,
@@ -22,6 +23,9 @@ export {
   INPUT_STYLE_KEY,
   INPUT_PRESETS,
   applyStoredInputStyle,
+  TABLE_STYLE_KEY,
+  TABLE_PRESETS,
+  applyStoredTableStyle,
   INTERACTION_STYLE_KEY,
   applyStoredInteractionStyle,
   serializeThemeState,
@@ -36,7 +40,7 @@ export {
   initCustomFonts,
   buildAiSystemPrompt,
 } from "./utils/themeUtils";
-export type { HarmonyScheme, CardStyleState, ButtonStyleState, InputStyleState, TypographyState, AlertStyleState, ToastStyleState, InteractionStyleState, TypoInteractionStyleState, CustomFontEntry } from "./utils/themeUtils";
+export type { HarmonyScheme, CardStyleState, ButtonStyleState, InputStyleState, TableStyleState, TypographyState, AlertStyleState, ToastStyleState, InteractionStyleState, TypoInteractionStyleState, CustomFontEntry } from "./utils/themeUtils";
 
 export { createDesignPr, replaceRootBlock, getAuthenticatedUser } from "./utils/githubApi";
 export type { GitHubConfig } from "./utils/githubApi";

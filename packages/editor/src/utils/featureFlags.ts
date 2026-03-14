@@ -6,7 +6,7 @@
  * when wrapped with the `<FeatureFlag>` component.
  */
 export const FEATURE_FLAGS = {
-  tables: false,
+  tables: true,
   aiPaletteMapping: false,
 } as const;
 

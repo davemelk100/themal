@@ -99,7 +99,7 @@ export function PrModal({
         <div className="flex justify-end gap-2">
           <button
             onClick={onClose}
-            className="px-3 py-1.5 text-sm font-light rounded-lg transition-colors hover:opacity-80 ds-text-card"
+            className="ds-modal-btn h-9 px-4 text-sm font-light rounded-lg border transition-colors hover:opacity-80 ds-surface ds-border"
           >
             Cancel
           </button>
@@ -111,13 +111,7 @@ export function PrModal({
             onClick={() => {
               submitPr(prSections, "main");
             }}
-            className="px-4 py-1.5 text-sm font-light rounded-lg transition-colors hover:opacity-80 disabled:opacity-50"
-            style={{
-              backgroundColor: "hsl(var(--brand))",
-              color: "hsl(var(--brand-foreground, var(--background)))",
-              boxShadow:
-                "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1)",
-            }}
+            className="ds-modal-btn h-9 px-4 text-sm font-light rounded-lg transition-colors hover:opacity-80 disabled:opacity-50 ds-surface-primary"
           >
             {sectionPrStatus["main"]?.status === "creating"
               ? "Preparing..."

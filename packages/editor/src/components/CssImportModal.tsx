@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { parseCssImport, fgForBg } from "../utils/themeUtils";
+import { parseCssImport } from "../utils/themeUtils";
 import type {
   CardStyleState,
   TypographyState,
@@ -204,7 +204,7 @@ export function CssImportModal({
           <div className="flex items-center justify-end gap-2 pt-2">
             <button
               onClick={handleClose}
-              className="px-4 py-2 text-sm font-light rounded-lg ds-surface-muted"
+              className="ds-modal-btn h-9 px-4 text-sm font-light rounded-lg border transition-colors hover:opacity-80 ds-surface ds-border"
             >
               Cancel
             </button>
@@ -269,19 +269,7 @@ export function CssImportModal({
                 }
                 handleClose();
               }}
-              className="px-4 py-2 text-sm font-light rounded-lg transition-opacity"
-              style={{
-                backgroundColor: "hsl(var(--brand))",
-                color: colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "hsl(var(--primary-foreground))",
-                opacity: !cssImportPreview || (
-                  Object.keys(cssImportPreview.colors).length === 0 &&
-                  Object.keys(cssImportPreview.typographyState).length === 0 &&
-                  Object.keys(cssImportPreview.cardStyle).length === 0 &&
-                  Object.keys(cssImportPreview.buttonStyle).length === 0 &&
-                  Object.keys(cssImportPreview.interactionStyle).length === 0 &&
-                  Object.keys(cssImportPreview.alertStyle).length === 0
-                ) ? 0.5 : 1,
-              }}
+              className="ds-modal-btn h-9 px-4 text-sm font-light rounded-lg transition-opacity hover:opacity-80 disabled:opacity-50 ds-surface-primary"
             >
               Apply
             </button>

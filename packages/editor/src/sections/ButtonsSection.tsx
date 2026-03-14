@@ -170,7 +170,7 @@ export function ButtonsSection({
                             setBtnExportFormat("css");
                             setBtnCssVisible(true);
                           }}
-                          className="h-10 px-2 sm:px-3 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                          className="h-10 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
                           style={{
                             backgroundColor: btnCssVisible && btnExportFormat === "css" ? "hsl(var(--brand))" : "transparent",
                             color: btnCssVisible && btnExportFormat === "css"
@@ -190,7 +190,7 @@ export function ButtonsSection({
                             setBtnExportFormat("tokens");
                             setBtnCssVisible(true);
                           }}
-                          className="h-10 px-2 sm:px-3 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                          className="h-10 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
                           style={{
                             backgroundColor: btnCssVisible && btnExportFormat === "tokens" ? "hsl(var(--brand))" : "transparent",
                             color: btnCssVisible && btnExportFormat === "tokens"
@@ -678,7 +678,7 @@ export function ButtonsSection({
                             setInteractionExportFormat("css");
                             setInteractionCssVisible(true);
                           }}
-                          className="h-10 px-2 sm:px-3 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                          className="h-10 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
                           style={{
                             backgroundColor:
                               interactionCssVisible &&
@@ -725,7 +725,7 @@ export function ButtonsSection({
                             setInteractionExportFormat("tokens");
                             setInteractionCssVisible(true);
                           }}
-                          className="h-10 px-2 sm:px-3 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                          className="h-10 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
                           style={{
                             backgroundColor:
                               interactionCssVisible &&

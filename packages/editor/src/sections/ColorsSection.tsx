@@ -276,7 +276,7 @@ export function ColorsSection({
                         setExportFormat("css");
                         generateCode();
                       }}
-                      className="h-10 px-2 sm:px-3 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                      className="h-10 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
                       style={{
                         backgroundColor:
                           generatedCode && exportFormat === "css"
@@ -318,7 +318,7 @@ export function ColorsSection({
                         setExportFormat("tokens");
                         generateCode();
                       }}
-                      className="h-10 px-2 sm:px-3 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                      className="h-10 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
                       style={{
                         backgroundColor:
                           generatedCode && exportFormat === "tokens"
