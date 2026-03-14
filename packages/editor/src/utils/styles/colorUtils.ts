@@ -11,10 +11,10 @@ export const CONTRAST_KNOWLEDGE_KEY = "ds-contrast-knowledge";
 const WCAG_AA_RATIO = 4.6;
 
 /** Maximum lightness adjustment iterations for contrast correction */
-const LIGHTNESS_ITERATIONS = 34;
+const LIGHTNESS_ITERATIONS = 100;
 
 /** Lightness adjustment step size per iteration */
-const LIGHTNESS_STEP = 3;
+const LIGHTNESS_STEP = 1;
 
 /** Maximum stored contrast corrections in localStorage */
 const MAX_STORED_CORRECTIONS = 100;
@@ -393,6 +393,22 @@ export const autoAdjustContrast = (
               adjBrand = toHsl(brand.h, brand.s, bl);
               if (contrastRatio(adjBrand, bgVal) >= WCAG_AA_RATIO) break;
             }
+            // Fallback: reduce saturation while adjusting lightness for brand
+            if (contrastRatio(adjBrand, bgVal) < WCAG_AA_RATIO) {
+              for (let s = brand.s; s >= 0; s -= 5) {
+                const dir = bg.l > 50 ? -1 : 1;
+                let l = brand.l;
+                for (let j = 0; j < LIGHTNESS_ITERATIONS; j++) {
+                  l = Math.max(0, Math.min(100, l + dir));
+                  const candidate = toHsl(brand.h, s, l);
+                  if (contrastRatio(candidate, bgVal) >= WCAG_AA_RATIO) {
+                    adjBrand = candidate;
+                    break;
+                  }
+                }
+                if (contrastRatio(adjBrand, bgVal) >= WCAG_AA_RATIO) break;
+              }
+            }
             if (contrastRatio(adjBrand, bgVal) >= WCAG_AA_RATIO) {
               adjustments["--brand"] = adjBrand;
               working["--brand"] = adjBrand;
@@ -460,6 +476,32 @@ export const autoAdjustContrast = (
             adjusted = toHsl(fg.h, fg.s, l);
             if (contrastRatio(adjusted, adjustedBg) >= WCAG_AA_RATIO) break;
           }
+        }
+
+        // Fallback: reduce saturation while adjusting lightness
+        if (contrastRatio(adjusted, adjustedBg) < WCAG_AA_RATIO) {
+          let bestAdj = adjusted;
+          let bestRatio = contrastRatio(adjusted, adjustedBg);
+          for (let s = fg.s; s >= 0; s -= 5) {
+            const dir = bg.l > 50 ? -1 : 1;
+            let l = fg.l;
+            for (let i = 0; i < LIGHTNESS_ITERATIONS; i++) {
+              l = Math.max(0, Math.min(100, l + dir));
+              const candidate = toHsl(fg.h, s, l);
+              const ratio = contrastRatio(candidate, adjustedBg);
+              if (ratio >= WCAG_AA_RATIO) {
+                adjusted = candidate;
+                bestRatio = ratio;
+                break;
+              }
+              if (ratio > bestRatio) {
+                bestAdj = candidate;
+                bestRatio = ratio;
+              }
+            }
+            if (bestRatio >= WCAG_AA_RATIO) break;
+          }
+          if (bestRatio < WCAG_AA_RATIO) adjusted = bestAdj;
         }
       }
 
