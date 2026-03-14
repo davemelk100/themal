@@ -2476,12 +2476,12 @@ function DesignSystemEditorInner({
               </div>
               <h3 className="text-base font-medium">Site palette detected</h3>
             </div>
-            <p className="text-sm font-light mb-3 ds-text-muted">
+            <p className="text-sm font-light mb-3 ds-text-subtle">
               We found {scanResult.palette.backgrounds.length} background{scanResult.palette.backgrounds.length !== 1 ? "s" : ""},{" "}
               {scanResult.palette.texts.length} text color{scanResult.palette.texts.length !== 1 ? "s" : ""},{" "}
               and {scanResult.palette.fonts.length} font{scanResult.palette.fonts.length !== 1 ? "s" : ""} on your page.
             </p>
-            <p className="text-sm font-light mb-4 ds-text-muted">
+            <p className="text-sm font-light mb-4 ds-text-subtle">
               Would you like to see the CSS needed to theme your entire site with Themal?
             </p>
             <div className="flex justify-end gap-2">
@@ -2529,7 +2529,7 @@ function DesignSystemEditorInner({
                 </svg>
               </button>
             </div>
-            <p className="text-sm font-light mb-3 ds-text-muted">
+            <p className="text-sm font-light mb-3 ds-text-subtle">
               Add this to your global stylesheet. Themal sets the CSS variables on <code className="text-xs px-1 py-0.5 rounded" style={{ backgroundColor: "hsl(var(--muted) / 0.5)" }}>:root</code> — these rules tell your site to use them.
             </p>
             <div className="relative">

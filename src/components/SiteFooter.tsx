@@ -49,7 +49,7 @@ export function ContactForm({ buttonClassName }: { buttonClassName?: string }) {
         className="rounded-xl p-6 w-[380px] shadow-xl surface-card"
         onClick={(e) => e.stopPropagation()}
       >
-        <h3 className="text-lg font-light mb-4">Contact Us</h3>
+        <h3 className="text-lg font-light mb-4 text-card-fg">Contact Us</h3>
 
         {submitted ? (
           <p className="text-sm font-light py-4 text-success">
@@ -72,26 +72,28 @@ export function ContactForm({ buttonClassName }: { buttonClassName?: string }) {
               </label>
             </p>
             <div>
-              <label className="block text-xs font-light uppercase tracking-wider mb-1 text-muted">
+              <label className="block text-xs font-light uppercase tracking-wider mb-1" style={{ color: "hsl(var(--card-foreground) / 0.6)" }}>
                 Email
               </label>
               <input
                 type="email"
                 name="email"
                 required
-                className="w-full px-3 py-2 rounded-lg border text-sm font-light outline-none transition-colors border-theme bg-page text-fg"
+                className="w-full px-3 py-2 rounded-lg border text-sm font-light outline-none transition-colors border-theme text-card-fg"
+                style={{ backgroundColor: "hsl(var(--card) / 0.7)" }}
                 placeholder="you@example.com"
               />
             </div>
             <div>
-              <label className="block text-xs font-light uppercase tracking-wider mb-1 text-muted">
+              <label className="block text-xs font-light uppercase tracking-wider mb-1" style={{ color: "hsl(var(--card-foreground) / 0.6)" }}>
                 Message
               </label>
               <textarea
                 name="message"
                 required
                 rows={3}
-                className="w-full px-3 py-2 rounded-lg border text-sm font-light outline-none transition-colors resize-none border-theme bg-page text-fg"
+                className="w-full px-3 py-2 rounded-lg border text-sm font-light outline-none transition-colors resize-none border-theme text-card-fg"
+                style={{ backgroundColor: "hsl(var(--card) / 0.7)" }}
                 placeholder="How can we help?"
               />
             </div>
@@ -105,9 +107,11 @@ export function ContactForm({ buttonClassName }: { buttonClassName?: string }) {
               </button>
               <button
                 type="submit"
-                className="px-4 py-1.5 text-sm font-light rounded-lg transition-colors hover:opacity-80 surface-invert"
+                className="px-4 py-1.5 text-sm font-light rounded-lg transition-colors hover:opacity-80"
                 style={{
-                  boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
+                  backgroundColor: "hsl(var(--brand))",
+                  color: "hsl(var(--brand-foreground, var(--background)))",
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1)",
                 }}
               >
                 Send
@@ -167,7 +171,7 @@ export function ReportBugForm({ buttonClassName }: { buttonClassName?: string })
         className="rounded-xl p-6 w-[380px] shadow-xl surface-card"
         onClick={(e) => e.stopPropagation()}
       >
-        <h3 className="text-lg font-light mb-4">Report a Bug</h3>
+        <h3 className="text-lg font-light mb-4 text-card-fg">Report a Bug</h3>
 
         {submitted ? (
           <p className="text-sm font-light py-4 text-success">
@@ -190,36 +194,39 @@ export function ReportBugForm({ buttonClassName }: { buttonClassName?: string })
               </label>
             </p>
             <div>
-              <label className="block text-xs font-light uppercase tracking-wider mb-1 text-muted">
+              <label className="block text-xs font-light uppercase tracking-wider mb-1" style={{ color: "hsl(var(--card-foreground) / 0.6)" }}>
                 Email (optional)
               </label>
               <input
                 type="email"
                 name="email"
-                className="w-full px-3 py-2 rounded-lg border text-sm font-light outline-none transition-colors border-theme bg-page text-fg"
+                className="w-full px-3 py-2 rounded-lg border text-sm font-light outline-none transition-colors border-theme text-card-fg"
+                style={{ backgroundColor: "hsl(var(--card) / 0.7)" }}
                 placeholder="you@example.com"
               />
             </div>
             <div>
-              <label className="block text-xs font-light uppercase tracking-wider mb-1 text-muted">
+              <label className="block text-xs font-light uppercase tracking-wider mb-1" style={{ color: "hsl(var(--card-foreground) / 0.6)" }}>
                 What happened?
               </label>
               <textarea
                 name="description"
                 required
                 rows={3}
-                className="w-full px-3 py-2 rounded-lg border text-sm font-light outline-none transition-colors resize-none border-theme bg-page text-fg"
+                className="w-full px-3 py-2 rounded-lg border text-sm font-light outline-none transition-colors resize-none border-theme text-card-fg"
+                style={{ backgroundColor: "hsl(var(--card) / 0.7)" }}
                 placeholder="Describe the bug..."
               />
             </div>
             <div>
-              <label className="block text-xs font-light uppercase tracking-wider mb-1 text-muted">
+              <label className="block text-xs font-light uppercase tracking-wider mb-1" style={{ color: "hsl(var(--card-foreground) / 0.6)" }}>
                 Steps to reproduce (optional)
               </label>
               <textarea
                 name="steps"
                 rows={2}
-                className="w-full px-3 py-2 rounded-lg border text-sm font-light outline-none transition-colors resize-none border-theme bg-page text-fg"
+                className="w-full px-3 py-2 rounded-lg border text-sm font-light outline-none transition-colors resize-none border-theme text-card-fg"
+                style={{ backgroundColor: "hsl(var(--card) / 0.7)" }}
                 placeholder="1. Go to... 2. Click on..."
               />
             </div>
@@ -233,9 +240,11 @@ export function ReportBugForm({ buttonClassName }: { buttonClassName?: string })
               </button>
               <button
                 type="submit"
-                className="px-4 py-1.5 text-sm font-light rounded-lg transition-colors hover:opacity-80 surface-invert"
+                className="px-4 py-1.5 text-sm font-light rounded-lg transition-colors hover:opacity-80"
                 style={{
-                  boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)",
+                  backgroundColor: "hsl(var(--brand))",
+                  color: "hsl(var(--brand-foreground, var(--background)))",
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1)",
                 }}
               >
                 Submit

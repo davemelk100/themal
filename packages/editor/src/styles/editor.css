@@ -59,6 +59,7 @@
 /* Text colors — scoped under .ds-editor to beat the button reset (0,1,1) */
 .ds-editor .ds-text-fg            { color: hsl(var(--foreground)); }
 .ds-editor .ds-text-muted         { color: hsl(var(--muted-foreground)); }
+.ds-editor .ds-text-subtle        { color: hsl(var(--foreground) / 0.6); }
 .ds-editor .ds-text-brand         { color: hsl(var(--brand)); }
 .ds-editor .ds-text-destructive   { color: hsl(var(--destructive)); }
 .ds-editor .ds-text-card          { color: hsl(var(--card-foreground)); }

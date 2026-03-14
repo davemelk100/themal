@@ -41,7 +41,7 @@ export function PrModal({
           Open Pull Request
         </h3>
         <p
-          className="text-sm font-light mb-4 ds-text-muted"
+          className="text-sm font-light mb-4 ds-text-subtle"
         >
           Select sections to include:
         </p>
@@ -111,8 +111,10 @@ export function PrModal({
             onClick={() => {
               submitPr(prSections, "main");
             }}
-            className="px-4 py-1.5 text-sm font-light rounded-lg transition-colors hover:opacity-80 disabled:opacity-50 ds-surface-muted"
+            className="px-4 py-1.5 text-sm font-light rounded-lg transition-colors hover:opacity-80 disabled:opacity-50"
             style={{
+              backgroundColor: "hsl(var(--brand))",
+              color: "hsl(var(--brand-foreground, var(--background)))",
               boxShadow:
                 "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1)",
             }}

@@ -73,7 +73,7 @@ export function AiGenerateModal({
             <div className="flex items-center justify-end gap-3 mt-4">
               <button
                 onClick={handleClose}
-                className="px-4 py-2 text-sm font-light rounded-lg transition-opacity hover:opacity-70 ds-text-muted"
+                className="px-4 py-2 text-sm font-light rounded-lg transition-opacity hover:opacity-70 ds-text-subtle"
               >
                 Cancel
               </button>
@@ -99,7 +99,7 @@ export function AiGenerateModal({
             </h3>
             {aiPreview.colors && Object.keys(aiPreview.colors).length > 0 && (
               <div className="mb-4">
-                <p className="text-xs font-light mb-2 ds-text-muted">
+                <p className="text-xs font-light mb-2 ds-text-subtle">
                   Colors
                 </p>
                 <div className="flex flex-wrap gap-3">
@@ -111,7 +111,7 @@ export function AiGenerateModal({
                           backgroundColor: `hsl(${value})`,
                         }}
                       />
-                      <span className="text-[11px] font-light ds-text-muted">
+                      <span className="text-[11px] font-light ds-text-subtle">
                         {varName.replace("--", "")}
                       </span>
                     </div>
@@ -121,12 +121,12 @@ export function AiGenerateModal({
             )}
             {aiPreview.typography && Object.keys(aiPreview.typography).length > 0 && (
               <div className="mb-4">
-                <p className="text-xs font-light mb-2 ds-text-muted">
+                <p className="text-xs font-light mb-2 ds-text-subtle">
                   Typography
                 </p>
                 <div className="flex flex-col gap-1">
                   {Object.entries(aiPreview.typography).map(([key, value]) => (
-                    <div key={key} className="text-xs font-light ds-text-muted">
+                    <div key={key} className="text-xs font-light ds-text-subtle">
                       <span className="ds-text-fg">{key}:</span> {String(value)}
                     </div>
                   ))}
@@ -136,13 +136,13 @@ export function AiGenerateModal({
             <div className="flex items-center justify-end gap-3 mt-4">
               <button
                 onClick={() => setAiPreview(null)}
-                className="px-4 py-2 text-sm font-light rounded-lg transition-opacity hover:opacity-70 ds-text-muted"
+                className="px-4 py-2 text-sm font-light rounded-lg transition-opacity hover:opacity-70 ds-text-subtle"
               >
                 Back
               </button>
               <button
                 onClick={handleClose}
-                className="px-4 py-2 text-sm font-light rounded-lg transition-opacity hover:opacity-70 ds-text-muted"
+                className="px-4 py-2 text-sm font-light rounded-lg transition-opacity hover:opacity-70 ds-text-subtle"
               >
                 Cancel
               </button>
