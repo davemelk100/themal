@@ -1066,6 +1066,8 @@ function DesignSystemEditorInner({
             window.dispatchEvent(new Event("theme-pending-update"));
           }
         }
+        // Wait for the browser to repaint so axe-core reads updated computed styles
+        await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
         const reResults = await axe.run(
           { include: [context], exclude: ["[data-axe-exclude]"] },
           { runOnly: { type: "rule", values: ["color-contrast"] } },
