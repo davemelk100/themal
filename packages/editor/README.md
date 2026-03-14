@@ -504,10 +504,13 @@ src/
 │   │   ├── inputStyle.ts       # Input style management
 │   │   ├── typographyStyle.ts  # Typography and custom fonts
 │   │   ├── alertStyle.ts       # Alert and toast styles
-│   │   ├── interactionStyle.ts # Button interaction states
-│   │   └── exportUtils.ts      # Serialization, design tokens, export
+│   │   ├── interactionStyle.ts       # Button interaction states
+│   │   ├── typoInteractionStyle.ts  # Typography interaction states (link/heading hover)
+│   │   └── exportUtils.ts            # Serialization, design tokens, export
+│   ├── extractPalette.ts       # Image-to-palette extraction (k-means clustering)
 │   ├── hostScanner.ts          # Host page style scanning and integration CSS
 │   ├── themeUtils.ts           # Barrel re-export of all style utilities
+│   ├── lazyIcons.ts            # Lazy-loaded lucide icon helpers
 │   ├── githubApi.ts            # Client-side GitHub PR creation
 │   ├── githubAuth.ts           # GitHub OAuth popup flow
 │   ├── iconImport.ts           # SVG sanitizer, icon fetching
