@@ -13,6 +13,7 @@ import type {
 } from "../utils/themeUtils";
 import { CustomSelect } from "../components/CustomSelect";
 import { ExportCodeBlock } from "../components/ExportCodeBlock";
+import { PremiumGate } from "../components/PremiumGate";
 
 export const COLOR_SWATCHES = [
   { key: "--brand", label: "Primary" },
@@ -56,6 +57,8 @@ export interface ColorsSectionProps {
   typographyState: TypographyState;
   alertStyle: AlertStyleState;
   interactionStyle: InteractionStyleState;
+  upgradeUrl?: string;
+  signInUrl?: string;
 }
 
 export function ColorsSection({
@@ -79,6 +82,8 @@ export function ColorsSection({
   cardStyle,
   typographyState,
   alertStyle,
+  upgradeUrl,
+  signInUrl,
   interactionStyle,
 }: ColorsSectionProps) {
   // Compute the code for the export block
@@ -486,7 +491,8 @@ export function ColorsSection({
 
               {/* Controls + Preview */}
               <div className="flex flex-col gap-4 md:gap-6">
-                {/* Palette (own row) */}
+                {/* Palette (own row) — Pro feature */}
+                <PremiumGate feature="secondary-palette" variant="section" upgradeUrl={upgradeUrl} signInUrl={signInUrl}>
                 <div className="w-full">
                   <p
                     className="text-sm font-light uppercase tracking-wider mb-2 md:mb-3 ds-text-muted"
@@ -547,6 +553,7 @@ export function ColorsSection({
                     })}
                   </div>
                 </div>
+                </PremiumGate>
 
                 {/* Chips / Badges row */}
                 <div className="w-full space-y-2">

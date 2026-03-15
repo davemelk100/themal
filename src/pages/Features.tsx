@@ -25,6 +25,7 @@ const features = [
       "Comprehensive scoped CSS reset - resets background-color, border, box-shadow, padding, margin, and text-transform on all interactive and structural elements inside .ds-editor to prevent any host-app style bleed-through (0.37.11)",
       "Fix checkbox and radio button sizing - locked to 1.25rem with min/max constraints so host styles can't inflate them (0.37.11)",
       "Roll back over-aggressive CSS reset that broke editor's own select dropdowns, checkboxes, and preset buttons - narrowed to only background-color and text-decoration on a/button/nav; boosted audit dialog specificity (0.37.12)",
+      "Fallback-safe modals - ds-modal-panel falls back to white when --card is undefined; added --card, --popover, --ring, --input to fallback palette; reset handlers re-apply fallbacks when no defaultColors exist (0.37.13)",
     ],
   },
   {

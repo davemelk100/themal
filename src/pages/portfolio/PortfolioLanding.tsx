@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { DesignSystemEditor } from "@design-alive/editor";
-import UserNav from "../../components/UserNav";
 import usePageMeta from "../../hooks/usePageMeta";
 import { ContactForm, ReportBugForm } from "../../components/SiteFooter";
 
@@ -41,17 +40,19 @@ export default function PortfolioLanding() {
         licenseKey={licenseKey}
         upgradeUrl="/pricing"
         signInUrl="/sign-in"
-        headerRight={<UserNav />}
         featuresUrl="/readme"
         aboutUrl="/about"
         showHeader={false}
+        showLogo={false}
         showNavLinks={false}
         showSectionNav={false}
         sidebarLinks={[
+          { to: "/editor", label: "Editor" },
+          { to: "/about", label: "About" },
+          { to: "/how-it-works", label: "How" },
+          { to: "/readme", label: "Dev" },
           { to: "/features", label: "Features" },
           { to: "/pricing", label: "Pricing" },
-          { to: "/about", label: "About" },
-          { to: "/readme", label: "Docs" },
           { to: "/privacy", label: "Privacy" },
           { to: "/terms", label: "Terms" },
         ]}
@@ -61,7 +62,7 @@ export default function PortfolioLanding() {
             <ReportBugForm buttonClassName="ds-global-btn w-full h-9 px-2 text-xs font-light rounded-lg transition-colors hover:opacity-80 flex items-center gap-2" />
             <div className="mt-auto pt-4">
               <a href="/" className="hover:opacity-70 transition-opacity">
-                <img src="/themal-just-t.svg" alt="Themal" className="h-8" width="27" height="32" />
+                <img src="/themal-logo-negative.svg" alt="Themal" className="h-8" />
               </a>
             </div>
           </>

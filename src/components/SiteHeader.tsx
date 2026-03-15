@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 import ThemalLogo from "./ThemalLogo";
 
-const SECTION_IDS = ["colors", "buttons", "card", "alerts", "typography", "inputs"];
+const SECTION_IDS = ["colors", "buttons", "card", "alerts", "typography", "inputs", "tables"];
 const SECTION_LINKS: { id: string; label: string }[] = [
   { id: "colors", label: "Colors" },
   { id: "buttons", label: "Buttons" },
@@ -10,6 +10,7 @@ const SECTION_LINKS: { id: string; label: string }[] = [
   { id: "alerts", label: "Alerts" },
   { id: "typography", label: "Typography" },
   { id: "inputs", label: "Inputs" },
+  { id: "tables", label: "Tables" },
 ];
 
 export default function SiteHeader() {
@@ -65,6 +66,12 @@ export default function SiteHeader() {
     const refs = navItemRefs.current;
     const container = navContainerRef.current;
     if (!container) return;
+
+    // Only reorder on desktop (lg: 1024px+)
+    if (window.innerWidth < 1024) {
+      setNavOffsets({});
+      return;
+    }
 
     // Temporarily remove transforms to measure natural positions
     const elements: { el: HTMLAnchorElement; prev: string }[] = [];
@@ -138,7 +145,7 @@ export default function SiteHeader() {
   return (
     <header
       className="sticky top-0 z-50"
-      style={{ backgroundColor: "transparent" }}
+      style={{ backgroundColor: isEditor ? "hsl(var(--background, 0 0% 100%))" : "transparent" }}
     >
       {isEditor ? (
         <div className="w-full mx-auto flex flex-col lg:flex-row site-container relative">
@@ -153,8 +160,8 @@ export default function SiteHeader() {
             </Link>
           </div>
 
-          {/* Mobile section dropdown row */}
-          <div className="px-4 pb-3 lg:hidden">
+          {/* Mobile section dropdown row — only below sm */}
+          <div className="px-4 pb-3 sm:hidden">
             <div ref={dropdownRef} className="relative">
               <button
                 onClick={() => setDropdownOpen((v) => !v)}
@@ -203,8 +210,8 @@ export default function SiteHeader() {
             </span>
           </div>
 
-          {/* Desktop nav: hidden on mobile, visible at lg */}
-          <div className="hidden lg:flex flex-1 min-w-0 px-4 sm:px-6 lg:px-8 pb-3 pt-1 lg:py-3 items-end">
+          {/* Section nav: hidden on mobile, visible at sm+ */}
+          <div className="hidden sm:flex flex-1 min-w-0 px-4 sm:px-6 lg:px-8 pb-3 pt-1 lg:py-3 items-end">
             <nav
               ref={navContainerRef}
               className="flex items-baseline gap-2 sm:gap-3 md:gap-4 lg:gap-6 overflow-x-auto flex-nowrap"

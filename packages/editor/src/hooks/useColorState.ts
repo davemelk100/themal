@@ -5,13 +5,17 @@ import {
 } from "../utils/themeUtils";
 import { useContrastEnforcement } from "./useContrastEnforcement";
 
-/** Fallback palette — only used to fill in variables the host doesn't define */
-const FALLBACK_COLORS: Record<string, string> = {
+/** Fallback palette — used to fill in variables the host doesn't define */
+export const FALLBACK_COLORS: Record<string, string> = {
   "--brand": "210 80% 50%",
   "--secondary": "210 15% 90%",
   "--accent": "210 60% 50%",
   "--background": "0 0% 100%",
   "--foreground": "0 0% 5%",
+  "--card": "0 0% 100%",
+  "--card-foreground": "0 0% 5%",
+  "--popover": "0 0% 100%",
+  "--popover-foreground": "0 0% 5%",
   "--primary-foreground": "0 0% 100%",
   "--secondary-foreground": "0 0% 10%",
   "--muted": "210 15% 95%",
@@ -24,6 +28,8 @@ const FALLBACK_COLORS: Record<string, string> = {
   "--warning": "45 80% 50%",
   "--warning-foreground": "0 0% 10%",
   "--border": "0 0% 85%",
+  "--ring": "210 80% 55%",
+  "--input": "0 0% 90%",
 };
 
 /**

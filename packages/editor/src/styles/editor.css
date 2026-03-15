@@ -111,8 +111,9 @@
   background-color: var(--themal-modal-backdrop-bg, rgba(0,0,0,0.5));
 }
 .ds-modal-panel {
-  background-color: hsl(var(--themal-modal-bg, var(--card)));
-  color: hsl(var(--themal-modal-fg, var(--foreground)));
+  /* Fallback to white if --card is undefined, ensuring modal is never transparent */
+  background-color: hsl(var(--themal-modal-bg, var(--card, 0 0% 100%)));
+  color: hsl(var(--themal-modal-fg, var(--foreground, 0 0% 5%)));
   box-shadow: var(--themal-modal-shadow, 0 25px 50px -12px rgba(0,0,0,0.25));
 }
 

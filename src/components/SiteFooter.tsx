@@ -261,7 +261,7 @@ export function ReportBugForm({ buttonClassName }: { buttonClassName?: string })
 export function SiteFooterBranding() {
   return (
     <div className="flex justify-center py-1.5">
-      <img src="/circled-themal.svg" alt="Themal" className="h-8" />
+      <img src="/themal-logo-negative.svg" alt="Themal" className="h-8" />
     </div>
   );
 }
@@ -274,7 +274,7 @@ export default function SiteFooter() {
     <footer className="hidden md:block sticky bottom-0 z-40 mt-auto bg-page">
       <div className="flex justify-center py-1.5">
         <Link to="/" className="hover:opacity-70 transition-opacity">
-          <img src="/circled-themal.svg" alt="Themal" className="h-8" />
+          <img src="/themal-logo-negative.svg" alt="Themal" className="h-8" />
         </Link>
       </div>
     </footer>

@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { runContrastAudit, type AuditResults } from "./utils/contrastAuditor";
 import type { DesignSystemEditorProps, AiGenerateResult } from "./types";
-import { useColorState } from "./hooks/useColorState";
+import { useColorState, FALLBACK_COLORS } from "./hooks/useColorState";
 import { useNavigationState } from "./hooks/useNavigationState";
 import { useImagePalette } from "./hooks/useImagePalette";
 import { usePrSubmission } from "./hooks/usePrSubmission";
@@ -152,9 +152,10 @@ function DesignSystemEditorInner({
   onAiPaletteMap: _onAiPaletteMap,
 }: DesignSystemEditorProps) {
   const { isPremium } = useLicense();
-  const wcagEnforcement = true;
+  const [wcagEnforcement, setWcagEnforcement] = useState(true);
 
   const editorRootRef = useRef<HTMLDivElement>(null);
+  const contentSectionRef = useRef<HTMLElement>(null);
 
   // Helper: set a CSS variable on the editor root (and optionally on :root).
   const applyToRootRef = useRef(applyToRoot);
@@ -855,6 +856,17 @@ function DesignSystemEditorInner({
       pending[key] = val;
     }
 
+    // Enforce WCAG AA contrast on the harmony palette
+    if (wcagEnforcement) {
+      const fixes = autoAdjustContrast(newColors, lockedKeys);
+      for (const [fixKey, fixVal] of Object.entries(fixes)) {
+        setVar(fixKey, fixVal);
+        newColors[fixKey] = fixVal;
+        pending[fixKey] = fixVal;
+      }
+      persistContrastFixes(fixes);
+    }
+
     storage.set(COLOR_HISTORY_KEY, history);
     setColors(newColors);
     storage.set(PENDING_COLORS_KEY, pending);
@@ -896,6 +908,17 @@ function DesignSystemEditorInner({
       setVar(key, val);
       newColors[key] = val;
       pending[key] = val;
+    }
+
+    // Enforce WCAG AA contrast on the full generated palette
+    if (wcagEnforcement) {
+      const fixes = autoAdjustContrast(newColors, lockedKeys);
+      for (const [fixKey, fixVal] of Object.entries(fixes)) {
+        setVar(fixKey, fixVal);
+        newColors[fixKey] = fixVal;
+        pending[fixKey] = fixVal;
+      }
+      persistContrastFixes(fixes);
     }
 
     storage.set(COLOR_HISTORY_KEY, history);
@@ -993,12 +1016,20 @@ function DesignSystemEditorInner({
   };
 
   const handleResetColors = () => {
+    const el = editorRootRef.current || document.documentElement;
     EDITABLE_VARS.forEach(({ key }) => {
-      editorRootRef.current?.style.removeProperty(key);
+      el.style.removeProperty(key);
     });
     if (defaultColors) {
       Object.entries(defaultColors).forEach(([key, value]) => {
         setVar(key, value);
+      });
+    } else {
+      // Re-apply fallback palette for any missing variables
+      EDITABLE_VARS.forEach(({ key }) => {
+        if (!getComputedStyle(el).getPropertyValue(key).trim() && key in FALLBACK_COLORS) {
+          el.style.setProperty(key, FALLBACK_COLORS[key]);
+        }
       });
     }
     storage.remove(THEME_COLORS_KEY);
@@ -1011,13 +1042,21 @@ function DesignSystemEditorInner({
   };
 
   const handleReset = () => {
+    const el = editorRootRef.current || document.documentElement;
     EDITABLE_VARS.forEach(({ key }) => {
-      editorRootRef.current?.style.removeProperty(key);
+      el.style.removeProperty(key);
     });
     // If the consumer provided default colors, restore them instead of bare defaults
     if (defaultColors) {
       Object.entries(defaultColors).forEach(([key, value]) => {
         setVar(key, value);
+      });
+    } else {
+      // Re-apply fallback palette for any missing variables
+      EDITABLE_VARS.forEach(({ key }) => {
+        if (!getComputedStyle(el).getPropertyValue(key).trim() && key in FALLBACK_COLORS) {
+          el.style.setProperty(key, FALLBACK_COLORS[key]);
+        }
       });
     }
     storage.remove(THEME_COLORS_KEY);
@@ -1079,7 +1118,7 @@ function DesignSystemEditorInner({
     setAuditStatus("running");
     setAuditViolations([]);
     try {
-      const context = editorRootRef.current || document.body;
+      const context = contentSectionRef.current || editorRootRef.current || document.body;
       const results: AuditResults = runContrastAudit(context);
       const issueCount = results.violations.reduce((n, v) => n + v.nodes.length, 0);
       console.log(
@@ -1243,7 +1282,7 @@ function DesignSystemEditorInner({
 
       // 8. Re-run audit to verify
       await delay(400);
-      const context = editorRootRef.current || document.body;
+      const context = contentSectionRef.current || editorRootRef.current || document.body;
       const finalResults = runContrastAudit(context);
 
       if (finalResults.violations.length === 0) {
@@ -1430,13 +1469,13 @@ function DesignSystemEditorInner({
                 </svg>
               </a>}
 
-              {/* Nav links - desktop (below logo) */}
+              {/* Nav links - tablet & desktop (below logo), hidden on mobile */}
               {topNav ? (
-                <nav className="hidden md:flex items-center gap-4 w-full">
+                <nav className="hidden sm:flex items-center gap-3 sm:gap-4 w-full">
                   {topNav}
                 </nav>
               ) : showNavLinks && (
-                <nav className="hidden md:flex items-center gap-4 w-full">
+                <nav className="hidden sm:flex items-center gap-3 sm:gap-4 w-full">
                   {[
                     { href: "/editor", label: "Editor" },
                     ...(aboutUrl ? [{ href: aboutUrl, label: "About" }] : []),
@@ -1464,7 +1503,7 @@ function DesignSystemEditorInner({
                 {headerRight}
                 <button
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                  className="p-2 rounded-lg transition-opacity hover:opacity-70 md:hidden ds-text-fg"
+                  className="p-2 rounded-lg transition-opacity hover:opacity-70 sm:hidden ds-text-fg"
                   aria-label="Toggle menu"
                 >
                   <svg
@@ -1496,7 +1535,7 @@ function DesignSystemEditorInner({
       )}
 
       {/* Tablet actions dropdown (hidden on mobile where left nav is used, visible sm-lg) */}
-      <div className="w-full px-4 sm:px-6 lg:px-8 pt-4 md:pt-12 hidden sm:flex items-center gap-2 lg:hidden" data-axe-exclude>
+      <div className="w-full px-4 sm:px-6 lg:px-8 pt-4 hidden items-center gap-2 lg:hidden" data-axe-exclude>
         <div className="ml-auto">
           <CustomSelect
             ariaLabel="Global actions"
@@ -1733,16 +1772,32 @@ function DesignSystemEditorInner({
             </button>
           </PremiumGate>
           {accessibilityAudit && (
-            <button
-              onClick={() => runAccessibilityAudit(true)}
-              className="ds-global-btn w-full h-9 px-2 text-xs font-light rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
-              title="Run accessibility audit"
-            >
-              <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span className="truncate">{auditStatus === "running" ? "Auditing..." : "A11y Check"}</span>
-            </button>
+            <>
+              <button
+                onClick={() => runAccessibilityAudit(true)}
+                className="ds-global-btn w-full h-9 px-2 text-xs font-light rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
+                title="Run accessibility audit"
+              >
+                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span className="truncate">{auditStatus === "running" ? "Auditing..." : "A11y Check"}</span>
+              </button>
+              <button
+                onClick={() => setWcagEnforcement((prev) => !prev)}
+                className="ds-global-btn w-full h-9 px-2 text-xs font-light rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
+                title={wcagEnforcement ? "Disable WCAG auto-correction" : "Enable WCAG auto-correction"}
+              >
+                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                  {wcagEnforcement ? (
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  ) : (
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M3 3l18 18" />
+                  )}
+                </svg>
+                <span className="truncate">WCAG {wcagEnforcement ? "On" : "Off"}</span>
+              </button>
+            </>
           )}
           {onAiGenerate && (
             <button
@@ -1991,7 +2046,7 @@ function DesignSystemEditorInner({
         ))}
       </nav>
 
-      <section className="pb-2 sm:pb-3 lg:pb-4 xl:pb-6 relative">
+      <section ref={contentSectionRef} className="pb-2 sm:pb-3 lg:pb-4 xl:pb-6 relative">
         <div className="w-full px-4 sm:px-6 lg:px-8">
           {/* Alerts */}
           <div className="mb-0">
@@ -2000,9 +2055,11 @@ function DesignSystemEditorInner({
               data-axe-exclude
             >
               {accessibilityAudit && (auditStatus === "failed" || auditStatus === "passed" || auditStatus === "error") && (
-                <button
-                  type="button"
-                  className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 cursor-default"
+                <div
+                  role="button"
+                  tabIndex={0}
+                  className="fixed inset-0 z-50 flex items-center justify-center cursor-default"
+                  style={{ backgroundColor: "rgba(0,0,0,0.4)" }}
                   aria-label="Close accessibility audit results"
                   onClick={(e) => {
                     if (e.target === e.currentTarget) setAuditStatus("idle");
@@ -2098,7 +2155,7 @@ function DesignSystemEditorInner({
                       </>
                     )}
                   </div>
-                </button>
+                </div>
               )}
             </div>
           </div>
@@ -2147,6 +2204,8 @@ function DesignSystemEditorInner({
             typographyState={typographyState}
             alertStyle={alertStyle}
             interactionStyle={interactionStyle}
+            upgradeUrl={upgradeUrl}
+            signInUrl={signInUrl}
           />
 
           <ButtonsSection

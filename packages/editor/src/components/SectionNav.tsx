@@ -57,6 +57,12 @@ export function SectionNav() {
     const container = navContainerRef.current;
     if (!container) return;
 
+    // Only reorder on desktop (lg: 1024px+) — on tablet/mobile show natural order
+    if (window.innerWidth < 1024) {
+      setNavOffsets({});
+      return;
+    }
+
     // Temporarily remove transforms to measure natural positions
     const elements: { el: HTMLAnchorElement; prev: string }[] = [];
     for (const id of SECTION_IDS) {

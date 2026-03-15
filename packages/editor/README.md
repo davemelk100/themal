@@ -32,7 +32,7 @@ function App() {
 
 The editor writes CSS custom properties (HSL values) to `:root`. All styles are scoped to `.ds-editor` — the editor does not override your site's fonts, colors, or layout. Typography defaults to `inherit`, so headings and body text automatically use your host site's font families. Override the base font size with `--ds-base-font-size`.
 
-The editor automatically inherits CSS custom properties from the host page (checking both the editor element and `:root`). If no `defaultColors` prop, stored theme, or host CSS variables are found, a built-in fallback palette (light theme with blue brand) is applied. Only missing variables are filled in — host-defined values are always preserved.
+The editor automatically inherits CSS custom properties from the host page (checking both the editor element and `:root`). If no `defaultColors` prop, stored theme, or host CSS variables are found, a built-in fallback palette (light theme with blue brand) is applied — including `--card`, `--popover`, `--ring`, and `--input` so modals and form elements render correctly. Only missing variables are filled in — host-defined values are always preserved. Resetting the theme re-applies fallbacks when no `defaultColors` exist, so the editor never goes blank.
 
 ## Props
 
