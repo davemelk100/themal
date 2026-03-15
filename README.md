@@ -21,7 +21,7 @@ An interactive design system editor that lets you pick a brand color and watch e
 - **Shareable URLs** — Encode your full theme in the URL hash and share via a single link
 - **GitHub PR creation** — Propose design system changes directly from the editor
 - **Persistence** — All settings saved to localStorage and restored on reload
-- **CSS isolation** — Scoped styles never override host page CSS
+- **CSS isolation** — Comprehensive scoped reset prevents host-app styles from leaking into the editor; the editor never overrides host page CSS
 - **Mobile friendly** — Collapsible sidebar, touch-friendly controls (44px+ tap targets), responsive layouts
 
 ## How It Works

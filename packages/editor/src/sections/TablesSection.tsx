@@ -232,7 +232,6 @@ export function TablesSection({
           {/* Preview */}
           <div
             className="flex-1 min-w-0 rounded-lg p-4 sm:p-6 order-1 md:order-2 ds-bg overflow-x-auto"
-            data-axe-exclude
           >
             {/* Desktop: standard table */}
             <div className="ds-table-desktop">

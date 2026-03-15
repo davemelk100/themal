@@ -119,15 +119,13 @@ export function SectionNav() {
 
   return (
     <div
-      className="ds-section-nav sticky top-0 z-50"
+      className="ds-section-nav sticky top-0 z-50 w-full px-4 sm:px-6 lg:px-8 py-3"
       style={{ backgroundColor: "transparent" }}
     >
-      <div className="w-full flex">
-        <div className="hidden lg:flex items-end w-48 flex-shrink-0 pl-4 pr-2 py-3" />
-        <div className="flex-1 min-w-0 px-4 sm:px-6 lg:px-8 py-3 flex items-end">
           <nav
             ref={navContainerRef}
             className="flex items-baseline gap-2 sm:gap-3 md:gap-4 lg:gap-6 overflow-x-auto flex-nowrap"
+            style={{ backgroundColor: "transparent" }}
           >
             {SECTION_LINKS.map(({ id, label }) => (
               <a
@@ -137,6 +135,7 @@ export function SectionNav() {
                 className="whitespace-nowrap flex items-center gap-2 no-underline"
                 style={{
                   color: "hsl(var(--foreground))",
+                  backgroundColor: "transparent",
                   transform: `translateX(${navOffsets[id] ?? 0}px)`,
                   transition: "transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
                 }}
@@ -160,8 +159,6 @@ export function SectionNav() {
               </a>
             ))}
           </nav>
-        </div>
-      </div>
     </div>
   );
 }

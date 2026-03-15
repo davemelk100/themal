@@ -32,6 +32,8 @@ function App() {
 
 The editor writes CSS custom properties (HSL values) to `:root`. All styles are scoped to `.ds-editor` — the editor does not override your site's fonts, colors, or layout. Typography defaults to `inherit`, so headings and body text automatically use your host site's font families. Override the base font size with `--ds-base-font-size`.
 
+The editor automatically inherits CSS custom properties from the host page (checking both the editor element and `:root`). If no `defaultColors` prop, stored theme, or host CSS variables are found, a built-in fallback palette (light theme with blue brand) is applied. Only missing variables are filled in — host-defined values are always preserved.
+
 ## Props
 
 | Prop | Type | Default | Description |
@@ -416,7 +418,7 @@ import type {
 1. **Color picking** — Click any swatch to scroll the Colors section into view, then open the native color picker. Changing a key color (brand, secondary, accent, background) automatically derives related tokens.
 2. **Harmony schemes** *(Pro)* — Generate palettes using complementary, analogous, triadic, or split-complementary color relationships.
 3. **Color locks** — Lock up to 4 color tokens to preserve them during palette regeneration or harmony scheme changes. Free for all users.
-4. **Contrast enforcement** — Every foreground/background pair is checked against WCAG AA (4.5:1) using a built-in lightweight contrast auditor. Failing pairs are auto-corrected by adjusting lightness. The accessibility audit shows a centered modal with results. On failure, choose "Ignore" to dismiss or "Suggest Alternative" to auto-fix contrast issues. If the auditor encounters an error, a notification dialog appears with details and a retry option. A WCAG On/Off toggle lets you disable auto-correction for marketing or other contexts that don't require WCAG compliance. Locks are still honored when enforcement is off.
+4. **Contrast enforcement** — Every foreground/background pair is checked against WCAG AA (4.5:1) using a built-in lightweight contrast auditor. The audit covers all preview content across all 7 sections (Colors, Buttons, Cards, Alerts, Typography, Inputs, Tables) — only editor chrome (nav, headers, preset buttons) is excluded. Failing pairs are auto-corrected by adjusting lightness. The accessibility audit shows a centered modal with results. On failure, choose "Ignore" to dismiss or "Suggest Alternative" to auto-fix contrast issues. If the auditor encounters an error, a notification dialog appears with details and a retry option. A WCAG On/Off toggle lets you disable auto-correction for marketing or other contexts that don't require WCAG compliance. Locks are still honored when enforcement is off.
 4. **Typography** — Choose heading and body fonts (including custom Google Fonts), adjust sizes, weights, line height, and letter spacing with live preview. Five built-in presets (System, Modern, Classic, Compact, Editorial). The default "Inherit (Host)" option defers to the host site's font-family rules, so the editor naturally assumes your site's heading and body fonts. Typography is scoped to `.ds-editor` and does not override the host site's fonts.
 5. **Button styles** — Customize button padding, font size, font weight, border radius, shadow, and border width with presets (Subtle, Elevated, Bold).
 6. **Button interactions** *(Pro)* — Fine-tune hover opacity, hover/active scale, transition duration, and focus ring width with presets (Subtle, Elevated, Bold).
@@ -546,6 +548,8 @@ This means:
 - Your site's `font-family`, `color`, and `background` rules are never overridden.
 - Host heading fonts (e.g. `h2 { font-family: "League Gothic" }`) flow through into the editor.
 - No `!important` declarations leak into the global scope.
+- A scoped CSS reset using `.ds-editor.ds-editor` (doubled-class selector for high specificity) resets `background-color` and `text-decoration` on `a`, `button`, and `nav` elements to prevent host-app styles from bleeding into the editor.
+- Checkbox and radio button sizes are locked with `min-*`/`max-*` constraints so host styles can't inflate them.
 
 ## Web Component
 

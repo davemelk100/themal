@@ -1364,8 +1364,8 @@ function DesignSystemEditorInner({
           className="pt-2 sm:pt-3 pb-4 sm:pb-2 lg:pb-3"
         >
           <div className="w-full px-4 sm:px-6 lg:px-8">
-            {/* Title + nav links - single header row */}
-            <div className="w-full mb-2 sm:mb-3 lg:mb-4 flex items-end gap-x-8 sm:gap-x-12 pt-2 sm:pt-3 lg:pt-4 relative" data-axe-exclude>
+            {/* Title + nav links */}
+            <div className="w-full mb-2 sm:mb-3 lg:mb-4 flex flex-wrap items-end gap-x-8 sm:gap-x-12 gap-y-2 pt-2 sm:pt-3 lg:pt-4 relative" data-axe-exclude>
               {showLogo && <a
                 href="/"
                 className="flex-shrink-0 leading-none ds-text-fg"
@@ -1430,13 +1430,13 @@ function DesignSystemEditorInner({
                 </svg>
               </a>}
 
-              {/* Nav links - desktop (next to logo) */}
+              {/* Nav links - desktop (below logo) */}
               {topNav ? (
-                <nav className="hidden md:flex items-center gap-4">
+                <nav className="hidden md:flex items-center gap-4 w-full">
                   {topNav}
                 </nav>
               ) : showNavLinks && (
-                <nav className="hidden md:flex items-center gap-4">
+                <nav className="hidden md:flex items-center gap-4 w-full">
                   {[
                     { href: "/editor", label: "Editor" },
                     ...(aboutUrl ? [{ href: aboutUrl, label: "About" }] : []),
@@ -1494,8 +1494,6 @@ function DesignSystemEditorInner({
           </div>
         </div>
       )}
-
-      {showSectionNav && <SectionNav />}
 
       {/* Tablet actions dropdown (hidden on mobile where left nav is used, visible sm-lg) */}
       <div className="w-full px-4 sm:px-6 lg:px-8 pt-4 md:pt-12 hidden sm:flex items-center gap-2 lg:hidden" data-axe-exclude>
@@ -1856,6 +1854,8 @@ function DesignSystemEditorInner({
 
         {/* Main content area */}
         <div className="flex-1 min-w-0">
+
+      {showSectionNav && <SectionNav />}
 
       {/* intentionally blank — scan confirmation is handled via modal below */}
 

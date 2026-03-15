@@ -299,7 +299,7 @@ export function AlertsSection({
                     </label>
                   </div>
                   {/* Preview */}
-                  <div className="w-full space-y-3" data-axe-exclude>
+                  <div className="w-full space-y-3">
                     {(() => {
                       const alertTypes = [
                         {
@@ -687,7 +687,7 @@ export function AlertsSection({
                       </label>
                     </div>
                     {/* Toast Preview */}
-                    <div className="w-full space-y-3" data-axe-exclude>
+                    <div className="w-full space-y-3">
                       {(() => {
                         const toasts = [
                           {

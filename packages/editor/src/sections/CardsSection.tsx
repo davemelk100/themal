@@ -594,7 +594,7 @@ export function CardsSection({
             </div>
 
             {/* Live preview */}
-            <div className="flex-1 min-w-0 flex items-center justify-center order-1 md:order-2" data-axe-exclude>
+            <div className="flex-1 min-w-0 flex items-center justify-center order-1 md:order-2">
               {(() => {
                 // Compute the effective text color based on what the card bg actually looks like
                 const brandHsl = colors["--brand"] || "220 70% 50%";

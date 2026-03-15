@@ -88,11 +88,11 @@
 .ds-surface-primary    { background-color: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
 
 /* Audit dialog – fixed accessible colors independent of user theme */
-.ds-audit-dialog       { background-color: #fff; color: #1a1a1a; border: 1px solid #d4d4d4; }
-.ds-audit-dialog .ds-audit-btn-primary  { background-color: hsl(215 70% 45%); color: #fff; }
-.ds-audit-dialog .ds-audit-btn-primary:hover { background-color: hsl(215 70% 38%); }
-.ds-audit-dialog .ds-audit-btn-secondary { background-color: #e5e5e5; color: #525252; }
-.ds-audit-dialog .ds-audit-btn-secondary:hover { background-color: #d4d4d4; }
+.ds-editor .ds-audit-dialog       { background-color: #fff; color: #1a1a1a; border: 1px solid #d4d4d4; }
+.ds-editor .ds-audit-dialog .ds-audit-btn-primary  { background-color: hsl(215 70% 45%); color: #fff; }
+.ds-editor .ds-audit-dialog .ds-audit-btn-primary:hover { background-color: hsl(215 70% 38%); }
+.ds-editor .ds-audit-dialog .ds-audit-btn-secondary { background-color: #e5e5e5; color: #525252; }
+.ds-editor .ds-audit-dialog .ds-audit-btn-secondary:hover { background-color: #d4d4d4; }
 
 /* ── Modal theming ─────────────────────────────────────────────────── */
 /* Consumers can override these custom properties to theme all modals:
@@ -122,6 +122,25 @@
   box-shadow: none;
 }
 
+/* ── Scoped host-style reset ───────────────────────────────────────────
+   Prevents host-app styles from leaking into the editor.
+   Double-class selector (.ds-editor.ds-editor) boosts specificity to beat
+   common host patterns like `nav a`, `.container button`, etc.
+   Only resets properties that commonly leak (background, color, decoration)
+   — box-model properties (border, padding, margin) are left to Tailwind. */
+
+.ds-editor.ds-editor a,
+.ds-editor.ds-editor button,
+.ds-editor.ds-editor nav {
+  background-color: transparent;
+  text-decoration: none;
+}
+
+.ds-editor.ds-editor ul,
+.ds-editor.ds-editor ol {
+  list-style: none;
+}
+
 .ds-nav-link,
 .ds-nav-link:hover,
 .ds-nav-link:focus,
@@ -143,6 +162,7 @@
 /* Header nav links: subtle bottom border for active state */
 .ds-nav-link {
   color: hsl(var(--foreground) / 0.8);
+  background-color: transparent;
   border-bottom: 1px solid transparent;
   padding-bottom: 2px;
   transition: color 0.2s, border-bottom-color 0.2s;
@@ -374,11 +394,16 @@
 .ds-toggle-thumb {
   transition: transform 0.2s;
 }
-.ds-checkbox {
-  transition: background-color 0.15s, border-color 0.15s;
-}
+.ds-checkbox,
 .ds-radio {
   transition: background-color 0.15s, border-color 0.15s;
+  width: 1.25rem;
+  height: 1.25rem;
+  min-width: 1.25rem;
+  min-height: 1.25rem;
+  max-width: 1.25rem;
+  max-height: 1.25rem;
+  box-sizing: border-box;
 }
 
 /* Floating scroll-to-top button */
@@ -506,11 +531,15 @@
     min-height: 1.75rem;
   }
 
-  /* Checkbox and radio: slightly larger */
+  /* Checkbox and radio: enforce consistent size */
   .ds-editor .ds-checkbox,
   .ds-editor .ds-radio {
-    min-width: 1.5rem;
-    min-height: 1.5rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    min-width: 1.25rem;
+    min-height: 1.25rem;
+    max-width: 1.25rem;
+    max-height: 1.25rem;
   }
 
   /* Small icon-only buttons (copy/close): bigger tap target */

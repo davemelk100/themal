@@ -533,7 +533,7 @@ export function ButtonsSection({
 
                   {/* Preview */}
                   <div className="flex-1 min-w-0 flex items-start justify-center pt-2 order-1 md:order-2">
-                    <div className="w-full space-y-3" data-axe-exclude>
+                    <div className="w-full space-y-3">
                       <p
                         className="text-sm font-light uppercase tracking-wider ds-text-subtle"
                       >
@@ -1081,7 +1081,6 @@ export function ButtonsSection({
                     <div className="flex-1 min-w-0 flex items-start justify-center pt-2 order-1 md:order-2">
                       <div
                         className="w-full md:max-w-[400px] space-y-3"
-                        data-axe-exclude
                       >
                         <p
                           className="text-sm font-light uppercase tracking-wider ds-text-subtle"

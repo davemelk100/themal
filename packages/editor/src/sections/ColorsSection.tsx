@@ -183,19 +183,17 @@ export function ColorsSection({
                         setExportFormat("css");
                         generateCode();
                       }}
-                      className="h-10 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
-                      style={{
-                        backgroundColor:
-                          generatedCode && exportFormat === "css"
-                            ? "hsl(var(--brand))"
-                            : "transparent",
-                        color:
-                          generatedCode && exportFormat === "css"
-                            ? colors["--brand"]
-                              ? `hsl(${fgForBg(colors["--brand"])})`
-                              : "hsl(var(--primary-foreground))"
-                            : "hsl(var(--muted-foreground))",
-                      }}
+                      className={`h-10 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1 ${generatedCode && exportFormat === "css" ? "" : "ds-text-subtle"}`}
+                      style={
+                        generatedCode && exportFormat === "css"
+                          ? {
+                              backgroundColor: "hsl(var(--brand))",
+                              color: colors["--brand"]
+                                ? `hsl(${fgForBg(colors["--brand"])})`
+                                : "hsl(var(--primary-foreground))",
+                            }
+                          : { backgroundColor: "transparent" }
+                      }
                     >
                       <svg
                         className="w-4 h-4 flex-shrink-0"
@@ -225,19 +223,17 @@ export function ColorsSection({
                         setExportFormat("tokens");
                         generateCode();
                       }}
-                      className="h-10 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
-                      style={{
-                        backgroundColor:
-                          generatedCode && exportFormat === "tokens"
-                            ? "hsl(var(--brand))"
-                            : "transparent",
-                        color:
-                          generatedCode && exportFormat === "tokens"
-                            ? colors["--brand"]
-                              ? `hsl(${fgForBg(colors["--brand"])})`
-                              : "hsl(var(--primary-foreground))"
-                            : "hsl(var(--muted-foreground))",
-                      }}
+                      className={`h-10 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1 ${generatedCode && exportFormat === "tokens" ? "" : "ds-text-subtle"}`}
+                      style={
+                        generatedCode && exportFormat === "tokens"
+                          ? {
+                              backgroundColor: "hsl(var(--brand))",
+                              color: colors["--brand"]
+                                ? `hsl(${fgForBg(colors["--brand"])})`
+                                : "hsl(var(--primary-foreground))",
+                            }
+                          : { backgroundColor: "transparent" }
+                      }
                     >
                       <svg
                         className="w-4 h-4 flex-shrink-0"
@@ -257,7 +253,7 @@ export function ColorsSection({
                   </div>
                   <button
                     onClick={() => setShowResetModal(true)}
-                    className="h-10 px-2 sm:px-3 text-sm font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1 ds-text-muted"
+                    className="h-10 px-2 sm:px-3 text-sm font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1 ds-text-subtle"
                   >
                     <svg
                       className="w-4 h-4 flex-shrink-0"
@@ -403,7 +399,7 @@ export function ColorsSection({
                               : "rgba(0,0,0,0.08)",
                             color: isLocked
                               ? undefined
-                              : "hsl(var(--muted-foreground))",
+                              : "hsl(var(--foreground) / 0.6)",
                             opacity: canLock ? 1 : 0.3,
                           }}
                           onClick={() => {
@@ -491,7 +487,7 @@ export function ColorsSection({
               {/* Controls + Preview */}
               <div className="flex flex-col gap-4 md:gap-6">
                 {/* Palette (own row) */}
-                <div className="w-full" data-axe-exclude>
+                <div className="w-full">
                   <p
                     className="text-sm font-light uppercase tracking-wider mb-2 md:mb-3 ds-text-muted"
                   >
@@ -553,7 +549,7 @@ export function ColorsSection({
                 </div>
 
                 {/* Chips / Badges row */}
-                <div className="w-full space-y-2" data-axe-exclude>
+                <div className="w-full space-y-2">
                   <p
                     className="text-sm font-light uppercase tracking-wider ds-text-subtle"
                   >
