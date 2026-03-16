@@ -37,7 +37,7 @@ Your entire theme (colors, typography, interactions, card styles, dialog styles,
 
 ## npm Package
 
-The editor is published to npm as [`@themal/editor`](https://www.npmjs.com/package/@themal/editor) and can be installed in any React app:
+The editor is published to npm as [`@themal/editor`](https://www.npmjs.com/package/@themal/editor) for React apps, or as the `<themal-editor>` web component for any other platform:
 
 ```bash
 npm install @themal/editor

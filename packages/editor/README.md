@@ -606,18 +606,17 @@ Note: The Themal logo is hidden by default in the web component. Set `show-logo=
 
 ## AI Scaffold Prompt
 
-Copy the prompt below and paste it into Claude or ChatGPT to generate a working integration of the Themal editor into your React app. Replace the placeholder values with your own.
+Use this prompt to generate a complete Themal integration. Works with React, Next.js, Vue, Svelte, Astro, WordPress, or any web platform. Replace the bracketed placeholders with your own details.
 
 <details>
 <summary>Expand prompt</summary>
 
 ```
-I want to integrate the @themal/editor design system editor into my React app. Generate the implementation using these details:
+I want to integrate the @themal/editor design system editor into my web app. Generate the implementation using these details:
 
 **My app:**
 - Framework: [React / Next.js / Remix / Vite+React]
 - Existing CSS variable system: [yes — I use shadcn/ui tokens / no — start fresh]
-- Auth provider: [Clerk / NextAuth / none]
 
 **What I need:**
 1. A page component that renders <DesignSystemEditor /> with my brand colors

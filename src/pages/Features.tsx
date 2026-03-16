@@ -411,7 +411,7 @@ export default function Features() {
               { title: "GitHub PR Integration", desc: "Open design system PRs via your server endpoint or directly through the GitHub API with built-in OAuth." },
               { title: "Color Locks", desc: "Pin individual color tokens during palette generation." },
               { title: "Responsive Layout", desc: "Mobile-first design with a 2D color spectrum picker for touch, adaptive controls across all viewports." },
-              { title: "Plugin Mode", desc: "Embed the editor in any React app with props for custom default colors, typography, header content, and white-label branding." },
+              { title: "Plugin Mode", desc: "Embed the editor in any web app — React component or framework-agnostic web component. Customize with props for default colors, typography, header content, and white-label branding." },
               { title: "Custom Icons", desc: "Pass your own icon components to the Icons preview section, or replace the built-in set entirely." },
               { title: "Full-Site Theming", desc: "applyToRoot mirrors CSS variables to :root. Host style scanner detects your page's palette and generates integration CSS." },
               { title: "Modal Theming", desc: "Override modal backdrop, background, text, and shadow via CSS custom properties — no !important needed." },

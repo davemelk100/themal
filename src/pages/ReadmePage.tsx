@@ -38,7 +38,7 @@ export default function ReadmePage() {
         </div>
 
         <p className="text-sm leading-relaxed mb-8 text-fg">
-          Interactive design system editor for React apps. Pick colors, generate harmony palettes, enforce WCAG AA contrast, customize typography and interaction states, and export CSS custom properties - all in real time.
+          Interactive design system editor for any web app. Pick colors, generate harmony palettes, enforce WCAG AA contrast, customize typography and interaction states, and export CSS custom properties — all in real time. Available as a React component or framework-agnostic web component.
         </p>
 
         {/* Install */}
@@ -894,6 +894,113 @@ export default defineNuxtConfig({
             <li>Section heading (<code className="font-mono text-xs">.ds-h2</code>) and nav link (<code className="font-mono text-xs">.ds-nav-link-item</code>) classes in <code className="font-mono text-xs">editor.css</code> use <code className="font-mono text-xs">!important</code> only where needed to prevent injected typography from overriding structural UI.</li>
             <li>All editor styles are scoped under <code className="font-mono text-xs">.ds-editor</code> so they do not leak into your app.</li>
           </ul>
+        </section>
+
+        {/* AI Scaffold Prompt */}
+        <section className="mb-8">
+          <h2 className="text-xl font-medium mb-3 text-fg">AI Scaffold Prompt</h2>
+          <p className="text-sm font-light mb-4 text-fg">
+            Use this prompt to generate a complete Themal integration. Works with React, Next.js, Vue, Svelte, Astro, WordPress, or any web platform. Replace the bracketed placeholders with your own details.
+          </p>
+          <pre className="rounded-lg p-4 text-xs overflow-x-auto leading-relaxed" style={{ backgroundColor: "#1e1e2e", color: "#cdd6f4" }}>
+            <code>{`I want to integrate the @themal/editor design system editor into my web app. Generate the implementation using these details:
+
+**My app:**
+- Framework: [React / Next.js / Remix / Vite+React]
+- Existing CSS variable system: [yes — I use shadcn/ui tokens / no — start fresh]
+
+**What I need:**
+1. A page component that renders <DesignSystemEditor /> with my brand colors
+2. CSS custom properties in my global stylesheet that the editor will read and write
+3. An onChange handler that [saves to database / updates a config file / just logs]
+4. [Optional] PR creation via GitHub OAuth so designers can submit color changes as PRs
+
+**Package:** @themal/editor (npm install @themal/editor)
+
+**Required imports:**
+  import { DesignSystemEditor } from '@themal/editor';
+  import '@themal/editor/style.css';
+
+**CSS token format:** All color values are HSL without the hsl() wrapper: "210 80% 42%" not "hsl(210, 80%, 42%)". The editor reads/writes these as CSS custom properties on the editor root element.
+
+**Available CSS tokens (pass via defaultColors prop):**
+  --brand          — Primary brand color (used for links, badges, active states)
+  --background     — Page background
+  --foreground     — Primary text color
+  --card           — Card/surface background
+  --card-foreground
+  --popover        — Popover/dropdown background
+  --popover-foreground
+  --primary        — Primary action color (buttons, CTAs)
+  --primary-foreground
+  --secondary      — Secondary surface color
+  --secondary-foreground
+  --muted          — Muted/disabled surface
+  --muted-foreground
+  --accent         — Accent color (highlights, badges)
+  --accent-foreground
+  --destructive    — Error/danger color
+  --destructive-foreground
+  --success        — Success state color
+  --success-foreground
+  --warning        — Warning state color
+  --warning-foreground
+  --border         — Border color
+  --ring           — Focus ring color
+  --input          — Input border color
+
+**WCAG AA contrast rules:**
+  Each *-foreground token must have >= 4.5:1 contrast against its paired background token.
+  --brand and --muted-foreground must pass on --background, --card, --muted, and --secondary.
+  For dark themes, use lighter foreground values. For light themes, use darker ones.
+  The editor has a built-in contrast auditor that flags violations automatically.
+
+**Key props:**
+  defaultColors={Record<string, string>}  — Your brand's color tokens (HSL values)
+  onChange={(colors) => void}              — Called on every color change
+  showHeader={boolean}                     — Show/hide the editor header (default: true)
+  showLogo={boolean}                       — Show/hide the Themal logo (default: true)
+  accessibilityAudit={boolean}             — Enable WCAG AA auditing (default: true)
+  licenseKey={string}                      — Unlock premium features
+  githubConfig={{ clientId, repo, filePath, baseBranch }}  — Enable PR creation via GitHub OAuth
+  applyToRoot={boolean}                    — Mirror CSS vars to :root for site-wide theming
+
+**Example defaultColors for a light theme:**
+  {
+    "--background": "0 0% 100%",
+    "--foreground": "0 0% 5%",
+    "--card": "0 0% 100%",
+    "--card-foreground": "0 0% 5%",
+    "--primary": "210 80% 42%",
+    "--primary-foreground": "0 0% 100%",
+    "--secondary": "210 15% 90%",
+    "--secondary-foreground": "0 0% 10%",
+    "--muted": "210 15% 95%",
+    "--muted-foreground": "0 0% 40%",
+    "--accent": "210 60% 50%",
+    "--accent-foreground": "0 0% 5%",
+    "--destructive": "0 70% 45%",
+    "--destructive-foreground": "0 0% 100%",
+    "--success": "142 50% 32%",
+    "--success-foreground": "0 0% 100%",
+    "--warning": "45 80% 50%",
+    "--warning-foreground": "0 0% 10%",
+    "--border": "0 0% 85%",
+    "--input": "0 0% 90%",
+    "--ring": "210 80% 55%",
+    "--brand": "210 80% 42%",
+  }
+
+**Important integration notes:**
+  - Import the stylesheet: import '@themal/editor/style.css'
+  - The editor scopes all its styles under .ds-editor — it won't affect your app's styles
+  - Typography inherits from the host page (font-family: inherit)
+  - The editor persists color choices to localStorage automatically
+  - For dark themes, set --background lightness below 20% and --foreground above 90%
+  - Set applyToRoot={true} if you want the editor's color changes to affect your whole site
+
+Generate the complete implementation for my setup.`}</code>
+          </pre>
         </section>
       </div>
     </div>
