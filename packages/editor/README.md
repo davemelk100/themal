@@ -604,6 +604,116 @@ All props that accept strings or booleans can be set as HTML attributes using ke
 
 Note: The Themal logo is hidden by default in the web component. Set `show-logo="true"` to display it.
 
+## AI Scaffold Prompt
+
+Copy the prompt below and paste it into Claude or ChatGPT to generate a working integration of the Themal editor into your React app. Replace the placeholder values with your own.
+
+<details>
+<summary>Expand prompt</summary>
+
+```
+I want to integrate the @themal/editor design system editor into my React app. Generate the implementation using these details:
+
+**My app:**
+- Framework: [React / Next.js / Remix / Vite+React]
+- Existing CSS variable system: [yes — I use shadcn/ui tokens / no — start fresh]
+- Auth provider: [Clerk / NextAuth / none]
+
+**What I need:**
+1. A page component that renders <DesignSystemEditor /> with my brand colors
+2. CSS custom properties in my global stylesheet that the editor will read and write
+3. An onChange handler that [saves to database / updates a config file / just logs]
+4. [Optional] PR creation via GitHub OAuth so designers can submit color changes as PRs
+
+**Package:** @themal/editor@0.38.2 (npm install @themal/editor)
+
+**Required imports:**
+  import { DesignSystemEditor } from '@themal/editor';
+  import '@themal/editor/style.css';
+
+**CSS token format:** All color values are HSL without the hsl() wrapper: "210 80% 42%" not "hsl(210, 80%, 42%)". The editor reads/writes these as CSS custom properties on the editor root element.
+
+**Available CSS tokens (pass via defaultColors prop):**
+  --brand          — Primary brand color (used for links, badges, active states)
+  --background     — Page background
+  --foreground     — Primary text color
+  --card           — Card/surface background
+  --card-foreground
+  --popover        — Popover/dropdown background
+  --popover-foreground
+  --primary        — Primary action color (buttons, CTAs)
+  --primary-foreground
+  --secondary      — Secondary surface color
+  --secondary-foreground
+  --muted          — Muted/disabled surface
+  --muted-foreground
+  --accent         — Accent color (highlights, badges)
+  --accent-foreground
+  --destructive    — Error/danger color
+  --destructive-foreground
+  --success        — Success state color
+  --success-foreground
+  --warning        — Warning state color
+  --warning-foreground
+  --border         — Border color
+  --ring           — Focus ring color
+  --input          — Input border color
+
+**WCAG AA contrast rules:**
+  Each *-foreground token must have >= 4.5:1 contrast against its paired background token.
+  --brand and --muted-foreground must pass on --background, --card, --muted, and --secondary.
+  For dark themes, use lighter foreground values. For light themes, use darker ones.
+  The editor has a built-in contrast auditor that flags violations automatically.
+
+**Key props:**
+  defaultColors={Record<string, string>}  — Your brand's color tokens (HSL values)
+  onChange={(colors) => void}              — Called on every color change
+  showHeader={boolean}                     — Show/hide the editor header (default: true)
+  showLogo={boolean}                       — Show/hide the Themal logo (default: true)
+  accessibilityAudit={boolean}             — Enable WCAG AA auditing (default: true)
+  licenseKey={string}                      — Unlock premium features (harmony schemes, image palette, undo/redo, custom fonts)
+  githubConfig={{ clientId, repo, filePath, baseBranch }}  — Enable PR creation via GitHub OAuth
+  applyToRoot={boolean}                    — Mirror CSS vars to :root so the theme applies site-wide
+
+**Example defaultColors for a light theme:**
+  {
+    "--background": "0 0% 100%",
+    "--foreground": "0 0% 5%",
+    "--card": "0 0% 100%",
+    "--card-foreground": "0 0% 5%",
+    "--primary": "210 80% 42%",
+    "--primary-foreground": "0 0% 100%",
+    "--secondary": "210 15% 90%",
+    "--secondary-foreground": "0 0% 10%",
+    "--muted": "210 15% 95%",
+    "--muted-foreground": "0 0% 40%",
+    "--accent": "210 60% 50%",
+    "--accent-foreground": "0 0% 5%",
+    "--destructive": "0 70% 45%",
+    "--destructive-foreground": "0 0% 100%",
+    "--success": "142 50% 32%",
+    "--success-foreground": "0 0% 100%",
+    "--warning": "45 80% 50%",
+    "--warning-foreground": "0 0% 10%",
+    "--border": "0 0% 85%",
+    "--input": "0 0% 90%",
+    "--ring": "210 80% 55%",
+    "--brand": "210 80% 42%",
+  }
+
+**Important integration notes:**
+  - Import the stylesheet: import '@themal/editor/style.css'
+  - The editor scopes all its styles under .ds-editor — it won't affect your app's styles
+  - Typography inherits from the host page (font-family: inherit)
+  - The editor persists color choices to localStorage automatically
+  - For dark themes, set --background lightness below 20% and --foreground above 90%
+  - Set applyToRoot={true} if you want the editor's color changes to affect your whole site
+
+Generate the complete implementation for my setup.
+```
+
+</details>
+
 ## Development
 
 ```bash
