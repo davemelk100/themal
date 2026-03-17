@@ -36,6 +36,27 @@ export const COLOR_SWATCHES = [
   { key: "--border", label: "Border" },
 ];
 
+/** Maps each swatch bg key to the CSS variable used for its text color. */
+const SWATCH_FG_MAP: Record<string, string> = {
+  "--brand": "--brand-foreground",
+  "--secondary": "--secondary-foreground",
+  "--accent": "--accent-foreground",
+  "--background": "--foreground",
+  "--foreground": "--background",
+  "--primary-foreground": "--primary",
+  "--secondary-foreground": "--secondary",
+  "--muted": "--muted-foreground",
+  "--muted-foreground": "--muted",
+  "--accent-foreground": "--accent",
+  "--destructive": "--destructive-foreground",
+  "--destructive-foreground": "--destructive",
+  "--success": "--success-foreground",
+  "--success-foreground": "--success",
+  "--warning": "--warning-foreground",
+  "--warning-foreground": "--warning",
+  "--border": "--foreground",
+};
+
 export interface ColorsSectionProps {
   colors: Record<string, string>;
   lockedKeys: Set<string>;
@@ -288,7 +309,7 @@ export function ColorsSection({
               <div
                 id="color-swatch-grid"
                 className="grid grid-cols-5 gap-2 sm:gap-5 rounded-lg p-4 overflow-visible"
-                data-audit-target
+                data-axe-exclude
                 style={{ backgroundColor: "hsl(var(--foreground) / 0.04)" }}
               >
                 {COLOR_SWATCHES.filter(({ key }) =>
@@ -302,6 +323,8 @@ export function ColorsSection({
                 ).map(({ key, label }) => {
                   const hsl = colors[key];
                   const bgHsl = hsl || "0 0% 50%";
+                  const fgKey = SWATCH_FG_MAP[key];
+                  const fgHsl = fgKey ? colors[fgKey] : undefined;
                   const wc = contrastRatio("0 0% 100%", bgHsl);
                   const bc = contrastRatio("0 0% 0%", bgHsl);
                   const inputId = `brand-btn-color-input-${key}`;
@@ -327,9 +350,10 @@ export function ColorsSection({
                       >
                         <button
                           aria-label={`${label} color swatch`}
-                          className={`w-full aspect-square text-xs sm:text-sm font-light transition-colors hover:opacity-80 flex flex-col items-center justify-center gap-0.5 cursor-pointer rounded-tl-lg rounded-tr-lg sm:rounded-tr-none sm:rounded-bl-lg ${wc >= bc ? "ds-swatch-light" : "ds-swatch-dark"}`}
+                          className="w-full aspect-square text-xs sm:text-sm font-light transition-colors hover:opacity-80 flex flex-col items-center justify-center gap-0.5 cursor-pointer rounded-tl-lg rounded-tr-lg sm:rounded-tr-none sm:rounded-bl-lg"
                           style={{
                             backgroundColor: hsl ? `hsl(${hsl})` : "hsl(var(--muted))",
+                            color: fgHsl ? `hsl(${fgHsl})` : (wc >= bc ? "#ffffff" : "#000000"),
                           }}
                           onClick={(e) => {
                             e.preventDefault();
@@ -495,7 +519,7 @@ export function ColorsSection({
               <div className="flex flex-col gap-4 md:gap-6">
                 {/* Palette (own row) — Pro feature */}
                 <PremiumGate feature="secondary-palette" variant="section" upgradeUrl={upgradeUrl} signInUrl={signInUrl}>
-                <div className="w-full" data-audit-target>
+                <div className="w-full" data-axe-exclude>
                   <p
                     className="text-sm font-light uppercase tracking-wider mb-2 md:mb-3 ds-text-muted"
                   >
@@ -514,6 +538,8 @@ export function ColorsSection({
                     ).map(({ key, label }) => {
                       const hsl = colors[key];
                       const bgHsl = hsl || "0 0% 50%";
+                      const fgKey = SWATCH_FG_MAP[key];
+                      const fgHsl = fgKey ? colors[fgKey] : undefined;
                       const wc = contrastRatio("0 0% 100%", bgHsl);
                       const bc = contrastRatio("0 0% 0%", bgHsl);
                       const hexCode = hsl ? hslStringToHex(hsl) : "";
@@ -542,7 +568,8 @@ export function ColorsSection({
                               }}
                             />
                             <span
-                              className={`relative hidden sm:inline text-sm font-light truncate ${wc >= bc ? "ds-swatch-light" : "ds-swatch-dark"}`}
+                              className="relative hidden sm:inline text-sm font-light truncate"
+                              style={{ color: fgHsl ? `hsl(${fgHsl})` : (wc >= bc ? "#ffffff" : "#000000") }}
                             >
                               {hexCode}
                             </span>

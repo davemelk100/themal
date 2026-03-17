@@ -86,6 +86,7 @@
 .ds-surface-muted      { background-color: hsl(var(--muted)); color: hsl(var(--foreground)); }
 .ds-surface-invert     { background-color: hsl(var(--foreground)); color: hsl(var(--background)); }
 .ds-surface-primary    { background-color: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
+.ds-surface-brand      { background-color: hsl(var(--brand)); color: hsl(var(--brand-foreground, var(--background))); }
 
 /* Audit dialog – fixed accessible colors independent of user theme */
 .ds-editor .ds-audit-dialog       { background-color: #fff; color: #1a1a1a; border: 1px solid #d4d4d4; }

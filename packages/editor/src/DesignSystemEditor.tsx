@@ -421,9 +421,6 @@ function DesignSystemEditorInner({
   } = useImagePalette();
   const [exportFormat, setExportFormat] = useState<"css" | "tokens">("css");
   const [shareCopied, setShareCopied] = useState(false);
-  const [showPurgeModal, setShowPurgeModal] = useState(false);
-  const [purgeInfoPos, setPurgeInfoPos] = useState<{ top: number; left: number } | null>(null);
-  const purgeInfoRef = useRef<HTMLButtonElement>(null);
   const {
     state: inputStyle,
     update: updateInputStyle,
@@ -1070,73 +1067,10 @@ function DesignSystemEditorInner({
   };
 
   const handleReset = () => {
-    const el = editorRootRef.current || document.documentElement;
-
-    // Colors — skip if locked
-    if (!isSectionLocked("colors")) {
-      EDITABLE_VARS.forEach(({ key }) => {
-        el.style.removeProperty(key);
-      });
-      if (defaultColors) {
-        Object.entries(defaultColors).forEach(([key, value]) => {
-          setVar(key, value);
-        });
-      } else {
-        EDITABLE_VARS.forEach(({ key }) => {
-          if (!getComputedStyle(el).getPropertyValue(key).trim() && key in FALLBACK_COLORS) {
-            el.style.setProperty(key, FALLBACK_COLORS[key]);
-          }
-        });
-      }
-      storage.remove(THEME_COLORS_KEY);
-      storage.remove(PENDING_COLORS_KEY);
-      storage.remove(COLOR_HISTORY_KEY);
-      storage.remove(CONTRAST_KNOWLEDGE_KEY);
-    }
-
-    if (!isSectionLocked("cards")) {
-      storage.remove(CARD_STYLE_KEY);
-      removeCardStyleProperties(editorRootRef.current!);
-      setCardStyle({ ...DEFAULT_CARD_STYLE });
-    }
-
-    if (!isSectionLocked("typography")) {
-      storage.remove(TYPOGRAPHY_KEY);
-      removeTypographyProperties(editorRootRef.current!);
-      const resetTypo = defaultTypography
-        ? { ...DEFAULT_TYPOGRAPHY, ...defaultTypography, preset: "custom" as const }
-        : { ...DEFAULT_TYPOGRAPHY };
-      setTypographyState(resetTypo);
-      if (defaultTypography) applyTypography(resetTypo, editorRootRef.current!);
-    }
-
-    if (!isSectionLocked("alerts")) {
-      storage.remove(ALERT_STYLE_KEY);
-      removeAlertStyleProperties(editorRootRef.current!);
-      setAlertStyle({ ...DEFAULT_ALERT_STYLE });
-    }
-
-    if (!isSectionLocked("buttons")) {
-      storage.remove(BUTTON_STYLE_KEY);
-      removeButtonStyleProperties(editorRootRef.current!);
-      setButtonStyle({ ...DEFAULT_BUTTON_STYLE });
-      storage.remove(INTERACTION_STYLE_KEY);
-      removeInteractionStyleProperties(editorRootRef.current!);
-      setInteractionStyle({ ...DEFAULT_INTERACTION_STYLE });
-    }
-
-    if (!isSectionLocked("typography")) {
-      storage.remove(TYPO_INTERACTION_STYLE_KEY);
-      removeTypoInteractionStyleProperties(editorRootRef.current!);
-      setTypoInteractionStyle({ ...DEFAULT_TYPO_INTERACTION_STYLE });
-    }
-
-    if (!isSectionLocked("colors")) {
-      readCurrentColors();
-    }
-    setGeneratedCode(null);
-    setSectionPrStatus({});
-    window.dispatchEvent(new Event("theme-pending-update"));
+    // Clear all stored theme state and reload for a clean start
+    try { localStorage.clear(); } catch { /* noop */ }
+    try { sessionStorage.clear(); } catch { /* noop */ }
+    window.location.reload();
   };
 
   const handleResetCardStyle = () => {
@@ -1155,11 +1089,6 @@ function DesignSystemEditorInner({
     if (defaultTypography) applyTypography(resetTypo, editorRootRef.current!);
   };
 
-  const handlePurgeStorage = () => {
-    try { localStorage.clear(); } catch { /* noop */ }
-    try { sessionStorage.clear(); } catch { /* noop */ }
-    window.location.reload();
-  };
 
   const runAccessibilityAudit = async (manual = false) => {
     if (!accessibilityAudit) return;
@@ -1618,7 +1547,6 @@ function DesignSystemEditorInner({
               } else if (v === "pr") {
                 openPrModal();
               }
-              else if (v === "purge") setShowPurgeModal(true);
               else if (v === "audit") runAccessibilityAudit(true);
               else if (v === "ai-generate") setShowAiGenerateModal(true);
             }}
@@ -1631,7 +1559,6 @@ function DesignSystemEditorInner({
               { value: "export", label: "Export Palette" },
               { value: "share", label: "Share" },
               ...((prEndpointUrl || githubConfig) ? [{ value: "pr", label: "Open PR" }] : []),
-              { value: "purge", label: "Purge Storage" },
               ...(accessibilityAudit ? [{ value: "audit", label: "Accessibility Check" }] : []),
               ...(onAiGenerate ? [{ value: "ai-generate", label: "AI Generate" }] : []),
             ]}
@@ -1676,7 +1603,7 @@ function DesignSystemEditorInner({
 
         {/* Left sidebar — shared between desktop (always visible) and mobile (slide-in) */}
         <aside
-          className={`ds-left-nav flex flex-col gap-1.5 flex-shrink-0 w-56 lg:w-48 pt-4 lg:pt-8 pb-6 pl-4 pr-2 overflow-y-auto ${
+          className={`ds-left-nav flex flex-col justify-evenly flex-shrink-0 w-56 lg:w-48 pt-4 lg:pt-8 pb-6 pl-4 pr-2 overflow-y-auto ${
             mobileMenuOpen
               ? "fixed inset-y-0 left-0 z-50"
               : "hidden lg:flex sticky top-0 self-start z-30"
@@ -1861,7 +1788,7 @@ function DesignSystemEditorInner({
           )}
 
           {/* Divider */}
-          <div className="my-1 border-t ds-border" />
+          <div className="border-t ds-border" />
 
           <PremiumGate feature="palette-export" variant="inline" hideLock upgradeUrl={upgradeUrl} signInUrl={signInUrl}>
             <button
@@ -1900,38 +1827,6 @@ function DesignSystemEditorInner({
                 </svg>
                 <span className="truncate">Open PR</span>
               </button>
-          )}
-          <button
-            onClick={() => setShowPurgeModal(true)}
-            className="ds-global-btn flex-1 h-9 px-2 text-xs font-light rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
-          >
-            <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-            </svg>
-            <span className="truncate">Purge</span>
-            <span
-              ref={purgeInfoRef}
-              className="ds-text-muted hover:opacity-70 transition-opacity"
-              onMouseEnter={(e) => {
-                e.stopPropagation();
-                const rect = purgeInfoRef.current?.getBoundingClientRect();
-                if (rect) setPurgeInfoPos({ top: rect.top - 8, left: rect.left + rect.width / 2 });
-              }}
-              onMouseLeave={() => setPurgeInfoPos(null)}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
-              </svg>
-            </span>
-          </button>
-          {purgeInfoPos && (
-            <div
-              className="ds-purge-tooltip"
-              style={{ top: purgeInfoPos.top, left: purgeInfoPos.left, transform: "translate(-50%, -100%)" }}
-            >
-              Clears all saved theme data, preferences, and cached settings from localStorage and sessionStorage. The page will reload with default values.
-            </div>
           )}
           {sidebarLinks && sidebarLinks.length > 0 && (
             <>
@@ -2104,24 +1999,18 @@ function DesignSystemEditorInner({
             >
               {accessibilityAudit && (auditStatus === "failed" || auditStatus === "passed" || auditStatus === "error") && (
                 <div
-                  role="button"
-                  tabIndex={0}
-                  className="fixed inset-0 z-50 flex items-center justify-center cursor-default"
-                  style={{ backgroundColor: "rgba(0,0,0,0.4)" }}
-                  aria-label="Close accessibility audit results"
+                  className="fixed inset-0 z-50 flex items-center justify-center bg-white cursor-default"
+                  role="dialog"
+                  aria-modal="true"
+                  aria-label="Accessibility audit results"
                   onClick={(e) => {
                     if (e.target === e.currentTarget) setAuditStatus("idle");
                   }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Escape") setAuditStatus("idle");
-                  }}
                 >
                   <div
-                    role="dialog"
-                    aria-modal="true"
-                    aria-label="Accessibility audit results"
                     className="rounded-xl shadow-2xl p-6 max-w-sm w-[90vw] text-center space-y-4 ds-audit-dialog"
                     aria-live="assertive"
+                    onClick={(e) => e.stopPropagation()}
                   >
                     {auditStatus === "error" ? (
                       <>
@@ -2183,6 +2072,16 @@ function DesignSystemEditorInner({
                         <p className="text-sm font-light ds-text-muted">
                           Some color combinations do not meet WCAG AA contrast requirements.
                         </p>
+                        {auditViolations.length > 0 && (
+                          <ul className="text-left text-xs ds-text-muted space-y-1 max-h-32 overflow-y-auto">
+                            {auditViolations.map((v, i) => (
+                              <li key={i} className="truncate">
+                                <span className="ds-text-fg font-medium">{v.text}</span>{" "}
+                                <span className="opacity-60">{v.selector}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
                         <div className="flex items-center justify-center gap-3">
                           <button
                             onClick={() => setAuditStatus("idle")}
@@ -2197,7 +2096,7 @@ function DesignSystemEditorInner({
                             }}
                             className="px-4 py-2 text-sm font-light rounded-lg transition-colors ds-audit-btn-primary"
                           >
-                            Suggest Alternative
+                            Auto-fix
                           </button>
                         </div>
                       </>
@@ -2224,8 +2123,8 @@ function DesignSystemEditorInner({
             onClose={() => setShowGlobalResetModal(false)}
             onConfirm={handleReset}
             title="Reset Everything?"
-            message="This will reset all sections - colors, buttons, cards, alerts, and typography - to their defaults. All customizations will be lost."
-            confirmText="Reset theme to default"
+            message="This will clear all saved theme data and reload the page with default values. All customizations will be lost."
+            confirmText="Reset to defaults"
             id="global-reset-modal-title"
           />
 
@@ -2739,93 +2638,6 @@ function DesignSystemEditorInner({
         </div>
       )}
 
-      {showPurgeModal && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center"
-          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
-          onClick={() => setShowPurgeModal(false)}
-        >
-          <div
-            className="rounded-xl p-6 w-[380px] shadow-xl ds-surface"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <div
-                className="w-10 h-10 rounded-full flex items-center justify-center"
-                style={{ backgroundColor: "hsl(var(--destructive) / 0.12)" }}
-              >
-                <svg className="w-5 h-5" fill="none" stroke="hsl(var(--destructive))" viewBox="0 0 24 24" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-medium">Purge Storage</h3>
-            </div>
-            <p className="text-sm font-light mb-4 ds-text-muted">
-              This will clear all saved theme data, preferences, and cached settings. The page will reload with default values. This cannot be undone.
-            </p>
-            <p className="text-xs font-light mb-4 ds-text-muted">
-              Save your current theme first?
-            </p>
-            <div className="flex gap-2 mb-6">
-              <button
-                onClick={() => {
-                  setShowPurgeModal(false);
-                  setShowPaletteExport(true);
-                }}
-                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-xs font-light rounded-lg transition-colors hover:opacity-80 border ds-border ds-text-fg"
-              >
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
-                </svg>
-                Export
-              </button>
-              <button
-                onClick={() => {
-                  const hash = serializeThemeState(
-                    colors,
-                    cardStyle,
-                    typographyState,
-                    alertStyle,
-                    interactionStyle,
-                    typoInteractionStyle,
-                    buttonStyle,
-                  );
-                  window.location.hash = hash;
-                  navigator.clipboard.writeText(window.location.href).then(() => {
-                    setShareCopied(true);
-                    setTimeout(() => setShareCopied(false), 2000);
-                  });
-                  setShowPurgeModal(false);
-                }}
-                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-xs font-light rounded-lg transition-colors hover:opacity-80 border ds-border ds-text-fg"
-              >
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />
-                </svg>
-                Share Link
-              </button>
-            </div>
-            <div className="flex justify-end gap-2">
-              <button
-                onClick={() => setShowPurgeModal(false)}
-                className="px-4 py-2 text-sm font-light rounded-lg transition-colors hover:opacity-80 ds-text-fg"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handlePurgeStorage}
-                className="px-4 py-2 text-sm font-light rounded-lg transition-colors hover:opacity-80"
-                style={{
-                  backgroundColor: "hsl(var(--destructive, 0 84% 60%))",
-                  color: "hsl(var(--destructive-foreground, 0 0% 100%))",
-                }}
-              >
-                Purge Everything
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
         </div>
         {/* end main content area */}
       </div>
