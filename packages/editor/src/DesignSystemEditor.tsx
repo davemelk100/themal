@@ -20,6 +20,7 @@ import { ImagePaletteModal, PendingImagePaletteConfirm } from "./components/Imag
 import { MobileColorPicker } from "./components/MobileColorPicker";
 import { PrModal } from "./components/PrModal";
 import { AiGenerateModal } from "./components/AiGenerateModal";
+import { ContrastResolutionPanel } from "./components/ContrastResolutionPanel";
 import { SectionNav } from "./components/SectionNav";
 import storage from "./utils/storage";
 import {
@@ -40,6 +41,7 @@ import {
   fgForBg,
   persistContrastFixes,
   saveContrastCorrection,
+  computeContrastIssues,
   CARD_STYLE_KEY,
   DEFAULT_CARD_STYLE,
   CARD_PRESETS,
@@ -70,7 +72,7 @@ import {
   BUTTON_PRESETS,
   applyButtonStyle,
   applyStoredButtonStyle,
-  removeButtonStyleProperties,
+  removeButtonStyleProperties as _removeButtonStyleProperties,
   INPUT_STYLE_KEY,
   DEFAULT_INPUT_STYLE,
   INPUT_PRESETS,
@@ -104,6 +106,7 @@ import {
 } from "./utils/themeUtils";
 import type { CustomFontEntry } from "./utils/themeUtils";
 import type {
+  ContrastIssue,
   ButtonStyleState,
   CardStyleState,
   TypographyState,
@@ -153,13 +156,14 @@ function DesignSystemEditorInner({
   sidebarExtra,
   showSectionNav = true,
   applyToRoot = false,
+  scanHostPage = true,
   onAiPaletteMap: _onAiPaletteMap,
 }: DesignSystemEditorProps) {
   const { isPremium } = useLicense();
   const [wcagEnforcement, setWcagEnforcement] = useState(true);
 
   // Section locks — preserve a section's styles during global operations
-  const [lockedSections, setLockedSections] = useState<Set<LockableSection>>(() => {
+  const [, setLockedSections] = useState<Set<LockableSection>>(() => {
     if (!FEATURE_FLAGS.sectionLocks) return new Set();
     try {
       const stored = localStorage.getItem(LOCKED_SECTIONS_KEY);
@@ -177,7 +181,7 @@ function DesignSystemEditorInner({
     });
   }, []);
 
-  const isSectionLocked = useCallback((section: LockableSection) => lockedSections.has(section), [lockedSections]);
+
 
   // toggleSectionLock will be wired to SectionLockButton once sectionLocks flag is enabled
   void toggleSectionLock;
@@ -275,7 +279,7 @@ function DesignSystemEditorInner({
   }, [applyToRoot]);
 
   // Scan host page styles when applyToRoot is enabled
-  const { scanResult, dismissed: scanDismissed, dismiss: dismissScan } = useHostScanner(applyToRoot, setColors, setVar, editorRootRef);
+  const { scanResult, dismissed: scanDismissed, dismiss: dismissScan } = useHostScanner(applyToRoot && scanHostPage !== false, setColors, setVar, editorRootRef);
   const [showIntegrationGuide, setShowIntegrationGuide] = useState(false);
   const [showScanConfirm, setShowScanConfirm] = useState(false);
 
@@ -288,7 +292,7 @@ function DesignSystemEditorInner({
 
   const {
     activeSection,
-    navOffsets,
+    navOffsets: _navOffsets,
     mobileMenuOpen,
     setMobileMenuOpen,
     showScrollTop,
@@ -308,6 +312,8 @@ function DesignSystemEditorInner({
   const [auditViolations, setAuditViolations] = useState<
     { selector: string; text: string }[]
   >([]);
+  const [contrastIssues, setContrastIssues] = useState<ContrastIssue[]>([]);
+  const [fixSummary, setFixSummary] = useState<{ key: string; label: string; oldHex: string; newHex: string }[]>([]);
   const [harmonySchemeIndex, setHarmonySchemeIndex] = useState(-1);
   const [shuffleOpen, setShuffleOpen] = useState(false);
   const [cardStyle, setCardStyle] = useState<CardStyleState>(() => {
@@ -719,7 +725,7 @@ function DesignSystemEditorInner({
     prSections,
     setPrSections,
     sectionPrStatus,
-    setSectionPrStatus,
+    setSectionPrStatus: _setSectionPrStatus,
     submitPr,
     openPrModal,
     includeIntegration,
@@ -1094,6 +1100,7 @@ function DesignSystemEditorInner({
     if (!accessibilityAudit) return;
     setAuditStatus("running");
     setAuditViolations([]);
+    setContrastIssues([]);
     try {
       const context = contentSectionRef.current || editorRootRef.current || document.body;
       const results: AuditResults = runContrastAudit(context);
@@ -1153,7 +1160,9 @@ function DesignSystemEditorInner({
             }
           }
           setAuditViolations(elements);
-  
+          if (manual) {
+            setContrastIssues(computeContrastIssues(liveColors, lockedKeys));
+          }
         }
       }
     } catch (err) {
@@ -1283,6 +1292,63 @@ function DesignSystemEditorInner({
       console.error("fixContrastIssues failed:", err);
       setAuditStatus("failed");
     }
+  };
+
+  const handleApplyOneFix = (issue: ContrastIssue) => {
+    setVar(issue.fixedKey, issue.fixedValue);
+    const bg = colors["--background"];
+    if (bg) saveContrastCorrection(bg, issue.fixedKey, issue.fixedValue);
+
+    const updated = { ...colors, [issue.fixedKey]: issue.fixedValue };
+    setColors(updated);
+    persistContrastFixes({ [issue.fixedKey]: issue.fixedValue });
+    window.dispatchEvent(new Event("theme-pending-update"));
+
+    // Remove resolved issues and recompute remaining
+    const remaining = contrastIssues.filter(
+      (i) => !(i.fgKey === issue.fgKey && i.bgKey === issue.bgKey),
+    );
+    // Also remove other issues that share the same fixedKey (one fix can resolve many pairs)
+    const finalRemaining = remaining.filter(
+      (i) => !(i.fixedKey === issue.fixedKey && i.fixedValue === issue.fixedValue),
+    );
+    setContrastIssues(finalRemaining);
+    if (finalRemaining.length === 0) {
+      setAuditStatus("passed");
+      setAuditViolations([]);
+    }
+  };
+
+  const handleApplyAllFixes = () => {
+    const fixes: Record<string, string> = {};
+    const labelMap = new Map<string, string>(EDITABLE_VARS.map(({ key, label }) => [key, label]));
+    const summary: { key: string; label: string; oldHex: string; newHex: string }[] = [];
+    for (const issue of contrastIssues) {
+      if (!fixes[issue.fixedKey]) {
+        const oldHsl = (colors as Record<string, string>)[issue.fixedKey] || "";
+        summary.push({
+          key: issue.fixedKey,
+          label: labelMap.get(issue.fixedKey) || issue.fixedKey,
+          oldHex: hslStringToHex(oldHsl),
+          newHex: hslStringToHex(issue.fixedValue),
+        });
+      }
+      fixes[issue.fixedKey] = issue.fixedValue;
+      setVar(issue.fixedKey, issue.fixedValue);
+    }
+    const bg = colors["--background"];
+    if (bg) {
+      for (const [key, val] of Object.entries(fixes)) {
+        saveContrastCorrection(bg, key, val);
+      }
+    }
+    persistContrastFixes(fixes);
+    setColors((prev) => ({ ...prev, ...fixes }));
+    setContrastIssues([]);
+    setAuditViolations([]);
+    setFixSummary(summary);
+    setAuditStatus("passed");
+    window.dispatchEvent(new Event("theme-pending-update"));
   };
 
   // On mobile, scroll any focused editable element to the top of the viewport
@@ -1560,7 +1626,7 @@ function DesignSystemEditorInner({
               { value: "share", label: "Share" },
               ...((prEndpointUrl || githubConfig) ? [{ value: "pr", label: "Open PR" }] : []),
               ...(accessibilityAudit ? [{ value: "audit", label: "Accessibility Check" }] : []),
-              ...(onAiGenerate ? [{ value: "ai-generate", label: "AI Generate" }] : []),
+              ...(FEATURE_FLAGS.aiGenerate && onAiGenerate ? [{ value: "ai-generate", label: "AI Generate" }] : []),
             ]}
           />
         </div>
@@ -1774,6 +1840,7 @@ function DesignSystemEditorInner({
               </button>
             </>
           )}
+          <FeatureFlag name="aiGenerate">
           {onAiGenerate && (
             <button
               onClick={() => setShowAiGenerateModal(true)}
@@ -1786,6 +1853,7 @@ function DesignSystemEditorInner({
               <span className="truncate">AI Generate</span>
             </button>
           )}
+          </FeatureFlag>
 
           {/* Divider */}
           <div className="border-t ds-border" />
@@ -1860,7 +1928,7 @@ function DesignSystemEditorInner({
       {/* Section nav */}
       <nav
         ref={navContainerRef}
-        className="ds-section-nav sticky top-0 z-40 w-full px-6 sm:px-8 lg:px-10 pt-3 pb-2 hidden items-center gap-3 lg:gap-4"
+        className="ds-section-nav sticky top-0 z-40 w-full px-4 sm:px-6 lg:px-8 pt-3 pb-2 hidden items-center gap-3 lg:gap-4"
         data-axe-exclude
       >
         {[
@@ -1967,9 +2035,6 @@ function DesignSystemEditorInner({
             }}
             href={`#${s.id}`}
             className={`whitespace-nowrap flex items-center gap-2 no-underline ds-nav-link ds-nav-link-item${activeSection === s.id ? " ds-active" : ""}`}
-            style={{
-              transform: `translateX(${navOffsets[s.id] ?? 0}px)`,
-            }}
           >
             <h2 className="text-sm sm:text-base md:text-lg font-bold tracking-wider m-0 p-0">{s.label}</h2>
             <svg
@@ -1999,16 +2064,22 @@ function DesignSystemEditorInner({
             >
               {accessibilityAudit && (auditStatus === "failed" || auditStatus === "passed" || auditStatus === "error") && (
                 <div
-                  className="fixed inset-0 z-50 flex items-center justify-center bg-white cursor-default"
-                  role="dialog"
-                  aria-modal="true"
-                  aria-label="Accessibility audit results"
+                  role="button"
+                  tabIndex={0}
+                  className="ds-modal-backdrop cursor-default"
+                  aria-label="Close accessibility audit results"
                   onClick={(e) => {
-                    if (e.target === e.currentTarget) setAuditStatus("idle");
+                    if (e.target === e.currentTarget) { setAuditStatus("idle"); setFixSummary([]); }
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Escape") { setAuditStatus("idle"); setFixSummary([]); }
                   }}
                 >
                   <div
-                    className="rounded-xl shadow-2xl p-6 max-w-sm w-[90vw] text-center space-y-4 ds-audit-dialog"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label="Accessibility audit results"
+                    className={`rounded-xl shadow-2xl p-6 w-[90vw] text-center space-y-4 ds-audit-dialog ${contrastIssues.length > 0 && auditStatus === "failed" ? "ds-audit-dialog-wide" : "max-w-sm"}`}
                     aria-live="assertive"
                     onClick={(e) => e.stopPropagation()}
                   >
@@ -2049,16 +2120,52 @@ function DesignSystemEditorInner({
                           </svg>
                         </div>
                         <p className="text-base font-medium">WCAG AA Passed</p>
-                        <p className="text-sm font-light ds-text-muted">
-                          All color contrast checks passed.
-                        </p>
+                        {fixSummary.length > 0 ? (
+                          <>
+                            <p className="text-sm font-light" style={{ color: "#525252" }}>
+                              {fixSummary.length} color{fixSummary.length !== 1 ? "s" : ""} updated in the <strong>Colors</strong> section:
+                            </p>
+                            <div className="text-left text-xs" style={{ maxHeight: "10rem", overflowY: "auto" }}>
+                              {fixSummary.map((f) => (
+                                <div key={f.key} className="flex items-center gap-2 py-1" style={{ borderBottom: "1px solid #e5e5e5" }}>
+                                  <span className="font-medium" style={{ minWidth: "7rem" }}>{f.label}</span>
+                                  <span className="flex items-center gap-1">
+                                    <span style={{ display: "inline-block", width: "0.875rem", height: "0.875rem", borderRadius: "0.125rem", backgroundColor: f.oldHex, border: "1px solid #d4d4d4" }} />
+                                    <span style={{ color: "#a3a3a3" }}>{f.oldHex}</span>
+                                  </span>
+                                  <svg className="w-3 h-3" fill="none" stroke="#a3a3a3" viewBox="0 0 24 24" strokeWidth={2}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5-5 5M6 12h12" />
+                                  </svg>
+                                  <span className="flex items-center gap-1">
+                                    <span style={{ display: "inline-block", width: "0.875rem", height: "0.875rem", borderRadius: "0.125rem", backgroundColor: f.newHex, border: "1px solid #d4d4d4" }} />
+                                    <span style={{ color: "#16a34a" }}>{f.newHex}</span>
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                            <p className="text-xs font-light" style={{ color: "#737373" }}>
+                              Re-export your CSS or Tokens to commit these changes.
+                            </p>
+                          </>
+                        ) : (
+                          <p className="text-sm font-light" style={{ color: "#525252" }}>
+                            All color contrast checks passed.
+                          </p>
+                        )}
                         <button
-                          onClick={() => setAuditStatus("idle")}
+                          onClick={() => { setAuditStatus("idle"); setFixSummary([]); }}
                           className="px-4 py-2 text-sm font-light rounded-lg transition-colors ds-audit-btn-primary"
                         >
                           OK
                         </button>
                       </>
+                    ) : contrastIssues.length > 0 ? (
+                      <ContrastResolutionPanel
+                        issues={contrastIssues}
+                        onApplyOne={handleApplyOneFix}
+                        onApplyAll={handleApplyAllFixes}
+                        onDismiss={() => setAuditStatus("idle")}
+                      />
                     ) : (
                       <>
                         <div className="flex justify-center">
@@ -2348,12 +2455,11 @@ function DesignSystemEditorInner({
       )}
       {showPaletteExport && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center"
-          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+          className="ds-modal-backdrop"
           onClick={() => setShowPaletteExport(false)}
         >
           <div
-            className="rounded-xl p-6 w-[340px] shadow-xl ds-bg-card ds-text-card"
+            className="ds-modal-panel rounded-xl p-6 w-[340px]"
             onClick={(e) => e.stopPropagation()}
           >
             <h3 className="text-lg font-light mb-4">Export Palette</h3>
@@ -2520,7 +2626,7 @@ function DesignSystemEditorInner({
       )}
 
       {/* AI Generate Modal */}
-      {showAiGenerateModal && onAiGenerate && (
+      {FEATURE_FLAGS.aiGenerate && showAiGenerateModal && onAiGenerate && (
         <AiGenerateModal
           onAiGenerate={onAiGenerate}
           onApply={handleAiApply}
@@ -2531,12 +2637,11 @@ function DesignSystemEditorInner({
       {/* Scan Confirmation Modal */}
       {showScanConfirm && scanResult && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center"
-          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+          className="ds-modal-backdrop"
           onClick={() => { setShowScanConfirm(false); dismissScan(); }}
         >
           <div
-            className="rounded-xl p-6 w-[400px] shadow-xl ds-surface"
+            className="ds-modal-panel rounded-xl p-6 w-[400px]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center gap-3 mb-4">
@@ -2583,12 +2688,11 @@ function DesignSystemEditorInner({
       {/* Integration CSS Modal */}
       {showIntegrationGuide && scanResult && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center"
-          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+          className="ds-modal-backdrop"
           onClick={() => { setShowIntegrationGuide(false); dismissScan(); }}
         >
           <div
-            className="rounded-xl p-6 w-[560px] max-h-[80vh] overflow-y-auto shadow-xl ds-surface"
+            className="ds-modal-panel rounded-xl p-6 w-[560px] max-h-[80vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-4">

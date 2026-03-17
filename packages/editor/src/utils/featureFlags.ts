@@ -8,6 +8,7 @@
 export const FEATURE_FLAGS = {
   tables: true,
   aiPaletteMapping: false,
+  aiGenerate: false,
   sectionLocks: false,
 } as const;
 

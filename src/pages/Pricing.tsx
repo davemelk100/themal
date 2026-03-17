@@ -84,7 +84,7 @@ export default function Pricing() {
   usePageMeta({
     title: "Pricing | Themal Design System Editor",
     description:
-      "Themal pricing: Free plan for personal projects, Pro at $9/month or $50/year for teams. Includes color harmony schemes, image palette extraction, GitHub PR integration, and WCAG auditing.",
+      "Themal pricing: Free plan for personal projects, Pro at $10/month or $50/year for teams. Includes color harmony schemes, image palette extraction, GitHub PR integration, and WCAG auditing.",
   });
 
   const pricingSchema = {
@@ -101,7 +101,7 @@ export default function Pricing() {
       offerCount: 3,
       offers: [
         { "@type": "Offer", name: "Free", price: "0", priceCurrency: "USD", description: "Core design system editing for personal projects." },
-        { "@type": "Offer", name: "Pro Monthly", price: "9", priceCurrency: "USD", description: "Full power for teams and professional workflows. Billed monthly." },
+        { "@type": "Offer", name: "Pro Monthly", price: "10", priceCurrency: "USD", description: "Full power for teams and professional workflows. Billed monthly." },
         { "@type": "Offer", name: "Pro Yearly", price: "50", priceCurrency: "USD", description: "Full power for teams and professional workflows. Billed annually, save over 50%." },
       ],
     },
@@ -224,7 +224,7 @@ export default function Pricing() {
             </h2>
             <div className="mb-3">
               <span className="text-3xl font-semibold text-fg">
-                {billingCycle === "monthly" ? "$9" : "$50"}
+                {billingCycle === "monthly" ? "$10" : "$50"}
               </span>
               <span className="text-sm ml-1 text-muted-foreground">
                 {billingCycle === "monthly" ? "/month" : "/year"}
@@ -264,8 +264,8 @@ export default function Pricing() {
               </div>
               <div className="text-muted-foreground">
                 {billingCycle === "monthly"
-                  ? "$9/mo. $108 billed annually at monthly rate."
-                  : "$50/yr. That's ~$4.17/mo. Save over 50% vs monthly."}
+                  ? "$10/mo. $120 billed annually at monthly rate."
+                  : "$50/yr. That's ~$4.17/mo. Save over 58% vs monthly."}
               </div>
             </div>
 

@@ -88,12 +88,26 @@
 .ds-surface-primary    { background-color: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
 .ds-surface-brand      { background-color: hsl(var(--brand)); color: hsl(var(--brand-foreground, var(--background))); }
 
-/* Audit dialog – fixed accessible colors independent of user theme */
-.ds-editor .ds-audit-dialog       { background-color: #fff; color: #1a1a1a; border: 1px solid #d4d4d4; }
-.ds-editor .ds-audit-dialog .ds-audit-btn-primary  { background-color: hsl(215 70% 45%); color: #fff; }
-.ds-editor .ds-audit-dialog .ds-audit-btn-primary:hover { background-color: hsl(215 70% 38%); }
-.ds-editor .ds-audit-dialog .ds-audit-btn-secondary { background-color: #e5e5e5; color: #525252; }
-.ds-editor .ds-audit-dialog .ds-audit-btn-secondary:hover { background-color: #d4d4d4; }
+/* Audit dialog – fixed accessible colors independent of user theme.
+   Unscoped so they work inside fixed-position modals that escape .ds-editor. */
+.ds-audit-dialog       { background-color: #fff; color: #1a1a1a; border: 1px solid #d4d4d4; }
+.ds-audit-dialog .ds-audit-btn-primary  { background-color: hsl(215 70% 45%); color: #fff; }
+.ds-audit-dialog .ds-audit-btn-primary:hover { background-color: hsl(215 70% 38%); }
+.ds-audit-dialog .ds-audit-btn-secondary { background-color: #e5e5e5; color: #525252; }
+.ds-audit-dialog .ds-audit-btn-secondary:hover { background-color: #d4d4d4; }
+
+/* Contrast resolution panel */
+.ds-audit-dialog-wide { max-width: 32rem; width: 90vw; }
+.ds-audit-issue-list { max-height: 16rem; overflow-y: auto; }
+.ds-audit-issue-row { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0; border-bottom: 1px solid #e5e5e5; }
+.ds-audit-issue-row:last-child { border-bottom: none; }
+.ds-audit-swatch { width: 1.5rem; height: 1.5rem; border-radius: 0.25rem; border: 1px solid #d4d4d4; flex-shrink: 0; }
+.ds-audit-pair { display: flex; align-items: center; gap: 0.25rem; flex-shrink: 0; }
+.ds-audit-ratio-fail { background-color: #fef2f2; color: #dc2626; border-radius: 0.25rem; padding: 0.125rem 0.375rem; font-size: 0.75rem; white-space: nowrap; }
+.ds-audit-ratio-pass { background-color: #f0fdf4; color: #16a34a; border-radius: 0.25rem; padding: 0.125rem 0.375rem; font-size: 0.75rem; white-space: nowrap; }
+.ds-audit-arrow { color: #a3a3a3; flex-shrink: 0; }
+.ds-audit-btn-apply { background-color: hsl(215 70% 45%); color: #fff; border: none; border-radius: 0.25rem; padding: 0.25rem 0.5rem; font-size: 0.75rem; cursor: pointer; flex-shrink: 0; white-space: nowrap; }
+.ds-audit-btn-apply:hover { background-color: hsl(215 70% 38%); }
 
 /* ── Modal theming ─────────────────────────────────────────────────── */
 /* Consumers can override these custom properties to theme all modals:
@@ -111,6 +125,13 @@
   justify-content: center;
   background-color: var(--themal-modal-backdrop-bg, rgba(0,0,0,0.5));
 }
+/* Prevent hover:opacity-* from making the backdrop or its children translucent */
+.ds-modal-backdrop,
+.ds-modal-backdrop:hover,
+.ds-modal-backdrop *,
+.ds-modal-backdrop *:hover {
+  opacity: 1 !important;
+}
 .ds-modal-panel {
   /* Fallback to white if --card is undefined, ensuring modal is never transparent */
   background-color: hsl(var(--themal-modal-bg, var(--card, 0 0% 100%)));
@@ -119,7 +140,7 @@
 }
 
 .ds-editor .ds-section-nav {
-  background-color: transparent;
+  background-color: hsl(var(--background, 0 0% 100%));
   border-bottom: none;
   box-shadow: none;
 }
@@ -254,8 +275,7 @@
   line-height: 1;
   border-bottom: 1px solid transparent;
   padding-bottom: 2px;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-              color 0.2s,
+  transition: color 0.2s,
               border-bottom-color 0.2s;
 }
 .ds-nav-link-item.ds-active {
@@ -346,6 +366,14 @@
 .ds-editor .ds-modal-btn {
   padding: 0.375rem 1rem;
 }
+
+/* Modal color classes — unscoped so they work inside fixed-position modals
+   that escape the .ds-editor wrapper in the stacking context */
+.ds-modal-panel .ds-bg-destructive     { background-color: hsl(var(--destructive)); }
+.ds-modal-panel .ds-text-destructive-fg { color: hsl(var(--destructive-foreground)); }
+.ds-modal-panel .ds-surface             { background-color: hsl(var(--foreground) / 0.06); }
+.ds-modal-panel .ds-border              { border-color: hsl(var(--border)); }
+.ds-modal-panel .ds-text-card           { color: hsl(var(--card-foreground)); }
 
 /* Swatch text colors must override everything — computed from contrast ratio */
 .ds-editor .ds-swatch-light {

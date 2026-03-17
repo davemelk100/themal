@@ -161,7 +161,7 @@ export function CardsSection({
                         ? colors["--brand"]
                           ? `hsl(${fgForBg(colors["--brand"])})`
                           : "hsl(var(--primary-foreground))"
-                        : "hsl(var(--muted-foreground))",
+                        : "hsl(var(--foreground) / 0.6)",
                   }}
                 >
                   <svg
@@ -203,7 +203,7 @@ export function CardsSection({
                         ? colors["--brand"]
                           ? `hsl(${fgForBg(colors["--brand"])})`
                           : "hsl(var(--primary-foreground))"
-                        : "hsl(var(--muted-foreground))",
+                        : "hsl(var(--foreground) / 0.6)",
                   }}
                 >
                   <svg
@@ -224,7 +224,7 @@ export function CardsSection({
               </div>
               <button
                 onClick={() => setShowCardResetModal(true)}
-                className="h-10 px-2 sm:px-3 text-sm font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1 ds-text-muted"
+                className="h-10 px-2 sm:px-3 text-sm font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1 ds-text-subtle"
               >
                 <svg
                   className="w-4 h-4 flex-shrink-0"
@@ -407,7 +407,7 @@ export function CardsSection({
                           backgroundColor: "hsl(var(--muted))",
                           color: colors["--muted"]
                             ? `hsl(${fgForBg(colors["--muted"])})`
-                            : "hsl(var(--muted-foreground))",
+                            : "hsl(var(--foreground) / 0.6)",
                         }}
                       >
                         {cardCssCopied ? <CheckIcon /> : <CopyIcon />}
@@ -420,7 +420,7 @@ export function CardsSection({
                           backgroundColor: "hsl(var(--muted))",
                           color: colors["--muted"]
                             ? `hsl(${fgForBg(colors["--muted"])})`
-                            : "hsl(var(--muted-foreground))",
+                            : "hsl(var(--foreground) / 0.6)",
                         }}
                       >
                         <XIcon />

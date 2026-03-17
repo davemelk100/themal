@@ -88,7 +88,7 @@ const SOFTWARE_SCHEMA = {
     offerCount: 3,
     offers: [
       { "@type": "Offer", name: "Free", price: "0", priceCurrency: "USD" },
-      { "@type": "Offer", name: "Pro Monthly", price: "9", priceCurrency: "USD", billingIncrement: "MON" },
+      { "@type": "Offer", name: "Pro Monthly", price: "10", priceCurrency: "USD", billingIncrement: "MON" },
       { "@type": "Offer", name: "Pro Yearly", price: "50", priceCurrency: "USD", billingIncrement: "ANN" },
     ],
   },

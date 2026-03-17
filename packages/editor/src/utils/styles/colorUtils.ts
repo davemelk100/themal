@@ -593,6 +593,79 @@ export const autoAdjustContrast = (
     return adjustments;
 };
 
+export interface ContrastIssue {
+  fgKey: string;
+  bgKey: string;
+  fgLabel: string;
+  bgLabel: string;
+  currentFgHsl: string;
+  currentBgHsl: string;
+  currentRatio: number;
+  fixedKey: string;
+  fixedValue: string;
+  fixedRatio: number;
+}
+
+const VAR_LABEL_MAP: Map<string, string> = new Map(EDITABLE_VARS.map(({ key, label }) => [key, label]));
+
+export function computeContrastIssues(
+  currentColors: Record<string, string>,
+  lockedKeys: Set<string>,
+): ContrastIssue[] {
+  const fixes = autoAdjustContrast(currentColors, lockedKeys);
+  const issues: ContrastIssue[] = [];
+  const seen = new Set<string>();
+
+  for (const [fgKey, bgKey] of CONTRAST_PAIRS) {
+    const fgVal = currentColors[fgKey];
+    const bgVal = currentColors[bgKey];
+    if (!fgVal || !bgVal) continue;
+    const ratio = contrastRatio(fgVal, bgVal);
+    if (ratio >= WCAG_AA_RATIO) continue;
+
+    const pairId = `${fgKey}:${bgKey}`;
+    if (seen.has(pairId)) continue;
+    seen.add(pairId);
+
+    // Determine which key was fixed and the resulting ratio
+    const fixedFg = fixes[fgKey];
+    const fixedBg = fixes[bgKey];
+    const postFg = fixedFg ?? fgVal;
+    const postBg = fixedBg ?? bgVal;
+    const postRatio = contrastRatio(postFg, postBg);
+
+    // Pick the key that changed (prefer fg, fall back to bg)
+    let fixedKey: string;
+    let fixedValue: string;
+    if (fixedFg) {
+      fixedKey = fgKey;
+      fixedValue = fixedFg;
+    } else if (fixedBg) {
+      fixedKey = bgKey;
+      fixedValue = fixedBg;
+    } else {
+      // No fix found — use fgForBg as last resort
+      fixedKey = fgKey;
+      fixedValue = fgForBg(bgVal);
+    }
+
+    issues.push({
+      fgKey,
+      bgKey,
+      fgLabel: VAR_LABEL_MAP.get(fgKey) ?? fgKey,
+      bgLabel: VAR_LABEL_MAP.get(bgKey) ?? bgKey,
+      currentFgHsl: fgVal,
+      currentBgHsl: bgVal,
+      currentRatio: Math.round(ratio * 100) / 100,
+      fixedKey,
+      fixedValue,
+      fixedRatio: Math.round(postRatio * 100) / 100,
+    });
+  }
+
+  return issues;
+}
+
 export const HARMONY_SCHEMES = ['Complementary', 'Analogous', 'Triadic', 'Split-Complementary'] as const;
 export type HarmonyScheme = typeof HARMONY_SCHEMES[number];
 

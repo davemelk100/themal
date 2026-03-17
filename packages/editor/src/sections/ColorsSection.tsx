@@ -308,9 +308,8 @@ export function ColorsSection({
               {/* Color swatch buttons */}
               <div
                 id="color-swatch-grid"
-                className="grid grid-cols-5 gap-2 sm:gap-5 rounded-lg p-4 overflow-visible"
-                data-axe-exclude
-                style={{ backgroundColor: "hsl(var(--foreground) / 0.04)" }}
+                className="grid grid-cols-5 gap-2 sm:gap-5 overflow-visible"
+                data-audit-target
               >
                 {COLOR_SWATCHES.filter(({ key }) =>
                   [
@@ -334,15 +333,15 @@ export function ColorsSection({
                   return (
                     <div
                       key={key}
-                      className="flex flex-col items-stretch overflow-visible"
+                      className="flex flex-col items-stretch min-w-0"
                     >
                       <span
-                        className="sm:hidden text-xs font-light text-center truncate mb-0.5 ds-text-muted"
+                        className="sm:hidden text-xs font-light text-center truncate mb-0.5 ds-text-subtle"
                       >
                         {label}
                       </span>
                       <div
-                        className="relative group flex flex-col sm:flex-row items-stretch rounded-lg overflow-visible"
+                        className="relative group flex flex-col sm:flex-row items-stretch rounded-lg"
                         style={{
                           boxShadow:
                             "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1)",
@@ -350,7 +349,7 @@ export function ColorsSection({
                       >
                         <button
                           aria-label={`${label} color swatch`}
-                          className="w-full aspect-square text-xs sm:text-sm font-light transition-colors hover:opacity-80 flex flex-col items-center justify-center gap-0.5 cursor-pointer rounded-tl-lg rounded-tr-lg sm:rounded-tr-none sm:rounded-bl-lg"
+                          className={`w-full aspect-square text-xs sm:text-sm font-light transition-colors hover:opacity-80 flex flex-col items-center justify-center gap-0.5 cursor-pointer overflow-hidden rounded-tl-lg rounded-tr-lg sm:rounded-tr-none sm:rounded-bl-lg ${wc >= bc ? "ds-swatch-light" : "ds-swatch-dark"}`}
                           style={{
                             backgroundColor: hsl ? `hsl(${hsl})` : "hsl(var(--muted))",
                             color: fgHsl ? `hsl(${fgHsl})` : (wc >= bc ? "#ffffff" : "#000000"),
@@ -384,11 +383,11 @@ export function ColorsSection({
                             }, 100);
                           }}
                         >
-                          <span className="hidden sm:inline whitespace-nowrap leading-tight">
+                          <span className="hidden sm:inline truncate max-w-full leading-tight">
                             {label}
                           </span>
                           {hexCode && (
-                            <span className="hidden sm:inline whitespace-nowrap text-sm leading-tight">
+                            <span className="hidden sm:inline truncate max-w-full text-sm leading-tight">
                               {hexCode}
                             </span>
                           )}
@@ -521,7 +520,7 @@ export function ColorsSection({
                 <PremiumGate feature="secondary-palette" variant="section" upgradeUrl={upgradeUrl} signInUrl={signInUrl}>
                 <div className="w-full" data-axe-exclude>
                   <p
-                    className="text-sm font-light uppercase tracking-wider mb-2 md:mb-3 ds-text-muted"
+                    className="text-sm font-light uppercase tracking-wider mb-2 md:mb-3 ds-text-subtle"
                   >
                     Palette
                   </p>
@@ -554,7 +553,7 @@ export function ColorsSection({
                           className="text-left"
                         >
                           <p
-                            className="sm:hidden text-xs font-light text-center mb-0.5 ds-text-muted"
+                            className="sm:hidden text-xs font-light text-center mb-0.5 ds-text-subtle"
                           >
                             {initials}
                           </p>
@@ -618,7 +617,7 @@ export function ColorsSection({
                         backgroundColor: "hsl(var(--muted))",
                         color: colors["--muted"]
                           ? `hsl(${fgForBg(colors["--muted"])})`
-                          : "hsl(var(--muted-foreground))",
+                          : "hsl(var(--foreground) / 0.6)",
                       }}
                     >
                       Muted
@@ -685,7 +684,7 @@ export function ColorsSection({
                         backgroundColor: "hsl(var(--muted))",
                         color: colors["--muted"]
                           ? `hsl(${fgForBg(colors["--muted"])})`
-                          : "hsl(var(--muted-foreground))",
+                          : "hsl(var(--foreground) / 0.6)",
                       }}
                     >
                       Muted

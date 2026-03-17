@@ -35,6 +35,8 @@ export default function PortfolioLanding() {
         </div>
       )}
       <DesignSystemEditor
+        applyToRoot
+        scanHostPage={false}
         prEndpointUrl="/.netlify/functions/create-design-pr"
         accessibilityAudit={true}
         licenseKey={licenseKey}

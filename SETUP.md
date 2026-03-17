@@ -111,7 +111,7 @@ Stripe handles subscription checkout for Free/Pro tiers.
    - Note: toggle **Test mode** (top-right) to get test keys (`sk_test_...`) for development.
 
 2. Create products and prices under **Product catalog > Add product**:
-   - **Monthly Pro**: $9/month, recurring. Copy the `price_` ID into `STRIPE_MONTHLY_PRICE_ID`.
+   - **Monthly Pro**: $10/month, recurring. Copy the `price_` ID into `STRIPE_MONTHLY_PRICE_ID`.
    - **Yearly Pro**: $50/year, recurring. Copy the `price_` ID into `STRIPE_YEARLY_PRICE_ID`.
    - **Test product**: $0.50, one-time. Copy the `price_` ID into `STRIPE_TEST_PRICE_ID`.
 

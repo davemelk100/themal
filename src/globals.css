@@ -51,44 +51,44 @@
 
 @layer base {
   :root {
-    --brand: 205.8 65.8% 8.900000000000006%;
+    --brand: 28.9 100% 31%;
     --brand-foreground: 0 0% 100%;
-    --background: 180.0 2.0% 90.0%;
-    --foreground: 0 0% 0%;
-    --card: 180.0 2.0% 90.0%;
-    --card-foreground: 0 0% 0%;
-    --popover: 180.0 2.0% 90.0%;
-    --popover-foreground: 0 0% 0%;
-    --primary: 205.8 83.2% 48.0%;
-    --primary-foreground: 205.8 40.0% 10.0%;
-    --secondary: 210.2 100.0% 68.0%;
+    --background: 0.0 6.7% 2.9%;
+    --foreground: 0 0% 100%;
+    --card: 0.0 6.7% 2.9%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0.0 6.7% 2.9%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 28.9 83.2% 48.0%;
+    --primary-foreground: 28.9 40.0% 15.0%;
+    --secondary: 28.9 71.5% 93.0%;
     --secondary-foreground: 0 0% 0%;
-    --muted: 210.2 17.9% 95.3%;
-    --muted-foreground: 0 0% 20%;
-    --accent: 210.2 3.1% 61.6%;
+    --muted: 28.9 22.3% 97.2%;
+    --muted-foreground: 0 0% 0%;
+    --accent: 28.9 75.6% 87.7%;
     --accent-foreground: 0 0% 0%;
-    --destructive: 0 100.0% 55.0%;
-    --destructive-foreground: 0 0% 9%;
-    --success: 142 90.0% 54.4%;
-    --success-foreground: 0 0% 35%;
-    --warning: 45 100.0% 60.0%;
+    --destructive: 0 83.2% 55.0%;
+    --destructive-foreground: 0 0% 5%;
+    --success: 142 68.0% 55.0%;
+    --success-foreground: 0 0% 30%;
+    --warning: 45 79.4% 60.0%;
     --warning-foreground: 0 0% 0%;
-    --border: 180.0 0.6% 81.0%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 205.8 83.2% 53.3%;
+    --border: 0.0 2.0% 14.9%;
+    --input: 0.0 2.0% 14.9%;
+    --ring: 28.9 83.2% 53.3%;
     --radius: 0.5rem;
-    --font-heading: Roboto, sans-serif;
-    --font-body: Roboto, sans-serif;
-    --font-size-base: 1rem;
+    --font-heading: inherit;
+    --font-body: inherit;
+    --font-size-base: 1.0625rem;
     --font-weight-heading: 300;
     --font-weight-body: 300;
     --line-height: 1.5;
     --letter-spacing: 0em;
     --letter-spacing-heading: 0em;
-    --card-radius: 16px;
-    --card-shadow: 0px 4px 16px 0px rgba(0,0,0,0.08);
+    --card-radius: 12px;
+    --card-shadow: 0px 2px 8px 0px rgba(0,0,0,0.1);
     --card-border: none;
-    --card-backdrop: blur(16px);
+    --card-backdrop: none;
   }
 
   .dark {

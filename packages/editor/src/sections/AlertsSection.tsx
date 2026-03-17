@@ -149,7 +149,7 @@ export function AlertsSection({
                                 ? colors["--brand"]
                                   ? `hsl(${fgForBg(colors["--brand"])})`
                                   : "hsl(var(--primary-foreground))"
-                                : "hsl(var(--muted-foreground))",
+                                : "hsl(var(--foreground) / 0.6)",
                           }}
                         >
                           <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -181,7 +181,7 @@ export function AlertsSection({
                                 ? colors["--brand"]
                                   ? `hsl(${fgForBg(colors["--brand"])})`
                                   : "hsl(var(--primary-foreground))"
-                                : "hsl(var(--muted-foreground))",
+                                : "hsl(var(--foreground) / 0.6)",
                           }}
                         >
                           <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -192,7 +192,7 @@ export function AlertsSection({
                       </div>
                       <button
                         onClick={() => setShowDialogResetModal(true)}
-                        className="h-10 px-2 sm:px-3 text-sm font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1 ds-text-muted"
+                        className="h-10 px-2 sm:px-3 text-sm font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1 ds-text-subtle"
                       >
                         <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" />
@@ -467,7 +467,7 @@ export function AlertsSection({
                                   backgroundColor: "hsl(var(--muted))",
                                   color: colors["--muted"]
                                     ? `hsl(${fgForBg(colors["--muted"])})`
-                                    : "hsl(var(--muted-foreground))",
+                                    : "hsl(var(--foreground) / 0.6)",
                                 }}
                               >
                                 {alertCssCopied ? <CheckIcon /> : <CopyIcon />}
@@ -480,7 +480,7 @@ export function AlertsSection({
                                   backgroundColor: "hsl(var(--muted))",
                                   color: colors["--muted"]
                                     ? `hsl(${fgForBg(colors["--muted"])})`
-                                    : "hsl(var(--muted-foreground))",
+                                    : "hsl(var(--foreground) / 0.6)",
                                 }}
                               >
                                 <XIcon />
@@ -538,7 +538,7 @@ export function AlertsSection({
                                   ? colors["--brand"]
                                     ? `hsl(${fgForBg(colors["--brand"])})`
                                     : "hsl(var(--primary-foreground))"
-                                  : "hsl(var(--muted-foreground))",
+                                  : "hsl(var(--foreground) / 0.6)",
                             }}
                           >
                             <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -570,7 +570,7 @@ export function AlertsSection({
                                   ? colors["--brand"]
                                     ? `hsl(${fgForBg(colors["--brand"])})`
                                     : "hsl(var(--primary-foreground))"
-                                  : "hsl(var(--muted-foreground))",
+                                  : "hsl(var(--foreground) / 0.6)",
                             }}
                           >
                             <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -581,7 +581,7 @@ export function AlertsSection({
                         </div>
                         <button
                           onClick={() => setShowToastResetModal(true)}
-                          className="h-10 px-2 sm:px-3 text-sm font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1 ds-text-muted"
+                          className="h-10 px-2 sm:px-3 text-sm font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1 ds-text-subtle"
                         >
                           <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" />
@@ -851,7 +851,7 @@ export function AlertsSection({
                                     backgroundColor: "hsl(var(--muted))",
                                     color: colors["--muted"]
                                       ? `hsl(${fgForBg(colors["--muted"])})`
-                                      : "hsl(var(--muted-foreground))",
+                                      : "hsl(var(--foreground) / 0.6)",
                                   }}
                                 >
                                   {toastCssCopied ? <CheckIcon /> : <CopyIcon />}
@@ -864,7 +864,7 @@ export function AlertsSection({
                                     backgroundColor: "hsl(var(--muted))",
                                     color: colors["--muted"]
                                       ? `hsl(${fgForBg(colors["--muted"])})`
-                                      : "hsl(var(--muted-foreground))",
+                                      : "hsl(var(--foreground) / 0.6)",
                                   }}
                                 >
                                   <XIcon />
