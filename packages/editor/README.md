@@ -64,6 +64,7 @@ The editor automatically inherits CSS custom properties from the host page (chec
 | `applyToRoot` | `boolean` | `false` | Mirror CSS custom properties to `:root` so the theme applies beyond the editor. When enabled, the editor also injects integration CSS rules automatically and (unless `scanHostPage` is false) scans the host page's colors for additional customization. |
 | `scanHostPage` | `boolean` | `true` | When `applyToRoot` is enabled, scan the host page for existing colors/fonts and offer to map them to Themal tokens via a "Site palette detected" modal. Set to `false` to suppress the scanner. |
 | `onAiPaletteMap` | `(prompt: string) => Promise<Record<string, string>>` | — | AI palette mapping callback. When provided and the `aiPaletteMapping` feature flag is enabled, an "AI Map" button appears in the host-scan confirmation modal. The callback receives a structured prompt describing the detected palette and should return a token map to apply. |
+| `onMount` | `(version: string) => void` | — | Called once per browser session when the editor mounts, with the editor version string. Use for telemetry or analytics — the editor itself makes no network requests. |
 | `devMode` | `boolean` | `false` | Show a "Purge Storage" button in Global Actions that clears all Themal localStorage keys. |
 
 ## Premium Features

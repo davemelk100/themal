@@ -19,6 +19,10 @@ const features = [
       "Placeholder text contrast fix - input/textarea placeholders use foreground at 45% opacity with browser opacity override to ensure visibility on all themes",
       "Table heading contrast fix - header text color dynamically computed via fgForBg() against the --muted background, guaranteeing contrast in any theme",
       "Audit dialog button specificity fix - !important on audit button colors to beat the .ds-editor scoped reset that was overriding blue backgrounds with transparent",
+      "onMount callback prop - called once per browser session with the editor version string for telemetry. The editor itself makes zero network requests, resolving the Snyk \"Network access\" supply chain finding",
+      "EDITOR_VERSION export - consumers can import the version string for logging or diagnostics",
+      "Clerk SDK upgraded from v4 to v5 (clerk-sdk-node 4.13.23 → 5.1.6)",
+      "Dependency security fixes - updated undici and flatted to resolve high-severity advisories in dev dependencies",
     ],
   },
   {

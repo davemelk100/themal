@@ -247,6 +247,12 @@ function App() {
                   <td className="px-4 py-2">-</td>
                   <td className="px-4 py-2">AI palette mapping callback. When provided and the aiPaletteMapping flag is enabled, an "AI Map" button appears in the scan confirmation modal.</td>
                 </tr>
+                <tr className="border-t border-theme">
+                  <td className="px-4 py-2 font-mono text-xs">onMount</td>
+                  <td className="px-4 py-2 font-mono text-xs">{`(version: string) => void`}</td>
+                  <td className="px-4 py-2">-</td>
+                  <td className="px-4 py-2">Called once per browser session with the editor version. Use for telemetry — the editor makes no network requests itself.</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -971,6 +977,7 @@ export default defineNuxtConfig({
   githubConfig={{ clientId, repo, filePath, baseBranch }}  — Enable PR creation via GitHub OAuth
   applyToRoot={boolean}                    — Mirror CSS vars to :root for site-wide theming
   scanHostPage={boolean}                   — Scan host page for existing colors (default: true, only runs when applyToRoot is true)
+  onMount={(version) => void}              — Called once per session with editor version (for telemetry)
 
 **Example defaultColors for a light theme:**
   {
