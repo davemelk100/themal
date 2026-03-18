@@ -60,7 +60,7 @@ export function CustomSelect({
         aria-label={ariaLabel}
         disabled={disabled}
         onClick={() => !disabled && setOpen(!open)}
-        className={`ds-input w-full ${px} ${py} ${h} ${text} font-light rounded-md border text-left flex items-center justify-between gap-1 ${disabled ? "cursor-not-allowed opacity-60" : ""}`}
+        className={`ds-input w-full ${px} ${py} ${h} ${text} rounded-md border text-left flex items-center justify-between gap-1 ${disabled ? "cursor-not-allowed opacity-60" : ""}`}
         style={{
           backgroundColor: disabled ? "hsl(var(--muted))" : "hsl(var(--background))",
           color: disabled ? "hsl(var(--muted-foreground))" : "hsl(var(--foreground))",
@@ -98,7 +98,7 @@ export function CustomSelect({
                 key={opt.value}
                 type="button"
                 onClick={() => { onChange(opt.value); setOpen(false); }}
-                className={`w-full ${px} py-1.5 text-left ${text} font-light transition-colors`}
+                className={`w-full ${px} py-1.5 text-left ${text} transition-colors`}
                 style={{
                   color: isSelected ? "hsl(var(--primary))" : "hsl(var(--foreground))",
                   backgroundColor: isSelected ? "hsl(var(--primary) / 0.08)" : "transparent",

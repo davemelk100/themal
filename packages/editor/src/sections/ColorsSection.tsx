@@ -211,7 +211,7 @@ export function ColorsSection({
                         setExportFormat("css");
                         generateCode();
                       }}
-                      className={`h-10 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1 ${generatedCode && exportFormat === "css" ? "" : "ds-text-subtle"}`}
+                      className={`h-10 px-3 sm:px-4 text-sm transition-colors hover:opacity-70 flex items-center justify-center gap-1 ${generatedCode && exportFormat === "css" ? "" : "ds-text-subtle"}`}
                       style={
                         generatedCode && exportFormat === "css"
                           ? {
@@ -251,7 +251,7 @@ export function ColorsSection({
                         setExportFormat("tokens");
                         generateCode();
                       }}
-                      className={`h-10 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1 ${generatedCode && exportFormat === "tokens" ? "" : "ds-text-subtle"}`}
+                      className={`h-10 px-3 sm:px-4 text-sm transition-colors hover:opacity-70 flex items-center justify-center gap-1 ${generatedCode && exportFormat === "tokens" ? "" : "ds-text-subtle"}`}
                       style={
                         generatedCode && exportFormat === "tokens"
                           ? {
@@ -281,7 +281,7 @@ export function ColorsSection({
                   </div>
                   <button
                     onClick={() => setShowResetModal(true)}
-                    className="h-10 px-2 sm:px-3 text-sm font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1 ds-text-subtle"
+                    className="h-10 px-2 sm:px-3 text-sm rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1 ds-text-subtle"
                   >
                     <svg
                       className="w-4 h-4 flex-shrink-0"
@@ -308,8 +308,9 @@ export function ColorsSection({
               {/* Color swatch buttons */}
               <div
                 id="color-swatch-grid"
-                className="grid grid-cols-5 gap-2 sm:gap-5 overflow-visible"
-                data-audit-target
+                className="grid grid-cols-5 gap-2 sm:gap-5 rounded-lg p-4 overflow-visible"
+                data-axe-exclude
+                style={{ backgroundColor: "hsl(var(--foreground) / 0.04)" }}
               >
                 {COLOR_SWATCHES.filter(({ key }) =>
                   [
@@ -333,15 +334,15 @@ export function ColorsSection({
                   return (
                     <div
                       key={key}
-                      className="flex flex-col items-stretch min-w-0"
+                      className="flex flex-col items-stretch overflow-visible"
                     >
                       <span
-                        className="sm:hidden text-xs font-light text-center truncate mb-0.5 ds-text-subtle"
+                        className="sm:hidden text-xs text-center truncate mb-0.5 ds-text-muted"
                       >
                         {label}
                       </span>
                       <div
-                        className="relative group flex flex-col sm:flex-row items-stretch rounded-lg"
+                        className="relative group flex flex-col sm:flex-row items-stretch rounded-lg overflow-visible"
                         style={{
                           boxShadow:
                             "0 2px 4px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1)",
@@ -349,7 +350,7 @@ export function ColorsSection({
                       >
                         <button
                           aria-label={`${label} color swatch`}
-                          className={`w-full aspect-square text-xs sm:text-sm font-light transition-colors hover:opacity-80 flex flex-col items-center justify-center gap-0.5 cursor-pointer overflow-hidden rounded-tl-lg rounded-tr-lg sm:rounded-tr-none sm:rounded-bl-lg ${wc >= bc ? "ds-swatch-light" : "ds-swatch-dark"}`}
+                          className="w-full aspect-square text-xs sm:text-sm transition-colors hover:opacity-80 flex flex-col items-center justify-center gap-0.5 cursor-pointer rounded-tl-lg rounded-tr-lg sm:rounded-tr-none sm:rounded-bl-lg"
                           style={{
                             backgroundColor: hsl ? `hsl(${hsl})` : "hsl(var(--muted))",
                             color: fgHsl ? `hsl(${fgHsl})` : (wc >= bc ? "#ffffff" : "#000000"),
@@ -383,11 +384,11 @@ export function ColorsSection({
                             }, 100);
                           }}
                         >
-                          <span className="hidden sm:inline truncate max-w-full leading-tight">
+                          <span className="hidden sm:inline whitespace-nowrap leading-tight">
                             {label}
                           </span>
                           {hexCode && (
-                            <span className="hidden sm:inline truncate max-w-full text-sm leading-tight">
+                            <span className="hidden sm:inline whitespace-nowrap text-sm leading-tight">
                               {hexCode}
                             </span>
                           )}
@@ -520,7 +521,7 @@ export function ColorsSection({
                 <PremiumGate feature="secondary-palette" variant="section" upgradeUrl={upgradeUrl} signInUrl={signInUrl}>
                 <div className="w-full" data-axe-exclude>
                   <p
-                    className="text-sm font-light uppercase tracking-wider mb-2 md:mb-3 ds-text-subtle"
+                    className="text-sm uppercase tracking-wider mb-2 md:mb-3 ds-text-muted"
                   >
                     Palette
                   </p>
@@ -553,7 +554,7 @@ export function ColorsSection({
                           className="text-left"
                         >
                           <p
-                            className="sm:hidden text-xs font-light text-center mb-0.5 ds-text-subtle"
+                            className="sm:hidden text-xs text-center mb-0.5 ds-text-muted"
                           >
                             {initials}
                           </p>
@@ -567,13 +568,13 @@ export function ColorsSection({
                               }}
                             />
                             <span
-                              className="relative hidden sm:inline text-sm font-light truncate"
+                              className="relative hidden sm:inline text-sm truncate"
                               style={{ color: fgHsl ? `hsl(${fgHsl})` : (wc >= bc ? "#ffffff" : "#000000") }}
                             >
                               {hexCode}
                             </span>
                           </div>
-                          <p className="hidden md:block text-sm font-light truncate" style={{ color: colors["--background"] ? `hsl(${fgForBg(colors["--background"])})` : undefined }}>
+                          <p className="hidden md:block text-sm truncate" style={{ color: colors["--background"] ? `hsl(${fgForBg(colors["--background"])})` : undefined }}>
                             {label}
                           </p>
                         </div>
@@ -586,13 +587,13 @@ export function ColorsSection({
                 {/* Chips / Badges row */}
                 <div className="w-full space-y-2" data-audit-target>
                   <p
-                    className="text-sm font-light uppercase tracking-wider ds-text-subtle"
+                    className="text-sm uppercase tracking-wider ds-text-subtle"
                   >
                     Chips / Badges
                   </p>
                   <div className="flex flex-row flex-wrap gap-1.5 items-start">
                     <span
-                      className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-sm font-light max-w-full truncate"
+                      className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-sm max-w-full truncate"
                       style={{
                         backgroundColor: "hsl(var(--brand))",
                         color: colors["--brand"]
@@ -603,7 +604,7 @@ export function ColorsSection({
                       Brand
                     </span>
                     <span
-                      className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-sm font-light max-w-full truncate"
+                      className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-sm max-w-full truncate"
                       style={{
                         backgroundColor: "hsl(var(--secondary))",
                         color: "hsl(var(--secondary-foreground))",
@@ -612,18 +613,18 @@ export function ColorsSection({
                       Secondary
                     </span>
                     <span
-                      className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-sm font-light max-w-full truncate"
+                      className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-sm max-w-full truncate"
                       style={{
                         backgroundColor: "hsl(var(--muted))",
                         color: colors["--muted"]
                           ? `hsl(${fgForBg(colors["--muted"])})`
-                          : "hsl(var(--foreground) / 0.6)",
+                          : "hsl(var(--muted-foreground))",
                       }}
                     >
                       Muted
                     </span>
                     <span
-                      className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-sm font-light max-w-full truncate"
+                      className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-sm max-w-full truncate"
                       style={{
                         backgroundColor: "hsl(var(--accent))",
                         color: "hsl(var(--accent-foreground))",
@@ -632,7 +633,7 @@ export function ColorsSection({
                       Accent
                     </span>
                     <span
-                      className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-sm font-light max-w-full truncate"
+                      className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-sm max-w-full truncate"
                       style={{
                         backgroundColor: "hsl(var(--destructive))",
                         color: "hsl(var(--destructive-foreground))",
@@ -641,7 +642,7 @@ export function ColorsSection({
                       Destructive
                     </span>
                     <span
-                      className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-sm font-light max-w-full truncate"
+                      className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-sm max-w-full truncate"
                       style={{
                         backgroundColor: "hsl(var(--success))",
                         color: "hsl(var(--success-foreground))",
@@ -650,7 +651,7 @@ export function ColorsSection({
                       Success
                     </span>
                     <span
-                      className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-sm font-light max-w-full truncate"
+                      className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-sm max-w-full truncate"
                       style={{
                         backgroundColor: "hsl(var(--warning))",
                         color: "hsl(var(--warning-foreground))",
@@ -659,7 +660,7 @@ export function ColorsSection({
                       Warning
                     </span>
                     <span
-                      className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-sm font-light max-w-full truncate"
+                      className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-sm max-w-full truncate"
                       style={{
                         backgroundColor: "hsl(var(--brand))",
                         color: colors["--brand"]
@@ -670,7 +671,7 @@ export function ColorsSection({
                       Brand
                     </span>
                     <span
-                      className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-sm font-light max-w-full truncate"
+                      className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-sm max-w-full truncate"
                       style={{
                         backgroundColor: "hsl(var(--secondary))",
                         color: "hsl(var(--secondary-foreground))",
@@ -679,18 +680,18 @@ export function ColorsSection({
                       Secondary
                     </span>
                     <span
-                      className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-sm font-light max-w-full truncate"
+                      className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-sm max-w-full truncate"
                       style={{
                         backgroundColor: "hsl(var(--muted))",
                         color: colors["--muted"]
                           ? `hsl(${fgForBg(colors["--muted"])})`
-                          : "hsl(var(--foreground) / 0.6)",
+                          : "hsl(var(--muted-foreground))",
                       }}
                     >
                       Muted
                     </span>
                     <span
-                      className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-sm font-light max-w-full truncate"
+                      className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-sm max-w-full truncate"
                       style={{
                         backgroundColor: "hsl(var(--accent))",
                         color: "hsl(var(--accent-foreground))",
@@ -699,7 +700,7 @@ export function ColorsSection({
                       Accent
                     </span>
                     <span
-                      className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-sm font-light max-w-full truncate"
+                      className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-sm max-w-full truncate"
                       style={{
                         backgroundColor: "hsl(var(--destructive))",
                         color: "hsl(var(--destructive-foreground))",
@@ -708,7 +709,7 @@ export function ColorsSection({
                       Destructive
                     </span>
                     <span
-                      className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-sm font-light max-w-full truncate"
+                      className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-sm max-w-full truncate"
                       style={{
                         backgroundColor: "hsl(var(--success))",
                         color: "hsl(var(--success-foreground))",
@@ -717,7 +718,7 @@ export function ColorsSection({
                       Success
                     </span>
                     <span
-                      className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-sm font-light max-w-full truncate"
+                      className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-sm max-w-full truncate"
                       style={{
                         backgroundColor: "hsl(var(--warning))",
                         color: "hsl(var(--warning-foreground))",
@@ -726,7 +727,7 @@ export function ColorsSection({
                       Warning
                     </span>
                     <span
-                      className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-sm font-light border border-border max-w-full truncate ds-text-fg"
+                      className="inline-flex items-center justify-center px-4 py-0.5 rounded-full text-sm border border-border max-w-full truncate ds-text-fg"
                     >
                       Outlined
                     </span>

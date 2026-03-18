@@ -75,7 +75,7 @@ function UpgradeModal({
             <p className="text-xs ds-text-muted">{feature.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase())}</p>
           </div>
         </div>
-        <p className="text-sm font-light mb-5 ds-text-fg">
+        <p className="text-sm mb-5 ds-text-fg">
           This feature requires a Themal Pro license. Upgrade to unlock all premium features including harmony schemes, color locks, interaction controls, and more.
         </p>
         <div className="flex flex-col gap-2">
@@ -92,7 +92,7 @@ function UpgradeModal({
                 onClose();
                 window.dispatchEvent(new CustomEvent("themal:sign-in"));
               }}
-              className="w-full text-center px-4 py-2.5 text-sm font-light rounded-lg transition-opacity hover:opacity-70 ds-surface-muted"
+              className="w-full text-center px-4 py-2.5 text-sm rounded-lg transition-opacity hover:opacity-70 ds-surface-muted"
             >
               Already have a license? Sign in
             </button>
@@ -100,7 +100,7 @@ function UpgradeModal({
           {!showLicenseInput ? (
             <button
               onClick={() => setShowLicenseInput(true)}
-              className="w-full text-center px-4 py-2 text-xs font-light transition-opacity hover:opacity-70 ds-text-muted"
+              className="w-full text-center px-4 py-2 text-xs transition-opacity hover:opacity-70 ds-text-muted"
             >
               Enter license key
             </button>
@@ -114,7 +114,7 @@ function UpgradeModal({
                   value={licenseInput}
                   onChange={(e) => { setLicenseInput(e.target.value); setLicenseError(""); }}
                   placeholder="THEMAL-XXXX-XXXX-XXXX"
-                  className="flex-1 px-3 py-2 text-xs font-light rounded-lg border outline-none ds-text-fg ds-bg-card"
+                  className="flex-1 px-3 py-2 text-xs rounded-lg border outline-none ds-text-fg ds-bg-card"
                   style={{ borderColor: licenseError ? "hsl(var(--destructive))" : "hsl(var(--border))" }}
                   onKeyDown={(e) => { if (e.key === "Enter") handleActivate(); }}
                   autoFocus

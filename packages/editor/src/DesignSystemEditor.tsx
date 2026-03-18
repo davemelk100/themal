@@ -1532,7 +1532,7 @@ function DesignSystemEditorInner({
                       <a
                         key={href}
                         href={href}
-                        className={`ds-nav-link text-xs font-light uppercase tracking-wider hover:opacity-70 whitespace-nowrap${isActive ? " ds-active" : ""}`}
+                        className={`ds-nav-link text-xs uppercase tracking-wider hover:opacity-70 whitespace-nowrap${isActive ? " ds-active" : ""}`}
                       >
                         {label}
                       </a>
@@ -1680,7 +1680,7 @@ function DesignSystemEditorInner({
         >
           <button
             onClick={() => setShowGlobalResetModal(true)}
-            className="ds-global-btn w-full h-9 px-2 text-xs font-light rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
+            className="ds-global-btn w-full h-9 px-2 text-xs rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
             title="Reset all sections to defaults"
           >
             <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -1688,11 +1688,11 @@ function DesignSystemEditorInner({
             </svg>
             <span className="truncate">Reset</span>
           </button>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 h-9">
             <button
               type="button"
               onClick={handleGenerate}
-              className="ds-global-btn flex-1 min-w-0 h-9 px-2 text-xs font-light rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
+              className="ds-global-btn flex-1 min-w-0 h-9 px-2 text-xs rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
               title="Generate new random palette"
             >
               <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -1704,7 +1704,7 @@ function DesignSystemEditorInner({
               <button
                 type="button"
                 onClick={handleUndo}
-                className="ds-global-btn ds-undo-btn h-9 px-2 text-xs font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center shrink-0"
+                className="ds-global-btn ds-undo-btn h-9 px-2 text-xs rounded-lg transition-colors hover:opacity-80 flex items-center justify-center shrink-0"
                 title="Undo last refresh"
                 aria-label="Undo last refresh"
               >
@@ -1721,10 +1721,10 @@ function DesignSystemEditorInner({
             upgradeUrl={upgradeUrl}
             signInUrl={signInUrl}
           >
-            <div className="relative w-full">
+            <div className="relative w-full h-9">
               <button
                 onClick={() => setShuffleOpen(!shuffleOpen)}
-                className="ds-global-btn w-full h-9 px-2 text-xs font-light rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
+                className="ds-global-btn w-full h-9 px-2 text-xs rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
               >
                 <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
@@ -1750,7 +1750,7 @@ function DesignSystemEditorInner({
                   >
                     <button
                       onClick={() => { setHarmonySchemeIndex(-1); setShuffleOpen(false); }}
-                      className="w-full text-left px-4 py-2 text-xs font-light transition-colors hover:opacity-80 flex items-center justify-between ds-text-fg"
+                      className="w-full text-left px-4 py-2 text-xs transition-colors hover:opacity-80 flex items-center justify-between ds-text-fg"
                     >
                       Default
                       {harmonySchemeIndex < 0 && <span className="text-green-600 dark:text-green-400">&#10003;</span>}
@@ -1759,7 +1759,7 @@ function DesignSystemEditorInner({
                       <button
                         key={scheme}
                         onClick={() => handleRegenerate(idx)}
-                        className="w-full text-left px-4 py-2 text-xs font-light transition-colors hover:opacity-80 flex items-center justify-between ds-text-fg"
+                        className="w-full text-left px-4 py-2 text-xs transition-colors hover:opacity-80 flex items-center justify-between ds-text-fg"
                       >
                         {scheme}
                         {idx === harmonySchemeIndex && <span className="text-green-600 dark:text-green-400">&#10003;</span>}
@@ -1779,7 +1779,7 @@ function DesignSystemEditorInner({
           >
             <button
               onClick={() => setShowImagePaletteModal(true)}
-              className="ds-global-btn w-full h-9 px-2 text-xs font-light rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
+              className="ds-global-btn w-full h-9 px-2 text-xs rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
               title="Extract a color palette from an image"
             >
               {imagePaletteStatus === "extracting" ? (
@@ -1816,7 +1816,7 @@ function DesignSystemEditorInner({
             <>
               <button
                 onClick={() => runAccessibilityAudit(true)}
-                className="ds-global-btn w-full h-9 px-2 text-xs font-light rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
+                className="ds-global-btn w-full h-9 px-2 text-xs rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
                 title="Run accessibility audit"
               >
                 <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -1826,7 +1826,7 @@ function DesignSystemEditorInner({
               </button>
               <button
                 onClick={() => setWcagEnforcement((prev) => !prev)}
-                className="ds-global-btn w-full h-9 px-2 text-xs font-light rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
+                className="ds-global-btn w-full h-9 px-2 text-xs rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
                 title={wcagEnforcement ? "Disable WCAG auto-correction" : "Enable WCAG auto-correction"}
               >
                 <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -1844,7 +1844,7 @@ function DesignSystemEditorInner({
           {onAiGenerate && (
             <button
               onClick={() => setShowAiGenerateModal(true)}
-              className="ds-global-btn w-full h-9 px-2 text-xs font-light rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
+              className="ds-global-btn w-full h-9 px-2 text-xs rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
               title="Generate theme with AI"
             >
               <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -1861,7 +1861,7 @@ function DesignSystemEditorInner({
           <PremiumGate feature="palette-export" variant="inline" hideLock upgradeUrl={upgradeUrl} signInUrl={signInUrl}>
             <button
               onClick={() => setShowPaletteExport(true)}
-              className="ds-global-btn w-full h-9 px-2 text-xs font-light rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
+              className="ds-global-btn w-full h-9 px-2 text-xs rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
               title="Export palette"
             >
               <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -1876,7 +1876,7 @@ function DesignSystemEditorInner({
               window.location.hash = hash;
               navigator.clipboard.writeText(window.location.href).then(() => { setShareCopied(true); setTimeout(() => setShareCopied(false), 2000); });
             }}
-            className="ds-global-btn w-full h-9 px-2 text-xs font-light rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
+            className="ds-global-btn w-full h-9 px-2 text-xs rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
             title="Share theme URL"
           >
             <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -1887,7 +1887,7 @@ function DesignSystemEditorInner({
           {(prEndpointUrl || githubConfig) && (
               <button
                 onClick={openPrModal}
-                className="ds-global-btn w-full h-9 px-2 text-xs font-light rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
+                className="ds-global-btn w-full h-9 px-2 text-xs rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
                 title="Open a GitHub PR"
               >
                 <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
@@ -1903,7 +1903,7 @@ function DesignSystemEditorInner({
                 <a
                   key={to}
                   href={to}
-                  className="ds-global-btn w-full h-9 px-2 text-xs font-light rounded-lg transition-colors hover:opacity-80 flex items-center gap-2 ds-text-fg"
+                  className="ds-global-btn w-full h-9 px-2 text-xs rounded-lg transition-colors hover:opacity-80 flex items-center gap-2 ds-text-fg"
                 >
                   <span className="truncate">{label}</span>
                 </a>
@@ -2091,13 +2091,13 @@ function DesignSystemEditorInner({
                           </svg>
                         </div>
                         <p className="text-base font-medium">Audit Failed to Run</p>
-                        <p className="text-sm font-light ds-text-muted">
+                        <p className="text-sm ds-text-muted">
                           The contrast auditor encountered an error. Check the browser console for details.
                         </p>
                         <div className="flex items-center justify-center gap-3">
                           <button
                             onClick={() => setAuditStatus("idle")}
-                            className="px-4 py-2 text-sm font-light rounded-lg transition-colors ds-audit-btn-secondary"
+                            className="px-4 py-2 text-sm rounded-lg transition-colors ds-audit-btn-secondary"
                           >
                             Dismiss
                           </button>
@@ -2106,7 +2106,7 @@ function DesignSystemEditorInner({
                               setAuditStatus("idle");
                               runAccessibilityAudit(true);
                             }}
-                            className="px-4 py-2 text-sm font-light rounded-lg transition-colors ds-audit-btn-primary"
+                            className="px-4 py-2 text-sm rounded-lg transition-colors ds-audit-btn-primary"
                           >
                             Retry
                           </button>
@@ -2122,7 +2122,7 @@ function DesignSystemEditorInner({
                         <p className="text-base font-medium">WCAG AA Passed</p>
                         {fixSummary.length > 0 ? (
                           <>
-                            <p className="text-sm font-light" style={{ color: "#525252" }}>
+                            <p className="text-sm" style={{ color: "#525252" }}>
                               {fixSummary.length} color{fixSummary.length !== 1 ? "s" : ""} updated in the <strong>Colors</strong> section:
                             </p>
                             <div className="text-left text-xs" style={{ maxHeight: "10rem", overflowY: "auto" }}>
@@ -2143,18 +2143,18 @@ function DesignSystemEditorInner({
                                 </div>
                               ))}
                             </div>
-                            <p className="text-xs font-light" style={{ color: "#737373" }}>
+                            <p className="text-xs" style={{ color: "#737373" }}>
                               Re-export your CSS or Tokens to commit these changes.
                             </p>
                           </>
                         ) : (
-                          <p className="text-sm font-light" style={{ color: "#525252" }}>
+                          <p className="text-sm" style={{ color: "#525252" }}>
                             All color contrast checks passed.
                           </p>
                         )}
                         <button
                           onClick={() => { setAuditStatus("idle"); setFixSummary([]); }}
-                          className="px-4 py-2 text-sm font-light rounded-lg transition-colors ds-audit-btn-primary"
+                          className="px-4 py-2 text-sm rounded-lg transition-colors ds-audit-btn-primary"
                         >
                           OK
                         </button>
@@ -2176,7 +2176,7 @@ function DesignSystemEditorInner({
                         <p className="text-base font-medium">
                           {auditViolations.length} Contrast Issue{auditViolations.length !== 1 ? "s" : ""} Found
                         </p>
-                        <p className="text-sm font-light ds-text-muted">
+                        <p className="text-sm ds-text-muted">
                           Some color combinations do not meet WCAG AA contrast requirements.
                         </p>
                         {auditViolations.length > 0 && (
@@ -2192,7 +2192,7 @@ function DesignSystemEditorInner({
                         <div className="flex items-center justify-center gap-3">
                           <button
                             onClick={() => setAuditStatus("idle")}
-                            className="px-4 py-2 text-sm font-light rounded-lg transition-colors ds-audit-btn-secondary"
+                            className="px-4 py-2 text-sm rounded-lg transition-colors ds-audit-btn-secondary"
                           >
                             Ignore
                           </button>
@@ -2201,7 +2201,7 @@ function DesignSystemEditorInner({
                               setAuditStatus("idle");
                               fixContrastIssues();
                             }}
-                            className="px-4 py-2 text-sm font-light rounded-lg transition-colors ds-audit-btn-primary"
+                            className="px-4 py-2 text-sm rounded-lg transition-colors ds-audit-btn-primary"
                           >
                             Auto-fix
                           </button>
@@ -2462,7 +2462,7 @@ function DesignSystemEditorInner({
             className="ds-modal-panel rounded-xl p-6 w-[340px]"
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 className="text-lg font-light mb-4">Export Palette</h3>
+            <h3 className="text-lg mb-4">Export Palette</h3>
             <div className="flex flex-col gap-2">
               {(
                 [
@@ -2572,7 +2572,7 @@ function DesignSystemEditorInner({
                 <button
                   key={label}
                   onClick={action}
-                  className="w-full text-left px-3 py-2 text-sm font-light rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
+                  className="w-full text-left px-3 py-2 text-sm rounded-lg transition-colors hover:opacity-80 flex items-center gap-2"
                   style={{
                     backgroundColor: "hsl(var(--muted))",
                     color: colors["--muted"]
@@ -2587,7 +2587,7 @@ function DesignSystemEditorInner({
             </div>
             {paletteExportCopied && (
               <p
-                className="text-xs font-light mt-2"
+                className="text-xs mt-2"
                 style={{ color: "hsl(var(--success))" }}
               >
                 Copied to clipboard!
@@ -2596,7 +2596,7 @@ function DesignSystemEditorInner({
             <div className="flex justify-end mt-4">
               <button
                 onClick={() => setShowPaletteExport(false)}
-                className="px-4 py-1.5 text-sm font-light rounded-lg transition-colors hover:opacity-80"
+                className="px-4 py-1.5 text-sm rounded-lg transition-colors hover:opacity-80"
                 style={{
                   backgroundColor: "hsl(var(--muted))",
                   color: colors["--muted"]
@@ -2655,19 +2655,19 @@ function DesignSystemEditorInner({
               </div>
               <h3 className="text-base font-medium">Site palette detected</h3>
             </div>
-            <p className="text-sm font-light mb-3 ds-text-subtle">
+            <p className="text-sm mb-3 ds-text-subtle">
               We found {scanResult.palette.backgrounds.length} background{scanResult.palette.backgrounds.length !== 1 ? "s" : ""},{" "}
               {scanResult.palette.texts.length} text color{scanResult.palette.texts.length !== 1 ? "s" : ""},{" "}
               and {scanResult.palette.fonts.length} font{scanResult.palette.fonts.length !== 1 ? "s" : ""} on your page.
             </p>
-            <p className="text-sm font-light mb-4 ds-text-subtle">
+            <p className="text-sm mb-4 ds-text-subtle">
               Would you like to see the CSS needed to theme your entire site with Themal?
             </p>
             <div className="flex justify-end gap-2">
               <button
                 type="button"
                 onClick={() => { setShowScanConfirm(false); dismissScan(); }}
-                className="px-4 py-1.5 text-sm font-light rounded-lg transition-colors hover:opacity-80"
+                className="px-4 py-1.5 text-sm rounded-lg transition-colors hover:opacity-80"
                 style={{ backgroundColor: "hsl(var(--muted))", color: "hsl(var(--foreground))" }}
               >
                 Dismiss
@@ -2675,7 +2675,7 @@ function DesignSystemEditorInner({
               <button
                 type="button"
                 onClick={() => { setShowScanConfirm(false); setShowIntegrationGuide(true); }}
-                className="px-4 py-1.5 text-sm font-light rounded-lg transition-colors hover:opacity-80"
+                className="px-4 py-1.5 text-sm rounded-lg transition-colors hover:opacity-80"
                 style={{ backgroundColor: "hsl(var(--brand))", color: "hsl(var(--background))" }}
               >
                 View CSS
@@ -2707,7 +2707,7 @@ function DesignSystemEditorInner({
                 </svg>
               </button>
             </div>
-            <p className="text-sm font-light mb-3 ds-text-subtle">
+            <p className="text-sm mb-3 ds-text-subtle">
               Add this to your global stylesheet. Themal sets the CSS variables on <code className="text-xs px-1 py-0.5 rounded" style={{ backgroundColor: "hsl(var(--muted) / 0.5)" }}>:root</code> — these rules tell your site to use them.
             </p>
             <div className="relative">
@@ -2732,7 +2732,7 @@ function DesignSystemEditorInner({
             <div className="flex justify-end mt-4">
               <button
                 onClick={() => { setShowIntegrationGuide(false); dismissScan(); }}
-                className="px-4 py-1.5 text-sm font-light rounded-lg transition-colors hover:opacity-80"
+                className="px-4 py-1.5 text-sm rounded-lg transition-colors hover:opacity-80"
                 style={{ backgroundColor: "hsl(var(--brand))", color: "hsl(var(--background))" }}
               >
                 Done

@@ -138,7 +138,7 @@ export function AlertsSection({
                             setAlertExportFormat("css");
                             setAlertCssVisible(true);
                           }}
-                          className="h-10 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                          className="h-10 px-3 sm:px-4 text-sm transition-colors hover:opacity-70 flex items-center justify-center gap-1"
                           style={{
                             backgroundColor:
                               alertCssVisible && alertExportFormat === "css"
@@ -149,7 +149,7 @@ export function AlertsSection({
                                 ? colors["--brand"]
                                   ? `hsl(${fgForBg(colors["--brand"])})`
                                   : "hsl(var(--primary-foreground))"
-                                : "hsl(var(--foreground) / 0.6)",
+                                : "hsl(var(--muted-foreground))",
                           }}
                         >
                           <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -170,7 +170,7 @@ export function AlertsSection({
                             setAlertExportFormat("tokens");
                             setAlertCssVisible(true);
                           }}
-                          className="h-10 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                          className="h-10 px-3 sm:px-4 text-sm transition-colors hover:opacity-70 flex items-center justify-center gap-1"
                           style={{
                             backgroundColor:
                               alertCssVisible && alertExportFormat === "tokens"
@@ -181,7 +181,7 @@ export function AlertsSection({
                                 ? colors["--brand"]
                                   ? `hsl(${fgForBg(colors["--brand"])})`
                                   : "hsl(var(--primary-foreground))"
-                                : "hsl(var(--foreground) / 0.6)",
+                                : "hsl(var(--muted-foreground))",
                           }}
                         >
                           <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -192,7 +192,7 @@ export function AlertsSection({
                       </div>
                       <button
                         onClick={() => setShowDialogResetModal(true)}
-                        className="h-10 px-2 sm:px-3 text-sm font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1 ds-text-subtle"
+                        className="h-10 px-2 sm:px-3 text-sm rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1 ds-text-muted"
                       >
                         <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" />
@@ -215,7 +215,7 @@ export function AlertsSection({
                         <button
                           key={key}
                           onClick={() => selectAlertPreset(key)}
-                          className="h-12 px-3 text-sm font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+                          className="h-12 px-3 text-sm rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
                           style={
                             active
                               ? {
@@ -242,12 +242,12 @@ export function AlertsSection({
                   {/* Controls */}
                   <div className="space-y-1.5">
                     <p
-                      className="text-sm font-light uppercase tracking-wider ds-text-subtle"
+                      className="text-sm uppercase tracking-wider ds-text-subtle"
                     >
                       Shape
                     </p>
                     <label
-                      className="flex items-center justify-between gap-2 text-sm font-light ds-text-fg"
+                      className="flex items-center justify-between gap-2 text-sm ds-text-fg"
                     >
                       <span>Border Radius: {alertStyle.borderRadius}px</span>
                       <input
@@ -265,7 +265,7 @@ export function AlertsSection({
                       />
                     </label>
                     <label
-                      className="flex items-center justify-between gap-2 text-sm font-light ds-text-fg"
+                      className="flex items-center justify-between gap-2 text-sm ds-text-fg"
                     >
                       <span>Border Width: {alertStyle.borderWidth}px</span>
                       <input
@@ -283,7 +283,7 @@ export function AlertsSection({
                       />
                     </label>
                     <label
-                      className="flex items-center justify-between gap-2 text-sm font-light ds-text-fg"
+                      className="flex items-center justify-between gap-2 text-sm ds-text-fg"
                     >
                       <span>Padding: {alertStyle.padding}px</span>
                       <input
@@ -421,7 +421,7 @@ export function AlertsSection({
                                 <p className="text-sm font-medium">
                                   {label}
                                 </p>
-                                <p className="text-xs font-light">
+                                <p className="text-xs">
                                   {message}
                                 </p>
                               </div>
@@ -450,7 +450,7 @@ export function AlertsSection({
                             className="flex items-center justify-between px-3 py-1.5 border-b ds-border"
                           >
                             <span
-                              className="text-xs font-light uppercase tracking-wider"
+                              className="text-xs uppercase tracking-wider"
                               style={{ color: "hsl(var(--card-foreground))" }}
                             >
                               {alertExportFormat === "tokens" ? "Dialog Tokens" : "Dialog CSS"}
@@ -467,7 +467,7 @@ export function AlertsSection({
                                   backgroundColor: "hsl(var(--muted))",
                                   color: colors["--muted"]
                                     ? `hsl(${fgForBg(colors["--muted"])})`
-                                    : "hsl(var(--foreground) / 0.6)",
+                                    : "hsl(var(--muted-foreground))",
                                 }}
                               >
                                 {alertCssCopied ? <CheckIcon /> : <CopyIcon />}
@@ -480,7 +480,7 @@ export function AlertsSection({
                                   backgroundColor: "hsl(var(--muted))",
                                   color: colors["--muted"]
                                     ? `hsl(${fgForBg(colors["--muted"])})`
-                                    : "hsl(var(--foreground) / 0.6)",
+                                    : "hsl(var(--muted-foreground))",
                                 }}
                               >
                                 <XIcon />
@@ -527,7 +527,7 @@ export function AlertsSection({
                               setToastExportFormat("css");
                               setToastCssVisible(true);
                             }}
-                            className="h-10 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                            className="h-10 px-3 sm:px-4 text-sm transition-colors hover:opacity-70 flex items-center justify-center gap-1"
                             style={{
                               backgroundColor:
                                 toastCssVisible && toastExportFormat === "css"
@@ -538,7 +538,7 @@ export function AlertsSection({
                                   ? colors["--brand"]
                                     ? `hsl(${fgForBg(colors["--brand"])})`
                                     : "hsl(var(--primary-foreground))"
-                                  : "hsl(var(--foreground) / 0.6)",
+                                  : "hsl(var(--muted-foreground))",
                             }}
                           >
                             <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -559,7 +559,7 @@ export function AlertsSection({
                               setToastExportFormat("tokens");
                               setToastCssVisible(true);
                             }}
-                            className="h-10 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                            className="h-10 px-3 sm:px-4 text-sm transition-colors hover:opacity-70 flex items-center justify-center gap-1"
                             style={{
                               backgroundColor:
                                 toastCssVisible && toastExportFormat === "tokens"
@@ -570,7 +570,7 @@ export function AlertsSection({
                                   ? colors["--brand"]
                                     ? `hsl(${fgForBg(colors["--brand"])})`
                                     : "hsl(var(--primary-foreground))"
-                                  : "hsl(var(--foreground) / 0.6)",
+                                  : "hsl(var(--muted-foreground))",
                             }}
                           >
                             <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -581,7 +581,7 @@ export function AlertsSection({
                         </div>
                         <button
                           onClick={() => setShowToastResetModal(true)}
-                          className="h-10 px-2 sm:px-3 text-sm font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1 ds-text-subtle"
+                          className="h-10 px-2 sm:px-3 text-sm rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1 ds-text-muted"
                         >
                           <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" />
@@ -604,7 +604,7 @@ export function AlertsSection({
                           <button
                             key={key}
                             onClick={() => selectToastPreset(key)}
-                            className="h-12 px-3 text-sm font-light rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
+                            className="h-12 px-3 text-sm rounded-lg transition-colors hover:opacity-80 flex items-center justify-center gap-1"
                             style={
                               active
                                 ? {
@@ -631,12 +631,12 @@ export function AlertsSection({
                     {/* Toast Controls */}
                     <div className="space-y-1.5">
                       <p
-                        className="text-sm font-light uppercase tracking-wider ds-text-subtle"
+                        className="text-sm uppercase tracking-wider ds-text-subtle"
                       >
                         Shape
                       </p>
                       <label
-                        className="flex items-center justify-between gap-2 text-sm font-light ds-text-fg"
+                        className="flex items-center justify-between gap-2 text-sm ds-text-fg"
                       >
                         <span>Border Radius: {toastStyle.borderRadius}px</span>
                         <input
@@ -654,7 +654,7 @@ export function AlertsSection({
                         />
                       </label>
                       <label
-                        className="flex items-center justify-between gap-2 text-sm font-light ds-text-fg"
+                        className="flex items-center justify-between gap-2 text-sm ds-text-fg"
                       >
                         <span>
                           Padding: {Math.max(toastStyle.padding - 4, 8)}px
@@ -674,7 +674,7 @@ export function AlertsSection({
                         />
                       </label>
                       <label
-                        className="flex items-center justify-between gap-2 text-sm font-light ds-text-fg"
+                        className="flex items-center justify-between gap-2 text-sm ds-text-fg"
                       >
                         <span>Shadow</span>
                         <CustomSelect
@@ -834,7 +834,7 @@ export function AlertsSection({
                               className="flex items-center justify-between px-3 py-1.5 border-b ds-border"
                             >
                               <span
-                                className="text-xs font-light uppercase tracking-wider"
+                                className="text-xs uppercase tracking-wider"
                                 style={{ color: "hsl(var(--card-foreground))" }}
                               >
                                 {toastExportFormat === "tokens" ? "Toast Tokens" : "Toast CSS"}
@@ -851,7 +851,7 @@ export function AlertsSection({
                                     backgroundColor: "hsl(var(--muted))",
                                     color: colors["--muted"]
                                       ? `hsl(${fgForBg(colors["--muted"])})`
-                                      : "hsl(var(--foreground) / 0.6)",
+                                      : "hsl(var(--muted-foreground))",
                                   }}
                                 >
                                   {toastCssCopied ? <CheckIcon /> : <CopyIcon />}
@@ -864,7 +864,7 @@ export function AlertsSection({
                                     backgroundColor: "hsl(var(--muted))",
                                     color: colors["--muted"]
                                       ? `hsl(${fgForBg(colors["--muted"])})`
-                                      : "hsl(var(--foreground) / 0.6)",
+                                      : "hsl(var(--muted-foreground))",
                                   }}
                                 >
                                   <XIcon />

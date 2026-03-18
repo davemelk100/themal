@@ -72,7 +72,7 @@ export function CssImportModal({
             </button>
           </div>
 
-          <p className="text-sm font-light ds-text-muted">
+          <p className="text-sm ds-text-muted">
             Paste CSS or SCSS containing custom properties or variables. Themal will parse colors, typography, button, card, and interaction values.
           </p>
 
@@ -99,12 +99,12 @@ export function CssImportModal({
               {/* Colors */}
               {Object.keys(cssImportPreview.colors).length > 0 && (
                 <div className="space-y-1">
-                  <p className="text-xs font-light uppercase tracking-wider ds-text-muted">
+                  <p className="text-xs uppercase tracking-wider ds-text-muted">
                     Colors ({Object.keys(cssImportPreview.colors).length})
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {Object.entries(cssImportPreview.colors).map(([key, hsl]) => (
-                      <div key={key} className="flex items-center gap-1.5 text-xs font-light">
+                      <div key={key} className="flex items-center gap-1.5 text-xs">
                         <span
                           className="w-4 h-4 rounded border ds-border"
                           style={{ backgroundColor: `hsl(${hsl})` }}
@@ -119,10 +119,10 @@ export function CssImportModal({
               {/* Typography */}
               {Object.keys(cssImportPreview.typographyState).length > 0 && (
                 <div className="space-y-1">
-                  <p className="text-xs font-light uppercase tracking-wider ds-text-muted">
+                  <p className="text-xs uppercase tracking-wider ds-text-muted">
                     Typography
                   </p>
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-light ds-text-fg">
+                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs ds-text-fg">
                     {Object.entries(cssImportPreview.typographyState).map(([k, v]) => (
                       <span key={k}>{k}: {String(v)}</span>
                     ))}
@@ -133,10 +133,10 @@ export function CssImportModal({
               {/* Button */}
               {Object.keys(cssImportPreview.buttonStyle).length > 0 && (
                 <div className="space-y-1">
-                  <p className="text-xs font-light uppercase tracking-wider ds-text-muted">
+                  <p className="text-xs uppercase tracking-wider ds-text-muted">
                     Buttons
                   </p>
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-light ds-text-fg">
+                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs ds-text-fg">
                     {Object.entries(cssImportPreview.buttonStyle).map(([k, v]) => (
                       <span key={k}>{k}: {String(v)}</span>
                     ))}
@@ -147,10 +147,10 @@ export function CssImportModal({
               {/* Card */}
               {Object.keys(cssImportPreview.cardStyle).length > 0 && (
                 <div className="space-y-1">
-                  <p className="text-xs font-light uppercase tracking-wider ds-text-muted">
+                  <p className="text-xs uppercase tracking-wider ds-text-muted">
                     Card Style
                   </p>
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-light ds-text-fg">
+                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs ds-text-fg">
                     {Object.entries(cssImportPreview.cardStyle).map(([k, v]) => (
                       <span key={k}>{k}: {String(v)}</span>
                     ))}
@@ -161,10 +161,10 @@ export function CssImportModal({
               {/* Interactions */}
               {Object.keys(cssImportPreview.interactionStyle).length > 0 && (
                 <div className="space-y-1">
-                  <p className="text-xs font-light uppercase tracking-wider ds-text-muted">
+                  <p className="text-xs uppercase tracking-wider ds-text-muted">
                     Interactions
                   </p>
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-light ds-text-fg">
+                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs ds-text-fg">
                     {Object.entries(cssImportPreview.interactionStyle).map(([k, v]) => (
                       <span key={k}>{k}: {String(v)}</span>
                     ))}
@@ -175,10 +175,10 @@ export function CssImportModal({
               {/* Alerts */}
               {Object.keys(cssImportPreview.alertStyle).length > 0 && (
                 <div className="space-y-1">
-                  <p className="text-xs font-light uppercase tracking-wider ds-text-muted">
+                  <p className="text-xs uppercase tracking-wider ds-text-muted">
                     Alerts
                   </p>
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-light ds-text-fg">
+                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs ds-text-fg">
                     {Object.entries(cssImportPreview.alertStyle).map(([k, v]) => (
                       <span key={k}>{k}: {String(v)}</span>
                     ))}
@@ -193,7 +193,7 @@ export function CssImportModal({
                 Object.keys(cssImportPreview.buttonStyle).length === 0 &&
                 Object.keys(cssImportPreview.interactionStyle).length === 0 &&
                 Object.keys(cssImportPreview.alertStyle).length === 0 && (
-                <p className="text-sm font-light ds-text-destructive">
+                <p className="text-sm ds-text-destructive">
                   No recognized values found. Make sure your CSS uses custom properties (--var-name) or SCSS variables ($var-name).
                 </p>
               )}
@@ -203,7 +203,7 @@ export function CssImportModal({
           <div className="flex items-center justify-end gap-2 pt-2">
             <button
               onClick={handleClose}
-              className="ds-modal-btn h-9 px-4 text-sm font-light rounded-lg border transition-colors hover:opacity-80 ds-surface ds-border"
+              className="ds-modal-btn h-9 px-4 text-sm rounded-lg border transition-colors hover:opacity-80 ds-surface ds-border"
             >
               Cancel
             </button>
@@ -268,7 +268,7 @@ export function CssImportModal({
                 }
                 handleClose();
               }}
-              className="ds-modal-btn h-9 px-4 text-sm font-light rounded-lg transition-opacity hover:opacity-80 disabled:opacity-50 ds-surface-primary"
+              className="ds-modal-btn h-9 px-4 text-sm rounded-lg transition-opacity hover:opacity-80 disabled:opacity-50 ds-surface-primary"
             >
               Apply
             </button>

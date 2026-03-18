@@ -33,7 +33,7 @@ export const ResetConfirmModal: React.FC<ResetConfirmModalProps> = ({
         className="ds-modal-panel rounded-lg p-6 w-full max-w-sm mx-4"
         onClick={(e) => e.stopPropagation()}
       >
-        <h4 id={id} className="text-2xl font-light mb-2">
+        <h4 id={id} className="text-2xl mb-2">
           {title}
         </h4>
         <p
@@ -44,7 +44,7 @@ export const ResetConfirmModal: React.FC<ResetConfirmModalProps> = ({
         <div className="flex justify-end gap-2">
           <button
             onClick={onClose}
-            className="ds-modal-btn h-9 px-4 text-sm font-light rounded-lg border transition-colors hover:opacity-80 ds-surface ds-border"
+            className="ds-modal-btn h-9 px-4 text-sm rounded-lg border transition-colors hover:opacity-80 ds-surface ds-border"
           >
             Cancel
           </button>
@@ -53,7 +53,7 @@ export const ResetConfirmModal: React.FC<ResetConfirmModalProps> = ({
               onConfirm();
               onClose();
             }}
-            className="ds-modal-btn h-9 px-4 text-sm font-light rounded-lg transition-colors hover:opacity-80 ds-bg-destructive ds-text-destructive-fg"
+            className="ds-modal-btn h-9 px-4 text-sm rounded-lg transition-colors hover:opacity-80 ds-bg-destructive ds-text-destructive-fg"
           >
             {confirmText}
           </button>

@@ -165,12 +165,12 @@ export function InputsSection({
                         setInputExportFormat("css");
                         setInputCssVisible(true);
                       }}
-                      className="h-8 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                      className="h-8 px-3 sm:px-4 text-sm transition-colors hover:opacity-70 flex items-center justify-center gap-1"
                       style={{
                         backgroundColor: inputCssVisible && inputExportFormat === "css" ? "hsl(var(--brand))" : "transparent",
                         color: inputCssVisible && inputExportFormat === "css"
                           ? colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "hsl(var(--primary-foreground))"
-                          : "hsl(var(--foreground) / 0.6)",
+                          : "hsl(var(--muted-foreground))",
                       }}
                     >
                       <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -185,12 +185,12 @@ export function InputsSection({
                         setInputExportFormat("tokens");
                         setInputCssVisible(true);
                       }}
-                      className="h-8 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                      className="h-8 px-3 sm:px-4 text-sm transition-colors hover:opacity-70 flex items-center justify-center gap-1"
                       style={{
                         backgroundColor: inputCssVisible && inputExportFormat === "tokens" ? "hsl(var(--brand))" : "transparent",
                         color: inputCssVisible && inputExportFormat === "tokens"
                           ? colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "hsl(var(--primary-foreground))"
-                          : "hsl(var(--foreground) / 0.6)",
+                          : "hsl(var(--muted-foreground))",
                       }}
                     >
                       <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -201,7 +201,7 @@ export function InputsSection({
                   </span>
                   <button
                     onClick={() => setShowInputResetModal(true)}
-                    className="h-8 px-2 sm:px-3 text-sm font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1 ds-text-subtle"
+                    className="h-8 px-2 sm:px-3 text-sm rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1 ds-text-muted"
                   >
                     <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" />
@@ -239,7 +239,7 @@ export function InputsSection({
                     className="flex items-center justify-between px-3 py-1.5 border-b ds-border"
                   >
                     <span
-                      className="text-sm font-light uppercase tracking-wider ds-text-card"
+                      className="text-sm uppercase tracking-wider ds-text-card"
                     >
                       {inputExportFormat === "tokens" ? "Input Tokens" : "Input CSS"}
                     </span>
@@ -255,7 +255,7 @@ export function InputsSection({
                           backgroundColor: "hsl(var(--muted))",
                           color: colors["--muted"]
                             ? `hsl(${fgForBg(colors["--muted"])})`
-                            : "hsl(var(--foreground) / 0.6)",
+                            : "hsl(var(--muted-foreground))",
                         }}
                       >
                         {inputCssCopied ? <CheckIcon /> : <CopyIcon />}
@@ -268,7 +268,7 @@ export function InputsSection({
                           backgroundColor: "hsl(var(--muted))",
                           color: colors["--muted"]
                             ? `hsl(${fgForBg(colors["--muted"])})`
-                            : "hsl(var(--foreground) / 0.6)",
+                            : "hsl(var(--muted-foreground))",
                         }}
                       >
                         <XIcon />
@@ -294,7 +294,7 @@ export function InputsSection({
                       key={p}
                       type="button"
                       onClick={() => selectInputPreset(p)}
-                      className="h-8 px-3 text-xs font-light rounded-lg border transition-colors capitalize"
+                      className="h-8 px-3 text-xs rounded-lg border transition-colors capitalize"
                       style={{
                         borderColor: inputStyle.preset === p ? "hsl(var(--primary))" : "hsl(var(--border))",
                         backgroundColor: inputStyle.preset === p ? "hsl(var(--primary))" : "transparent",
@@ -307,7 +307,7 @@ export function InputsSection({
                   <button
                     type="button"
                     onClick={() => setShowInputResetModal(true)}
-                    className="h-8 px-3 text-xs font-light rounded-lg transition-colors hover:opacity-70 flex items-center gap-1 ml-auto ds-text-muted"
+                    className="h-8 px-3 text-xs rounded-lg transition-colors hover:opacity-70 flex items-center gap-1 ml-auto ds-text-muted"
                   >
                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -319,12 +319,12 @@ export function InputsSection({
                 {/* Shape */}
                 <div className="space-y-1.5">
                   <p
-                    className="text-sm font-light uppercase tracking-wider ds-text-subtle"
+                    className="text-sm uppercase tracking-wider ds-text-subtle"
                   >
                     Shape
                   </p>
                   <label
-                    className="flex items-center justify-between gap-2 text-sm font-light ds-text-fg"
+                    className="flex items-center justify-between gap-2 text-sm ds-text-fg"
                   >
                     <span>Radius: {inputStyle.borderRadius}px</span>
                     <input
@@ -337,7 +337,7 @@ export function InputsSection({
                     />
                   </label>
                   <label
-                    className="flex items-center justify-between gap-2 text-sm font-light ds-text-fg"
+                    className="flex items-center justify-between gap-2 text-sm ds-text-fg"
                   >
                     <span>Border: {inputStyle.borderWidth}px</span>
                     <input
@@ -354,12 +354,12 @@ export function InputsSection({
                 {/* Size */}
                 <div className="space-y-1.5">
                   <p
-                    className="text-sm font-light uppercase tracking-wider ds-text-subtle"
+                    className="text-sm uppercase tracking-wider ds-text-subtle"
                   >
                     Size
                   </p>
                   <label
-                    className="flex items-center justify-between gap-2 text-sm font-light ds-text-fg"
+                    className="flex items-center justify-between gap-2 text-sm ds-text-fg"
                   >
                     <span>Padding X: {inputStyle.paddingX}px</span>
                     <input
@@ -372,7 +372,7 @@ export function InputsSection({
                     />
                   </label>
                   <label
-                    className="flex items-center justify-between gap-2 text-sm font-light ds-text-fg"
+                    className="flex items-center justify-between gap-2 text-sm ds-text-fg"
                   >
                     <span>Padding Y: {inputStyle.paddingY}px</span>
                     <input
@@ -385,7 +385,7 @@ export function InputsSection({
                     />
                   </label>
                   <label
-                    className="flex items-center justify-between gap-2 text-sm font-light ds-text-fg"
+                    className="flex items-center justify-between gap-2 text-sm ds-text-fg"
                   >
                     <span>Font Size: {inputStyle.fontSize}px</span>
                     <input
@@ -402,12 +402,12 @@ export function InputsSection({
                 {/* Focus */}
                 <div className="space-y-1.5">
                   <p
-                    className="text-sm font-light uppercase tracking-wider ds-text-subtle"
+                    className="text-sm uppercase tracking-wider ds-text-subtle"
                   >
                     Focus
                   </p>
                   <label
-                    className="flex items-center justify-between gap-2 text-sm font-light ds-text-fg"
+                    className="flex items-center justify-between gap-2 text-sm ds-text-fg"
                   >
                     <span>Ring Width: {inputStyle.focusRingWidth}px</span>
                     <input
@@ -701,10 +701,10 @@ export function InputsSection({
                               <button
                                 type="button"
                                 onClick={() => setInputSegmented(opt.toLowerCase())}
-                                className="h-9 px-3 text-sm font-light transition-colors"
+                                className="h-9 px-3 text-sm transition-colors"
                                 style={{
                                   backgroundColor: inputSegmented === opt.toLowerCase() ? "hsl(var(--primary))" : "transparent",
-                                  color: inputSegmented === opt.toLowerCase() ? "hsl(var(--primary-foreground))" : "hsl(var(--foreground) / 0.6)",
+                                  color: inputSegmented === opt.toLowerCase() ? "hsl(var(--primary-foreground))" : "hsl(var(--muted-foreground))",
                                 }}
                               >
                                 {opt}

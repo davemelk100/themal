@@ -41,14 +41,14 @@ export function ImagePaletteModal({
         className="ds-modal-panel rounded-xl p-6 w-[380px] max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        <h3 className="text-lg font-light mb-4 ds-text-fg">
+        <h3 className="text-lg mb-4 ds-text-fg">
           Extract Palette from Image
         </h3>
 
         {/* Upload file / drag-and-drop */}
         <div className="mb-4">
           <p
-            className="text-xs font-light mb-2 ds-text-subtle"
+            className="text-xs mb-2 ds-text-subtle"
           >
             Upload an image file
           </p>
@@ -74,7 +74,7 @@ export function ImagePaletteModal({
                 onClose();
               }
             }}
-            className="w-full py-6 text-sm font-light rounded-lg border-2 border-dashed flex flex-col items-center justify-center gap-2 transition-colors hover:opacity-80 cursor-pointer [&[data-dragging=true]]:border-solid [&[data-dragging=true]]:ds-bg-muted ds-text-subtle ds-border"
+            className="w-full py-6 text-sm rounded-lg border-2 border-dashed flex flex-col items-center justify-center gap-2 transition-colors hover:opacity-80 cursor-pointer [&[data-dragging=true]]:border-solid [&[data-dragging=true]]:ds-bg-muted ds-text-subtle ds-border"
           >
             <svg
               className="w-8 h-8 flex-shrink-0"
@@ -101,7 +101,7 @@ export function ImagePaletteModal({
             style={{ backgroundColor: "hsl(var(--border))" }}
           />
           <span
-            className="text-xs font-light ds-text-subtle"
+            className="text-xs ds-text-subtle"
           >
             or
           </span>
@@ -114,7 +114,7 @@ export function ImagePaletteModal({
         {/* Paste URL */}
         <div className="mb-4">
           <p
-            className="text-xs font-light mb-2 ds-text-subtle"
+            className="text-xs mb-2 ds-text-subtle"
           >
             Paste an image URL
           </p>
@@ -135,7 +135,7 @@ export function ImagePaletteModal({
                 }
               }}
               placeholder="https://example.com/photo.jpg"
-              className="flex-1 h-10 px-3 text-sm font-light rounded-lg border ds-text-fg ds-bg"
+              className="flex-1 h-10 px-3 text-sm rounded-lg border ds-text-fg ds-bg"
               style={{
                 borderColor: imageUrlError ? "hsl(var(--destructive))" : "hsl(var(--border))",
               }}
@@ -149,7 +149,7 @@ export function ImagePaletteModal({
               disabled={
                 imagePaletteStatus === "extracting" || !imageUrlInput.trim()
               }
-              className="h-10 px-4 text-sm font-light rounded-lg transition-colors hover:opacity-80"
+              className="h-10 px-4 text-sm rounded-lg transition-colors hover:opacity-80"
               style={{ backgroundColor: "hsl(var(--brand))", color: "hsl(var(--brand-foreground, var(--background)))" }}
             >
               Go
@@ -157,7 +157,7 @@ export function ImagePaletteModal({
           </div>
           {imageUrlError && (
             <p
-              className="text-xs font-light mt-1 ds-text-destructive"
+              className="text-xs mt-1 ds-text-destructive"
             >
               {imageUrlError}
             </p>
@@ -167,7 +167,7 @@ export function ImagePaletteModal({
         {/* Status */}
         {imagePaletteStatus === "extracting" && (
           <div
-            className="flex items-center gap-2 text-xs font-light ds-text-subtle"
+            className="flex items-center gap-2 text-xs ds-text-subtle"
           >
             <svg
               className="w-4 h-4 animate-spin"
@@ -190,7 +190,7 @@ export function ImagePaletteModal({
         <div className="flex justify-end mt-2">
           <button
             onClick={handleClose}
-            className="ds-modal-btn h-9 px-4 text-sm font-light rounded-lg border transition-colors hover:opacity-80 ds-surface ds-border"
+            className="ds-modal-btn h-9 px-4 text-sm rounded-lg border transition-colors hover:opacity-80 ds-surface ds-border"
           >
             Cancel
           </button>
@@ -235,7 +235,7 @@ export function PendingImagePaletteConfirm({
         className="ds-modal-panel rounded-xl p-6 w-[90vw] max-w-[480px] max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        <h3 className="text-lg font-light mb-4">Extracted Palette</h3>
+        <h3 className="text-lg mb-4">Extracted Palette</h3>
         <img
           src={pendingImagePalette.imageUrl}
           alt="Uploaded"
@@ -265,7 +265,7 @@ export function PendingImagePaletteConfirm({
                   }}
                 />
                 <span
-                  className="ds-palette-label font-light block truncate ds-text-subtle"
+                  className="ds-palette-label block truncate ds-text-subtle"
                 >
                   {key
                     .replace("--", "")
@@ -288,7 +288,7 @@ export function PendingImagePaletteConfirm({
               URL.revokeObjectURL(pendingImagePalette.imageUrl);
               setPendingImagePalette(null);
             }}
-            className="ds-modal-btn h-9 px-4 text-sm font-light rounded-lg border transition-colors hover:opacity-80 ds-surface ds-border"
+            className="ds-modal-btn h-9 px-4 text-sm rounded-lg border transition-colors hover:opacity-80 ds-surface ds-border"
           >
             Cancel
           </button>
@@ -309,7 +309,7 @@ export function PendingImagePaletteConfirm({
                 setAppliedImageFading(false);
               }, 3000);
             }}
-            className="ds-modal-btn h-9 px-4 text-sm font-light rounded-lg transition-colors hover:opacity-80 ds-surface-primary"
+            className="ds-modal-btn h-9 px-4 text-sm rounded-lg transition-colors hover:opacity-80 ds-surface-primary"
           >
             Apply Palette
           </button>

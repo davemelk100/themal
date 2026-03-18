@@ -169,12 +169,12 @@ export function TablesSection({
                     setTableExportFormat("css");
                     setTableCssVisible(true);
                   }}
-                  className="h-8 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                  className="h-8 px-3 sm:px-4 text-sm transition-colors hover:opacity-70 flex items-center justify-center gap-1"
                   style={{
                     backgroundColor: tableCssVisible && tableExportFormat === "css" ? "hsl(var(--brand))" : "transparent",
                     color: tableCssVisible && tableExportFormat === "css"
                       ? colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "hsl(var(--primary-foreground))"
-                      : "hsl(var(--foreground) / 0.6)",
+                      : "hsl(var(--muted-foreground))",
                   }}
                 >
                   <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -189,12 +189,12 @@ export function TablesSection({
                     setTableExportFormat("tokens");
                     setTableCssVisible(true);
                   }}
-                  className="h-8 px-3 sm:px-4 text-sm font-light transition-colors hover:opacity-70 flex items-center justify-center gap-1"
+                  className="h-8 px-3 sm:px-4 text-sm transition-colors hover:opacity-70 flex items-center justify-center gap-1"
                   style={{
                     backgroundColor: tableCssVisible && tableExportFormat === "tokens" ? "hsl(var(--brand))" : "transparent",
                     color: tableCssVisible && tableExportFormat === "tokens"
                       ? colors["--brand"] ? `hsl(${fgForBg(colors["--brand"])})` : "hsl(var(--primary-foreground))"
-                      : "hsl(var(--foreground) / 0.6)",
+                      : "hsl(var(--muted-foreground))",
                   }}
                 >
                   <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -205,7 +205,7 @@ export function TablesSection({
               </span>
               <button
                 onClick={() => setShowResetModal(true)}
-                className="h-8 px-2 sm:px-3 text-sm font-light rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1 ds-text-subtle"
+                className="h-8 px-2 sm:px-3 text-sm rounded-lg transition-colors hover:opacity-70 flex items-center justify-center gap-1 ds-text-muted"
               >
                 <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414-6.414a2 2 0 011.414-.586H19a2 2 0 012 2v10a2 2 0 01-2 2h-8.172a2 2 0 01-1.414-.586L3 12z" />
@@ -243,7 +243,7 @@ export function TablesSection({
                 className="flex items-center justify-between px-3 py-1.5 border-b ds-border"
               >
                 <span
-                  className="text-sm font-light uppercase tracking-wider ds-text-card"
+                  className="text-sm uppercase tracking-wider ds-text-card"
                 >
                   {tableExportFormat === "tokens" ? "Table Tokens" : "Table CSS"}
                 </span>
@@ -259,7 +259,7 @@ export function TablesSection({
                       backgroundColor: "hsl(var(--muted))",
                       color: colors["--muted"]
                         ? `hsl(${fgForBg(colors["--muted"])})`
-                        : "hsl(var(--foreground) / 0.6)",
+                        : "hsl(var(--muted-foreground))",
                     }}
                   >
                     {tableCssCopied ? <CheckIcon /> : <CopyIcon />}
@@ -272,7 +272,7 @@ export function TablesSection({
                       backgroundColor: "hsl(var(--muted))",
                       color: colors["--muted"]
                         ? `hsl(${fgForBg(colors["--muted"])})`
-                        : "hsl(var(--foreground) / 0.6)",
+                        : "hsl(var(--muted-foreground))",
                     }}
                   >
                     <XIcon />
@@ -298,7 +298,7 @@ export function TablesSection({
                   key={p}
                   type="button"
                   onClick={() => selectTablePreset(p)}
-                  className={`h-8 px-3 text-xs font-light rounded-lg border transition-colors capitalize ${
+                  className={`h-8 px-3 text-xs rounded-lg border transition-colors capitalize ${
                     tableStyle.preset === p
                       ? "ds-surface-primary"
                       : "ds-surface"
@@ -310,7 +310,7 @@ export function TablesSection({
               <button
                 type="button"
                 onClick={() => setShowResetModal(true)}
-                className="h-8 px-3 text-xs font-light rounded-lg transition-colors hover:opacity-70 flex items-center gap-1 ml-auto ds-text-muted"
+                className="h-8 px-3 text-xs rounded-lg transition-colors hover:opacity-70 flex items-center gap-1 ml-auto ds-text-muted"
               >
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -321,10 +321,10 @@ export function TablesSection({
 
             {/* Shape */}
             <div className="space-y-1.5">
-              <p className="text-sm font-light uppercase tracking-wider ds-text-subtle">
+              <p className="text-sm uppercase tracking-wider ds-text-subtle">
                 Shape
               </p>
-              <label className="flex items-center justify-between gap-2 text-sm font-light ds-text-fg">
+              <label className="flex items-center justify-between gap-2 text-sm ds-text-fg">
                 <span>Radius: {tableStyle.borderRadius}px</span>
                 <input
                   type="range"
@@ -335,7 +335,7 @@ export function TablesSection({
                   className="w-32 accent-[hsl(var(--brand))]"
                 />
               </label>
-              <label className="flex items-center justify-between gap-2 text-sm font-light ds-text-fg">
+              <label className="flex items-center justify-between gap-2 text-sm ds-text-fg">
                 <span>Border: {tableStyle.borderWidth}px</span>
                 <input
                   type="range"
@@ -350,10 +350,10 @@ export function TablesSection({
 
             {/* Spacing */}
             <div className="space-y-1.5">
-              <p className="text-sm font-light uppercase tracking-wider ds-text-subtle">
+              <p className="text-sm uppercase tracking-wider ds-text-subtle">
                 Spacing
               </p>
-              <label className="flex items-center justify-between gap-2 text-sm font-light ds-text-fg">
+              <label className="flex items-center justify-between gap-2 text-sm ds-text-fg">
                 <span>Cell Padding X: {tableStyle.cellPaddingX}px</span>
                 <input
                   type="range"
@@ -364,7 +364,7 @@ export function TablesSection({
                   className="w-32 accent-[hsl(var(--brand))]"
                 />
               </label>
-              <label className="flex items-center justify-between gap-2 text-sm font-light ds-text-fg">
+              <label className="flex items-center justify-between gap-2 text-sm ds-text-fg">
                 <span>Cell Padding Y: {tableStyle.cellPaddingY}px</span>
                 <input
                   type="range"
@@ -379,10 +379,10 @@ export function TablesSection({
 
             {/* Header */}
             <div className="space-y-1.5">
-              <p className="text-sm font-light uppercase tracking-wider ds-text-subtle">
+              <p className="text-sm uppercase tracking-wider ds-text-subtle">
                 Header
               </p>
-              <label className="flex items-center justify-between gap-2 text-sm font-light ds-text-fg">
+              <label className="flex items-center justify-between gap-2 text-sm ds-text-fg">
                 <span>Weight</span>
                 <div className="flex gap-1">
                   {HEADER_WEIGHTS.map(({ value, label }) => (
@@ -405,7 +405,7 @@ export function TablesSection({
 
             {/* Options */}
             <div className="space-y-1.5">
-              <p className="text-sm font-light uppercase tracking-wider ds-text-subtle">
+              <p className="text-sm uppercase tracking-wider ds-text-subtle">
                 Options
               </p>
               {[
@@ -413,7 +413,7 @@ export function TablesSection({
                 { key: "hoverable" as const, label: "Row hover" },
                 { key: "compact" as const, label: "Compact" },
               ].map(({ key, label }) => (
-                <label key={key} className="flex items-center justify-between gap-2 text-sm font-light ds-text-fg">
+                <label key={key} className="flex items-center justify-between gap-2 text-sm ds-text-fg">
                   <span>{label}</span>
                   <button
                     type="button"
