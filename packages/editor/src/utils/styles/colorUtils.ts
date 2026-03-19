@@ -117,6 +117,13 @@ export const CONTRAST_PAIRS: [string, string][] = [
   ["--brand", "--muted"],
   ["--brand", "--accent"],
   ["--brand", "--secondary"],
+  // Status colors as text on common backgrounds (alert soft/outline/minimal presets)
+  ["--success", "--background"],
+  ["--success", "--card"],
+  ["--warning", "--background"],
+  ["--warning", "--card"],
+  ["--destructive", "--background"],
+  ["--destructive", "--card"],
 ];
 
 export function hslToRgb(hsl: string): [number, number, number] {

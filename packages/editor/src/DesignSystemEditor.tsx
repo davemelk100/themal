@@ -1291,6 +1291,13 @@ function DesignSystemEditorInner({
           }
         }
         setAuditViolations(elements);
+        // Compute design-system-level issues so the Fix screen shows instead of raw selectors
+        const postStyle = getComputedStyle(editorRootRef.current || document.documentElement);
+        const postColors: Record<string, string> = {};
+        EDITABLE_VARS.forEach(({ key }) => {
+          postColors[key] = postStyle.getPropertyValue(key).trim();
+        });
+        setContrastIssues(computeContrastIssues(postColors, lockedKeys));
       }
     } catch (err) {
       console.error("fixContrastIssues failed:", err);
