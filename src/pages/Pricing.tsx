@@ -236,8 +236,8 @@ export default function Pricing() {
               </div>
               <div className="text-muted-foreground">
                 {billingCycle === "monthly"
-                  ? "$10/mo. $120 billed annually at monthly rate."
-                  : "$50/yr. That's ~$4.17/mo. Save over 58% vs monthly."}
+                  ? "$10/mo billed monthly."
+                  : "$50/yr billed annually. That's ~$4.17/mo — save over 58%."}
               </div>
             </div>
 

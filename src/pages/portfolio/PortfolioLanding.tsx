@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { DesignSystemEditor } from "@design-alive/editor";
 import usePageMeta from "../../hooks/usePageMeta";
+import { useSubscription } from "../../hooks/useSubscription";
 import { ContactForm, ReportBugForm } from "../../components/SiteFooter";
 
 export default function PortfolioLanding() {
@@ -11,8 +12,7 @@ export default function PortfolioLanding() {
       "Open Themal's interactive design system editor. Pick colors, customize typography, cards, and alerts, enforce WCAG AA contrast, and export CSS or open a GitHub PR.",
   });
 
-  // All features free during early access — bypass subscription check
-  const licenseKey = "THEMAL-S7WS-GAZF-7XFN";
+  const { licenseKey } = useSubscription();
   const [searchParams, setSearchParams] = useSearchParams();
   const [showSuccess, setShowSuccess] = useState(false);
 
